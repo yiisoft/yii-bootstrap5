@@ -2,11 +2,12 @@
     <a href="http://getbootstrap.com/" target="_blank" rel="external">
         <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="80px">
     </a>
-    <h1 align="center">Twitter Bootstrap 4 Extension for Yii 2</h1>
+    <h1 align="center">Twitter Bootstrap 4 Extension for Yii</h1>
     <br>
 </p>
 
-This is the Twitter Bootstrap extension for [Yii framework 2.0](http://www.yiiframework.com). It encapsulates [Bootstrap 4](http://getbootstrap.com/) components
+This is the Twitter Bootstrap extension for [Yii framework](http://www.yiiframework.com).
+It encapsulates [Bootstrap 4](http://getbootstrap.com/) components
 and plugins in terms of Yii widgets, and thus makes using Bootstrap components/plugins
 in Yii applications extremely easy.
 
@@ -14,9 +15,9 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 Documentation is at [docs/guide/README.md](docs/guide/README.md).
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-bootstrap4/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-bootstrap4)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-bootstrap4/downloads.png)](https://packagist.org/packages/yiisoft/yii2-bootstrap4)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-bootstrap4.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-bootstrap4)
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii-bootstrap4/v/stable.png)](https://packagist.org/packages/yiisoft/yii-bootstrap4)
+[![Total Downloads](https://poser.pugx.org/yiisoft/yii-bootstrap4/downloads.png)](https://packagist.org/packages/yiisoft/yii-bootstrap4)
+[![Build Status](https://travis-ci.org/yiisoft/yii-bootstrap4.svg?branch=master)](https://travis-ci.org/yiisoft/yii-bootstrap4)
 
 
 Installation
@@ -27,13 +28,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii2-bootstrap4
+php composer.phar require --prefer-dist yiisoft/yii-bootstrap4
 ```
 
 or add
 
 ```
-"yiisoft/yii2-bootstrap4": "~1.0.0"
+"yiisoft/yii-bootstrap4": "~1.0.0"
 ```
 
 to the require section of your `composer.json` file.

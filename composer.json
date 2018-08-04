@@ -1,15 +1,15 @@
 {
-    "name": "yiisoft/yii2-bootstrap4",
+    "name": "yiisoft/yii-bootstrap4",
     "description": "The Twitter Bootstrap extension for the Yii framework",
-    "keywords": ["yii2", "bootstrap", "bootstrap4"],
-    "type": "yii2-extension",
+    "keywords": ["yii", "bootstrap", "4", "bootstrap4"],
+    "type": "yii-extension",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2-bootstrap4/issues",
+        "issues": "https://github.com/yiisoft/yii-bootstrap4/issues",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2-bootstrap4"
+        "source": "https://github.com/yiisoft/yii-bootstrap4"
     },
     "authors": [
         {
@@ -36,7 +36,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "~3.0@dev",
+        "yiisoft/core": "~3.0@dev",
         "bower-asset/bootstrap": "^4.1.0"
     },
     "require-dev": {
@@ -56,7 +56,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }
