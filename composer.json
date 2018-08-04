@@ -1,8 +1,8 @@
 {
     "name": "yiisoft/yii-bootstrap4",
-    "description": "The Twitter Bootstrap extension for the Yii framework",
-    "keywords": ["yii", "bootstrap", "4", "bootstrap4"],
-    "type": "yii-extension",
+    "description": "The Twitter Bootstrap 4 extension for the Yii framework",
+    "keywords": ["yii", "bootstrap"],
+    "type": "library",
     "license": "BSD-3-Clause",
     "support": {
         "issues": "https://github.com/yiisoft/yii-bootstrap4/issues",
@@ -56,7 +56,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     }
 }
