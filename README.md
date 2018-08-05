@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
+        <img src="https://avatars0.githubusercontent.com/u/993323" height="80px">
     </a>
     <a href="http://getbootstrap.com/" target="_blank" rel="external">
         <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="80px">
@@ -13,7 +13,7 @@ This [Yii Framework] extension encapsulates [Twitter Bootstrap 4] components
 and plugins in terms of Yii widgets, and thus makes using Bootstrap components/plugins
 in Yii applications extremely easy.
 
-[Yii Framework]:        http://www.yiiframework.com
+[Yii Framework]:        http://www.yiiframework.com/
 [Twitter Bootstrap 4]:  https://getbootstrap.com/docs/4.1/getting-started/introduction/
 
 For license information check the [LICENSE](LICENSE.md)-file.
