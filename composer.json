@@ -43,6 +43,9 @@
         "yiisoft/yii2-coding-standards": "~2.0",
         "phpunit/phpunit": "*"
     },
+    "provide": {
+        "yiisoft/yii-bootstrap-implementation": "1.0.0"
+    },
     "repositories": [
         {
             "type": "composer",
