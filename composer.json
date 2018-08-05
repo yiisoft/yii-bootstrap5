@@ -36,12 +36,15 @@
         }
     ],
     "require": {
-        "yiisoft/core": "^1.0",
+        "yiisoft/core": "^3.0@dev",
         "bower-asset/bootstrap": "^4.1.0"
     },
     "require-dev": {
+        "yiisoft/di": "dev-master",
+        "yiisoft/log": "dev-master",
+        "yiisoft/cache": "dev-master",
         "yiisoft/yii2-coding-standards": "~2.0",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "^7.3"
     },
     "provide": {
         "yiisoft/yii-bootstrap-implementation": "1.0.0"
