@@ -13,7 +13,7 @@ namespace yii\bootstrap4;
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
  */
-class Widget extends \yii\view\widgets\Widget
+class Widget extends \yii\widgets\Widget
 {
     use BootstrapWidgetTrait;
 
