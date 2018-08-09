@@ -168,7 +168,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
     {
         $layoutConfig = $this->createLayoutConfig();
         $config = ArrayHelper::merge($layoutConfig, ArrayHelper::getObjectVars($this));
-        AbstractContainer::configure($config);
+        AbstractContainer::configure($this, $config);
     }
 
     /**
@@ -370,10 +370,9 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
     }
 
     /**
-     * @param array $instanceConfig the configuration passed to this instance's constructor
      * @return array the layout specific default configuration for this instance
      */
-    protected function createLayoutConfig($instanceConfig)
+    protected function createLayoutConfig()
     {
         $config = [
             'hintOptions' => [
@@ -389,7 +388,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
             ]
         ];
 
-        $layout = $instanceConfig['form']->layout;
+        $layout = $this->form->layout;
 
         if ($layout === 'horizontal') {
             $config['template'] = "{label}\n{beginWrapper}\n{input}\n{error}\n{hint}\n{endWrapper}";
@@ -404,8 +403,8 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
                 'hint' => '',
                 'field' => 'form-group row'
             ];
-            if (isset($instanceConfig['horizontalCssClasses'])) {
-                $cssClasses = ArrayHelper::merge($cssClasses, $instanceConfig['horizontalCssClasses']);
+            if (isset($this->horizontalCssClasses)) {
+                $cssClasses = ArrayHelper::merge($cssClasses, $this->horizontalCssClasses);
             }
             $config['horizontalCssClasses'] = $cssClasses;
 
