@@ -7,7 +7,7 @@
 
 namespace yii\bootstrap4;
 
-use yii\base\InvalidConfigException;
+use yii\exceptions\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use Yii;
 
@@ -101,20 +101,20 @@ class Nav extends Widget
     /**
      * @var string name of a class to use for rendering dropdowns within this widget. Defaults to [[Dropdown]].
      */
-    public $dropdownClass = 'yii\bootstrap4\Dropdown';
+    public $dropdownClass = yii\bootstrap4\Dropdown::class;
 
 
     /**
      * Initializes the widget.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
-        if ($this->route === null && Yii::$app->controller !== null) {
-            $this->route = Yii::$app->controller->getRoute();
+        if ($this->route === null && $this->app->controller !== null) {
+            $this->route = $this->app->controller->getRoute();
         }
         if ($this->params === null) {
-            $this->params = Yii::$app->request->getQueryParams();
+            $this->params = $this->app->request->getQueryParams();
         }
         Html::addCssClass($this->options, ['widget' => 'nav']);
     }
@@ -266,8 +266,8 @@ class Nav extends Widget
         }
         if (isset($item['url']) && is_array($item['url']) && isset($item['url'][0])) {
             $route = $item['url'][0];
-            if ($route[0] !== '/' && Yii::$app->controller) {
-                $route = Yii::$app->controller->module->getUniqueId() . '/' . $route;
+            if ($route[0] !== '/' && $this->app->controller) {
+                $route = $this->app->controller->module->getUniqueId() . '/' . $route;
             }
             if (ltrim($route, '/') !== $this->route) {
                 return false;

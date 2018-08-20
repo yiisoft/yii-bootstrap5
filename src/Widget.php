@@ -7,13 +7,15 @@
 
 namespace yii\bootstrap4;
 
+use yii\di\Initiable;
+
 /**
  * \yii\bootstrap4\Widget is the base class for all bootstrap widgets.
  *
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
  */
-class Widget extends \yii\widgets\Widget
+abstract class Widget extends \yii\widgets\Widget implements Initiable
 {
     use BootstrapWidgetTrait;
 

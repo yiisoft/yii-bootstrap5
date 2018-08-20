@@ -7,7 +7,7 @@
 
 namespace yii\bootstrap4;
 
-use yii\base\InvalidConfigException;
+use yii\exceptions\InvalidConfigException;
 
 /**
  * A Bootstrap 4 enhanced version of [[\yii\widgets\ActiveForm]].
@@ -80,7 +80,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      * @var string the default field class name when calling [[field()]] to create a new field.
      * @see fieldConfig
      */
-    public $fieldClass = 'yii\bootstrap4\ActiveField';
+    public $fieldClass = ActiveField::class;
     /**
      * @var array HTML attributes for the form tag. Default is `[]`.
      */
@@ -113,7 +113,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      */
     public function init(): void
     {
-        if (!in_array($this->layout, ['default', 'horizontal', 'inline'])) {
+        if (!\in_array($this->layout, ['default', 'horizontal', 'inline'])) {
             throw new InvalidConfigException('Invalid layout type: ' . $this->layout);
         }
 

@@ -53,9 +53,8 @@ trait BootstrapWidgetTrait
      * This method will register the bootstrap asset bundle. If you override this method,
      * make sure you call the parent implementation first.
      */
-    public function init()
+    public function init(): void
     {
-        parent::init();
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }

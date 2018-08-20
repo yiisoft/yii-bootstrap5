@@ -104,7 +104,7 @@ class NavBar extends Widget
     /**
      * Initializes the widget.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->clientOptions = false;
@@ -133,7 +133,7 @@ class NavBar extends Widget
         }
         if ($this->brandLabel !== false) {
             Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
-            echo Html::a($this->brandLabel, $this->brandUrl === false ? Yii::$app->homeUrl : $this->brandUrl,
+            echo Html::a($this->brandLabel, $this->brandUrl === false ? $this->app->homeUrl : $this->brandUrl,
                 $this->brandOptions);
         }
         echo $this->renderToggleButton();
