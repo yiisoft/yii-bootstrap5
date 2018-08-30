@@ -105,7 +105,7 @@ class Modal extends Widget
     /**
      * Initializes the widget.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

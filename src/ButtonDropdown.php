@@ -74,7 +74,7 @@ class ButtonDropdown extends Widget
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

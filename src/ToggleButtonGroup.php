@@ -59,7 +59,7 @@ class ToggleButtonGroup extends InputWidget
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->registerPlugin('button');

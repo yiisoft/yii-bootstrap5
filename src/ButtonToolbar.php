@@ -65,7 +65,7 @@ class ButtonToolbar extends Widget
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
