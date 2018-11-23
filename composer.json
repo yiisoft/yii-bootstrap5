@@ -36,8 +36,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii-core": "^3.0@dev",
-        "bower-asset/bootstrap": "^4.1.0"
+        "yiisoft/yii-core": "^3.0@dev"
     },
     "require-dev": {
         "yiisoft/di": "^3.0@dev",

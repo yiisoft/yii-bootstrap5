@@ -1,0 +1,5 @@
+{
+    "require": {
+         "bower-asset/bootstrap": "^4.1.0"
+    }
+}
