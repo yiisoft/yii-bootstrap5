@@ -39,6 +39,7 @@
         "yiisoft/yii-core": "^3.0@dev"
     },
     "require-dev": {
+        "foxy/foxy": "^1.0",
         "yiisoft/di": "^3.0@dev",
         "yiisoft/log": "^3.0@dev",
         "yiisoft/cache": "^3.0@dev",
