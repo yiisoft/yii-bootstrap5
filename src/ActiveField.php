@@ -8,8 +8,8 @@
 namespace yii\bootstrap4;
 
 use yii\di\Initiable;
-use yii\helpers\ArrayHelper;
 use yii\di\AbstractContainer;
+use yii\helpers\ArrayHelper;
 
 /**
  * A Bootstrap 4 enhanced version of [[\yii\widgets\ActiveField]].
@@ -40,12 +40,8 @@ use yii\di\AbstractContainer;
  * and radioLists in the [[\yii\widgets\ActiveForm::fieldConfig|fieldConfig]] of the
  * [[\yii\widgets\ActiveForm]]:
  *
- * - [[checkboxTemplate]] the template for checkboxes in default layout
- * - [[radioTemplate]] the template for radio buttons in default layout
- * - [[horizontalCheckboxTemplate]] the template for checkboxes in horizontal layout
- * - [[horizontalRadioTemplate]] the template for radio buttons in horizontal layout
- * - [[inlineCheckboxListTemplate]] the template for inline checkboxLists
- * - [[inlineRadioListTemplate]] the template for inline radioLists
+ * - [[checkTemplate]] the default template for checkboxes and radios
+ * - [[checkEnclosedTemplate]] the template for checkboxes and radios enclosed by label
  *
  * Example:
  *
@@ -125,7 +121,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
     /**
      * {@inheritdoc}
      */
-    public $hintOptions = ['class' => ['widget' => 'form-text', 'text-muted']];
+    public $hintOptions = ['class' => ['widget' => 'form-text', 'text-muted'], 'tag' => 'small'];
     /**
      * @var null|array CSS grid classes for horizontal layout. This must be an array with these keys:
      *  - 'offset' the offset grid class to append to the wrapper if no label is rendered
@@ -144,14 +140,6 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
      */
     public $checkEnclosedTemplate = "<div class=\"form-check\">\n{beginLabel}\n{input}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
     /**
-     * @var string the template for inline checkboxLists
-     */
-    public $inlineCheckboxListTemplate = "<div class=\"form-check form-check-inline\">\n{input}\n{label}\n{error}\n{hint}\n</div>";
-    /**
-     * @var string the template for inline radioLists
-     */
-    public $inlineRadioListTemplate = "<div class=\"form-check form-check-inline\">\n{input}\n{label}\n{error}\n{hint}\n</div>";
-    /**
      * @var bool whether to render the error. Default is `true` except for layout `inline`.
      */
     public $enableError = true;
@@ -166,9 +154,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
      */
     public function init(): void
     {
-        $layoutConfig = $this->createLayoutConfig();
-        $config = ArrayHelper::merge($layoutConfig, ArrayHelper::getObjectVars($this));
-        AbstractContainer::configure($this, $config);
+        AbstractContainer::configure($this, $this->createLayoutConfig());
     }
 
     /**
@@ -219,7 +205,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
             $this->template = $options['template'];
             unset($options['template']);
         }
-        if ($this->form->layout === 'horizontal') {
+        if ($this->form->layout === ActiveForm::LAYOUT_HORIZONTAL) {
             Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
         }
 
@@ -247,7 +233,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
             $this->template = $options['template'];
             unset($options['template']);
         }
-        if ($this->form->layout === 'horizontal') {
+        if ($this->form->layout === ActiveForm::LAYOUT_HORIZONTAL) {
             Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
         }
 
@@ -265,26 +251,32 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
      */
     public function checkboxList($items, $options = [])
     {
-        if ($this->inline) {
-            if (!isset($options['template'])) {
-                $this->template = $this->inlineCheckboxListTemplate;
-            } else {
-                $this->template = $options['template'];
-                unset($options['template']);
-            }
-        } elseif (!isset($options['item'])) {
+        if (!isset($options['item'])) {
             $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
             $encode = ArrayHelper::getValue($options, 'encode', true);
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode) {
+            $wrapperOptions = ['class' => ['form-check']];
+            if ($this->inline) {
+                Html::addCssClass($wrapperOptions, 'form-check-inline');
+            }
+            $options['item'] = function ($i, $label, $name, $checked, $value) use (
+                $itemOptions,
+                $encode,
+                $wrapperOptions
+            ) {
                 $options = array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? Html::encode($label) : $label,
                     'labelOptions' => ['class' => 'form-check-label'],
                     'value' => $value
                 ], $itemOptions);
-                return '<div class="form-check">' . Html::checkbox($name, $checked, $options) . '</div>';
+
+                return
+                    Html::beginTag('div', $wrapperOptions) . "\n" .
+                    Html::checkbox($name, $checked, $options) . "\n" .
+                    Html::endTag('div') . "\n";
             };
         }
+
         parent::checkboxList($items, $options);
         return $this;
     }
@@ -294,33 +286,58 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
      */
     public function radioList($items, $options = [])
     {
-        if ($this->inline) {
-            if (!isset($options['template'])) {
-                $this->template = $this->inlineRadioListTemplate;
-            } else {
-                $this->template = $options['template'];
-                unset($options['template']);
-            }
-            if (!isset($options['itemOptions'])) {
-                $options['itemOptions'] = [
-                    'labelOptions' => ['class' => 'radio-inline'],
-                ];
-            }
-        } elseif (!isset($options['item'])) {
+        if (!isset($options['item'])) {
             $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
             $encode = ArrayHelper::getValue($options, 'encode', true);
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode) {
+            $wrapperOptions = ['class' => ['form-check']];
+            if ($this->inline) {
+                Html::addCssClass($wrapperOptions, 'form-check-inline');
+            }
+            $options['item'] = function ($i, $label, $name, $checked, $value) use (
+                $itemOptions,
+                $encode,
+                $wrapperOptions
+            ) {
                 $options = array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? Html::encode($label) : $label,
                     'labelOptions' => ['class' => 'form-check-label'],
                     'value' => $value
                 ], $itemOptions);
-                return '<div class="form-check">' . Html::radio($name, $checked, $options) . '</div>';
+
+                return
+                    Html::beginTag('div', $wrapperOptions) . "\n" .
+                    Html::radio($name, $checked, $options) . "\n" .
+                    Html::endTag('div') . "\n";
             };
         }
+
         parent::radioList($items, $options);
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listBox($items, $options = [])
+    {
+        if ($this->form->layout === ActiveForm::LAYOUT_INLINE) {
+            Html::removeCssClass($this->labelOptions, 'sr-only');
+        }
+
+        return parent::listBox($items, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropDownList($items, $options = [])
+    {
+        if ($this->form->layout === ActiveForm::LAYOUT_INLINE) {
+            Html::removeCssClass($this->labelOptions, 'sr-only');
+        }
+
+        return parent::dropDownList($items, $options);
     }
 
     /**
@@ -347,7 +364,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
     {
         if (is_bool($label)) {
             $this->enableLabel = $label;
-            if ($label === false && $this->form->layout === 'horizontal') {
+            if ($label === false && $this->form->layout === ActiveForm::LAYOUT_HORIZONTAL) {
                 Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
             }
         } else {
@@ -390,15 +407,15 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
 
         $layout = $this->form->layout;
 
-        if ($layout === 'horizontal') {
+        if ($layout === ActiveForm::LAYOUT_HORIZONTAL) {
             $config['template'] = "{label}\n{beginWrapper}\n{input}\n{error}\n{hint}\n{endWrapper}";
             $config['wrapperOptions'] = [];
             $config['labelOptions'] = [];
             $config['options'] = [];
             $cssClasses = [
                 'offset' => '',
-                'label' => 'col-md-2 col-form-label',
-                'wrapper' => 'col-md-10',
+                'label' => 'col-sm-2 col-form-label',
+                'wrapper' => 'col-sm-10',
                 'error' => '',
                 'hint' => '',
                 'field' => 'form-group row'
@@ -413,9 +430,11 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
             Html::addCssClass($config['errorOptions'], $cssClasses['error']);
             Html::addCssClass($config['hintOptions'], $cssClasses['hint']);
             Html::addCssClass($config['options'], $cssClasses['field']);
-        } elseif ($layout === 'inline') {
-            Html::addCssClass($config['labelOptions'], 'sr-only');
+        } elseif ($layout === ActiveForm::LAYOUT_INLINE) {
+            $config['inputOptions']['placeholder'] = true;
             $config['enableError'] = false;
+
+            Html::addCssClass($config['labelOptions'], 'sr-only');
         }
 
         return $config;

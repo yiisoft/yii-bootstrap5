@@ -108,7 +108,7 @@ class Progress extends Widget
      */
     protected function renderProgress()
     {
-        $out = Html::beginTag('div', $this->options);
+        $out = Html::beginTag('div', $this->options) . "\n";
         if (empty($this->bars)) {
             $this->bars = [
                 ['label' => $this->label, 'percent' => $this->percent, 'options' => []]
@@ -123,7 +123,7 @@ class Progress extends Widget
             $options = ArrayHelper::getValue($bar, 'options', []);
             $bars[] = $this->renderBar($bar['percent'], $label, $options);
         }
-        $out .= implode("\n", $bars);
+        $out .= implode("\n", $bars) . "\n";
         $out .= Html::endTag('div');
 
         return $out;
@@ -145,8 +145,8 @@ class Progress extends Widget
             'aria-valuemax' => 100
         ]);
         Html::addCssClass($options, ['widget' => 'progress-bar']);
-        Html::addCssStyle($options, ['width' => \Yii::$app->formatter->asPercent($percent / 100)], true);
+        Html::addCssStyle($options, ['width' => $this->app->formatter->asPercent($percent / 100)], true);
 
-        return Html::tag('div', $label, $options);;
+        return Html::tag('div', $label, $options);
     }
 }

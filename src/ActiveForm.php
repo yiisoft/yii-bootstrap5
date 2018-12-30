@@ -113,7 +113,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
      */
     public function init(): void
     {
-        if (!\in_array($this->layout, ['default', 'horizontal', 'inline'])) {
+        if (!in_array($this->layout, [self::LAYOUT_DEFAULT, self::LAYOUT_HORIZONTAL, self::LAYOUT_INLINE])) {
             throw new InvalidConfigException('Invalid layout type: ' . $this->layout);
         }
 

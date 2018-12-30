@@ -32,7 +32,13 @@ use yii\base\InvalidConfigException;
  */
 class ToggleButtonGroup extends InputWidget
 {
+    /**
+     * Checkbox type
+     */
     const TYPE_CHECKBOX = 'checkbox';
+    /**
+     * Radio type
+     */
     const TYPE_RADIO = 'radio';
 
     /**
@@ -63,7 +69,7 @@ class ToggleButtonGroup extends InputWidget
     {
         parent::init();
         $this->registerPlugin('button');
-        Html::addCssClass($this->options, ['widget' => ['btn-group', 'btn-group-toggle']]);
+        Html::addCssClass($this->options, ['btn-group']);
         $this->options['data-toggle'] = 'buttons';
     }
 
@@ -108,6 +114,7 @@ class ToggleButtonGroup extends InputWidget
     public function renderItem($index, $label, $name, $checked, $value)
     {
         $labelOptions = $this->labelOptions;
+        $labelOptions['wrapInput'] = true;
         Html::addCssClass($labelOptions, 'btn');
         if ($checked) {
             Html::addCssClass($labelOptions, 'active');

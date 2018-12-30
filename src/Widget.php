@@ -15,7 +15,7 @@ use yii\di\Initiable;
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @author Qiang Xue <qiang.xue@gmail.com>
  */
-abstract class Widget extends \yii\widgets\Widget implements Initiable
+class Widget extends \yii\widgets\Widget implements Initiable
 {
     use BootstrapWidgetTrait;
 

@@ -35,6 +35,8 @@
             "email": "simi.albi@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "yiisoft/yii-core": "^3.0@dev"
     },
@@ -43,7 +45,10 @@
         "yiisoft/di": "^3.0@dev",
         "yiisoft/log": "^3.0@dev",
         "yiisoft/cache": "^3.0@dev",
-        "yiisoft/yii2-coding-standards": "~2.0",
+        "yiisoft/yii-web": "^3.0@dev",
+        "yiisoft/yii-jquery": "^3.0@dev",
+        "yiisoft/yii-captcha": "^3.0@dev",
+        "hiqdev/composer-config-plugin": "^1.0@dev",
         "phpunit/phpunit": "^7.3"
     },
     "provide": {
@@ -60,9 +65,18 @@
             "yii\\bootstrap4\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "yii\\captcha\\tests\\": "vendor/yiisoft/yii-captcha/tests",
+            "yii\\bootstrap4\\tests\\": "tests"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"
+        },
+        "config-plugin": {
+            "tests": "config/tests.php"
         }
     }
 }

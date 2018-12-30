@@ -55,6 +55,7 @@ trait BootstrapWidgetTrait
      */
     public function init(): void
     {
+        parent::init();
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }

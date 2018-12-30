@@ -1,5 +1,6 @@
 <?php
-namespace yiiunit\extensions\bootstrap4;
+
+namespace yii\bootstrap4\tests;
 
 use yii\base\Action;
 use yii\base\Module;
@@ -15,21 +16,20 @@ class NavTest extends TestCase
 {
     protected function setUp()
     {
-        $this->mockWebApplication([
-            'components' => [
-                'request' => [
-                    'class' => 'yii\web\Request',
-                    'scriptUrl' => '/base/index.php',
-                    'hostInfo' => 'http://example.com/',
-                    'url' => '/base/index.php&r=site%2Fcurrent&id=42'
-                ],
-                'urlManager' => [
-                    'class' => 'yii\web\UrlManager',
-                    'baseUrl' => '/base',
-                    'scriptUrl' => '/base/index.php',
-                    'hostInfo' => 'http://example.com/',
-                ]
+        $this->mockWebApplication();
+        $this->container->setAll([
+            'request' => [
+                '__class' => \yii\web\Request::class,
+                'scriptUrl' => '/base/index.php',
+                'hostInfo' => 'http://example.com/',
+                'url' => '/base/index.php&r=site%2Fcurrent&id=42'
             ],
+            'urlManager' => [
+                '__class' => \yii\web\UrlManager::class,
+                'baseUrl' => '/base',
+                'scriptUrl' => '/base/index.php',
+                'hostInfo' => 'http://example.com/',
+            ]
         ]);
     }
 
@@ -315,7 +315,7 @@ EXPECTED;
     */
    protected function mockAction($controllerId, $actionID, $moduleID = null, $params = [])
    {
-       \Yii::$app->controller = $controller = new Controller($controllerId, \Yii::$app);
+       $this->app->controller = $controller = new Controller($controllerId, $this->app);
        $controller->actionParams = $params;
        $controller->action = new Action($actionID, $controller);
 
@@ -326,6 +326,6 @@ EXPECTED;
 
    protected function removeMockedAction()
    {
-       \Yii::$app->controller = null;
+       $this->app->controller = null;
    }
 }

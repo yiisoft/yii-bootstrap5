@@ -1,6 +1,6 @@
 <?php
 
-namespace yiiunit\extensions\bootstrap4;
+namespace yii\bootstrap4\tests;
 
 use yii\base\DynamicModel;
 use yii\bootstrap4\Html;
@@ -10,41 +10,6 @@ use yii\bootstrap4\Html;
  */
 class HtmlTest extends TestCase
 {
-    /**
-     * Data provider for [[testIcon()]]
-     * @return array test data
-     */
-    public function dataProviderIcon()
-    {
-        return [
-            [
-                'star',
-                [],
-                '<span class="glyphicon glyphicon-star"></span>',
-            ],
-            [
-                'star',
-                [
-                    'tag' => 'i',
-                    'prefix' => 'my-icon icon-',
-                ],
-                '<i class="my-icon icon-star"></i>',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider dataProviderIcon
-     *
-     * @param $name
-     * @param $options
-     * @param $expectedHtml
-     */
-    public function testIcon($name, array $options, $expectedHtml)
-    {
-        $this->assertEquals($expectedHtml, Html::icon($name, $options));
-    }
-
     /**
      * @return array
      */
@@ -60,14 +25,7 @@ class HtmlTest extends TestCase
                 '<html>',
                 [],
                 '<input type="text" class="form-control-plaintext" value="&lt;html&gt;" readonly>'
-            ],
-            [
-                '<html></html>',
-                [
-                    'encode' => false
-                ],
-                '<input type="text" class="form-control-plaintext" value="<html></html>" readonly>'
-            ],
+            ]
         ];
     }
 
