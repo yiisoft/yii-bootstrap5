@@ -7,7 +7,6 @@
 
 namespace yii\bootstrap4;
 
-use yii\di\Initiable;
 use yii\di\AbstractContainer;
 use yii\helpers\ArrayHelper;
 
@@ -88,7 +87,7 @@ use yii\helpers\ArrayHelper;
  * @author Michael Härtl <haertl.mike@gmail.com>
  * @author Simon Karlen <simi.albi@gmail.com>
  */
-class ActiveField extends \yii\widgets\ActiveField implements Initiable
+class ActiveField extends \yii\widgets\ActiveField
 {
     /**
      * @var bool whether to render [[checkboxList()]] and [[radioList()]] inline.
@@ -150,11 +149,13 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
 
 
     /**
-     * {@inheritdoc}
+     * Constructor for activefield
      */
-    public function init(): void
+    public function __construct(array $config = [])
     {
-        AbstractContainer::configure($this, $this->createLayoutConfig());
+     	if (!empty($config)) {
+        	AbstractContainer::configure($this, $this->createLayoutConfig());
+        }
     }
 
     /**
