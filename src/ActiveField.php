@@ -151,11 +151,9 @@ class ActiveField extends \yii\widgets\ActiveField
     /**
      * Constructor for activefield
      */
-    public function __construct(array $config = [])
+    public function __construct()
     {
-     	if (!empty($config)) {
-        	AbstractContainer::configure($this, $this->createLayoutConfig());
-        }
+        AbstractContainer::configure($this, $this->createLayoutConfig());
     }
 
     /**
