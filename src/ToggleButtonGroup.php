@@ -7,7 +7,7 @@
 
 namespace yii\bootstrap4;
 
-use yii\base\InvalidConfigException;
+use yii\exceptions\InvalidConfigException;
 
 /**
  * ToggleButtonGroup allows rendering form inputs Checkbox/Radio toggle button groups.
