@@ -1,5 +1,5 @@
-Twitter Bootstrap Erweiterung für Yii 2
-=======================================
+Twitter Bootstrap Erweiterung für Yii
+=====================================
 
 Diese Erweiterung enthält Unterstützung für das [Bootstrap 4 Framework](http://getbootstrap.com/) (auch bekannt als "Twitter Bootstrap")
 Markup und dessen Komponenten. Bootstrap ist eine exzellentes, reponsives Framework welches den clientseitigen

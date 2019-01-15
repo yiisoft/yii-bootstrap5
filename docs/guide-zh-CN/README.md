@@ -1,5 +1,5 @@
-基于Yii 2 的 Twitter Bootstrap 扩展
-=====================================
+基于Yii 的 Twitter Bootstrap 扩展
+==================================
 
 扩展包括对 [Bootstrap 3](http://getbootstrap.com/) 标记和组件框架的支持
 （也称为“Twitter Bootstrap”）。 Bootstrap是一个优秀的，响应式框架，可以大大加快

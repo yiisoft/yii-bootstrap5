@@ -1,5 +1,5 @@
-Yii 2 Twitter Bootstrap エクステンション
-========================================
+Yii Twitter Bootstrap エクステンション
+======================================
 
 このエクステンションは、マークアップとコンポーネントのフレームワーク [Bootstrap 4](http://getbootstrap.com/) ("Twitter Bootstrap" としても知られています)
 に対するサポートを提供します。
