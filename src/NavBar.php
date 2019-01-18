@@ -33,7 +33,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property-write array $containerOptions
  *
- * @see https://getbootstrap.com/docs/4.1/components/navbar/
+ * @see https://getbootstrap.com/docs/4.2/components/navbar/
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @author Alexander Kochetov <creocoder@gmail.com>
  */
@@ -57,12 +57,12 @@ class NavBar extends Widget
     public $collapseOptions = [];
     /**
      * @var string|bool the text of the brand or false if it's not used. Note that this is not HTML-encoded.
-     * @see https://getbootstrap.com/docs/4.1/components/navbar/
+     * @see https://getbootstrap.com/docs/4.2/components/navbar/
      */
     public $brandLabel = false;
     /**
      * @var string|bool src of the brand image or false if it's not used. Note that this param will override `$this->brandLabel` param.
-     * @see https://getbootstrap.com/docs/4.1/components/navbar/
+     * @see https://getbootstrap.com/docs/4.2/components/navbar/
      */
     public $brandImage = false;
     /**
@@ -134,8 +134,15 @@ class NavBar extends Widget
         }
         if ($this->brandLabel !== false) {
             Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
-            $brand = Html::a($this->brandLabel, $this->brandUrl === false ? $this->app->homeUrl : $this->brandUrl,
-                $this->brandOptions);
+            if ($this->brandUrl === null) {
+                $brand = Html::tag('span', $this->brandLabel, $this->brandOptions);
+            } else {
+                $brand = Html::a(
+                    $this->brandLabel,
+                    $this->brandUrl === false ? $this->app->homeUrl : $this->brandUrl,
+                    $this->brandOptions
+                );
+            }
         }
         Html::addCssClass($this->collapseOptions, ['collapse' => 'collapse', 'widget' => 'navbar-collapse']);
         $collapseOptions = $this->collapseOptions;

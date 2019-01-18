@@ -104,6 +104,10 @@ class ActiveForm extends \yii\widgets\ActiveForm
     /**
      * {@inheritdoc}
      */
+    public $errorSummaryCssClass = 'alert alert-danger';
+    /**
+     * {@inheritdoc}
+     */
     public $validationStateOn = self::VALIDATION_STATE_ON_INPUT;
 
 

@@ -343,13 +343,13 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
     /**
      * {@inheritdoc}
      */
-    public function dropDownList($items, $options = [])
+    public function dropdownList($items, $options = [])
     {
         if ($this->form->layout === ActiveForm::LAYOUT_INLINE) {
             Html::removeCssClass($this->labelOptions, 'sr-only');
         }
 
-        return parent::dropDownList($items, $options);
+        return parent::dropdownList($items, $options);
     }
 
     /**
@@ -360,7 +360,7 @@ class ActiveField extends \yii\widgets\ActiveField implements Initiable
      * - encode: bool, whether value should be HTML-encoded or not.
      *
      * @return $this the field object itself
-     * @see https://getbootstrap.com/docs/4.1/components/forms/#readonly-plain-text
+     * @see https://getbootstrap.com/docs/4.2/components/forms/#readonly-plain-text
      */
     public function staticControl($options = [])
     {

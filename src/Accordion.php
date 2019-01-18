@@ -11,7 +11,7 @@ use yii\exceptions\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 
 /**
- * Collapse renders an accordion bootstrap javascript component.
+ * Accordion renders an accordion bootstrap javascript component.
  *
  * For example:
  *
@@ -47,7 +47,7 @@ use yii\helpers\ArrayHelper;
  * ]);
  * ```
  *
- * @see https://getbootstrap.com/docs/4.1/components/collapse/#accordion-example
+ * @see https://getbootstrap.com/docs/4.2/components/collapse/#accordion-example
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @author Simon Karlen <simi.albi@gmail.com>
  */
@@ -71,7 +71,7 @@ class Accordion extends Widget
      * For example:
      *
      * ```php
-     * echo Collapse::widget([
+     * echo Accordion::widget([
      *     'items' => [
      *       'Introduction' => 'This is the first collapsable menu',
      *       'Second panel' => [

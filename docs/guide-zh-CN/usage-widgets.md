@@ -13,7 +13,6 @@ Yii 小部件
 - [[yii\bootstrap4\ButtonGroup|ButtonGroup]]
 - [[yii\bootstrap4\ButtonToolbar|ButtonToolbar]]
 - [[yii\bootstrap4\Carousel|Carousel]]
-- [[yii\bootstrap4\Collapse|Collapse]] *弃用* (see [[yii\bootstrap4\Accordion|Accordion]])
 - [[yii\bootstrap4\Dropdown|Dropdown]]
 - [[yii\bootstrap4\Modal|Modal]]
 - [[yii\bootstrap4\Nav|Nav]]
@@ -24,7 +23,7 @@ Yii 小部件
 
 ## 自定义小部件CSS类 <span id="customizing-css-classes"></span>
 
-这些小部件可以快速构建基于 boostrap CSS 样式的 bootstrap 组件，并直接生成 HTML 代码。
+这些小部件可以快速构建基于 bootstrap CSS 样式的 bootstrap 组件，并直接生成 HTML 代码。
 特定组件的默认样式是自动添加的，也可以通过修改部件属性添加自定义样式类。
 
 例如, 使用 [[yii\bootstrap4\Button::options]] 创建按钮。
