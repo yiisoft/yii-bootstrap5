@@ -33,7 +33,8 @@ HTML;
     /**
      * @depends testCheckbox
      */
-    public function testCheckboxChecked() {
+    public function testCheckboxChecked()
+    {
         \yii\bootstrap4\Html::$counter = 0;
         $model = new ToggleButtonGroupTestModel();
         $model->value = '2';
@@ -74,7 +75,8 @@ HTML;
     /**
      * @depends testRadio
      */
-    public function testRadioChecked() {
+    public function testRadioChecked()
+    {
         \yii\bootstrap4\Html::$counter = 0;
         $model = new ToggleButtonGroupTestModel();
         $model->value = '2';

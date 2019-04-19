@@ -101,5 +101,5 @@ trait BootstrapWidgetTrait
      * @return \yii\web\View the view object that can be used to render views or view files.
      * @see \yii\base\Widget::getView()
      */
-    abstract function getView();
+    abstract public function getView();
 }

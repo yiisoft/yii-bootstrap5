@@ -9,7 +9,7 @@ use yii\bootstrap4\Carousel;
  */
 class CarouselTest extends TestCase
 {
-    function testContainerOptions()
+    public function testContainerOptions()
     {
         Carousel::$counter = 0;
         $out = Carousel::widget([

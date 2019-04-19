@@ -132,7 +132,7 @@ HTML
                     'label' => 'Item3',
                     'content' => 'Content3',
                 ],
-                'FormField' => $form->field(new DynamicModel(['test']), 'test',['template' => '{input}']),
+                'FormField' => $form->field(new DynamicModel(['test']), 'test', ['template' => '{input}']),
             ]
         ]);
 

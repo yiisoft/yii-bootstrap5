@@ -71,8 +71,8 @@ EXPECTED;
     /**
      * @depends testRender
      */
-    public function testNavAndForm() {
-
+    public function testNavAndForm()
+    {
         NavBar::$counter = 0;
 
         ob_start();
