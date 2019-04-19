@@ -8,7 +8,7 @@
 namespace yii\bootstrap4;
 
 use yii\exceptions\InvalidConfigException;
-use yii\helpers\ArrayHelper;
+use Yii\Helpers\ArrayHelper;
 
 /**
  * Progress renders a bootstrap progress bar component.

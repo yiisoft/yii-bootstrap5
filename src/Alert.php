@@ -8,7 +8,7 @@
 namespace yii\bootstrap4;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use Yii\Helpers\ArrayHelper;
 
 /**
  * Alert renders an alert bootstrap component.

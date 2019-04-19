@@ -3,7 +3,7 @@
 namespace yii\bootstrap4\tests;
 
 use yii\di\Container;
-use yii\helpers\ArrayHelper;
+use Yii\Helpers\ArrayHelper;
 
 /**
  * This is the base class for all yii framework unit tests.
