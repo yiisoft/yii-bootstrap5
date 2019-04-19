@@ -25,5 +25,4 @@ abstract class TestCase extends \yii\tests\TestCase
         parent::tearDown();
         $this->destroyApplication();
     }
-
 }

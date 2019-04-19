@@ -313,19 +313,19 @@ EXPECTED;
     * @param string $moduleID
     * @param array  $params
     */
-   protected function mockAction($controllerId, $actionID, $moduleID = null, $params = [])
-   {
-       $this->app->controller = $controller = new Controller($controllerId, $this->app);
-       $controller->actionParams = $params;
-       $controller->action = new Action($actionID, $controller);
+    protected function mockAction($controllerId, $actionID, $moduleID = null, $params = [])
+    {
+        $this->app->controller = $controller = new Controller($controllerId, $this->app);
+        $controller->actionParams = $params;
+        $controller->action = new Action($actionID, $controller);
 
-       if ($moduleID !== null) {
-           $controller->module = new Module($moduleID);
-       }
-   }
+        if ($moduleID !== null) {
+            $controller->module = new Module($moduleID);
+        }
+    }
 
-   protected function removeMockedAction()
-   {
-       $this->app->controller = null;
-   }
+    protected function removeMockedAction()
+    {
+        $this->app->controller = null;
+    }
 }
