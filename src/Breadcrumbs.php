@@ -8,7 +8,7 @@
 namespace yii\bootstrap4;
 
 use yii\exceptions\InvalidConfigException;
-use Yii\Helpers\ArrayHelper;
+use Yiisoft\Arrays\ArrayHelper;
 
 /**
  * Button renders a bootstrap button.

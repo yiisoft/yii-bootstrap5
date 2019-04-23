@@ -8,7 +8,7 @@
 namespace yii\bootstrap4;
 
 use yii\exceptions\InvalidConfigException;
-use Yii\Helpers\ArrayHelper;
+use Yiisoft\Arrays\ArrayHelper;
 
 /**
  * Tabs renders a Tab bootstrap javascript component.
