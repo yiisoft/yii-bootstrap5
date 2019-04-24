@@ -200,7 +200,7 @@ HTML
         $form = ActiveForm::begin(['action' => '/something']);
         ActiveForm::end();
         ob_end_clean();
-        $model = new data\Singer;
+        $model = new Data\Singer;
 
         Accordion::$counter = 0;
         $output = Accordion::widget([
