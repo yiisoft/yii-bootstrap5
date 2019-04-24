@@ -6,7 +6,7 @@ Yii не оборачивает базовый Bootstrap в PHP код, поск
 ```php
 public $depends = [
     'yii\web\YiiAsset',
-    'yii\bootstrap4\BootstrapAsset', // подключение Bootstrap
+    'Yiisoft\Yii\Bootstrap4\BootstrapAsset', // подключение Bootstrap
 ];
 ```
 

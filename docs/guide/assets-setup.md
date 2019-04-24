@@ -105,14 +105,14 @@ return [
         'assetManager' => [
             // override bundles to use CDN :
             'bundles' => [
-                'yii\bootstrap4\BootstrapAsset' => [
+                'Yiisoft\Yii\Bootstrap4\BootstrapAsset' => [
                     'sourcePath' => null,
                     'baseUrl' => 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1',
                     'css' => [
                         'css/bootstrap.min.css'
                     ],
                 ],
-                'yii\bootstrap4\BootstrapPluginAsset' => [
+                'Yiisoft\Yii\Bootstrap4\BootstrapPluginAsset' => [
                     'sourcePath' => null,
                     'baseUrl' => 'https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1',
                     'js' => [
@@ -153,13 +153,13 @@ return [
         'assetManager' => [
             // override bundles to use local project files :
             'bundles' => [
-                'yii\bootstrap4\BootstrapAsset' => [
+                'Yiisoft\Yii\Bootstrap4\BootstrapAsset' => [
                     'sourcePath' => '@app/assets/source/bootstrap/dist',
                     'css' => [
                         YII_ENV_DEV ? 'css/bootstrap.css' : 'css/bootstrap.min.css',
                     ],
                 ],
-                'yii\bootstrap4\BootstrapPluginAsset' => [
+                'Yiisoft\Yii\Bootstrap4\BootstrapPluginAsset' => [
                     'sourcePath' => '@app/assets/source/bootstrap/dist',
                     'js' => [
                         YII_ENV_DEV ? 'js/bootstrap.js' : 'js/bootstrap.min.js',

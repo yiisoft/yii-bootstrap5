@@ -1,10 +1,10 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\Action;
 use yii\base\Module;
-use yii\bootstrap4\Nav;
+use Yiisoft\Yii\Bootstrap4\Nav;
 use yii\web\Controller;
 
 /**

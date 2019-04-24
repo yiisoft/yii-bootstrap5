@@ -1,12 +1,12 @@
 <?php
 /**
- * @package yii2-bootstrap4
+ * @package yii-bootstrap4
  * @author Simon Karlen <simi.albi@gmail.com>
  */
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\Breadcrumbs;
+use Yiisoft\Yii\Bootstrap4\Breadcrumbs;
 
 /**
  * @group bootstrap4

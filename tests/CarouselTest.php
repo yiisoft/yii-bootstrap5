@@ -1,8 +1,8 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\Carousel;
+use Yiisoft\Yii\Bootstrap4\Carousel;
 
 /**
  * @group bootstrap4

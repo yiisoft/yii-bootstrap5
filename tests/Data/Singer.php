@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\bootstrap4\tests\data;
+namespace Yiisoft\Yii\Bootstrap4\Tests\Data;
 
 use yii\base\Model;
 

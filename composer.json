@@ -63,13 +63,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "yii\\bootstrap4\\": "src"
+            "Yiisoft\\Yii\\Bootstrap4\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "yii\\captcha\\tests\\": "vendor/yiisoft/yii-captcha/tests",
-            "yii\\bootstrap4\\tests\\": "tests"
+            "Yiisoft\\Yii\\Bootstrap4\\Tests\\": "tests"
         }
     },
     "extra": {

@@ -1,8 +1,8 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\Tabs;
+use Yiisoft\Yii\Bootstrap4\Tabs;
 use yii\helpers\Html;
 
 /**

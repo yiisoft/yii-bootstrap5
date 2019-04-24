@@ -1,11 +1,11 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\DynamicModel;
-use yii\bootstrap4\ActiveForm;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\tests\data\User;
+use Yiisoft\Yii\Bootstrap4\ActiveForm;
+use Yiisoft\Yii\Bootstrap4\Html;
+use Yiisoft\Yii\Bootstrap4\Tests\Data\User;
 
 /**
  * Tests for ActiveForm widget

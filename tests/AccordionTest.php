@@ -1,9 +1,9 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\DynamicModel;
-use yii\bootstrap4\Accordion;
+use Yiisoft\Yii\Bootstrap4\Accordion;
 use yii\widgets\ActiveForm;
 
 /**

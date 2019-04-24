@@ -30,19 +30,9 @@ Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-Either run
-
 ```
 php composer.phar require --prefer-dist yiisoft/yii-bootstrap4
 ```
-
-or add
-
-```
-"yiisoft/yii-bootstrap4": "~1.0.0"
-```
-
-to the require section of your `composer.json` file.
 
 Usage
 ----
@@ -51,5 +41,5 @@ For example, the following
 single line of code in a view file would render a Bootstrap Progress plugin:
 
 ```php
-<?= yii\bootstrap4\Progress::widget(['percent' => 60, 'label' => 'test']) ?>
+<?= Yiisoft\Yii\Bootstrap4\Progress::widget(['percent' => 60, 'label' => 'test']) ?>
 ```

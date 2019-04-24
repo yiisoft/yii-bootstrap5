@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\bootstrap4;
+namespace Yiisoft\Yii\Bootstrap4;
 
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.

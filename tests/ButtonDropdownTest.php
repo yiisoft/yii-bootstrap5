@@ -1,8 +1,8 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\ButtonDropdown;
+use Yiisoft\Yii\Bootstrap4\ButtonDropdown;
 
 /**
  * @group bootstrap4

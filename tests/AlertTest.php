@@ -1,8 +1,8 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\Alert;
+use Yiisoft\Yii\Bootstrap4\Alert;
 
 /**
  * Tests for Alert widget

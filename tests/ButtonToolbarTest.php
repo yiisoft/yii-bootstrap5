@@ -1,9 +1,9 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\ButtonGroup;
-use yii\bootstrap4\ButtonToolbar;
+use Yiisoft\Yii\Bootstrap4\ButtonGroup;
+use Yiisoft\Yii\Bootstrap4\ButtonToolbar;
 
 /**
  * @group bootstrap4

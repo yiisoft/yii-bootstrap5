@@ -9,7 +9,7 @@ bootstrap の基礎を使用することに関する詳細は、[bootstrap ド�
 ```php
 public $depends = [
     'yii\web\YiiAsset',
-    'yii\bootstrap4\BootstrapAsset', // この行です
+    'Yiisoft\Yii\Bootstrap4\BootstrapAsset', // この行です
 ];
 ```
 

@@ -11,10 +11,3 @@ Either run
 php composer.phar require --prefer-dist yiisoft/yii-bootstrap4
 ```
 
-or add
-
-```
-"yiisoft/yii-bootstrap4": "~1.0.0"
-```
-
-to the require section of your `composer.json` file.

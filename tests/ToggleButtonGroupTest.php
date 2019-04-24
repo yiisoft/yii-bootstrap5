@@ -1,9 +1,9 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\Model;
-use yii\bootstrap4\ToggleButtonGroup;
+use Yiisoft\Yii\Bootstrap4\ToggleButtonGroup;
 
 /**
  * @group bootstrap4
@@ -12,7 +12,7 @@ class ToggleButtonGroupTest extends TestCase
 {
     public function testCheckbox()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $html = ToggleButtonGroup::widget([
             'type' => ToggleButtonGroup::TYPE_CHECKBOX,
             'model' => new ToggleButtonGroupTestModel(),
@@ -35,7 +35,7 @@ HTML;
      */
     public function testCheckboxChecked()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $model = new ToggleButtonGroupTestModel();
         $model->value = '2';
 
@@ -54,7 +54,7 @@ HTML;
 
     public function testRadio()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $html = ToggleButtonGroup::widget([
             'type' => ToggleButtonGroup::TYPE_RADIO,
             'model' => new ToggleButtonGroupTestModel(),
@@ -77,7 +77,7 @@ HTML;
      */
     public function testRadioChecked()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $model = new ToggleButtonGroupTestModel();
         $model->value = '2';
 

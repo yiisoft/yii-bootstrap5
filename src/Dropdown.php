@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\bootstrap4;
+namespace Yiisoft\Yii\Bootstrap4;
 
 use yii\exceptions\InvalidConfigException;
 use Yiisoft\Arrays\ArrayHelper;

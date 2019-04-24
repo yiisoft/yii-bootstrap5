@@ -1,10 +1,10 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\DynamicModel;
-use yii\bootstrap4\ActiveField;
-use yii\bootstrap4\ActiveForm;
+use Yiisoft\Yii\Bootstrap4\ActiveField;
+use Yiisoft\Yii\Bootstrap4\ActiveForm;
 
 class ActiveFieldTest extends TestCase
 {
@@ -73,7 +73,7 @@ HTML;
 
     public function testCheckboxList()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $html = $this->activeField->checkboxList([1 => 'name1', 2 => 'name2'])->render();
 
         $expectedHtml = <<<HTML
@@ -98,7 +98,7 @@ HTML;
 
     public function testRadioListInline()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $this->activeField->inline = true;
         $html = $this->activeField->radioList([1 => 'name1', 2 => 'name2'])->render();
 
@@ -124,7 +124,7 @@ HTML;
 
     public function testCheckboxListInline()
     {
-        \yii\bootstrap4\Html::$counter = 0;
+        \Yiisoft\Yii\Bootstrap4\Html::$counter = 0;
         $this->activeField->inline = true;
         $html = $this->activeField->checkboxList([1 => 'name1', 2 => 'name2'])->render();
 

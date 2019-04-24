@@ -1,9 +1,9 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Modal;
+use Yiisoft\Yii\Bootstrap4\Html;
+use Yiisoft\Yii\Bootstrap4\Modal;
 
 /**
  * @group bootstrap4

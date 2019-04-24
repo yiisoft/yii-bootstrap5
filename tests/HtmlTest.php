@@ -1,9 +1,9 @@
 <?php
 
-namespace yii\bootstrap4\tests;
+namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use yii\base\DynamicModel;
-use yii\bootstrap4\Html;
+use Yiisoft\Yii\Bootstrap4\Html;
 
 /**
  * @group bootstrap4
