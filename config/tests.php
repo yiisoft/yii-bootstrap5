@@ -22,6 +22,6 @@ return [
         'baseUrl'   => '@web/assets',
     ],
     'session' => [
-        '__class' => \yii\captcha\tests\data\Session::class,
+        '__class' => \Yiisoft\Yii\Captcha\Tests\Data\Session::class,
     ],
 ];
