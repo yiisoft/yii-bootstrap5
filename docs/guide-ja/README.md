@@ -28,3 +28,4 @@ Bootstrap のコアは二つの部分によって表されます。
 --------------
 
 * [Bootstrap の .sass ファイルを直接に使う](topics-sass.md)
+* [yii2-bootstrap から移行する](migrating-yii2-bootstrap.md)
