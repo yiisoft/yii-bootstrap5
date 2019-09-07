@@ -293,7 +293,7 @@ EXPECTED;
                 ],
             ]);
 
-            $expected = <<<EXPECTED
+        $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-toggle="dropdown">Dropdown</a><div id="w1-dropdown" class="dropdown-menu"><div class="dropdown active" aria-expanded="false">
 <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a>
 <div id="w2-dropdown" class="dropdown-submenu dropdown-menu"><h6 class="dropdown-header">Page</h6></div>

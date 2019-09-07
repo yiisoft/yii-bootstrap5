@@ -101,7 +101,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      *
      * @return string
      */
-    public static function checkboxList(string $name, $selection = NULL, array $items = [], array $options = []): string
+    public static function checkboxList(string $name, $selection = null, array $items = [], array $options = []): string
     {
         if (!isset($options['item'])) {
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
