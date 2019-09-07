@@ -1,27 +1,55 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use yii\di\Initiable;
-
 /**
- * \Yiisoft\Yii\Bootstrap4\Widget is the base class for all bootstrap widgets.
- *
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * Widget.
  */
-class Widget extends \yii\widgets\Widget implements Initiable
+class Widget extends \Yiisoft\Widget\Widget
 {
     use BootstrapWidgetTrait;
 
     /**
-     * @var array the HTML attributes for the widget container tag.
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @var string $id
      */
-    public $options = [];
+    private $id;
+
+    /**
+     * @var boolean $autoGenerate
+     */
+    private $autoGenerate = true;
+
+    /**
+     * @var int a counter used to generate {@see id} for widgets.
+     */
+    private static $counter = 0;
+
+    /**
+     * @var string the prefix to the automatically generated widget IDs.
+     *
+     * {@see getId()}
+     */
+    private static $autoIdPrefix = 'w';
+
+    /**
+     * Returns the ID of the widget.
+     *
+     * @param bool $autoGenerate whether to generate an ID if it is not set previously
+     *
+     * @return string ID of the widget.
+     */
+    public function getId()
+    {
+        if ($this->autoGenerate && $this->id === null) {
+            $this->id = self::$autoIdPrefix . self::$counter++;
+        }
+
+        return $this->id;
+    }
+
+    public static function counter(int $value): void
+    {
+        self::$counter = $value;
+    }
 }

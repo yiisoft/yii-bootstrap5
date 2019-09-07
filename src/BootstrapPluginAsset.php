@@ -1,25 +1,23 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use yii\web\AssetBundle;
+use Yiisoft\Asset\AssetBundle;
 
 /**
  * Asset bundle for the Twitter bootstrap javascript files.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * BootstrapPluginAsset.
  */
 class BootstrapPluginAsset extends AssetBundle
 {
     public $sourcePath = '@npm/bootstrap/dist';
+
     public $js = [
         'js/bootstrap.bundle.js',
     ];
+
     public $depends = [
         \Yiisoft\Yii\JQuery\JqueryAsset::class,
         \Yiisoft\Yii\Bootstrap4\BootstrapAsset::class,

@@ -38,9 +38,15 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "php": "^7.2",
+        "nyholm/psr7": "^1.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/di": "^3.0@dev",
-        "yiisoft/yii-core": "^3.0@dev",
+        "yiisoft/event-dispatcher": "^3.0@dev",
+        "yiisoft/factory": "^3.0@dev",
+        "yiisoft/html": "^3.0@dev",
+        "yiisoft/json": "^3.0@dev",
+        "yiisoft/view": "^3.0@dev",
         "yiisoft/yii-jquery": "^3.0@dev",
         "yiisoft/yii-web": "^3.0@dev"
     },
@@ -50,7 +56,7 @@
         "yiisoft/cache": "^3.0@dev",
         "yiisoft/yii-captcha": "^3.0@dev",
         "hiqdev/composer-config-plugin": "^1.0@dev",
-        "phpunit/phpunit": "^7.3"
+        "phpunit/phpunit": "^8.0"
     },
     "provide": {
         "yiisoft/yii-bootstrap-implementation": "3.0.0"

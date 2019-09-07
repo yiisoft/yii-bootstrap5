@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
@@ -12,20 +13,35 @@ use Yiisoft\Yii\Bootstrap4\NavBar;
  */
 class NavBarTest extends TestCase
 {
-    public function testRender()
+    protected function setUp(): void
     {
-        NavBar::$counter = 0;
+        parent::setUp();
+    }
 
-        $out = NavBar::widget([
-            'brandLabel' => 'My Company',
-            'brandUrl' => '/',
-            'options' => [
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
+    public function testRender(): void
+    {
+        ob_start();
+        ob_implicit_flush(0);
+
+        NavBar::counter(0);
+
+        NavBar::begin()
+            ->brandLabel('My Company')
+            ->brandUrl('/')
+            ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
-            ],
-        ]);
+            ])
+            ->init();
+
+        NavBar::end();
 
         $expected = <<<EXPECTED
-<nav id="w0" class="navbar-inverse navbar-static-top navbar-frontend navbar" role="navigation">
+<nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -35,86 +51,113 @@ class NavBarTest extends TestCase
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 
-    public function testBrandImage()
+    public function testBrandImage(): void
     {
-        $out = NavBar::widget([
-            'brandImage' => '/images/test.jpg',
-            'brandUrl' => '/',
-        ]);
-
-        $this->assertContains('<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>', $out);
-    }
-
-    public function testBrandLink()
-    {
-        $out = NavBar::widget([
-            'brandLabel' => 'Yii Framework',
-            'brandUrl' => false,
-        ]);
-
-        $this->assertContains('<a class="navbar-brand" href="/index.php">Yii Framework</a>', $out);
-    }
-
-    public function testBrandSpan()
-    {
-        $out = NavBar::widget([
-            'brandLabel' => 'Yii Framework',
-            'brandUrl' => null,
-        ]);
-
-        $this->assertContains('<span class="navbar-brand">Yii Framework</span>', $out);
-    }
-
-    /**
-     * @depends testRender
-     */
-    public function testNavAndForm()
-    {
-        NavBar::$counter = 0;
-
         ob_start();
-        NavBar::begin([
-            'brandLabel' => 'My Company',
-            'brandUrl' => '/',
-            'options' => [
-            ],
-        ]);
-        echo Nav::widget([
-            'options' => [
-                'class' => ['mr-auto']
-            ],
-            'items' => [
+        ob_implicit_flush(0);
+
+        NavBar::counter(0);
+
+        NavBar::begin()
+            ->brandImage('/images/test.jpg')
+            ->brandUrl('/')
+            ->init();
+
+        NavBar::end();
+
+        $this->assertStringContainsString(
+            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
+            ob_get_clean()
+        );
+    }
+
+    public function testBrandLink(): void
+    {
+        ob_start();
+        ob_implicit_flush(0);
+
+        NavBar::counter(0);
+
+        NavBar::begin()
+            ->brandLabel('Yii Framework')
+            ->brandUrl('/index.php')
+            ->init();
+
+        NavBar::end();
+
+        $this->assertStringContainsString(
+            '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
+            ob_get_clean()
+        );
+    }
+
+    public function testBrandSpan(): void
+    {
+        ob_start();
+        ob_implicit_flush(0);
+
+        NavBar::counter(0);
+
+        NavBar::begin()
+            ->brandLabel('Yii Framework')
+            ->brandUrl('')
+            ->init();
+
+        NavBar::end();
+
+        $this->assertStringContainsString(
+            '<span class="navbar-brand">Yii Framework</span>',
+            ob_get_clean()
+        );
+    }
+
+    public function testNavAndForm(): void
+    {
+        ob_start();
+        ob_implicit_flush(0);
+
+        NavBar::counter(0);
+
+        NavBar::begin()
+            ->brandLabel('My Company')
+            ->brandUrl('/')
+            ->init();
+
+        echo Nav::widget()
+            ->items([
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
                 ['label' => 'Dropdown', 'items' => [
-                    ['label' => 'Action', 'url' => '#'],
-                    ['label' => 'Another action', 'url' => '#'],
-                    '-',
-                    ['label' => 'Something else here', 'url' => '#'],
-                ]]
-            ]
-        ]);
+                        ['label' => 'Action', 'url' => '#'],
+                        ['label' => 'Another action', 'url' => '#'],
+                        '-',
+                        ['label' => 'Something else here', 'url' => '#'],
+                    ]
+                ]
+            ])
+            ->options(['class' => ['mr-auto']]);
+
         echo <<<HTML
 <form class="form-inline my-2 my-lg-0">
 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 HTML;
+
         NavBar::end();
-        $out = ob_get_clean();
 
         $expected = <<<EXPECTED
-<nav id="w0" class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 <div id="w0-collapse" class="collapse navbar-collapse">
-<ul id="w1" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+<ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
 <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2" class="dropdown-menu"><a class="dropdown-item" href="#">Action</a>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2-dropdown" class="dropdown-menu"><a class="dropdown-item" href="#">Action</a>
 <a class="dropdown-item" href="#">Another action</a>
 <div class="dropdown-divider"></div>
 <a class="dropdown-item" href="#">Something else here</a></div></li></ul><form class="form-inline my-2 my-lg-0">
@@ -125,6 +168,6 @@ HTML;
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 }
