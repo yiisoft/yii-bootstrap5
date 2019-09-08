@@ -255,6 +255,8 @@ class NavBar extends Widget
 
     /**
      * Renders the widget.
+     *
+     * @return string
      */
     public function run(): string
     {

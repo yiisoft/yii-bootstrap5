@@ -58,13 +58,13 @@ trait BootstrapWidgetTrait
      *
      * @return void
      */
-    protected function registerPlugin(string $name): void
+    protected function registerPlugin(string $name, array $options = []): void
     {
         $view = $this->getView();
 
         BootstrapPluginAsset::register($view);
 
-        $id = $this->options['id'];
+        $id = $options['id'];
 
         if ($this->clientOptions !== false) {
             $options = empty($this->clientOptions) ? '' : Json::htmlEncode($this->clientOptions);

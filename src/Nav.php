@@ -207,6 +207,7 @@ class Nav extends Widget
      * Renders a widget's item.
      *
      * @param string|array $item the item to render.
+     *
      * @return string the rendering result.
      *
      * @throws InvalidConfigException
@@ -263,6 +264,7 @@ class Nav extends Widget
      * Renders the given items as a dropdown.
      *
      * This method is called to create sub-menus.
+     *
      * @param array $items the given items. Please refer to {@see Dropdown::items} for the array structure.
      * @param array $parentItem the parent item information. Please refer to {@see items} for the structure of this
      *                          array.
@@ -379,6 +381,20 @@ class Nav extends Widget
     public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see label}
+     *
+     * @param bool $label
+     *
+     * @return $this
+     */
+    public function label(string $value): self
+    {
+        $this->label = $value;
 
         return $this;
     }

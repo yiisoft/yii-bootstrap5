@@ -5,7 +5,7 @@ namespace Yiisoft\Yii\Bootstrap4\Tests;
 use Yiisoft\Yii\Bootstrap4\Nav;
 
 /**
- * Tests for Nav widget
+ * Tests for Nav widget.
  *
  * NavTest
  */

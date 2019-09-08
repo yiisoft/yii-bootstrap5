@@ -7,9 +7,9 @@ use Yiisoft\Yii\Bootstrap4\Nav;
 use Yiisoft\Yii\Bootstrap4\NavBar;
 
 /**
- * Tests for NavBar widget
+ * Tests for NavBar widget.
  *
- * @group bootstrap4
+ * NavBarTest
  */
 class NavBarTest extends TestCase
 {

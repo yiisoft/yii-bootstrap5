@@ -5,9 +5,9 @@ namespace Yiisoft\Yii\Bootstrap4\Tests;
 use Yiisoft\Yii\Bootstrap4\Dropdown;
 
 /**
- * Tests for Dropdown widget
+ * Tests for Dropdown widget.
  *
- * @group bootstrap4
+ * DropdownTest.
  */
 class DropdownTest extends TestCase
 {
