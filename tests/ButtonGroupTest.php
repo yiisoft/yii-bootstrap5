@@ -23,7 +23,7 @@ class ButtonGroupTest extends TestCase
         parent::tearDown();
     }
 
-    public function testContainerOptions()
+    public function testContainerOptions(): void
     {
         ob_start();
         ob_implicit_flush(0);

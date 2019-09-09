@@ -10,7 +10,17 @@ use Yiisoft\Yii\Bootstrap4\Breadcrumbs;
  */
 class BreadcrumbsTest extends TestCase
 {
-    public function testRender()
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
+    public function testRender(): void
     {
         ob_start();
         ob_implicit_flush(0);

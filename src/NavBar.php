@@ -193,6 +193,8 @@ class NavBar extends Widget
     /**
      * Initializes the widget.
      *
+     * @return void
+     *
      * @throws InvalidConfigException
      */
     public function init(): void

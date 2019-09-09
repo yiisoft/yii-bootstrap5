@@ -39,7 +39,7 @@ class Widget extends \Yiisoft\Widget\Widget
      *
      * @return string ID of the widget.
      */
-    public function getId()
+    public function getId(): string
     {
         if ($this->autoGenerate && $this->id === null) {
             $this->id = self::$autoIdPrefix . self::$counter++;

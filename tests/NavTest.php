@@ -21,7 +21,7 @@ class NavTest extends TestCase
         parent::tearDown();
     }
 
-    public function testIds()
+    public function testIds(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -60,7 +60,7 @@ EXPECTED;
         $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 
-    public function testRenderDropdownWithDropdownOptions()
+    public function testRenderDropdownWithDropdownOptions(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -100,7 +100,7 @@ EXPECTED;
         $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 
-    public function testEmptyItems()
+    public function testEmptyItems(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -139,7 +139,7 @@ EXPECTED;
     /**
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
      */
-    public function testExplicitActive()
+    public function testExplicitActive(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -170,7 +170,7 @@ EXPECTED;
     /**
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
      */
-    public function testImplicitActive()
+    public function testImplicitActive(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -201,7 +201,7 @@ EXPECTED;
     /**
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
      */
-    public function testExplicitActiveSubitems()
+    public function testExplicitActiveSubitems(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -236,7 +236,7 @@ EXPECTED;
     /**
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
      */
-    public function testImplicitActiveSubitems()
+    public function testImplicitActiveSubitems(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -270,7 +270,7 @@ EXPECTED;
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/96
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/157
      */
-    public function testDeepActivateParents()
+    public function testDeepActivateParents(): void
     {
         ob_start();
         ob_implicit_flush(0);

@@ -1,14 +1,10 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use yii\exceptions\InvalidConfigException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
 
 /**
  * Accordion renders an accordion bootstrap javascript component.
@@ -16,8 +12,8 @@ use Yiisoft\Arrays\ArrayHelper;
  * For example:
  *
  * ```php
- * echo Accordion::widget([
- *     'items' => [
+ * echo Accordion::widget()
+ *     ->items([
  *         // equivalent to the above
  *         [
  *             'label' => 'Collapsible Group Item #1',
@@ -43,19 +39,14 @@ use Yiisoft\Arrays\ArrayHelper;
  *             'options' => [...],
  *             'footer' => 'Footer' // the footer label in list-group
  *         ],
- *     ]
- * ]);
+ *     ]);
  * ```
- *
- * @see https://getbootstrap.com/docs/4.2/components/collapse/#accordion-example
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @author Simon Karlen <simi.albi@gmail.com>
  */
 class Accordion extends Widget
 {
     /**
-     * @var array list of groups in the collapse widget. Each array element represents a single
-     * group with the following structure:
+     * @var array list of groups in the collapse widget. Each array element represents a single group with the following
+     *            structure:
      *
      * - label: string, required, the group header label.
      * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
@@ -64,9 +55,9 @@ class Accordion extends Widget
      * - options: array, optional, the HTML attributes of the group
      * - contentOptions: optional, the HTML attributes of the group's content
      *
-     * Since version 2.0.7 you may also specify this property as key-value pairs, where the key refers to the
-     * `label` and the value refers to `content`. If value is a string it is interpreted as label. If it is
-     * an array, it is interpreted as explained above.
+     * You may also specify this property as key-value pairs, where the key refers to the `label` and the value refers
+     * to `content`. If value is a string it is interpreted as label. If it is an array, it is interpreted as explained
+     * above.
      *
      * For example:
      *
@@ -86,17 +77,22 @@ class Accordion extends Widget
      * ```
      */
     public $items = [];
+
     /**
      * @var bool whether the labels for header items should be HTML-encoded.
      */
     public $encodeLabels = true;
+
     /**
-     * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an
-     * accordion effect. Set this to `false` to allow keeping multiple items open at once.
+     * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
+     *           Set this to `false` to allow keeping multiple items open at once.
      */
     public $autoCloseItems = true;
+
     /**
-     * @var string the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
+     * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name
+     *             specification.
+     *
      * For example:
      *
      * ```php
@@ -110,13 +106,29 @@ class Accordion extends Widget
     public $itemToggleOptions = [];
 
     /**
-     * {@inheritdoc}
-     * @throws InvalidConfigException
+     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
+     *
+     * - tag: string, defaults to "nav", the name of the container tag.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function run()
+    private $options = [];
+
+    /**
+     * Renders the widget.
+     *
+     * @return string
+     */
+    public function getContent(): string
     {
-        $this->registerPlugin('collapse');
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = "{$this->getId()}-accordion";
+        }
+
+        $this->registerPlugin('collapse', $this->options);
+
         Html::addCssClass($this->options, 'accordion');
+
         return implode("\n", [
                 Html::beginTag('div', $this->options),
                 $this->renderItems(),
@@ -125,18 +137,22 @@ class Accordion extends Widget
     }
 
     /**
-     * Renders collapsible items as specified on [[items]].
-     * @throws InvalidConfigException if label isn't specified
+     * Renders collapsible items as specified on {@see items}.
+     *
      * @return string the rendering result
+     *
+     * @throws InvalidConfigException if label isn't specified
      */
-    public function renderItems()
+    public function renderItems(): string
     {
         $items = [];
         $index = 0;
+
         foreach ($this->items as $key => $item) {
             if (!is_array($item)) {
                 $item = ['content' => $item];
             }
+
             if (!array_key_exists('label', $item)) {
                 if (is_int($key)) {
                     throw new InvalidConfigException("The 'label' option is required.");
@@ -144,9 +160,12 @@ class Accordion extends Widget
                     $item['label'] = $key;
                 }
             }
+
             $header = ArrayHelper::remove($item, 'label');
             $options = ArrayHelper::getValue($item, 'options', []);
+
             Html::addCssClass($options, ['panel' => 'card']);
+
             $items[] = Html::tag('div', $this->renderItem($header, $item, $index++), $options);
         }
 
@@ -155,28 +174,33 @@ class Accordion extends Widget
 
     /**
      * Renders a single collapsible item group
-     * @param string $header a label of the item group [[items]]
-     * @param array $item a single item from [[items]]
+     * @param string $header a label of the item group {@see items}
+     * @param array $item a single item from {@see items}
      * @param int $index the item index as each item group content must have an id
+     *
      * @return string the rendering result
+     *
      * @throws InvalidConfigException
-     * @throws \Exception
      */
-    public function renderItem($header, $item, $index)
+    public function renderItem(string $header, array $item, int $index): string
     {
         if (array_key_exists('content', $item)) {
             $id = $this->options['id'] . '-collapse' . $index;
             $options = ArrayHelper::getValue($item, 'contentOptions', []);
             $options['id'] = $id;
+
             Html::addCssClass($options, ['widget' => 'collapse']);
+
             if ($index === 0) {
                 Html::addCssClass($options, 'show');
             }
+
             if (!isset($options['aria-label'], $options['aria-labelledby'])) {
                 $options['aria-labelledby'] = $options['id'] . '-heading';
             }
 
             $encodeLabel = isset($item['encode']) ? $item['encode'] : $this->encodeLabels;
+
             if ($encodeLabel) {
                 $header = Html::encode($header);
             }
@@ -186,21 +210,20 @@ class Accordion extends Widget
                 'type' => 'button',
                 'data-toggle' => 'collapse',
                 'data-target' => '#' . $options['id'],
-                'aria-expanded' => ($index === 0),
+                'aria-expanded' => ($index === 0) ? 'true' : 'false',
                 'aria-controls' => $options['id']
             ], $this->itemToggleOptions);
-
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
+
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-target');
                 $headerToggle = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
                 Html::addCssClass($itemToggleOptions, 'btn-link');
-                $headerToggle = Button::widget([
-                        'label' => $header,
-                        'encodeLabel' => false,
-                        'options' => $itemToggleOptions
-                    ]) . "\n";
+                $headerToggle = Button::widget()
+                    ->label($header)
+                    ->encodeLabels(false)
+                    ->options($itemToggleOptions) . "\n";
             }
 
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
@@ -221,6 +244,7 @@ class Accordion extends Widget
         } else {
             throw new InvalidConfigException('The "content" option is required.');
         }
+
         $group = [];
 
         if ($this->autoCloseItems) {
@@ -230,11 +254,88 @@ class Accordion extends Widget
         $group[] = Html::tag('div', $header, ['class' => 'card-header', 'id' => $options['id'] . '-heading']);
         $group[] = Html::beginTag('div', $options);
         $group[] = $content;
+
         if (isset($item['footer'])) {
             $group[] = Html::tag('div', $item['footer'], ['class' => 'card-footer']);
         }
+
         $group[] = Html::endTag('div');
 
         return implode("\n", $group);
+    }
+
+    public function __toString(): string
+    {
+        return $this->run();
+    }
+
+    /**
+     * {@see autoCloseItems}
+     *
+     * @param bool $autoCloseItems
+     *
+     * @return $this
+     */
+    public function autoCloseItems(bool $value): self
+    {
+        $this->autoCloseItems = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see encodeLabels}
+     *
+     * @param bool $encodeLabels
+     *
+     * @return $this
+     */
+    public function encodeLabels(bool $value): self
+    {
+        $this->encodeLabels = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see items}
+     *
+     * @param array $items
+     *
+     * @return $this
+     */
+    public function items(array $value): self
+    {
+        $this->items = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see itemToggleOptions}
+     *
+     * @param array $itemToggleOptions
+     *
+     * @return $this
+     */
+    public function itemToggleOptions(array $value): self
+    {
+        $this->itemToggleOptions = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see options}
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function options(array $value): self
+    {
+        $this->options = $value;
+
+        return $this;
     }
 }

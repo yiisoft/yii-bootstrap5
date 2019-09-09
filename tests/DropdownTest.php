@@ -21,7 +21,7 @@ class DropdownTest extends TestCase
         parent::tearDown();
     }
 
-    public function testIds()
+    public function testIds(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -63,7 +63,7 @@ EXPECTED;
         $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 
-    public function testSubMenuOptions()
+    public function testSubMenuOptions(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -110,7 +110,7 @@ EXPECTED;
         $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 
-    public function testForms()
+    public function testForms(): void
     {
         Dropdown::counter(0);
 
