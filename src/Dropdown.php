@@ -194,9 +194,9 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see encodeLabel}
      *
-     * @param bool $encodeLabels
+     * @param bool $encodeLabel
      *
      * @return $this
      */
@@ -245,20 +245,6 @@ class Dropdown extends Widget
     public function clientOptions(bool $value): self
     {
         $this->clientOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * {@see view}
-     *
-     * @param array $view
-     *
-     * @return $this
-     */
-    public function view(object $value): self
-    {
-        $this->view = $value;
 
         return $this;
     }

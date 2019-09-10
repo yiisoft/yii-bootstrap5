@@ -76,18 +76,18 @@ class Accordion extends Widget
      * ])
      * ```
      */
-    public $items = [];
+    private $items = [];
 
     /**
      * @var bool whether the labels for header items should be HTML-encoded.
      */
-    public $encodeLabels = true;
+    private $encodeLabels = true;
 
     /**
      * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
      *           Set this to `false` to allow keeping multiple items open at once.
      */
-    public $autoCloseItems = true;
+    private $autoCloseItems = true;
 
     /**
      * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name
@@ -103,7 +103,7 @@ class Accordion extends Widget
      * ```
      *
      */
-    public $itemToggleOptions = [];
+    private $itemToggleOptions = [];
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:

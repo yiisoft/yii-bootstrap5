@@ -29,7 +29,7 @@ class Button extends Widget
     /**
      * @var bool whether the label should be HTML-encoded.
      */
-    private $encodeLabel = true;
+    private $encodeLabels = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -59,7 +59,7 @@ class Button extends Widget
 
         return Html::tag(
             $this->tagName,
-            $this->encodeLabel ? Html::encode($this->label) : $this->label,
+            $this->encodeLabels ? Html::encode($this->label) : $this->label,
             $this->options
         );
     }
@@ -70,9 +70,9 @@ class Button extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see encodeLabel}
      *
-     * @param bool $encodeLabels
+     * @param bool $encodeLabel
      *
      * @return $this
      */
@@ -86,7 +86,7 @@ class Button extends Widget
     /**
      * {@see label}
      *
-     * @param bool $label
+     * @param string $label
      *
      * @return $this
      */
@@ -114,11 +114,11 @@ class Button extends Widget
     /**
      * {@see tagName}
      *
-     * @param array $tagName
+     * @param string $tagName
      *
      * @return $this
      */
-    public function tagName(array $value): self
+    public function tagName(string $value): self
     {
         $this->tagName = $value;
 

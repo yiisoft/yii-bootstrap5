@@ -281,7 +281,6 @@ class Nav extends Widget
             ->encodeLabels($this->encodeLabels)
             ->items($items)
             ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []))
-            ->view($this->getView())
             ->getContent();
     }
 
@@ -458,7 +457,7 @@ class Nav extends Widget
     /**
      * {@see dropdownClass}
      *
-     * @param bool $dropdownClass
+     * @param string $dropdownClass
      *
      * @return $this
      */

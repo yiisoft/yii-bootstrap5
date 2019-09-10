@@ -6,7 +6,9 @@ namespace Yiisoft\Yii\Bootstrap4\Tests;
 use Yiisoft\Yii\Bootstrap4\Breadcrumbs;
 
 /**
- * @group bootstrap4
+ * Tests for Breadcrumbs widget
+ *
+ * BreadcrumbsTest
  */
 class BreadcrumbsTest extends TestCase
 {

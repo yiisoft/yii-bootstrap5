@@ -7,7 +7,9 @@ use Yiisoft\Yii\Bootstrap4\Accordion;
 use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
 
 /**
- * @group bootstrap4
+ * Tests for Accordion widget
+ *
+ * AccordionTest
  */
 class AccordionTest extends TestCase
 {
@@ -101,7 +103,7 @@ class AccordionTest extends TestCase
 
 <div class="card-footer">Footer</div>
 </div></div>
-<div id="testId2" class="testClass2 card"><div id="w0-accordion-collapse2-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w3-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false" aria-controls="w0-accordion-collapse2">&lt;h1&gt;Collapsible Group Item #3&lt;/h1&gt;</button>
+<div id="testId2" class="testClass2 card"><div id="w0-accordion-collapse2-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w3-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false" aria-controls="w0-accordion-collapse2"><h1>Collapsible Group Item #3</h1></button>
 </h5></div>
 <div id="w0-accordion-collapse2" class="testContentOptions2 collapse" aria-labelledby="w0-accordion-collapse2-heading" data-parent="#w0-accordion">
 <ul class="list-group">
@@ -111,7 +113,7 @@ class AccordionTest extends TestCase
 
 <div class="card-footer">Footer2</div>
 </div></div>
-<div id="testId3" class="testClass3 card"><div id="w0-accordion-collapse3-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w4-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false" aria-controls="w0-accordion-collapse3">&amp;lt;h1&amp;gt;Collapsible Group Item #4&amp;lt;/h1&amp;gt;</button>
+<div id="testId3" class="testClass3 card"><div id="w0-accordion-collapse3-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w4-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false" aria-controls="w0-accordion-collapse3">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button>
 </h5></div>
 <div id="w0-accordion-collapse3" class="testContentOptions3 collapse" aria-labelledby="w0-accordion-collapse3-heading" data-parent="#w0-accordion">
 <ul class="list-group">
@@ -128,7 +130,7 @@ HTML;
         $this->assertEqualsWithoutLE($expectedHtml, ob_get_clean());
     }
 
-    public function invalidItemsProvider()
+    public function invalidItemsProvider(): array
     {
         return [
             [ ['content'] ], // only content without label key
@@ -149,7 +151,7 @@ HTML;
             ->getContent();
     }
 
-    public function testAutoCloseItems()
+    public function testAutoCloseItems(): void
     {
         $items = [
             [
