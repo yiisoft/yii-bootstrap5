@@ -93,7 +93,6 @@ class ButtonToolbar extends Widget
         $buttonGroups = [];
 
         foreach ($this->buttonGroups as $group) {
-
             if (is_array($group)) {
                 $group['view'] = $this->getView();
 
