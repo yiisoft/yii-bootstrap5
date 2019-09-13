@@ -30,7 +30,7 @@ class Alert extends Widget
      * @var array the options for rendering the close button tag.
      *
      * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
-     * window. If this is false, no close button will be rendered.
+     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
      *
      * The following special options are supported:
      *
@@ -42,6 +42,11 @@ class Alert extends Widget
      * for the supported HTML attributes.
      */
     private $closeButton = [];
+
+    /**
+     * @var boolean $closeButtonEnabled. Enable/Disable close button.
+     */
+    private $closeButtonEnabled = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -91,7 +96,7 @@ class Alert extends Widget
      */
     protected function renderCloseButton(): string
     {
-        if ((!empty($this->closeButton))) {
+        if ($this->closeButtonEnabled !== false) {
             $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
             $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
                 'aria-hidden' => 'true'
@@ -118,7 +123,7 @@ class Alert extends Widget
     {
         Html::addCssClass($this->options, ['widget' => 'alert']);
 
-        if (empty($this->closeButton)) {
+        if ($this->closeButtonEnabled !== false) {
             $this->closeButton = [
                 'data-dismiss' => 'alert',
                 'class' => ['widget' => 'close'],

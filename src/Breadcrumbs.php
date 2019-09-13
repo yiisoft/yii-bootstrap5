@@ -36,7 +36,7 @@ class Breadcrumbs extends Widget
      * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
      * the home link will not be rendered.
      */
-    private $homeLink;
+    private $homeLink = [];
 
     /**
      * @var array list of links to appear in the breadcrumbs. If this property is empty, the widget will not render
@@ -105,7 +105,7 @@ class Breadcrumbs extends Widget
 
         $links = [];
 
-        if (empty($this->homeLink)) {
+        if ($this->homeLink === array()) {
             $links[] = $this->renderItem([
                 'label' => 'Home',
                 'url' => '/',

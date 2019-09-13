@@ -85,13 +85,13 @@ class Accordion extends Widget
 
     /**
      * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
-     *           Set this to `false` to allow keeping multiple items open at once.
+     *
+     * Set this to `false` to allow keeping multiple items open at once.
      */
     private $autoCloseItems = true;
 
     /**
-     * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name
-     *             specification.
+     * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
      *
      * For example:
      *

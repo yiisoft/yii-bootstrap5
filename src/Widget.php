@@ -33,11 +33,9 @@ class Widget extends \Yiisoft\Widget\Widget
     private static $autoIdPrefix = 'w';
 
     /**
-     * Returns the ID of the widget.
+     * Returns the Id of the widget.
      *
-     * @param bool $autoGenerate whether to generate an ID if it is not set previously
-     *
-     * @return string ID of the widget.
+     * @return string Id of the widget.
      */
     public function getId(): string
     {
@@ -46,6 +44,20 @@ class Widget extends \Yiisoft\Widget\Widget
         }
 
         return $this->id;
+    }
+
+    /**
+     * Set the Id of the widget.
+     *
+     * @var string $value
+     *
+     * @return $this
+     */
+    public function setId(string $value): self
+    {
+        $this->id = $value;
+
+        return $this;
     }
 
     public static function counter(int $value): void

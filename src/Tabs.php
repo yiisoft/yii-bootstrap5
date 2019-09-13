@@ -1,14 +1,10 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use yii\exceptions\InvalidConfigException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
 
 /**
  * Tabs renders a Tab bootstrap javascript component.
@@ -16,8 +12,8 @@ use Yiisoft\Arrays\ArrayHelper;
  * For example:
  *
  * ```php
- * echo Tabs::widget([
- *     'items' => [
+ * echo Tabs::widget()
+ *     ->items([
  *         [
  *             'label' => 'One',
  *             'content' => 'Anim pariatur cliche...',
@@ -50,20 +46,13 @@ use Yiisoft\Arrays\ArrayHelper;
  *                  ],
  *             ],
  *         ],
- *     ],
- * ]);
+ *     ]);
  * ```
- *
- * @see https://getbootstrap.com/docs/4.2/components/navs/#tabs
- * @see https://getbootstrap.com/docs/4.2/components/card/#navigation
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @author Simon Karlen <simi.albi@gmail.com>
  */
 class Tabs extends Widget
 {
     /**
-     * @var array list of tabs in the tabs widget. Each array element represents a single
-     * tab with the following structure:
+     * @var array list of tabs in the tabs widget. Each array element represents a single tab with the following structure:
      *
      * - label: string, required, the tab header label.
      * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
@@ -72,7 +61,7 @@ class Tabs extends Widget
      * - linkOptions: array, optional, the HTML attributes of the tab header link tags.
      * - content: string, optional, the content (HTML) of the tab pane.
      * - url: string, optional, an external URL. When this is specified, clicking on this tab will bring
-     *   the browser to this URL. This option is available since version 2.0.4.
+     *   the browser to this URL.
      * - options: array, optional, the HTML attributes of the tab pane container.
      * - active: bool, optional, whether this item tab header and pane should be active. If no item is marked as
      *   'active' explicitly - the first one will be activated.
@@ -83,48 +72,60 @@ class Tabs extends Widget
      *     * content: string, required if `items` is not set. The content (HTML) of the tab pane.
      *     * contentOptions: optional, array, the HTML attributes of the tab content container.
      */
-    public $items = [];
+    private $items = [];
+
     /**
-     * @var array list of HTML attributes for the item container tags. This will be overwritten
-     * by the "options" set in individual [[items]]. The following special options are recognized:
+     * @var array list of HTML attributes for the item container tags. This will be overwritten by the "options" set in
+     *            individual {@see items}. The following special options are recognized:
      *
      * - tag: string, defaults to "div", the tag name of the item container tags.
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public $itemOptions = [];
+    private $itemOptions = [];
+
     /**
-     * @var array list of HTML attributes for the header container tags. This will be overwritten
-     * by the "headerOptions" set in individual [[items]].
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @var array list of HTML attributes for the header container tags. This will be overwritten by the "headerOptions"
+     *            set in individual {@see items}.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public $headerOptions = [];
+    private $headerOptions = [];
+
     /**
-     * @var array list of HTML attributes for the tab header link tags. This will be overwritten
-     * by the "linkOptions" set in individual [[items]].
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @var array list of HTML attributes for the tab header link tags. This will be overwritten by the "linkOptions"
+     *            set in individual {@see items}.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public $linkOptions = [];
+    private $linkOptions = [];
+
     /**
      * @var bool whether the labels for header items should be HTML-encoded.
      */
-    public $encodeLabels = true;
+    private $encodeLabels = true;
+
     /**
      * @var string specifies the Bootstrap tab styling.
      */
-    public $navType = 'nav-tabs';
+    private $navType = 'nav-tabs';
+
     /**
-     * @var bool whether to render the `tab-content` container and its content. You may set this property
-     * to be false so that you can manually render `tab-content` yourself in case your tab contents are complex.
+     * @var bool whether to render the `tab-content` container and its content. You may set this property to be false so
+     *           that you can manually render `tab-content` yourself in case your tab contents are complex.
      */
-    public $renderTabContent = true;
+    private $renderTabContent = true;
+
     /**
-     * @var array list of HTML attributes for the `tab-content` container. This will always contain the CSS class `tab-content`.
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @var array list of HTML attributes for the `tab-content` container. This will always contain the CSS class
+     *            `tab-content`.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public $tabContentOptions = [];
+    private $tabContentOptions = [];
+
     /**
-     * @var string name of a class to use for rendering dropdowns withing this widget. Defaults to [[Dropdown]].
+     * @var string name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      */
     public $dropdownClass = 'Yiisoft\Yii\Bootstrap4\Dropdown';
 
@@ -134,39 +135,40 @@ class Tabs extends Widget
     protected $panes = [];
 
     /**
-     * {@inheritdoc}
+     * Renders the widget.
+     *
+     * @return string
      */
-    public function init(): void
+    public function getContent(): string
     {
-        parent::init();
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = "{$this->getId()}-tabs";
+        }
+
         Html::addCssClass($this->options, ['widget' => 'nav', $this->navType]);
         Html::addCssClass($this->tabContentOptions, 'tab-content');
-    }
 
-    /**
-     * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws \Exception
-     */
-    public function run()
-    {
-        $this->registerPlugin('tab');
+        $this->registerPlugin('tab', $this->options);
         $this->prepareItems($this->items);
-        return Nav::widget([
-                'dropdownClass' => $this->dropdownClass,
-                'options' => $this->options,
-                'items' => $this->items
-            ]) . $this->renderPanes($this->panes);
+
+        return Nav::widget()
+                ->dropdownClass($this->dropdownClass)
+                ->options(ArrayHelper::merge(['role' => 'tablist'], $this->options))
+                ->items($this->items)
+                ->encodeLabels($this->encodeLabels)
+                ->getContent()
+            . $this->renderPanes($this->panes);
     }
 
     /**
-     * Renders tab items as specified on [[items]].
+     * Renders tab items as specified on {@see items}.
      *
      * @param array $items
      * @param string $prefix
+     *
      * @throws InvalidConfigException
      */
-    protected function prepareItems(&$items, $prefix = '')
+    protected function prepareItems(array &$items, string $prefix = ''): void
     {
         if (!$this->hasActiveTab()) {
             $this->activateFirstVisibleTab();
@@ -176,14 +178,19 @@ class Tabs extends Widget
             $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
             $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . $prefix . '-tab' . $n);
 
+            unset($items[$n]['options']['id']); // @see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339
+
             if (!ArrayHelper::remove($item, 'visible', true)) {
                 continue;
             }
+
             if (!array_key_exists('label', $item)) {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
 
             $selected = ArrayHelper::getValue($item, 'active', false);
+            $disabled = ArrayHelper::getValue($item, 'disabled', false);
+
             if (isset($item['items'])) {
                 $this->prepareItems($items[$n]['items'], '-dd' . $n);
                 continue;
@@ -193,13 +200,16 @@ class Tabs extends Widget
                     ArrayHelper::setValue($items[$n], 'linkOptions.data.toggle', 'tab');
                     ArrayHelper::setValue($items[$n], 'linkOptions.role', 'tab');
                     ArrayHelper::setValue($items[$n], 'linkOptions.aria-controls', $options['id']);
-                    ArrayHelper::setValue($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
+                    if (!$disabled) {
+                        ArrayHelper::setValue($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
+                    }
                 } else {
                     continue;
                 }
             }
 
             Html::addCssClass($options, ['widget' => 'tab-pane']);
+
             if ($selected) {
                 Html::addCssClass($options, 'active');
             }
@@ -214,7 +224,7 @@ class Tabs extends Widget
     /**
      * @return bool if there's active tab defined
      */
-    protected function hasActiveTab()
+    protected function hasActiveTab(): bool
     {
         foreach ($this->items as $item) {
             if (isset($item['active']) && $item['active'] === true) {
@@ -236,7 +246,8 @@ class Tabs extends Widget
         foreach ($this->items as $i => $item) {
             $active = ArrayHelper::getValue($item, 'active', null);
             $visible = ArrayHelper::getValue($item, 'visible', true);
-            if ($visible && $active !== false) {
+            $disabled = ArrayHelper::getValue($item, 'disabled', false);
+            if ($visible && $active !== false && $disabled !== true) {
                 $this->items[$i]['active'] = true;
                 return;
             }
@@ -247,10 +258,156 @@ class Tabs extends Widget
      * Renders tab panes.
      *
      * @param array $panes
+     *
      * @return string the rendering result.
      */
-    public function renderPanes($panes)
+    public function renderPanes($panes): string
     {
         return $this->renderTabContent ? "\n" . Html::tag('div', implode("\n", $panes), $this->tabContentOptions) : '';
+    }
+
+    public function __toString(): string
+    {
+        return $this->run();
+    }
+
+    /**
+     * {@see dropdownClass}
+     *
+     * @param bool $dropdownClass
+     *
+     * @return $this
+     */
+    public function dropdownClass(string $value): self
+    {
+        $this->dropdownClass = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see encodeLabels}
+     *
+     * @param bool $encodeLabels
+     *
+     * @return $this
+     */
+    public function encodeLabels(bool $value): self
+    {
+        $this->encodeLabels = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see headerptions}
+     *
+     * @param array $headerptions
+     *
+     * @return $this
+     */
+    public function headerptions(array $value): self
+    {
+        $this->headerptions = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see items}
+     *
+     * @param array $items
+     *
+     * @return $this
+     */
+    public function items(array $value): self
+    {
+        $this->items = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see itemOptions}
+     *
+     * @param array $itemOptions
+     *
+     * @return $this
+     */
+    public function itemOptions(array $value): self
+    {
+        $this->itemOptions = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see linkOptions}
+     *
+     * @param array $linkOptions
+     *
+     * @return $this
+     */
+    public function linkOptions(array $value): self
+    {
+        $this->linkOptions = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see navType}
+     *
+     * @param string $navType
+     *
+     * @return $this
+     */
+    public function navType(string $value): self
+    {
+        $this->navType = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see panes}
+     *
+     * @param string $panes
+     *
+     * @return $this
+     */
+    public function panes(string $value): self
+    {
+        $this->panes = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see renderTabContent}
+     *
+     * @param bool $renderTabContent
+     *
+     * @return $this
+     */
+    public function renderTabContent(bool $value): self
+    {
+        $this->renderTabContent = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@see tabContentOptions}
+     *
+     * @param array $tabContentOptions
+     *
+     * @return $this
+     */
+    public function tabContentOptions(array $value): self
+    {
+        $this->tabContentOptions = $value;
+
+        return $this;
     }
 }
