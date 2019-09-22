@@ -76,7 +76,7 @@ class Tabs extends Widget
 
     /**
      * @var array list of HTML attributes for the item container tags. This will be overwritten by the "options" set in
-     *            individual {@see items}. The following special options are recognized:
+     * individual {@see items}. The following special options are recognized:
      *
      * - tag: string, defaults to "div", the tag name of the item container tags.
      *
@@ -86,7 +86,7 @@ class Tabs extends Widget
 
     /**
      * @var array list of HTML attributes for the header container tags. This will be overwritten by the "headerOptions"
-     *            set in individual {@see items}.
+     * set in individual {@see items}.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -94,7 +94,7 @@ class Tabs extends Widget
 
     /**
      * @var array list of HTML attributes for the tab header link tags. This will be overwritten by the "linkOptions"
-     *            set in individual {@see items}.
+     * set in individual {@see items}.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -112,13 +112,13 @@ class Tabs extends Widget
 
     /**
      * @var bool whether to render the `tab-content` container and its content. You may set this property to be false so
-     *           that you can manually render `tab-content` yourself in case your tab contents are complex.
+     * that you can manually render `tab-content` yourself in case your tab contents are complex.
      */
     private $renderTabContent = true;
 
     /**
      * @var array list of HTML attributes for the `tab-content` container. This will always contain the CSS class
-     *            `tab-content`.
+     * `tab-content`.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

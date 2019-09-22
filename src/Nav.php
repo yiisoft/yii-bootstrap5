@@ -102,7 +102,7 @@ class Nav extends Widget
 {
     /**
      * @var array list of items in the nav widget. Each array element represents a single  menu item which can be either
-     *            a string or an array with the following structure:
+     * a string or an array with the following structure:
      *
      * - label: string, required, the nav item label.
      * - url: optional, the item's URL. Defaults to "#".
@@ -127,7 +127,7 @@ class Nav extends Widget
 
     /**
      * @var bool whether to automatically activate items according to whether their currentPath matches the currently
-     *           requested.
+     * requested.
      *
      * {@see isItemActive}
      */

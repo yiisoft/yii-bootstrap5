@@ -39,7 +39,9 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.2",
-        "nyholm/psr7": "^1.0",
+        "psr/event-dispatcher": "1.0.0",
+        "psr/event-dispatcher-implementation": "1.0.0",
+        "psr/http-message": "^1.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/di": "^3.0@dev",
         "yiisoft/event-dispatcher": "^3.0@dev",

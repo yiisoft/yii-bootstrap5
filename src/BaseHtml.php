@@ -25,7 +25,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      *
      * @param string $value static control value.
      * @param array $options the tag options in terms of name-value pairs. These will be rendered as the attributes of
-     *                       the resulting tag. There are also a special options:
+     * the resulting tag. There are also a special options:
      *
      * @return string generated HTML
      *
@@ -46,7 +46,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      *
      * @param $model the model object.
      * @param string $attribute the attribute name or expression. See {@see getAttributeName()} for the format about
-     *               attribute expression.
+     * attribute expression.
      * @param array $options the tag options in terms of name-value pairs. See {@see staticControl()} for details.
      *
      * @return string generated HTML

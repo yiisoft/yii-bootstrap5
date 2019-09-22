@@ -46,7 +46,7 @@ class Accordion extends Widget
 {
     /**
      * @var array list of groups in the collapse widget. Each array element represents a single group with the following
-     *            structure:
+     * structure:
      *
      * - label: string, required, the group header label.
      * - encode: bool, optional, whether this label should be HTML-encoded. This param will override

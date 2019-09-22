@@ -92,6 +92,7 @@ trait BootstrapWidgetTrait
 
     /**
      * @return \Yiisoft\View\WebView the WebView object that can be used to render views or view files.
+     *
      * {@see \Yiisoft\Widget\Widget::getView()}
      */
     abstract public function getView(): WebView;

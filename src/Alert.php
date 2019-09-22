@@ -22,7 +22,7 @@ class Alert extends Widget
 {
     /**
      * @var string the body content in the alert component. Alert widget will also be treated as the body content, and
-     *             will be rendered before this.
+     * will be rendered before this.
      */
     private $body;
 

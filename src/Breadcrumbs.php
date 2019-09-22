@@ -40,7 +40,7 @@ class Breadcrumbs extends Widget
 
     /**
      * @var array list of links to appear in the breadcrumbs. If this property is empty, the widget will not render
-     *            anything. Each array element represents a single link in the breadcrumbs with the following structure:
+     * anything. Each array element represents a single link in the breadcrumbs with the following structure:
      *
      * ```php
      * [
@@ -56,13 +56,13 @@ class Breadcrumbs extends Widget
 
     /**
      * @var string the template used to render each inactive item in the breadcrumbs. The token `{link}` will be
-     *             replaced with the actual HTML link for each inactive item.
+     * replaced with the actual HTML link for each inactive item.
      */
     private $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
 
     /**
      * @var string the template used to render each active item in the breadcrumbs. The token `{link}` will be replaced
-     *             with the actual HTML link for each active item.
+     * with the actual HTML link for each active item.
      */
     private $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
 

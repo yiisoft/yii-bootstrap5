@@ -127,7 +127,7 @@ class NavBar extends Widget
 
     /**
      * @var string src of the brand image or empty if it's not used. Note that this param will override
-     *             `$this->brandLabel` param.
+     * `$this->brandLabel` param.
      *
      * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
@@ -135,7 +135,7 @@ class NavBar extends Widget
 
     /**
      * @var string $url the URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand
-     *             link. Default value is '/' will be used. You may set it to `null` if you want to have no link at all.
+     * link. Default value is '/' will be used. You may set it to `null` if you want to have no link at all.
      */
     private $brandUrl = '/';
 
@@ -165,7 +165,7 @@ class NavBar extends Widget
 
     /**
      * @var bool whether the navbar content should be included in an inner div container which by default adds left and
-     *           right padding. Set this to false for a 100% width navbar.
+     * right padding. Set this to false for a 100% width navbar.
      */
     private $renderInnerContainer = true;
 

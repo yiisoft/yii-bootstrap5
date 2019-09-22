@@ -137,13 +137,13 @@ class Progress extends Widget
     /**
      * Generates a bar.
      *
-     * @param int $percent the percentage of the bar
+     * @param string $percent the percentage of the bar
      * @param string $label , optional, the label to display at the bar
      * @param array $options the HTML attributes of the bar
      *
      * @return string the rendering result.
      */
-    protected function renderBar($percent, $label = '', $options = []): string
+    protected function renderBar(string $percent, string $label = '', array $options = []): string
     {
         $valuePercent = (float)trim(rtrim($percent, '%'));
 

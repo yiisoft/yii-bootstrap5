@@ -100,7 +100,7 @@ class ButtonDropdown extends Widget
 
     /**
      * @var bool whether to render the container using the {@see options} as HTML attributes. If set to `false`, the
-     *           container element enclosing the button and dropdown will NOT be rendered.
+     * container element enclosing the button and dropdown will NOT be rendered.
      */
     private $renderContainer = true;
 

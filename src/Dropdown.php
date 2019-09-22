@@ -28,7 +28,7 @@ class Dropdown extends Widget
 {
     /**
      * @var array list of menu items in the dropdown. Each array element can be either an HTML string, or an array
-     *            representing a single menu with the following structure:
+     * representing a single menu with the following structure:
      *
      * - label: string, required, the label of the item link.
      * - encode: bool, optional, whether to HTML-encode item label.

@@ -44,7 +44,7 @@ class ButtonToolbar extends Widget
 {
     /**
      * @var array list of buttons groups. Each array element represents a single group which can be specified as a
-     *            string or an array of the following structure:
+     * string or an array of the following structure:
      *
      * - buttons: array list of buttons. Either as array or string representation
      * - options: array optional, the HTML attributes of the button group.
