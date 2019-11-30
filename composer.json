@@ -2,7 +2,10 @@
     "name": "yiisoft/yii-bootstrap4",
     "type": "library",
     "description": "Yii Framework Twitter Bootstrap 4 Extension",
-    "keywords": ["yii", "bootstrap"],
+    "keywords": [
+        "yii",
+        "bootstrap"
+    ],
     "license": "BSD-3-Clause",
     "support": {
         "source": "https://github.com/yiisoft/yii-bootstrap4",
@@ -78,5 +81,8 @@
         "config-plugin": {
             "tests": "config/tests.php"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
