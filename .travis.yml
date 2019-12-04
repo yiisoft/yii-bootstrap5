@@ -22,3 +22,20 @@ install:
 
 script:
   - ./vendor/bin/phpunit
+
+notifications:
+  slack:
+    -
+      rooms:
+        -
+          secure: BSMCj+UeKC9bbOERZQ7JVWqpS+2MZ5w+OdAsLsIRJQAE/WcdbgEaFyWvoL8JmzN/r9kofVZC0GzAoV8ORuPxioOJzRksm18jxz5uITevJTsRJ7aAMZL7kCxulB1hp+mpcCsSmn7Oa49cdeuMfLS2ATzfD2hQbnz9pJsoMWyzOS1GdU6lGE1uEZjZlb5xDFs1b58obZkzdPe+tqoL9rLFz2xV0G0Ex05hEr7bEGpfdCgaBc/siaWf2e/5JVmcTR+x6D2iPtEdMiZk/dKJqMzXcMpX7mjLP1aAA7ctHIcWu59KaLNkx/dYY3cgivYQsLN33Jb3i2u3GJv2Hx+D0zuxjJK4wjSxmDqovg459NEQZsaP7fnPabUaY5HHyaGolr98Pxku+BJAo4TUTpB8lXj8hogOIkuVxQVdEDBJFBLI2iTWrypwpnsVvkuaUah3izKWmizwecGq+5CJSDsOfJ9TRrQRaLu/vsoDv5F4idBdgb1sXxAXh75yYKeNrzlNowLZwWNXQbUddPhCfdgaf8LD+xGorBVGz94ub/yo9DHs29BSzD2aF/VUNwu+6I745m5My8aIOpHl0QaCgwqQ0b3ssRupahGUiMnYjEc2RBBJRSk1JZsGKwcrZb0c8Ezrlljq0qr8LrjkHVdUw8TzcjUKGxPjOrLqvyCrARZt+FweOV0=
+      on_success: always
+      on_failure: never
+      on_pull_requests: false
+    -
+      rooms:
+        -
+          secure: X0/yV5BkvSqRbGFHVysylodnuMysiq69HAZvBjmcKrNfK0Wi7iJELDzs4pbvERRcZyI7a7U1HOj5LufpQlvlfF+Qx13UtIrmwjHyMwTCPKPs4QTldK4chTtNA3G1F8SxKo4VmgnzZh4pFruoQrS41hgLavMdN4vXDwWXJS/6j5jZlMqGRAuZTAkNH0i/PDUd95Zvj9vt5y5wo2VMbrHmrOYYedOOqLeUuImnkRgseMdN0U6LR1zpVBUCJfmC3TEosO3QL9QRN1jhr9U4287aorKfxjEiO/CIwvL0DFGwiuOjwieZFJ7idmA24KRGyE7DgWB1x1cxYJT0OREiet/0/w1jDQr+Ekx3iKjcvoMxwE9s1aQGNq1/B1XL0xugyEw149v1s8BNEyj1b4yj+m1Posd6USoi1IMosJLghzwLl3XFQkJ2GPuqtmMZSTDn6t9/GJIHaUI9CMJ1aKrYNePlkwa1OfHfNSBgzX80W3Bh4Pb5YZ1+wTagh/jeXuIc+nNvG2uIH3l+jfGKv8vfNFAPgCXfMDWL6pFqNYkm4rBBjmJTbnDSIooL4MwwCKtwm6LNaekmcu+J53gc+QeMRB3rrM/qVhOnB4Fe8IyMjBsLRIY0DljEJckkvbuMcs77gFavpfwD214nf6nBFOCfzbmVU6AOCK6kjsaMag7vuUWJiSc=
+      on_success: never
+      on_failure: always
+      on_pull_requests: false
