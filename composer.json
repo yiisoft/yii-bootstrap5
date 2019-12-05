@@ -45,7 +45,8 @@
         "yiisoft/di": "^3.0@dev",
         "yiisoft/yii-core": "^3.0@dev",
         "yiisoft/yii-jquery": "^3.0@dev",
-        "yiisoft/yii-web": "^3.0@dev"
+        "yiisoft/yii-web": "^3.0@dev",
+        "php": "^7.4"
     },
     "require-dev": {
         "foxy/foxy": "^1.0",
@@ -53,7 +54,7 @@
         "yiisoft/cache": "^3.0@dev",
         "yiisoft/yii-captcha": "^3.0@dev",
         "hiqdev/composer-config-plugin": "^1.0@dev",
-        "phpunit/phpunit": "^7.3"
+        "phpunit/phpunit": "^8.4"
     },
     "provide": {
         "yiisoft/yii-bootstrap-implementation": "3.0.0"
