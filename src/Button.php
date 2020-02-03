@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
@@ -19,17 +20,17 @@ class Button extends Widget
     /**
      * @var string the tag to use to render the button
      */
-    private $tagName = 'button';
+    private string $tagName = 'button';
 
     /**
      * @var string the button label
      */
-    private $label = 'Button';
+    private string $label = 'Button';
 
     /**
      * @var bool whether the label should be HTML-encoded.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -38,17 +39,15 @@ class Button extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
-        $this->clientOptions = false;
-
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button";
         }
@@ -64,19 +63,14 @@ class Button extends Widget
         );
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see encodeLabel}
+     * {@see $encodeLabel}
      *
-     * @param bool $encodeLabel
+     * @param bool $value
      *
-     * @return $this
+     * @return Button
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): Button
     {
         $this->encodeLabels = $value;
 
@@ -84,13 +78,13 @@ class Button extends Widget
     }
 
     /**
-     * {@see label}
+     * {@see $label}
      *
-     * @param string $label
+     * @param string $value
      *
-     * @return $this
+     * @return Button
      */
-    public function label(string $value): self
+    public function label(string $value): Button
     {
         $this->label = $value;
 
@@ -98,13 +92,13 @@ class Button extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Button
      */
-    public function options(array $value): self
+    public function options(array $value): Button
     {
         $this->options = $value;
 
@@ -112,13 +106,13 @@ class Button extends Widget
     }
 
     /**
-     * {@see tagName}
+     * {@see $tagName}
      *
-     * @param string $tagName
+     * @param string $value
      *
-     * @return $this
+     * @return Button
      */
-    public function tagName(string $value): self
+    public function tagName(string $value): Button
     {
         $this->tagName = $value;
 

@@ -11,18 +11,8 @@ use Yiisoft\Yii\Bootstrap4\ButtonGroup;
  *
  * ButtonGroupTest
  */
-class ButtonGroupTest extends TestCase
+final class ButtonGroupTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testContainerOptions(): void
     {
         ob_start();
@@ -37,16 +27,14 @@ class ButtonGroupTest extends TestCase
                 ['label' => 'button-C', 'visible' => false],
                 Button::widget()
                     ->label('button-D')
-                    ->getContent()
-            ])
-            ->getContent();
+                    ->run()
+            ]);
 
         $expected = <<<HTML
 <div id="w1-button-group" class="btn-group" role="group"><button type="button" id="w2-button" class="btn">button-A</button>
 <button type="button" id="w3-button" class="btn">button-B</button>
 <button id="w0-button" class="btn">button-D</button></div>
 HTML;
-
 
         $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -11,18 +12,8 @@ use Yiisoft\Yii\Bootstrap4\ButtonToolbar;
  *
  * ButtonToolbarTest
  */
-class ButtonToolbarTest extends TestCase
+final class ButtonToolbarTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testContainerOptions(): void
     {
         ob_start();
@@ -46,7 +37,7 @@ class ButtonToolbarTest extends TestCase
                         ['label' => '3'],
                         ['label' => '4']
                     ])
-                    ->getContent(),
+                    ->run(),
                 [
                     'options' => [
                         'aria-label' => 'Second group'
@@ -58,7 +49,7 @@ class ButtonToolbarTest extends TestCase
                     ]
                 ]
             ])
-            ->getContent();
+            ->run();
 
         $expected = <<<HTML
 <div id="w5-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w0-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w1-button" class="btn">1</button>

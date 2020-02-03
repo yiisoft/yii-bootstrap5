@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -40,12 +41,12 @@ class ButtonGroup extends Widget
      * - options: array, optional, the HTML attributes of the button.
      * - visible: bool, optional, whether this button is visible. Defaults to true.
      */
-    private $buttons = [];
+    private array $buttons = [];
 
     /**
      * @var bool whether to HTML-encode the button labels.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -54,14 +55,14 @@ class ButtonGroup extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-group";
@@ -72,8 +73,6 @@ class ButtonGroup extends Widget
         if (!isset($this->options['role'])) {
             $this->options['role'] = 'group';
         }
-
-        BootstrapAsset::register($this->getView());
 
         return Html::tag('div', $this->renderButtons(), $this->options);
     }
@@ -95,7 +94,6 @@ class ButtonGroup extends Widget
                     continue;
                 }
 
-                $button['view'] = $this->getView();
                 if (!isset($button['encodeLabel'])) {
                     $button['encodeLabel'] = $this->encodeLabels;
                 }
@@ -108,7 +106,7 @@ class ButtonGroup extends Widget
                                  ->encodeLabels($button['encodeLabel'])
                                  ->label($button['label'])
                                  ->options($button['options'])
-                                 ->getContent();
+                                 ->run();
             } else {
                 $buttons[] = $button;
             }
@@ -117,19 +115,14 @@ class ButtonGroup extends Widget
         return implode("\n", $buttons);
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see buttons}
+     * {@see $buttons}
      *
-     * @param bool $buttons
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonGroup
      */
-    public function buttons(array $value): self
+    public function buttons(array $value): ButtonGroup
     {
         $this->buttons = $value;
 
@@ -137,13 +130,13 @@ class ButtonGroup extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see $encodeLabels}
      *
-     * @param bool $encodeLabels
+     * @param bool $value
      *
-     * @return $this
+     * @return ButtonGroup
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): ButtonGroup
     {
         $this->encodeLabels = $value;
 
@@ -151,13 +144,13 @@ class ButtonGroup extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonGroup
      */
-    public function options(array $value): self
+    public function options(array $value): ButtonGroup
     {
         $this->options = $value;
 

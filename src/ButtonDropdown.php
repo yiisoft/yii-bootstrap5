@@ -1,10 +1,10 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * ButtonDropdown renders a group or split button dropdown bootstrap component.
@@ -28,27 +28,27 @@ class ButtonDropdown extends Widget
     /**
      * The css class part of dropdown
      */
-    const DIRECTION_DOWN = 'down';
+    public const DIRECTION_DOWN = 'down';
 
     /**
      * The css class part of dropleft
      */
-    const DIRECTION_LEFT = 'left';
+    public const DIRECTION_LEFT = 'left';
 
     /**
      * The css class part of dropright
      */
-    const DIRECTION_RIGHT = 'right';
+    public const DIRECTION_RIGHT = 'right';
 
     /**
      * The css class part of dropup
      */
-    const DIRECTION_UP = 'up';
+    public const DIRECTION_UP = 'up';
 
     /**
      * @var string the button label
      */
-    private $label = 'Button';
+    private string $label = 'Button';
 
     /**
      * @var array the HTML attributes for the container tag. The following special options are recognized:
@@ -57,67 +57,66 @@ class ButtonDropdown extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * @var array the HTML attributes of the button.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $buttonOptions = [];
+    private array $buttonOptions = [];
 
     /**
      * @var array the configuration array for {@see Dropdown}.
      */
-    private $dropdown = [];
+    private array $dropdown = [];
 
     /**
      * @var string the drop-direction of the widget
      *
      * Possible values are 'left', 'right', 'up', or 'down' (default)
      */
-    private $direction = self::DIRECTION_DOWN;
+    private string $direction = self::DIRECTION_DOWN;
 
     /**
      * @var bool whether to display a group of split-styled button group.
      */
-    private $split = false;
+    private bool $split = false;
 
     /**
      * @var string the tag to use to render the button
      */
-    private $tagName = 'button';
+    private string $tagName = 'button';
 
     /**
      * @var bool whether the label should be HTML-encoded.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var string name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      */
-    private $dropdownClass = Dropdown::class;
+    private string $dropdownClass = Dropdown::class;
 
     /**
      * @var bool whether to render the container using the {@see options} as HTML attributes. If set to `false`, the
      * container element enclosing the button and dropdown will NOT be rendered.
      */
-    private $renderContainer = true;
+    private bool $renderContainer = true;
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
-        if (!isset($this->buttonOptions['id'])) {
-            $this->buttonOptions['id'] = "{$this->getId()}-button";
-        }
-
         // Set options id to button options id to ensure correct css selector in plugin initialisation
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-button-dropdown";
+        if (empty($this->options['id'])) {
+            $id = $this->getId();
+
+            $this->options['id'] = "{$id}-button-dropdown";
+            $this->buttonOptions['id'] = "{$id}-button";
         }
 
         $html = $this->renderButton() . "\n" . $this->renderDropdown();
@@ -165,7 +164,7 @@ class ButtonDropdown extends Widget
                 ->label('<span class="sr-only">Toggle Dropdown</span>')
                 ->encodeLabels(false)
                 ->options($this->buttonOptions)
-                ->getContent();
+                ->run();
         } else {
             $buttonOptions = $this->buttonOptions;
 
@@ -187,16 +186,16 @@ class ButtonDropdown extends Widget
                 ->label($label)
                 ->options($buttonOptions)
                 ->encodeLabels(false)
-                ->getContent()
+                ->run()
                 . "\n" . $splitButton;
     }
 
     /**
      * Generates the dropdown menu.
      *
-     * @return Widget the rendering result.
+     * @return string the rendering result.
      */
-    protected function renderDropdown(): Widget
+    protected function renderDropdown(): string
     {
         $config = $this->dropdown;
 
@@ -204,22 +203,18 @@ class ButtonDropdown extends Widget
         $dropdownClass = $this->dropdownClass;
 
         return $dropdownClass::widget()
-            ->items($config['items']);
-    }
-
-    public function __toString(): string
-    {
-        return $this->run();
+            ->items($this->dropdown['items'])
+            ->run();
     }
 
     /**
-     * {@see buttonOptions}
+     * {@see $buttonOptions}
      *
-     * @param array $buttonOptions
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function buttonOptions(array $value): self
+    public function buttonOptions(array $value): ButtonDropdown
     {
         $this->buttonOptions = $value;
 
@@ -227,13 +222,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see direction}
+     * {@see $direction}
      *
-     * @param string $direction
+     * @param string $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function direction(string $value): self
+    public function direction(string $value): ButtonDropdown
     {
         $this->direction = $value;
 
@@ -241,13 +236,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see dropdown}
+     * {@see $dropdown}
      *
-     * @param array $dropdown
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function dropdown(array $value): self
+    public function dropdown(array $value): ButtonDropdown
     {
         $this->dropdown = $value;
 
@@ -255,13 +250,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see dropdownClass}
+     * {@see $dropdownClass}
      *
-     * @param string $dropdownClass
+     * @param string $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function dropdownClass(string $value): self
+    public function dropdownClass(string $value): ButtonDropdown
     {
         $this->dropdownClass = $value;
 
@@ -269,13 +264,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see encodeLabel}
+     * {@see $encodeLabel}
      *
-     * @param bool $encodeLabel
+     * @param bool $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): ButtonDropdown
     {
         $this->encodeLabels = $value;
 
@@ -283,13 +278,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see label}
+     * {@see $label}
      *
-     * @param string $label
+     * @param string $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function label(string $value): self
+    public function label(string $value): ButtonDropdown
     {
         $this->label = $value;
 
@@ -297,13 +292,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function options(array $value): self
+    public function options(array $value): ButtonDropdown
     {
         $this->options = $value;
 
@@ -311,13 +306,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see renderContainer}
+     * {@see $renderContainer}
      *
-     * @param bool $renderContainer
+     * @param bool $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function renderContainer(bool $value): self
+    public function renderContainer(bool $value): ButtonDropdown
     {
         $this->renderContainer = $value;
 
@@ -325,13 +320,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see split}
+     * {@see $split}
      *
-     * @param bool $split
+     * @param bool $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function split(bool $value): self
+    public function split(bool $value): ButtonDropdown
     {
         $this->split = $value;
 
@@ -339,13 +334,13 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see tagName}
+     * {@see $tagName}
      *
-     * @param string $tagName
+     * @param string $value
      *
-     * @return $this
+     * @return ButtonDropdown
      */
-    public function tagName(string $value): self
+    public function tagName(string $value): ButtonDropdown
     {
         $this->tagName = $value;
 

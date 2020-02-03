@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -50,7 +51,7 @@ class ButtonToolbar extends Widget
      * - options: array optional, the HTML attributes of the button group.
      * - encodeLabels: bool whether to HTML-encode the button labels.
      */
-    private $buttonGroups = [];
+    private array $buttonGroups = [];
 
     /**
      * @var array the HTML attributes for the container tag. The following special options are recognized:
@@ -59,14 +60,14 @@ class ButtonToolbar extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-toolbar";
@@ -77,8 +78,6 @@ class ButtonToolbar extends Widget
         if (!isset($this->options['role'])) {
             $this->options['role'] = 'toolbar';
         }
-
-        BootstrapAsset::register($this->getView());
 
         return Html::tag('div', $this->renderButtonGroups(), $this->options);
     }
@@ -94,7 +93,6 @@ class ButtonToolbar extends Widget
 
         foreach ($this->buttonGroups as $group) {
             if (is_array($group)) {
-                $group['view'] = $this->getView();
 
                 if (!isset($group['buttons'])) {
                     continue;
@@ -103,7 +101,7 @@ class ButtonToolbar extends Widget
                 $buttonGroups[] = ButtonGroup::widget()
                     ->buttons($group['buttons'])
                     ->options($group['options'])
-                    ->getContent();
+                    ->run();
             } else {
                 $buttonGroups[] = $group;
             }
@@ -112,19 +110,14 @@ class ButtonToolbar extends Widget
         return implode("\n", $buttonGroups);
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see buttonGroups}
+     * {@see $buttonGroups}
      *
-     * @param array $buttonGroups
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonToolbar
      */
-    public function buttonGroups(array $value): self
+    public function buttonGroups(array $value): ButtonToolbar
     {
         $this->buttonGroups = $value;
 
@@ -132,13 +125,13 @@ class ButtonToolbar extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return ButtonToolbar
      */
-    public function options(array $value): self
+    public function options(array $value): ButtonToolbar
     {
         $this->options = $value;
 
