@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
@@ -116,14 +117,14 @@ class NavBar extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $collapseOptions = [];
+    private array $collapseOptions = [];
 
     /**
      * @var string the text of the brand or empty if it's not used. Note that this is not HTML-encoded.
      *
      * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    private $brandLabel;
+    private ?string $brandLabel = null;
 
     /**
      * @var string src of the brand image or empty if it's not used. Note that this param will override
@@ -131,55 +132,55 @@ class NavBar extends Widget
      *
      * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    private $brandImage;
+    private ?string $brandImage = null;
 
     /**
      * @var string $url the URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand
      * link. Default value is '/' will be used. You may set it to `null` if you want to have no link at all.
      */
-    private $brandUrl = '/';
+    private string $brandUrl = '/';
 
     /**
      * @var array the HTML attributes of the brand link.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $brandOptions = [];
+    private array $brandOptions = [];
 
     /**
      * @var string text to show for screen readers for the button to toggle the navbar.
      */
-    private $screenReaderToggleText = 'Toggle navigation';
+    private string $screenReaderToggleText = 'Toggle navigation';
 
     /**
      * @var string the toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`
      */
-    private $togglerContent = '<span class="navbar-toggler-icon"></span>';
+    private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
 
     /**
      * @var array the HTML attributes of the navbar toggler button.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $togglerOptions = [];
+    private array $togglerOptions = [];
 
     /**
      * @var bool whether the navbar content should be included in an inner div container which by default adds left and
      * right padding. Set this to false for a 100% width navbar.
      */
-    private $renderInnerContainer = true;
+    private bool $renderInnerContainer = true;
 
     /**
      * @var array the HTML attributes of the inner container.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $innerContainerOptions = [];
+    private array $innerContainerOptions = [];
 
     /**
      * @var bool $clientOptions
      */
-    public $clientOptions = false;
+    public bool $clientOptions = false;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -188,7 +189,8 @@ class NavBar extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
+
 
     /**
      * Initializes the widget.
@@ -197,12 +199,12 @@ class NavBar extends Widget
      *
      * @throws InvalidConfigException
      */
-    public function init(): void
+    public function start(): void
     {
-        parent::init();
-
         if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-navbar";
+            $id = $this->getId();
+            $this->options['id'] = "{$id}-navbar";
+            $this->collapseOptions['id'] = "{$id}-collapse";
         }
 
         if (!isset($this->options['class']) || empty($this->options['class'])) {
@@ -219,22 +221,18 @@ class NavBar extends Widget
             Html::addCssClass($this->innerContainerOptions, 'container');
         }
 
-        if (!isset($this->collapseOptions['id'])) {
-            $this->collapseOptions['id'] = "{$this->getId()}-collapse";
-        }
-
         if (!empty($this->brandImage)) {
             $this->brandLabel = Html::img($this->brandImage);
         }
 
-        if ($this->brandLabel !== false) {
+        if ($this->brandLabel !== null) {
             Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
             if (empty($this->brandUrl)) {
                 $brand = Html::tag('span', $this->brandLabel, $this->brandOptions);
             } else {
                 $brand = Html::a(
                     $this->brandLabel,
-                    $this->brandUrl === false ? Yii::$app->homeUrl : $this->brandUrl,
+                    $this->brandUrl,
                     $this->brandOptions
                 );
             }
@@ -252,6 +250,7 @@ class NavBar extends Widget
 
         echo $brand . "\n";
         echo $this->renderToggleButton() . "\n";
+
         echo Html::beginTag($collapseTag, $collapseOptions) . "\n";
     }
 
@@ -262,8 +261,6 @@ class NavBar extends Widget
      */
     public function run(): string
     {
-        BootstrapPluginAsset::register($this->getView());
-
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 
         echo Html::endTag($tag) . "\n";
@@ -304,13 +301,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see collapseOptions}
+     * {@see $collapseOptions}
      *
-     * @param array $collapseOptions
+     * @param array $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function collapseOptions(array $value): self
+    public function collapseOptions(array $value): NavBar
     {
         $this->collapseOptions = $value;
 
@@ -318,13 +315,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see brandLabel}
+     * {@see $brandLabel}
      *
-     * @param array $brandLabel
+     * @param string $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function brandLabel(string $value): self
+    public function brandLabel(string $value): NavBar
     {
         $this->brandLabel = $value;
 
@@ -332,13 +329,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see brandImage}
+     * {@see $brandImage}
      *
-     * @param array $brandImage
+     * @param string $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function brandImage(string $value): self
+    public function brandImage(string $value): NavBar
     {
         $this->brandImage = $value;
 
@@ -346,13 +343,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see brandUrl}
+     * {@see $brandUrl}
      *
-     * @param array $brandUrl
+     * @param string $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function brandUrl(string $value): self
+    public function brandUrl(string $value): NavBar
     {
         $this->brandUrl = $value;
 
@@ -360,13 +357,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see brandOptions}
+     * {@see $brandOptions}
      *
-     * @param array $brandOptions
+     * @param array $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function brandOptions(array $value): self
+    public function brandOptions(array $value): NavBar
     {
         $this->brandOptions = $value;
 
@@ -374,13 +371,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see screenReaderToggleText}
+     * {@see $screenReaderToggleText}
      *
-     * @param array $screenReaderToggleText
+     * @param string $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function screenReaderToggleText(string $value): self
+    public function screenReaderToggleText(string $value): NavBar
     {
         $this->screenReaderToggleText = $value;
 
@@ -388,13 +385,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see togglerContent}
+     * {@see $togglerContent}
      *
-     * @param array $togglerContent
+     * @param string $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function togglerContent(string $value): self
+    public function togglerContent(string $value): NavBar
     {
         $this->togglerContent = $value;
 
@@ -402,13 +399,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see togglerOptions}
+     * {@see $togglerOptions}
      *
-     * @param array $togglerOptions
+     * @param array $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function togglerOptions(array $value): self
+    public function togglerOptions(array $value): NavBar
     {
         $this->togglerOptions = $value;
 
@@ -416,13 +413,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see renderInnerContainer}
+     * {@see $renderInnerContainer}
      *
-     * @param array $renderInnerContainer
+     * @param bool $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function renderInnerContainer(bool $value): self
+    public function renderInnerContainer(bool $value): NavBar
     {
         $this->renderInnerContainer = $value;
 
@@ -430,13 +427,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see innerContainerOptions}
+     * {@see $innerContainerOptions}
      *
-     * @param array $innerContainerOptions
+     * @param array $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function innerContainerOptions(array $value): self
+    public function innerContainerOptions(array $value): NavBar
     {
         $this->innerContainerOptions = $value;
 
@@ -444,27 +441,13 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see clientOptions}
+     * {@see $options}
      *
-     * @param array $clientOptions
+     * @param array $value
      *
-     * @return $this
+     * @return NavBar
      */
-    public function clientOptions(bool $value): self
-    {
-        $this->clientOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * {@see options}
-     *
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function options(array $value): self
+    public function options(array $value): NavBar
     {
         $this->options = $value;
 

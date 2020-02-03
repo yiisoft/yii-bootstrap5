@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Nav renders a nav HTML component.
@@ -118,12 +119,12 @@ class Nav extends Widget
      *
      * If a menu item is a string, it will be rendered directly without HTML encoding.
      */
-    private $items = [];
+    private array $items = [];
 
     /**
      * @var bool whether the nav items labels should be HTML-encoded.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var bool whether to automatically activate items according to whether their currentPath matches the currently
@@ -131,17 +132,17 @@ class Nav extends Widget
      *
      * {@see isItemActive}
      */
-    private $activateItems = true;
+    private bool $activateItems = true;
 
     /**
      * @var bool whether to activate parent menu items when one of the corresponding child menu items is active.
      */
-    private $activateParents = false;
+    private bool $activateParents = false;
 
     /**
      * @var string $currentPath Allows you to assign the current path of the url from request controller.
      */
-    private $currentPath;
+    private ?string $currentPath = null;
 
     /**
      * @var array the parameters used to determine if a menu item is active or not. If not set, it will use `$_GET`.
@@ -149,12 +150,12 @@ class Nav extends Widget
      * {@see currentPath}
      * {@see isItemActive}
      */
-    private $params;
+    private array $params = [];
 
     /**
      * @var string name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
      */
-    private $dropdownClass = Dropdown::class;
+    private string $dropdownClass = Dropdown::class;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -163,16 +164,15 @@ class Nav extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
-        BootstrapAsset::register($this->getView());
 
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-nav";
@@ -187,6 +187,8 @@ class Nav extends Widget
      * Renders widget items.
      *
      * @return string
+     *
+     * @throws InvalidConfigException
      */
     public function renderItems(): string
     {
@@ -222,7 +224,7 @@ class Nav extends Widget
             throw new InvalidConfigException("The 'label' option is required.");
         }
 
-        $encodeLabel = isset($item['encode']) ? $item['encode'] : $this->encodeLabels;
+        $encodeLabel = $item['encode'] ?? $this->encodeLabels;
         $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
         $options = ArrayHelper::getValue($item, 'options', []);
         $items = ArrayHelper::getValue($item, 'items');
@@ -267,7 +269,7 @@ class Nav extends Widget
      *
      * @param array $items the given items. Please refer to {@see Dropdown::items} for the array structure.
      * @param array $parentItem the parent item information. Please refer to {@see items} for the structure of this
-     *                          array.
+     * array.
      *
      * @return string the rendering result.
      */
@@ -277,17 +279,17 @@ class Nav extends Widget
         $dropdownClass = $this->dropdownClass;
 
         return $dropdownClass::widget()
-            ->clientOptions(false)
+            ->enableClientOptions(false)
             ->encodeLabels($this->encodeLabels)
             ->items($items)
             ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []))
-            ->getContent();
+            ->run();
     }
 
     /**
      * Check to see if a child item is active optionally activating the parent.
      *
-     * @param array $items @see items
+     * @param array $items
      * @param bool $active should the parent be active too
      *
      * @return array
@@ -332,7 +334,8 @@ class Nav extends Widget
      * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
      * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
      *
-     * @param array $item the menu item to be checked
+     * @param array|string $item the menu item to be checked
+     * @param bool $result returns if the item is active
      *
      * @return bool whether the menu item is active
      */
@@ -342,28 +345,21 @@ class Nav extends Widget
             return ArrayHelper::getValue($item, 'active', false);
         }
 
-        if (isset($item['url'])) {
-            if ($this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems) {
-                $result = true;
-            }
+        if (isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems) {
+            $result = true;
         }
 
         return $result;
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see items}
+     * {@see $items}
      *
-     * @param array $items
+     * @param array $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function items(array $value): self
+    public function items(array $value): Nav
     {
         $this->items = $value;
 
@@ -371,13 +367,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see $encodeLabels}
      *
-     * @param bool $encodeLabels
+     * @param bool $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): Nav
     {
         $this->encodeLabels = $value;
 
@@ -385,13 +381,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see label}
+     * {@see $label}
      *
-     * @param bool $label
+     * @param string $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function label(string $value): self
+    public function label(string $value): Nav
     {
         $this->label = $value;
 
@@ -399,13 +395,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see activateItems}
+     * {@see $activateItems}
      *
-     * @param bool $activateItems
+     * @param bool $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function activateItems(bool $value): self
+    public function activateItems(bool $value): Nav
     {
         $this->activateItems = $value;
 
@@ -413,13 +409,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see activateParents}
+     * {@see $activateParents}
      *
-     * @param bool $activateParents
+     * @param bool $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function activateParents(bool $value): self
+    public function activateParents(bool $value): Nav
     {
         $this->activateParents = $value;
 
@@ -427,13 +423,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see currentPath}
+     * {@see $currentPath}
      *
-     * @param bool $currentPath
+     * @param string $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function currentPath(string $value): self
+    public function currentPath(string $value): Nav
     {
         $this->currentPath = $value;
 
@@ -441,13 +437,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see params}
+     * {@see $params}
      *
-     * @param bool $params
+     * @param string $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function params(array $value): self
+    public function params(string $value): Nav
     {
         $this->currentPath = $value;
 
@@ -455,13 +451,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see dropdownClass}
+     * {@see $dropdownClass}
      *
-     * @param string $dropdownClass
+     * @param string $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function dropdownClass(string $value): self
+    public function dropdownClass(string $value): Nav
     {
         $this->dropdownClass = $value;
 
@@ -469,13 +465,13 @@ class Nav extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Nav
      */
-    public function options(array $value): self
+    public function options(array $value): Nav
     {
         $this->options = $value;
 

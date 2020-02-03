@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -11,18 +12,8 @@ use Yiisoft\Yii\Bootstrap4\NavBar;
  *
  * NavBarTest
  */
-class NavBarTest extends TestCase
+final class NavBarTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testRender(): void
     {
         ob_start();
@@ -36,9 +27,9 @@ class NavBarTest extends TestCase
             ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
-            ->init();
+            ->start();
 
-        NavBar::end();
+        echo NavBar::end();
 
         $expected = <<<EXPECTED
 <nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
@@ -64,9 +55,9 @@ EXPECTED;
         NavBar::begin()
             ->brandImage('/images/test.jpg')
             ->brandUrl('/')
-            ->init();
+            ->start();
 
-        NavBar::end();
+        echo NavBar::end();
 
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
@@ -84,9 +75,9 @@ EXPECTED;
         NavBar::begin()
             ->brandLabel('Yii Framework')
             ->brandUrl('/index.php')
-            ->init();
+            ->start();
 
-        NavBar::end();
+        echo NavBar::end();
 
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
@@ -104,9 +95,9 @@ EXPECTED;
         NavBar::begin()
             ->brandLabel('Yii Framework')
             ->brandUrl('')
-            ->init();
+            ->start();
 
-        NavBar::end();
+        echo NavBar::end();
 
         $this->assertStringContainsString(
             '<span class="navbar-brand">Yii Framework</span>',
@@ -124,7 +115,7 @@ EXPECTED;
         NavBar::begin()
             ->brandLabel('My Company')
             ->brandUrl('/')
-            ->init();
+            ->start();
 
         echo Nav::widget()
             ->items([
@@ -147,7 +138,7 @@ EXPECTED;
 </form>
 HTML;
 
-        NavBar::end();
+        echo NavBar::end();
 
         $expected = <<<EXPECTED
 <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">

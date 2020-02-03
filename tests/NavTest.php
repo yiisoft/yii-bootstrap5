@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Nav;
@@ -11,16 +13,6 @@ use Yiisoft\Yii\Bootstrap4\Nav;
  */
 class NavTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testIds(): void
     {
         ob_start();
