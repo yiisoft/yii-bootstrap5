@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -24,7 +25,7 @@ class Alert extends Widget
      * @var string the body content in the alert component. Alert widget will also be treated as the body content, and
      * will be rendered before this.
      */
-    private $body;
+    private string $body;
 
     /**
      * @var array the options for rendering the close button tag.
@@ -41,12 +42,12 @@ class Alert extends Widget
      * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts)
      * for the supported HTML attributes.
      */
-    private $closeButton = [];
+    private array $closeButton = [];
 
     /**
-     * @var boolean $closeButtonEnabled. Enable/Disable close button.
+     * @var bool $closeButtonEnabled. Enable/Disable close button.
      */
-    private $closeButtonEnabled = true;
+    private bool $closeButtonEnabled = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -55,14 +56,14 @@ class Alert extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-alert";
@@ -94,22 +95,22 @@ class Alert extends Widget
      *
      * @return string the rendering result
      */
-    protected function renderCloseButton(): string
+    protected function renderCloseButton(): ?string
     {
-        if ($this->closeButtonEnabled !== false) {
-            $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-            $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
-                'aria-hidden' => 'true'
-            ]));
-
-            if ($tag === 'button' && !isset($this->closeButton['type'])) {
-                $this->closeButton['type'] = 'button';
-            }
-
-            return Html::tag($tag, $label, $this->closeButton);
-        } else {
+        if ($this->closeButtonEnabled === false) {
             return null;
         }
+
+        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
+            'aria-hidden' => 'true'
+        ]));
+
+        if ($tag === 'button' && !isset($this->closeButton['type'])) {
+            $this->closeButton['type'] = 'button';
+        }
+
+        return Html::tag($tag, $label, $this->closeButton);
     }
 
     /**
@@ -137,6 +138,11 @@ class Alert extends Widget
         }
     }
 
+    /**
+     * Run widget with echo.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->run();
@@ -145,11 +151,11 @@ class Alert extends Widget
     /**
      * {@see body}
      *
-     * @param array $body
+     * @param string $value
      *
-     * @return $this
+     * @return Alert
      */
-    public function body(string $value): self
+    public function body(string $value): Alert
     {
         $this->body = $value;
 
@@ -159,11 +165,11 @@ class Alert extends Widget
     /**
      * {@see closeButton}
      *
-     * @param array $closeButton
+     * @param array $value
      *
-     * @return $this
+     * @return Alert
      */
-    public function closeButton(string $value): self
+    public function closeButton(array $value): Alert
     {
         $this->closeButton = $value;
 
@@ -173,11 +179,11 @@ class Alert extends Widget
     /**
      * {@see options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Alert
      */
-    public function options(array $value): self
+    public function options(array $value): Alert
     {
         $this->options = $value;
 
