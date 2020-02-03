@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -64,31 +65,31 @@ class Accordion extends Widget
      * ```php
      * echo Accordion::widget([
      *     'items' => [
-     *       'Introduction' => 'This is the first collapsable menu',
+     *       'Introduction' => 'This is the first collapsible menu',
      *       'Second panel' => [
-     *           'content' => 'This is the second collapsable menu',
+     *           'content' => 'This is the second collapsible menu',
      *       ],
      *       [
      *           'label' => 'Third panel',
-     *           'content' => 'This is the third collapsable menu',
+     *           'content' => 'This is the third collapsible menu',
      *       ],
      *   ]
      * ])
      * ```
      */
-    private $items = [];
+    private array $items = [];
 
     /**
      * @var bool whether the labels for header items should be HTML-encoded.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
      *
      * Set this to `false` to allow keeping multiple items open at once.
      */
-    private $autoCloseItems = true;
+    private bool $autoCloseItems = true;
 
     /**
      * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
@@ -103,7 +104,7 @@ class Accordion extends Widget
      * ```
      *
      */
-    private $itemToggleOptions = [];
+    private array $itemToggleOptions = [];
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -112,14 +113,16 @@ class Accordion extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
+     *
+     * @throws InvalidConfigException
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-accordion";
@@ -156,9 +159,9 @@ class Accordion extends Widget
             if (!array_key_exists('label', $item)) {
                 if (is_int($key)) {
                     throw new InvalidConfigException("The 'label' option is required.");
-                } else {
-                    $item['label'] = $key;
                 }
+
+                $item['label'] = $key;
             }
 
             $header = ArrayHelper::remove($item, 'label');
@@ -199,7 +202,7 @@ class Accordion extends Widget
                 $options['aria-labelledby'] = $options['id'] . '-heading';
             }
 
-            $encodeLabel = isset($item['encode']) ? $item['encode'] : $this->encodeLabels;
+            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
 
             if ($encodeLabel) {
                 $header = Html::encode($header);
@@ -264,6 +267,13 @@ class Accordion extends Widget
         return implode("\n", $group);
     }
 
+    /**
+     * Run widget with echo.
+     *
+     * @return string
+     *
+     * @throws InvalidConfigException
+     */
     public function __toString(): string
     {
         return $this->run();
@@ -272,11 +282,11 @@ class Accordion extends Widget
     /**
      * {@see autoCloseItems}
      *
-     * @param bool $autoCloseItems
+     * @param bool $value
      *
-     * @return $this
+     * @return Accordion
      */
-    public function autoCloseItems(bool $value): self
+    public function autoCloseItems(bool $value): Accordion
     {
         $this->autoCloseItems = $value;
 
@@ -286,11 +296,11 @@ class Accordion extends Widget
     /**
      * {@see encodeLabels}
      *
-     * @param bool $encodeLabels
+     * @param bool $value
      *
-     * @return $this
+     * @return Accordion
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): Accordion
     {
         $this->encodeLabels = $value;
 
@@ -300,11 +310,11 @@ class Accordion extends Widget
     /**
      * {@see items}
      *
-     * @param array $items
+     * @param array $value
      *
-     * @return $this
+     * @return Accordion
      */
-    public function items(array $value): self
+    public function items(array $value): Accordion
     {
         $this->items = $value;
 
@@ -314,11 +324,11 @@ class Accordion extends Widget
     /**
      * {@see itemToggleOptions}
      *
-     * @param array $itemToggleOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Accordion
      */
-    public function itemToggleOptions(array $value): self
+    public function itemToggleOptions(array $value): Accordion
     {
         $this->itemToggleOptions = $value;
 
@@ -328,9 +338,9 @@ class Accordion extends Widget
     /**
      * {@see options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Accordion
      */
     public function options(array $value): self
     {
