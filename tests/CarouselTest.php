@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -10,7 +11,7 @@ use Yiisoft\Yii\Bootstrap4\Carousel;
  *
  * CarouselTest.
  */
-class CarouselTest extends TestCase
+final class CarouselTest extends TestCase
 {
     public function testContainerOptions(): void
     {

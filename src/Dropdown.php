@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Dropdown renders a Bootstrap dropdown menu component.
@@ -13,7 +14,6 @@ use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
  *
  * ```php
  * <div class="dropdown">
- *     <a href="#" data-toggle="dropdown" class="dropdown-toggle">Label <b class="caret"></b></a>
  *     <?php
  *         echo Dropdown::widget()
  *             ->items([
@@ -44,17 +44,17 @@ class Dropdown extends Widget
      *
      * To insert divider use `-`.
      */
-    private $items = [];
+    private array $items = [];
 
     /**
      * @var bool whether the labels for header items should be HTML-encoded.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var array the HTML attributes for sub-menu container tags.
      */
-    private $submenuOptions = [];
+    private array $submenuOptions = [];
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -63,24 +63,34 @@ class Dropdown extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
+
+    /**
+     * @var array $optionsLink
+     */
+    private array $optionsLink = [
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+        'id' => 'dropdownMenuLink',
+        'class' => 'btn btn-secondary dropdown-toggle',
+        'data-toggle' => 'dropdown',
+        'role' => 'button',
+    ];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
-        BootstrapPluginAsset::register($this->getView());
-
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";
         }
 
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
-        $this->registerClientEvents();
+        $this->registerClientEvents($this->options['id']);
 
         return $this->renderItems($this->items, $this->options);
     }
@@ -115,7 +125,7 @@ class Dropdown extends Widget
                 throw new InvalidConfigException("The 'label' option is required.");
             }
 
-            $encodeLabel = isset($item['encode']) ? $item['encode'] : $this->encodeLabels;
+            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
             $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
             $itemOptions = ArrayHelper::getValue($item, 'options', []);
             $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
@@ -132,7 +142,7 @@ class Dropdown extends Widget
                 Html::addCssClass($linkOptions, 'active');
             }
 
-            $url = array_key_exists('url', $item) ? $item['url'] : null;
+            $url = $item['url'] ?? null;
 
             if (empty($item['items'])) {
                 if ($url === null) {
@@ -146,27 +156,27 @@ class Dropdown extends Widget
                 $submenuOptions = $this->submenuOptions;
 
                 if (isset($item['submenuOptions'])) {
-                    $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
+                    $submenuOptions = \array_merge($submenuOptions, $item['submenuOptions']);
                 }
 
                 Html::addCssClass($submenuOptions, ['dropdown-submenu']);
                 Html::addCssClass($linkOptions, ['dropdown-toggle']);
 
-                $lines[] = Html::beginTag('div', array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions));
+                $lines[] = Html::beginTag('div', \array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions));
 
-                $lines[] = Html::a($label, $url, array_merge([
+                $lines[] = Html::a($label, $url, \array_merge([
                     'data-toggle' => 'dropdown',
                     'aria-haspopup' => 'true',
                     'aria-expanded' => 'false',
                     'role' => 'button'
                 ], $linkOptions));
 
-                $lines[] = static::widget()
+                $lines[] = Dropdown::widget()
                     ->items($item['items'])
                     ->options($submenuOptions)
                     ->submenuOptions($submenuOptions)
                     ->encodeLabels($this->encodeLabels)
-                    ->getContent();
+                    ->run();
                 $lines[] = Html::endTag('div');
             }
         }
@@ -174,19 +184,14 @@ class Dropdown extends Widget
         return Html::tag('div', implode("\n", $lines), $options);
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see items}
+     * {@see $items}
      *
-     * @param array $items
+     * @param array $value
      *
-     * @return $this
+     * @return Dropdown
      */
-    public function items(array $value): self
+    public function items(array $value): Dropdown
     {
         $this->items = $value;
 
@@ -194,13 +199,13 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see encodeLabel}
+     * {@see $encodeLabel}
      *
-     * @param bool $encodeLabel
+     * @param bool $value
      *
-     * @return $this
+     * @return Dropdown
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): Dropdown
     {
         $this->encodeLabels = $value;
 
@@ -208,13 +213,13 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see submenuOptions}
+     * {@see $submenuOptions}
      *
-     * @param bool $submenuOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Dropdown
      */
-    public function submenuOptions(array $value): self
+    public function submenuOptions(array $value): Dropdown
     {
         $this->submenuOptions = $value;
 
@@ -222,29 +227,15 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Dropdown
      */
-    public function options(array $value): self
+    public function options(array $value): Dropdown
     {
         $this->options = $value;
-
-        return $this;
-    }
-
-    /**
-     * {@see clientOptions}
-     *
-     * @param bool $clientOptions
-     *
-     * @return $this
-     */
-    public function clientOptions(bool $value): self
-    {
-        $this->clientOptions = $value;
 
         return $this;
     }

@@ -9,18 +9,8 @@ use Yiisoft\Yii\Bootstrap4\Dropdown;
  *
  * DropdownTest.
  */
-class DropdownTest extends TestCase
+final class DropdownTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testIds(): void
     {
         ob_start();

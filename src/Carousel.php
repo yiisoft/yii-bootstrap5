@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.
@@ -35,7 +36,7 @@ class Carousel extends Widget
      *
      * If empty, it means the previous and the next control buttons should not be displayed.
      */
-    private $controls = [
+    private array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>',
         '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>'
     ];
@@ -43,11 +44,11 @@ class Carousel extends Widget
     /**
      * @var bool whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
      */
-    private $showIndicators = true;
+    private bool $showIndicators = true;
 
     /**
      * @var array list of slides in the carousel. Each array element represents a single slide with the following
-     *            structure:
+     * structure:
      *
      * ```php
      * [
@@ -60,12 +61,12 @@ class Carousel extends Widget
      * ]
      * ```
      */
-    private $items = [];
+    private array $items = [];
 
     /**
      * @var bool Animate slides with a fade transition instead of a slide. Defaults to `false`
      */
-    private $crossfade = false;
+    private bool $crossfade = false;
 
     /**
      * @var array the HTML attributes for the container tag. The following special options are recognized:
@@ -74,14 +75,14 @@ class Carousel extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = ['data-ride' => 'carousel'];
+    private array $options = ['data-ride' => 'carousel'];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-carousel";
@@ -96,11 +97,11 @@ class Carousel extends Widget
         $this->registerPlugin('carousel', $this->options);
 
         return implode("\n", [
-                Html::beginTag('div', $this->options),
-                $this->renderIndicators(),
-                $this->renderItems(),
-                $this->renderControls(),
-                Html::endTag('div')
+            Html::beginTag('div', $this->options),
+            $this->renderIndicators(),
+            $this->renderItems(),
+            $this->renderControls(),
+            Html::endTag('div')
         ]) . "\n";
     }
 
@@ -137,8 +138,8 @@ class Carousel extends Widget
     {
         $items = [];
 
-        for ($i = 0, $count = count($this->items); $i < $count; $i++) {
-            $items[] = $this->renderItem($this->items[$i], $i);
+        foreach ($this->items as $i => $iValue) {
+            $items[] = $this->renderItem($iValue, $i);
         }
 
         return Html::tag('div', implode("\n", $items), ['class' => 'carousel-inner']);
@@ -147,7 +148,7 @@ class Carousel extends Widget
     /**
      * Renders a single carousel item
      *
-     * @param string|array $item a single item from [[items]]
+     * @param string|array $item a single item from {@see items}
      * @param int $index the item index as the first item should be set to `active`
      *
      * @return string the rendering result
@@ -156,7 +157,7 @@ class Carousel extends Widget
      */
     public function renderItem($item, int $index): string
     {
-        if (is_string($item)) {
+        if (\is_string($item)) {
             $content = $item;
             $caption = null;
             $options = [];
@@ -190,7 +191,7 @@ class Carousel extends Widget
      *
      * @throws InvalidConfigException if {@see controls} is invalid.
      */
-    public function renderControls()
+    public function renderControls(): ?string
     {
         if (isset($this->controls[0], $this->controls[1])) {
             return Html::a($this->controls[0], '#' . $this->options['id'], [
@@ -203,28 +204,25 @@ class Carousel extends Widget
                     'data-slide' => 'next',
                     'role' => 'button'
                 ]);
-        } elseif ($this->controls === false) {
-            return '';
-        } else {
-            throw new InvalidConfigException(
-                'The "controls" property must be either false or an array of two elements.'
-            );
         }
-    }
 
-    public function __toString(): string
-    {
-        return $this->run();
+        if ($this->controls === false) {
+            return '';
+        }
+
+        throw new InvalidConfigException(
+            'The "controls" property must be either false or an array of two elements.'
+        );
     }
 
     /**
-     * {@see controls}
+     * {@see $controls}
      *
-     * @param array $controls
+     * @param array $value
      *
-     * @return $this
+     * @return Carousel
      */
-    public function controls(array $value): self
+    public function controls(array $value): Carousel
     {
         $this->controls = $value;
 
@@ -232,13 +230,13 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see crossfade}
+     * {@see $crossfade}
      *
-     * @param bool $crossfade
+     * @param bool $value
      *
-     * @return $this
+     * @return Carousel
      */
-    public function crossfade(bool $value): self
+    public function crossfade(bool $value): Carousel
     {
         $this->crossfade = $value;
 
@@ -246,13 +244,13 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see items}
+     * {@see $items}
      *
-     * @param array $items
+     * @param array $value
      *
-     * @return $this
+     * @return Carousel
      */
-    public function items(array $value): self
+    public function items(array $value): Carousel
     {
         $this->items = $value;
 
@@ -260,13 +258,13 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Carousel
      */
-    public function options(array $value): self
+    public function options(array $value): Carousel
     {
         $this->options = $value;
 
@@ -274,15 +272,15 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see showIndicator}
+     * {@see $showIndicator}
      *
-     * @param bool $showIndicator
+     * @param bool $value
      *
-     * @return $this
+     * @return Carousel
      */
-    public function showIndicator(array $value): self
+    public function showIndicators(bool $value): Carousel
     {
-        $this->showIndicator = $value;
+        $this->showIndicators = $value;
 
         return $this;
     }
