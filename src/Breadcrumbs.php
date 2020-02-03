@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Button renders a bootstrap button.
@@ -22,12 +23,12 @@ class Breadcrumbs extends Widget
     /**
      * @var string the name of the breadcrumb container tag.
      */
-    private $tag = 'ol';
+    private string $tag = 'ol';
 
     /**
      * @var bool whether to HTML-encode the link labels.
      */
-    private $encodeLabels = true;
+    private bool $encodeLabels = true;
 
     /**
      * @var array the first hyperlink in the breadcrumbs (called home link).
@@ -36,7 +37,7 @@ class Breadcrumbs extends Widget
      * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
      * the home link will not be rendered.
      */
-    private $homeLink = [];
+    private array $homeLink = [];
 
     /**
      * @var array list of links to appear in the breadcrumbs. If this property is empty, the widget will not render
@@ -52,26 +53,26 @@ class Breadcrumbs extends Widget
      *
      *
      */
-    private $links = [];
+    private array $links = [];
 
     /**
      * @var string the template used to render each inactive item in the breadcrumbs. The token `{link}` will be
      * replaced with the actual HTML link for each inactive item.
      */
-    private $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
+    private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
 
     /**
      * @var string the template used to render each active item in the breadcrumbs. The token `{link}` will be replaced
      * with the actual HTML link for each active item.
      */
-    private $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
+    private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
 
     /**
      * @var array the HTML attributes for the widgets nav container tag.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $navOptions = ['aria-label' => 'breadcrumb'];
+    private array $navOptions = ['aria-label' => 'breadcrumb'];
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -80,17 +81,17 @@ class Breadcrumbs extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Renders the widget.
      *
      * @return string
+     *
+     * @throws InvalidConfigException
      */
-    public function getContent(): string
+    public function run(): string
     {
-        $this->clientOptions = false;
-
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-breadcrumb";
         }
@@ -160,19 +161,14 @@ class Breadcrumbs extends Widget
         return strtr($template, ['{link}' => $link]);
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see activeItemTemplate}
+     * {@see $activeItemTemplate}
      *
-     * @param bool $activeItemTemplate
+     * @param string $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function activeItemTemplate(string $value): self
+    public function activeItemTemplate(string $value): Breadcrumbs
     {
         $this->activeItemTemplate = $value;
 
@@ -180,13 +176,13 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see $encodeLabels}
      *
-     * @param bool $encodeLabels
+     * @param bool $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function encodeLabels(bool $value): self
+    public function encodeLabels(bool $value): Breadcrumbs
     {
         $this->encodeLabels = $value;
 
@@ -194,13 +190,13 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see homeLink}
+     * {@see $homeLink}
      *
-     * @param bool $homeLink
+     * @param array $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function homeLink(array $value): self
+    public function homeLink(array $value): Breadcrumbs
     {
         $this->homeLink = $value;
 
@@ -208,13 +204,13 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see itemTemplate}
+     * {@see $itemTemplate}
      *
-     * @param bool $itemTemplate
+     * @param string $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function itemTemplate(string $value): self
+    public function itemTemplate(string $value): Breadcrumbs
     {
         $this->itemTemplate = $value;
 
@@ -222,13 +218,13 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see links}
+     * {@see $links}
      *
-     * @param bool $links
+     * @param array $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function links(array $value): self
+    public function links(array $value): Breadcrumbs
     {
         $this->links = $value;
 
@@ -236,27 +232,27 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see navOptions}
+     * {@see $navOptions}
      *
-     * @param array $navOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function navOptions(array $value): self
+    public function navOptions(array $value): Breadcrumbs
     {
         $this->navOptions = $value;
 
         return $this;
-    }
+    }  
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function options(array $value): self
+    public function options(array $value): Breadcrumbs
     {
         $this->options = $value;
 
@@ -264,16 +260,16 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see tag}
+     * {@see $tag}
      *
-     * @param array $tag
+     * @param string $value
      *
-     * @return $this
+     * @return Breadcrumbs
      */
-    public function tag(array $value): self
+    public function tag(string $value): Breadcrumbs
     {
-        $this->tagName = $value;
+        $this->tag = $value;
 
         return $this;
-    }
+    }    
 }

@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
+use Yiisoft\Yii\Bootstrap4\Assets\BootstrapAsset;
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Json\Json;
-use Yiisoft\View\WebView;
 
 /**
  * BootstrapWidgetTrait is the trait, which provides basic for all bootstrap widgets features.
@@ -23,13 +25,18 @@ use Yiisoft\View\WebView;
 trait BootstrapWidgetTrait
 {
     /**
+     * @var AssetManager $assetManager
+     */
+    private ?AssetManager $assetManager = null;
+
+    /**
      * @var array the options for the underlying Bootstrap JS plugin.
      *
      * Please refer to the corresponding Bootstrap plugin Web page for possible options.
      * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
      * supported options (e.g. "remote").
      */
-    public $clientOptions = [];
+    private array $clientOptions = [];
 
     /**
      * @var array the event handlers for the underlying Bootstrap JS plugin.
@@ -38,62 +45,101 @@ trait BootstrapWidgetTrait
      * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
      * supported events (e.g. "shown").
      */
-    public $clientEvents = [];
+    private array $clientEvents = [];
 
     /**
-     * Initializes the widget.
-     *
-     * This method will register the bootstrap asset bundle. If you override this method,  make sure you call the parent
-     * implementation first.
+     * @var bool $enableClientOptions /disable script Bootstrap JS plugin.
      */
-    public function init(): void
-    {
-        parent::init();
-    }
+    private bool $enableClientOptions = false;
+
+    /**
+     * @var object $webView The view where the Widget will be registered.
+     */
+    private ?object $webView = null;
 
     /**
      * Registers a specific Bootstrap plugin and the related events.
      *
      * @param string $name the name of the Bootstrap plugin
+     * @param array $options
      *
      * @return void
+     *
+     * @throws \JsonException
      */
-    protected function registerPlugin(string $name, array $options = []): void
-    {
-        $view = $this->getView();
-
-        BootstrapPluginAsset::register($view);
-
+    protected function registerPlugin(string $name, array $options): void {
         $id = $options['id'];
 
-        if ($this->clientOptions !== false) {
-            $options = empty($this->clientOptions) ? '' : Json::htmlEncode($this->clientOptions);
-            $js = "jQuery('#$id').$name($options);";
-            $view->registerJs($js);
+        if ($this->assetManager !== null) {
+            $this->assetManager->register([
+                BootstrapAsset::class
+            ]);
         }
 
-        $this->registerClientEvents();
+        if ($this->enableClientOptions !== false) {
+            $options = Json::htmlEncode($this->clientOptions);
+            $js = "jQuery('#$id').$name($options);";
+
+            if ($this->webView !== null) {
+                $this->webView->registerJs($js);
+            }
+        }
+
+        $this->registerClientEvents($id);
     }
 
     /**
      * Registers JS event handlers that are listed in {@see clientEvents}.
+     *
+     * @param string $id
      */
-    protected function registerClientEvents(): void
+    protected function registerClientEvents(string $id): void
     {
-        if (!empty($this->clientEvents)) {
-            $id = $this->options['id'];
+        if ($this->clientEvents) {
             $js = [];
+
             foreach ($this->clientEvents as $event => $handler) {
                 $js[] = "jQuery('#$id').on('$event', $handler);";
             }
-            $this->getView()->registerJs(implode("\n", $js));
+
+            if ($this->webView !== null) {
+                $this->webView->registerJs(implode("\n", $js));
+            }
         }
     }
 
-    /**
-     * @return \Yiisoft\View\WebView the WebView object that can be used to render views or view files.
-     *
-     * {@see \Yiisoft\Widget\Widget::getView()}
-     */
-    abstract public function getView(): WebView;
+    public function assetManager(AssetManager $value): self
+    {
+        $this->assetManager = $value;
+
+        return $this;
+    }
+
+    public function clientEvents(array $value): self
+    {
+        $this->clientEvents = $value;
+
+        return $this;
+    }
+
+    public function clientOptions(array $value): self
+    {
+        $this->clientOptions = $value;
+
+        return $this;
+    }
+
+    public function enableClientOptions(bool $value): self
+    {
+        $this->enableClientOptions = $value;
+
+        return $this;
+    }
+
+    public function webView(object $value): self
+    {
+        $this->webView = $value;
+
+        return $this;
+    }
 }

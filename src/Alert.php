@@ -25,7 +25,7 @@ class Alert extends Widget
      * @var string the body content in the alert component. Alert widget will also be treated as the body content, and
      * will be rendered before this.
      */
-    private string $body;
+    private ?string $body = null;
 
     /**
      * @var array the options for rendering the close button tag.
@@ -139,17 +139,7 @@ class Alert extends Widget
     }
 
     /**
-     * Run widget with echo.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
-    /**
-     * {@see body}
+     * {@see $body}
      *
      * @param string $value
      *
@@ -163,7 +153,7 @@ class Alert extends Widget
     }
 
     /**
-     * {@see closeButton}
+     * {@see $closeButton}
      *
      * @param array $value
      *
@@ -177,7 +167,7 @@ class Alert extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
      * @param array $value
      *

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Accordion renders an accordion bootstrap javascript component.
@@ -144,7 +144,7 @@ class Accordion extends Widget
      *
      * @return string the rendering result
      *
-     * @throws InvalidConfigException if label isn't specified
+     * @throws InvalidConfigException
      */
     public function renderItems(): string
     {
@@ -268,19 +268,7 @@ class Accordion extends Widget
     }
 
     /**
-     * Run widget with echo.
-     *
-     * @return string
-     *
-     * @throws InvalidConfigException
-     */
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
-    /**
-     * {@see autoCloseItems}
+     * {@see $autoCloseItems}
      *
      * @param bool $value
      *
@@ -294,7 +282,7 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see encodeLabels}
+     * {@see $encodeLabels}
      *
      * @param bool $value
      *
@@ -308,7 +296,7 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see items}
+     * {@see $items}
      *
      * @param array $value
      *
@@ -322,7 +310,7 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see itemToggleOptions}
+     * {@see $itemToggleOptions}
      *
      * @param array $value
      *
@@ -336,13 +324,13 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
      * @param array $value
      *
      * @return Accordion
      */
-    public function options(array $value): self
+    public function options(array $value): Accordion
     {
         $this->options = $value;
 

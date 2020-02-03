@@ -1,17 +1,18 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Accordion;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Tests for Accordion widget
  *
  * AccordionTest
  */
-class AccordionTest extends TestCase
+final class AccordionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -146,9 +147,8 @@ HTML;
     {
         $this->expectException(InvalidConfigException::class);
 
-        Accordion::widget()
-            ->items($items)
-            ->getContent();
+        echo Accordion::widget()
+            ->items($items);
     }
 
     public function testAutoCloseItems(): void
@@ -214,7 +214,10 @@ HTML;
 
         $output = ob_get_clean();
 
-        $this->assertStringContainsString('<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w0-accordion-collapse0" ', $output);
+        $this->assertStringContainsString(
+            '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w0-accordion-collapse0"',
+            $output
+        );
         $this->assertStringNotContainsString('<button', $output);
 
         ob_start();
@@ -229,7 +232,10 @@ HTML;
 
         $output = ob_get_clean();
 
-        $this->assertStringContainsString('<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w1-accordion-collapse0" ', $output);
+        $this->assertStringContainsString(
+            '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w1-accordion-collapse0"',
+            $output
+        );
         $this->assertStringNotContainsString('collapse-toggle', $output);
     }
 }

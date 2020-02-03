@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
@@ -18,7 +19,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      * In particular, if the value of the `data` attribute is `['name' => 'xyz', 'age' => 13]`, two attributes will be
      * generated instead of one: `data-name="xyz" data-age="13"`.
      */
-    public static $dataAttributes = ['data', 'data-ng', 'ng', 'aria'];
+    public static array $dataAttributes = ['data', 'data-ng', 'ng', 'aria'];
 
     /**
      * Renders Bootstrap static form control.
@@ -42,32 +43,10 @@ class BaseHtml extends \Yiisoft\Html\Html
     }
 
     /**
-     * Generates a Bootstrap static form control for the given model attribute.
-     *
-     * @param $model the model object.
-     * @param string $attribute the attribute name or expression. See {@see getAttributeName()} for the format about
-     * attribute expression.
-     * @param array $options the tag options in terms of name-value pairs. See {@see staticControl()} for details.
-     *
-     * @return string generated HTML
-     *
-     * {@see staticControl()}.
-     */
-    public static function activeStaticControl($model, $attribute, $options = [])
-    {
-        if (isset($options['value'])) {
-            $value = $options['value'];
-            unset($options['value']);
-        } else {
-            $value = static::getAttributeValue($model, $attribute);
-        }
-        return static::staticControl($value, $options);
-    }
-
-    /**
      * Generates a Bootstrap radiolist.
      *
      * @param string $name
+     * @param null $selection
      * @param array $items
      * @param array $options
      *
@@ -78,7 +57,7 @@ class BaseHtml extends \Yiisoft\Html\Html
         if (!isset($options['item'])) {
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
             $encode = ArrayHelper::getValue($options, 'encode', true);
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode) {
+            $options['item'] = static function ($label, $name, $checked, $value) use ($itemOptions, $encode) {
                 $options = array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? static::encode($label) : $label,
@@ -96,6 +75,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      * Generates a Bootstrap radiolist.
      *
      * @param string $name
+     * @param null $selection
      * @param array $items
      * @param array $options
      *
@@ -106,7 +86,7 @@ class BaseHtml extends \Yiisoft\Html\Html
         if (!isset($options['item'])) {
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
             $encode = ArrayHelper::getValue($options, 'encode', true);
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode) {
+            $options['item'] = function ($label, $name, $checked, $value) use ($itemOptions, $encode) {
                 $options = array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? static::encode($label) : $label,
@@ -123,8 +103,9 @@ class BaseHtml extends \Yiisoft\Html\Html
     /**
      * Generate booleanInput.
      *
+     * @param string $type
      * @param string $name
-     * @param array $items
+     * @param bool $checked
      * @param array $options
      *
      * @return string
@@ -146,7 +127,7 @@ class BaseHtml extends \Yiisoft\Html\Html
         }
         if (isset($options['label'])) {
             $label = $options['label'];
-            $labelOptions = isset($options['labelOptions']) ? $options['labelOptions'] : [];
+            $labelOptions = $options['labelOptions'] ?? [];
             unset($options['label'], $options['labelOptions']);
 
             if (!isset($options['id'])) {
@@ -165,13 +146,5 @@ class BaseHtml extends \Yiisoft\Html\Html
         }
 
         return $hidden . static::input($type, $name, $value, $options);
-    }
-
-    public static function error($model, $attribute, $options = [])
-    {
-        if (!array_key_exists('class', $options)) {
-            $options['class'] = ['invalid-feedback'];
-        }
-        return parent::error($model, $attribute, $options);
     }
 }

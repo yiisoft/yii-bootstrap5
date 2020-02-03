@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -10,18 +11,8 @@ use Yiisoft\Yii\Bootstrap4\Breadcrumbs;
  *
  * BreadcrumbsTest
  */
-class BreadcrumbsTest extends TestCase
+final class BreadcrumbsTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testRender(): void
     {
         ob_start();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -10,18 +11,8 @@ use Yiisoft\Yii\Bootstrap4\Alert;
  *
  * AlertTest.
  */
-class AlertTest extends TestCase
+final class AlertTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testNormalAlert(): void
     {
         ob_start();
