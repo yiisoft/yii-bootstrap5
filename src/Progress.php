@@ -153,7 +153,7 @@ class Progress extends Widget
     {
         $valuePercent = (float)trim(rtrim($percent, '%'));
 
-        $options = array_merge($options, [
+        $options = \array_merge($options, [
             'role' => 'progressbar',
             'aria-valuenow' => $percent,
             'aria-valuemin' => 0,

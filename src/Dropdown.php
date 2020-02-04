@@ -110,7 +110,7 @@ class Dropdown extends Widget
         $lines = [];
 
         foreach ($items as $item) {
-            if (is_string($item)) {
+            if (\is_string($item)) {
                 $lines[] = ($item === '-')
                     ? Html::tag('div', '', ['class' => 'dropdown-divider'])
                     : $item;
@@ -121,7 +121,7 @@ class Dropdown extends Widget
                 continue;
             }
 
-            if (!array_key_exists('label', $item)) {
+            if (!\array_key_exists('label', $item)) {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
 

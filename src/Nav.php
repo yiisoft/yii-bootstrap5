@@ -216,7 +216,7 @@ class Nav extends Widget
      */
     public function renderItem($item): string
     {
-        if (is_string($item)) {
+        if (\is_string($item)) {
             return $item;
         }
 
@@ -242,7 +242,7 @@ class Nav extends Widget
             Html::addCssClass($options, ['widget' => 'dropdown']);
             Html::addCssClass($linkOptions, ['widget' => 'dropdown-toggle']);
 
-            if (is_array($items)) {
+            if (\is_array($items)) {
                 $items = $this->isChildActive($items, $active);
                 $items = $this->renderDropdown($items, $item);
             }
@@ -299,7 +299,7 @@ class Nav extends Widget
     protected function isChildActive(array $items, bool &$active): array
     {
         foreach ($items as $i => $child) {
-            if (is_array($child) && !ArrayHelper::getValue($child, 'visible', true)) {
+            if (\is_array($child) && !ArrayHelper::getValue($child, 'visible', true)) {
                 continue;
             }
 
@@ -312,7 +312,7 @@ class Nav extends Widget
 
             $childItems = ArrayHelper::getValue($child, 'items');
 
-            if (is_array($childItems)) {
+            if (\is_array($childItems)) {
                 $activeParent = false;
                 $items[$i]['items'] = $this->isChildActive($childItems, $activeParent);
 

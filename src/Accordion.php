@@ -152,12 +152,12 @@ class Accordion extends Widget
         $index = 0;
 
         foreach ($this->items as $key => $item) {
-            if (!is_array($item)) {
+            if (!\is_array($item)) {
                 $item = ['content' => $item];
             }
 
-            if (!array_key_exists('label', $item)) {
-                if (is_int($key)) {
+            if (!\array_key_exists('label', $item)) {
+                if (\is_int($key)) {
                     throw new InvalidConfigException("The 'label' option is required.");
                 }
 
@@ -187,7 +187,7 @@ class Accordion extends Widget
      */
     public function renderItem(string $header, array $item, int $index): string
     {
-        if (array_key_exists('content', $item)) {
+        if (\array_key_exists('content', $item)) {
             $id = $this->options['id'] . '-collapse' . $index;
             $options = ArrayHelper::getValue($item, 'contentOptions', []);
             $options['id'] = $id;
@@ -208,7 +208,7 @@ class Accordion extends Widget
                 $header = Html::encode($header);
             }
 
-            $itemToggleOptions = array_merge([
+            $itemToggleOptions = \array_merge([
                 'tag' => 'button',
                 'type' => 'button',
                 'data-toggle' => 'collapse',
@@ -231,9 +231,9 @@ class Accordion extends Widget
 
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
 
-            if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
+            if (\is_string($item['content']) || \is_numeric($item['content']) || \is_object($item['content'])) {
                 $content = Html::tag('div', $item['content'], ['class' => 'card-body']) . "\n";
-            } elseif (is_array($item['content'])) {
+            } elseif (\is_array($item['content'])) {
                 $content = Html::ul($item['content'], [
                         'class' => 'list-group',
                         'itemOptions' => [

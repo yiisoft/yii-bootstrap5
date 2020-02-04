@@ -87,7 +87,7 @@ class ButtonGroup extends Widget
         $buttons = [];
 
         foreach ($this->buttons as $button) {
-            if (is_array($button)) {
+            if (\is_array($button)) {
                 $visible = ArrayHelper::remove($button, 'visible', true);
 
                 if ($visible === false) {

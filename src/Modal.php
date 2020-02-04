@@ -285,7 +285,7 @@ class Modal extends Widget
      */
     protected function initOptions(): void
     {
-        $this->options = array_merge([
+        $this->options = \array_merge([
             'class' => 'fade',
             'role' => 'dialog',
             'tabindex' => -1,
@@ -295,10 +295,10 @@ class Modal extends Widget
         Html::addCssClass($this->options, ['widget' => 'modal']);
 
         if ($this->getEnableClientOptions() !== false) {
-            $this->clientOptions(array_merge(['show' => false], $this->getClientOptions()));
+            $this->clientOptions(\array_merge(['show' => false], $this->getClientOptions()));
         }
 
-        $this->titleOptions = array_merge([
+        $this->titleOptions = \array_merge([
             'id' => $this->options['id'] . '-label'
         ], $this->titleOptions);
 
@@ -307,7 +307,7 @@ class Modal extends Widget
         }
 
         if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = array_merge([
+            $this->closeButton = \array_merge([
                 'data-dismiss' => 'modal',
                 'class' => 'close',
                 'type' => 'button',
@@ -315,7 +315,7 @@ class Modal extends Widget
         }
 
         if ($this->toggleButton !== array()) {
-            $this->toggleButton = array_merge([
+            $this->toggleButton = \array_merge([
                 'data-toggle' => 'modal',
                 'type' => 'button'
             ], $this->toggleButton);

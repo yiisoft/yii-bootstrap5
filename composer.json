@@ -18,7 +18,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
-        "foxy/foxy": "^1.0",        
+        "foxy/foxy": "^1.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",
         "yiisoft/html": "^3.0@dev",
@@ -34,12 +34,6 @@
     "provide": {
         "yiisoft/yii-bootstrap-implementation": "3.0.0"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Yiisoft\\Yii\\Bootstrap4\\": "src"
@@ -56,7 +50,7 @@
         },
         "config": {
             "sort-packages": true
-        },        
+        },
         "config-plugin": {
             "tests": "config/tests.php"
         }

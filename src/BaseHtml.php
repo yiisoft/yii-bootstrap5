@@ -58,7 +58,7 @@ class BaseHtml extends \Yiisoft\Html\Html
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
             $encode = ArrayHelper::getValue($options, 'encode', true);
             $options['item'] = static function ($label, $name, $checked, $value) use ($itemOptions, $encode) {
-                $options = array_merge([
+                $options = \array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? static::encode($label) : $label,
                     'labelOptions' => ['class' => 'form-check-label'],
@@ -87,7 +87,7 @@ class BaseHtml extends \Yiisoft\Html\Html
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
             $encode = ArrayHelper::getValue($options, 'encode', true);
             $options['item'] = function ($label, $name, $checked, $value) use ($itemOptions, $encode) {
-                $options = array_merge([
+                $options = \array_merge([
                     'class' => 'form-check-input',
                     'label' => $encode ? static::encode($label) : $label,
                     'labelOptions' => ['class' => 'form-check-label'],
@@ -113,7 +113,7 @@ class BaseHtml extends \Yiisoft\Html\Html
     protected static function booleanInput(string $type, string $name, bool $checked = false, array $options = []): string
     {
         $options['checked'] = (bool)$checked;
-        $value = array_key_exists('value', $options) ? $options['value'] : '1';
+        $value = \array_key_exists('value', $options) ? $options['value'] : '1';
         if (isset($options['uncheck'])) {
             // add a hidden field so that if the checkbox is not selected, it still submits a value
             $hiddenOptions = [];
