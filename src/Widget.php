@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
@@ -11,26 +12,31 @@ class Widget extends \Yiisoft\Widget\Widget
     use BootstrapWidgetTrait;
 
     /**
-     * @var string $id
+     * @var string|null ?string $id
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var boolean $autoGenerate
      */
-    private $autoGenerate = true;
+    private bool $autoGenerate = true;
 
     /**
      * @var int a counter used to generate {@see id} for widgets.
      */
-    private static $counter = 0;
+    private static int $counter = 0;
 
     /**
      * @var string the prefix to the automatically generated widget IDs.
      *
      * {@see getId()}
      */
-    private static $autoIdPrefix = 'w';
+    private static string $autoIdPrefix = 'w';
+
+    public function run(): string
+    {
+        return parent::run();
+    }
 
     /**
      * Returns the Id of the widget.
@@ -39,8 +45,8 @@ class Widget extends \Yiisoft\Widget\Widget
      */
     public function getId(): string
     {
-        if ($this->autoGenerate && $this->id === null) {
-            $this->id = self::$autoIdPrefix . self::$counter++;
+        if ($this->autoGenerate) {
+            $this->id = self::$autoIdPrefix . static::$counter++;
         }
 
         return $this->id;

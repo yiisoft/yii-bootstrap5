@@ -2,7 +2,10 @@
     "name": "yiisoft/yii-bootstrap4",
     "type": "library",
     "description": "Yii Framework Twitter Bootstrap 4 Extension",
-    "keywords": ["yii", "bootstrap"],
+    "keywords": [
+        "yii",
+        "bootstrap4"
+    ],
     "license": "BSD-3-Clause",
     "support": {
         "source": "https://github.com/yiisoft/yii-bootstrap4",
@@ -11,51 +14,22 @@
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii"
     },
-    "authors": [
-        {
-            "name": "Qiang Xue",
-            "email": "qiang.xue@gmail.com",
-            "homepage": "http://www.yiiframework.com/"
-        },
-        {
-            "name": "Alexander Makarov",
-            "email": "sam@rmcreative.ru",
-            "homepage": "http://rmcreative.ru/"
-        },
-        {
-            "name": "Antonio Ramirez",
-            "email": "amigo.cobos@gmail.com"
-        },
-        {
-            "name": "Paul Klimov",
-            "email": "klimov.paul@gmail.com"
-        },
-        {
-            "name": "Simon Karlen",
-            "email": "simi.albi@gmail.com"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.2",
-        "psr/event-dispatcher": "1.0.0",
-        "psr/event-dispatcher-implementation": "1.0.0",
-        "psr/http-message": "^1.0",
+        "php": "^7.4",
+        "foxy/foxy": "^1.0",        
         "yiisoft/arrays": "^3.0@dev",
-        "yiisoft/di": "^3.0@dev",
-        "yiisoft/event-dispatcher": "^3.0@dev",
-        "yiisoft/factory": "^3.0@dev",
+        "yiisoft/assets": "^1.0@dev",
         "yiisoft/html": "^3.0@dev",
         "yiisoft/json": "^3.0@dev",
-        "yiisoft/view": "^3.0@dev",
-        "yiisoft/yii-jquery": "^3.0@dev"
+        "yiisoft/widget": "^3.0@dev"
     },
     "require-dev": {
-        "foxy/foxy": "^1.0",
-        "yiisoft/log": "^3.0@dev",
         "hiqdev/composer-config-plugin": "^1.0@dev",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "yiisoft/aliases": "^3.0@dev",
+        "yiisoft/di": "^3.0@dev"
     },
     "provide": {
         "yiisoft/yii-bootstrap-implementation": "3.0.0"
@@ -80,6 +54,9 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         },
+        "config": {
+            "sort-packages": true
+        },        
         "config-plugin": {
             "tests": "config/tests.php"
         }

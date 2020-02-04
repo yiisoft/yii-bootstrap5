@@ -27,67 +27,10 @@ return [
         '@root' => dirname(__DIR__, 1),
         '@public' => '@root/tests/public',
         '@basePath' => '@public/assets',
-        '@baseUrl'  => '/baseUrl',
+        '@web'  => '/',
         '@converter' => '@public/assetconverter',
         '@npm' => '@root/node_modules',
         '@view' => '@public/view',
-        '@web' => '@baseUrl',
         '@testSourcePath' => '@public/assetsources'
-    ],
-
-    AssetConverter::class => [
-        '__class' => AssetConverter::class,
-        '__construct()' => [
-            Reference::to(Aliases::class),
-            Reference::to(LoggerInterface::class)
-        ]
-    ],
-
-    AssetManager::class => [
-        '__class' => AssetManager::class,
-        '__construct()' => [
-            Reference::to(Aliases::class),
-            Reference::to(LoggerInterface::class)
-        ],
-        'setBasePath()' => ['@basePath'],
-        'setBaseUrl()'  => ['@baseUrl'],
-    ],
-
-    ListenerProviderInterface::class => [
-        '__class' => Provider::class,
-    ],
-
-    EventDispatcherInterface::class => [
-        '__class' => Dispatcher::class,
-        '__construct()' => [
-           'listenerProvider' => Reference::to(ListenerProviderInterface::class)
-        ],
-    ],
-
-    LoggerInterface::class => [
-        '__class' => Logger::class,
-        '__construct()' => [
-            'targets' => [],
-        ],
-    ],
-
-    Theme::class => [
-        '__class' => Theme::class,
-    ],
-
-    WebView::class => function (ContainerInterface $container) {
-        $aliases = $container->get(Aliases::class);
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $theme = $container->get(Theme::class);
-        $logger = $container->get(LoggerInterface::class);
-        return new WebView($aliases->get('@view'), $theme, $eventDispatcher, $logger);
-    },
-
-    Widget::class => [
-        '__class' => Widget::class,
-        '__construct()' => [
-            Reference::to(EventDispatcherInterface::class),
-            Reference::to(WebView::class),
-        ]
     ],
 ];

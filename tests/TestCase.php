@@ -10,14 +10,11 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\LoggerInterface;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Asset\AssetBundle;
-use Yiisoft\Asset\AssetManager;
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Files\FileHelper;
 use Yiisoft\Di\Container;
-use Yiisoft\View\Theme;
-use Yiisoft\View\View;
-use Yiisoft\View\WebView;
 use Yiisoft\Widget\Widget;
+use Yiisoft\Widget\WidgetFactory;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -37,61 +34,20 @@ abstract class TestCase extends BaseTestCase
     private $container;
 
     /**
-     * @var EventDispatcherInterface $eventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var LoggerInterface $logger
-     */
-    protected $logger;
-
-    /**
-     * @var Theme $theme
-     */
-    protected $theme;
-
-    /**
      * @var WebView $webView
      */
     protected $webView;
 
-    /**
-     * @var Widget $widget
-     */
-    protected $widget;
-
-    /**
-     * @var ListenerProviderInterface
-     */
-    protected $listenerProvider;
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $config = require Builder::path('tests');
         $this->container = new Container($config);
         $this->aliases = $this->container->get(Aliases::class);
-        $this->assetManager = $this->container->get(AssetManager::class);
-        $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
-        $this->listenerProvider = $this->container->get(ListenerProviderInterface::class);
-        $this->logger = $this->container->get(LoggerInterface::class);
-        $this->theme = $this->container->get(Theme::class);
-        $this->webView = $this->container->get(WebView::class);
-        $this->webView->setAssetManager($this->assetManager);
-        $this->widget = $this->container->get(Widget::class);
+
+        WidgetFactory::initialize($this->container, []);
     }
 
-    /**
-     * tearDown
-     *
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->container = null;
@@ -129,12 +85,6 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function touch(string $path): void
-    {
-        FileHelper::createDirectory(dirname($path));
-        touch($path);
-    }
-
     protected function removeAssets(string $basePath): void
     {
         $handle = opendir($dir = $this->aliases->get($basePath));
@@ -153,36 +103,5 @@ abstract class TestCase extends BaseTestCase
             }
         }
         closedir($handle);
-    }
-
-    /**
-     * Verify sources publish files assetbundle.
-     *
-     * @param string $type
-     * @param AssetBundle $bundle
-     *
-     * @return void
-     */
-    protected function sourcesPublishVerifyFiles(string $type, AssetBundle $bundle): void
-    {
-        foreach ($bundle->$type as $filename) {
-            $publishedFile = $bundle->basePath . DIRECTORY_SEPARATOR . $filename;
-            $sourceFile = $this->aliases->get($bundle->sourcePath) . DIRECTORY_SEPARATOR . $filename;
-            $this->assertFileExists($publishedFile);
-            $this->assertFileEquals($publishedFile, $sourceFile);
-        }
-        $this->assertDirectoryExists($bundle->basePath . DIRECTORY_SEPARATOR . $type);
-    }
-
-    /**
-     * Properly removes symlinked directory under Windows, MacOS and Linux.
-     *
-     * @param string $file path to symlink
-     *
-     * @return bool
-     */
-    protected function unlink(string $file): bool
-    {
-        return FileHelper::unlink($file);
     }
 }

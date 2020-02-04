@@ -48,7 +48,7 @@ trait BootstrapWidgetTrait
     private array $clientEvents = [];
 
     /**
-     * @var bool $enableClientOptions /disable script Bootstrap JS plugin.
+     * @var bool $enableClientOptions enable/disable script Bootstrap JS plugin.
      */
     private bool $enableClientOptions = false;
 
@@ -67,7 +67,7 @@ trait BootstrapWidgetTrait
      *
      * @throws \JsonException
      */
-    protected function registerPlugin(string $name, array $options): void {
+    protected function registerPlugin(string $name, array $options = []): void {
         $id = $options['id'];
 
         if ($this->assetManager !== null) {
@@ -115,6 +115,13 @@ trait BootstrapWidgetTrait
         return $this;
     }
 
+    /**
+     * {@see $clientEvents}
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
     public function clientEvents(array $value): self
     {
         $this->clientEvents = $value;
@@ -122,6 +129,13 @@ trait BootstrapWidgetTrait
         return $this;
     }
 
+    /**
+     * {@see $clientOptions}
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
     public function clientOptions(array $value): self
     {
         $this->clientOptions = $value;
@@ -129,11 +143,21 @@ trait BootstrapWidgetTrait
         return $this;
     }
 
+    public function getClientOptions(): array
+    {
+        return $this->clientOptions;
+    }
+
     public function enableClientOptions(bool $value): self
     {
         $this->enableClientOptions = $value;
 
         return $this;
+    }
+
+    public function getEnableClientOptions(): bool
+    {
+        return $this->enableClientOptions;
     }
 
     public function webView(object $value): self
