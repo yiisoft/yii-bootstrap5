@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
@@ -26,60 +27,60 @@ class Modal extends Widget
     /**
      * The additional css class of large modal
      */
-    const SIZE_LARGE = "modal-lg";
+    public const SIZE_LARGE = 'modal-lg';
 
     /**
      * The additional css class of small modal
      */
-    const SIZE_SMALL = "modal-sm";
+    public const SIZE_SMALL = 'modal-sm';
 
     /**
      * The additional css class of default modal
      */
-    const SIZE_DEFAULT = "";
+    public const SIZE_DEFAULT = '';
 
     /**
      * @var string the tile content in the modal window.
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @var array additional title options.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $titleOptions = [];
+    private array $titleOptions = [];
 
     /**
      * @var array additional header options.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $headerOptions = [];
+    private array $headerOptions = [];
 
     /**
      * @var array body options.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $bodyOptions = [];
+    private array $bodyOptions = [];
 
     /**
      * @var string the footer content in the modal window.
      */
-    private $footer;
+    private ?string $footer = null;
 
     /**
      * @var array additional footer options
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $footerOptions = [];
+    private array $footerOptions = [];
 
     /**
      * @var string the modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or empty for default.
      */
-    private $size;
+    private ?string $size = null;
 
     /**
      * @var array the options for rendering the close button tag.
@@ -95,12 +96,12 @@ class Modal extends Widget
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      */
-    private $closeButton = [];
+    private array $closeButton = [];
 
     /**
-     * @var boolean $closeButtonEnabled. Enable/Disable close button.
+     * @var bool $closeButtonEnabled. Enable/Disable close button.
      */
-    private $closeButtonEnabled = true;
+    private bool $closeButtonEnabled = true;
 
     /**
      * @var array the options for rendering the toggle button tag.
@@ -116,12 +117,12 @@ class Modal extends Widget
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      */
-    private $toggleButton = [];
+    private array $toggleButton = [];
 
     /**
-     * @var boolean $toggleButtonEnabled. Enable/Disable toggle button.
+     * @var bool $toggleButtonEnabled. Enable/Disable toggle button.
      */
-    private $toggleButtonEnabled = true;
+    private bool $toggleButtonEnabled = true;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -130,19 +131,15 @@ class Modal extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Initializes the widget.
      *
      * @return void
-     *
-     * @throws InvalidConfigException
      */
-    public function init(): void
+    public function start(): void
     {
-        parent::init();
-
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-modal";
         }
@@ -226,6 +223,8 @@ class Modal extends Widget
     /**
      * Renders the HTML markup for the footer of the modal.
      *
+     * @param null $result
+     *
      * @return string the rendering result
      */
     protected function renderFooter($result = null): ?string
@@ -241,6 +240,8 @@ class Modal extends Widget
 
     /**
      * Renders the toggle button.
+     *
+     * @param null $result
      *
      * @return string the rendering result
      */
@@ -258,6 +259,8 @@ class Modal extends Widget
 
     /**
      * Renders the close button.
+     *
+     * @param null $result
      *
      * @return string the rendering result
      */
@@ -291,8 +294,8 @@ class Modal extends Widget
 
         Html::addCssClass($this->options, ['widget' => 'modal']);
 
-        if ($this->clientOptions !== false) {
-            $this->clientOptions = array_merge(['show' => false], $this->clientOptions);
+        if ($this->getEnableClientOptions() !== false) {
+            $this->clientOptions(array_merge(['show' => false], $this->getClientOptions()));
         }
 
         $this->titleOptions = array_merge([
@@ -322,19 +325,14 @@ class Modal extends Widget
         }
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see bodyOptions}
+     * {@see $bodyOptions}
      *
-     * @param array $bodyOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function bodyOptions(array $value): self
+    public function bodyOptions(array $value): Modal
     {
         $this->bodyOptions = $value;
 
@@ -342,13 +340,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see closeButton}
+     * {@see $closeButton}
      *
-     * @param array $closeButton
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function closeButton(array $value): self
+    public function closeButton(array $value): Modal
     {
         $this->closeButton = $value;
 
@@ -356,13 +354,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see closeButtonEnabled}
+     * {@see $closeButtonEnabled}
      *
-     * @param bool $closeButtonEnabled
+     * @param bool $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function closeButtonEnabled(bool $value): self
+    public function closeButtonEnabled(bool $value): Modal
     {
         $this->closeButtonEnabled = $value;
 
@@ -370,13 +368,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see footer}
+     * {@see $footer}
      *
-     * @param string $footer
+     * @param string $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function footer(string $value): self
+    public function footer(string $value): Modal
     {
         $this->footer = $value;
 
@@ -384,13 +382,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see footerOptions}
+     * {@see $footerOptions}
      *
-     * @param string $footerOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function footerOptions(string $value): self
+    public function footerOptions(array $value): Modal
     {
         $this->footerOptions = $value;
 
@@ -398,13 +396,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see headerOptions}
+     * {@see $headerOptions}
      *
-     * @param array $headerOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function headerOptions(array $value): self
+    public function headerOptions(array $value): Modal
     {
         $this->headerOptions = $value;
 
@@ -412,13 +410,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function options(array $value): self
+    public function options(array $value): Modal
     {
         $this->options = $value;
 
@@ -426,13 +424,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see title}
+     * {@see $title}
      *
-     * @param string $title
+     * @param string $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function title(string $value): self
+    public function title(string $value): Modal
     {
         $this->title = $value;
 
@@ -440,13 +438,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see titleOptions}
+     * {@see $titleOptions}
      *
-     * @param array $titleOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function titleOptions(array $value): self
+    public function titleOptions(array $value): Modal
     {
         $this->titleOptions = $value;
 
@@ -454,13 +452,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see toggleButton}
+     * {@see $toggleButton}
      *
-     * @param array $toggleButton
+     * @param array $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function toggleButton(array $value): self
+    public function toggleButton(array $value): Modal
     {
         $this->toggleButton = $value;
 
@@ -468,13 +466,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see toggleButtonEnabled}
+     * {@see $toggleButtonEnabled}
      *
-     * @param bool $toggleButtonEnabled
+     * @param bool $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function toggleButtonEnabled(bool $value): self
+    public function toggleButtonEnabled(bool $value): Modal
     {
         $this->toggleButtonEnabled = $value;
 
@@ -482,13 +480,13 @@ class Modal extends Widget
     }
 
     /**
-     * {@see size}
+     * {@see $size}
      *
-     * @param string $size
+     * @param string $value
      *
-     * @return $this
+     * @return Modal
      */
-    public function size(string $value): self
+    public function size(string $value): Modal
     {
         $this->size = $value;
 

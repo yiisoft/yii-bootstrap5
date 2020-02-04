@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -24,9 +25,9 @@ class ModalTest extends TestCase
             ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->closeButtonEnabled(false)
             ->toggleButtonEnabled(false)
-            ->init();
+            ->start();
 
-        Modal::end();
+        echo Modal::end();
 
         $expected = <<<HTML
 
@@ -69,11 +70,11 @@ HTML;
                     'class' => ['btn', 'btn-primary']
                 ])
             )
-            ->init();
+            ->start();
 
         echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
 
-        Modal::end();
+        echo Modal::end();
 
         $expected = <<<HTML
 
@@ -122,11 +123,11 @@ HTML;
                     'class' => ['btn', 'btn-primary']
                 ])
             )
-            ->init();
+            ->start();
 
         echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
 
-        Modal::end();
+        echo Modal::end();
 
         $this->assertStringContainsString(
             '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#w0-modal">Launch demo modal</button>',

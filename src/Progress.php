@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Yii\Bootstrap4\Exception\InvalidConfigException;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -48,12 +49,12 @@ class Progress extends Widget
     /**
      * @var string the button label.
      */
-    private $label;
+    private string $label;
 
     /**
-     * @var int the amount of progress as a percentage.
+     * @var string|null the amount of progress as a percentage.
      */
-    private $percent = 0;
+    private ?string $percent = null;
 
     /**
      * @var array a set of bars that are stacked together to form a single progress bar.
@@ -71,7 +72,7 @@ class Progress extends Widget
      * ]
      * ```
      */
-    private $bars;
+    private array $bars;
 
     /**
      * @var array the HTML attributes for the widget container tag. The following special options are recognized:
@@ -80,22 +81,27 @@ class Progress extends Widget
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private $options = [];
+    private array $options = [];
+
+    /**
+     * @var array the HTML attributes of the bar. This property will only be considered if {@see bars} is empty
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are being rendered}
+     */
+    public array $barOptions = [];
 
     /**
      * Renders the widget.
      *
      * @return string
      */
-    public function getContent(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";
         }
 
         Html::addCssClass($this->options, ['widget' => 'progress']);
-
-        BootstrapAsset::register($this->getView());
 
         return $this->renderProgress();
     }
@@ -160,19 +166,14 @@ class Progress extends Widget
         return Html::tag('div', $label, $options);
     }
 
-    public function __toString(): string
-    {
-        return $this->run();
-    }
-
     /**
-     * {@see bars}
+     * {@see $bars}
      *
-     * @param array $bars
+     * @param array $value
      *
-     * @return $this
+     * @return Progress
      */
-    public function bars(array $value): self
+    public function bars(array $value): Progress
     {
         $this->bars = $value;
 
@@ -180,13 +181,13 @@ class Progress extends Widget
     }
 
     /**
-     * {@see barOptions}
+     * {@see $barOptions}
      *
-     * @param array $barOptions
+     * @param array $value
      *
-     * @return $this
+     * @return Progress
      */
-    public function barOptions(array $value): self
+    public function barOptions(array $value): Progress
     {
         $this->barOptions = $value;
 
@@ -194,13 +195,13 @@ class Progress extends Widget
     }
 
     /**
-     * {@see label}
+     * {@see $label}
      *
-     * @param string $label
+     * @param string $value
      *
-     * @return $this
+     * @return Progress
      */
-    public function label(string $value): self
+    public function label(string $value): Progress
     {
         $this->label = $value;
 
@@ -208,13 +209,13 @@ class Progress extends Widget
     }
 
     /**
-     * {@see options}
+     * {@see $options}
      *
-     * @param array $options
+     * @param array $value
      *
-     * @return $this
+     * @return Progress
      */
-    public function options(array $value): self
+    public function options(array $value): Progress
     {
         $this->options = $value;
 
@@ -222,13 +223,13 @@ class Progress extends Widget
     }
 
     /**
-     * {@see percent}
+     * {@see $percent}
      *
-     * @param string $percent
+     * @param string $value
      *
-     * @return $this
+     * @return Progress
      */
-    public function percent(string $value): self
+    public function percent(string $value): Progress
     {
         $this->percent = $value;
 

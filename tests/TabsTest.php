@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -13,7 +14,7 @@ use Yiisoft\Yii\Bootstrap4\Tabs;
  */
 class TabsTest extends TestCase
 {
-    public function testRoleTablist(): void
+    public function testRoleTabList(): void
     {
         ob_start();
         ob_implicit_flush(0);
@@ -38,7 +39,7 @@ class TabsTest extends TestCase
     /**
      * Each tab should have a corresponding unique ID
      *
-     * @see https://github.com/yiisoft/yii2/issues/6150
+     * {@see https://github.com/yiisoft/yii2/issues/6150}
      */
     public function testIds(): void
     {
@@ -251,8 +252,8 @@ class TabsTest extends TestCase
         ob_start();
         ob_implicit_flush(0);
 
-        $checkAttribute = "test_attribute";
-        $checkValue = "check_attribute";
+        $checkAttribute = 'test_attribute';
+        $checkValue = 'check_attribute';
 
         Tabs::counter(0);
 
@@ -281,7 +282,6 @@ class TabsTest extends TestCase
         Tabs::counter(0);
 
         echo Tabs::widget()
-            ->setId('mytab')
             ->items([
                 [
                     'label' => 'Tab 1',
@@ -301,20 +301,21 @@ class TabsTest extends TestCase
                     'label' => 'Tab 4',
                     'content' => 'some content'
                 ]
-            ]);
+            ])
+            ->options(['id' => 'mytab']);
 
         $html = ob_get_clean();
 
         $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tabs-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tabs-tab0" aria-selected="true">Tab 1</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
             $html
         );
         $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tabs-tab1" data-toggle="tab" role="tab" aria-controls="mytab-tabs-tab1" aria-selected="true">Tab 2</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab1" data-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tabs-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tabs-tab2" aria-selected="true">Tab 3</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
             $html
         );
     }
@@ -327,7 +328,6 @@ class TabsTest extends TestCase
         Tabs::counter(0);
 
         echo Tabs::widget()
-            ->setId('mytab')
             ->items([
                 [
                     'label' => 'Tab 1',
@@ -347,10 +347,11 @@ class TabsTest extends TestCase
                     'label' => 'Tab 4',
                     'content' => 'some content'
                 ]
-            ]);
+            ])
+            ->options(['id' => 'mytab']);
 
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tabs-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tabs-tab2" aria-selected="true">Tab 3</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
             ob_get_clean()
         );
     }
@@ -389,7 +390,7 @@ class TabsTest extends TestCase
     }
 
     /**
-     * @see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339
+     * {@see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339}
      */
     public function testIdRendering(): void
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
@@ -10,7 +11,7 @@ use Yiisoft\Yii\Bootstrap4\Progress;
  *
  * ProgressTest.
  */
-class ProgressTest extends TestCase
+final class ProgressTest extends TestCase
 {
     public function testSimpleRender(): void
     {

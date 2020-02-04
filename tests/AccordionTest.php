@@ -14,16 +14,6 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 final class AccordionTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testRender(): void
     {
         ob_start();
