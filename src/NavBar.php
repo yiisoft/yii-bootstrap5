@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -153,7 +153,8 @@ class NavBar extends Widget
     private string $screenReaderToggleText = 'Toggle navigation';
 
     /**
-     * @var string the toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`
+     * @var string the toggle button content. Defaults to bootstrap 4 default
+     * `<span class="navbar-toggler-icon"></span>`
      */
     private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
 
@@ -196,8 +197,6 @@ class NavBar extends Widget
      * Initializes the widget.
      *
      * @return void
-     *
-     * @throws InvalidConfigException
      */
     public function start(): void
     {
@@ -221,7 +220,7 @@ class NavBar extends Widget
             Html::addCssClass($this->innerContainerOptions, 'container');
         }
 
-        if (!empty($this->brandImage)) {
+        if ($this->brandImage !== null) {
             $this->brandLabel = Html::img($this->brandImage);
         }
 
@@ -245,7 +244,7 @@ class NavBar extends Widget
         echo Html::beginTag($navTag, $navOptions) . "\n";
 
         if ($this->renderInnerContainer) {
-            echo Html::beginTag('div', $this->innerContainerOptions)."\n";
+            echo Html::beginTag('div', $this->innerContainerOptions) . "\n";
         }
 
         echo $brand . "\n";

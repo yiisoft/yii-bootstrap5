@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
@@ -12,7 +12,7 @@ use Yiisoft\Yii\Bootstrap4\Tabs;
  *
  * TabsTest
  */
-class TabsTest extends TestCase
+final class TabsTest extends TestCase
 {
     public function testRoleTabList(): void
     {

@@ -93,7 +93,6 @@ class ButtonToolbar extends Widget
 
         foreach ($this->buttonGroups as $group) {
             if (\is_array($group)) {
-
                 if (!isset($group['buttons'])) {
                     continue;
                 }

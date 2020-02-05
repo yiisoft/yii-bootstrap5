@@ -162,7 +162,10 @@ class Dropdown extends Widget
                 Html::addCssClass($submenuOptions, ['dropdown-submenu']);
                 Html::addCssClass($linkOptions, ['dropdown-toggle']);
 
-                $lines[] = Html::beginTag('div', \array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions));
+                $lines[] = Html::beginTag(
+                    'div',
+                    \array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions)
+                );
 
                 $lines[] = Html::a($label, $url, \array_merge([
                     'data-toggle' => 'dropdown',

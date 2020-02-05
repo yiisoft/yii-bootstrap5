@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
@@ -12,7 +12,7 @@ use Yiisoft\Yii\Bootstrap4\Modal;
  *
  * ModalTest.
  */
-class ModalTest extends TestCase
+final class ModalTest extends TestCase
 {
     public function testBodyOptions(): void
     {

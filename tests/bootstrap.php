@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 // ensure we get report on all possible php errors
 error_reporting(E_ALL);

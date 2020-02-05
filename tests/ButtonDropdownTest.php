@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
@@ -10,7 +11,7 @@ use Yiisoft\Yii\Bootstrap4\ButtonDropdown;
  *
  * ButtonDropdownTest
  */
-class ButtonDropdownTest extends TestCase
+final class ButtonDropdownTest extends TestCase
 {
     protected function setUp(): void
     {

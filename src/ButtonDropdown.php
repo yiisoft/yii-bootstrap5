@@ -111,7 +111,7 @@ class ButtonDropdown extends Widget
      */
     public function run(): string
     {
-        // Set options id to button options id to ensure correct css selector in plugin initialisation
+        /* Set options id to button options id to ensure correct css selector in plugin initialisation */
         if (empty($this->options['id'])) {
             $id = $this->getId();
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -64,10 +64,9 @@ trait BootstrapWidgetTrait
      * @param array $options
      *
      * @return void
-     *
-     * @throws \JsonException
      */
-    protected function registerPlugin(string $name, array $options = []): void {
+    protected function registerPlugin(string $name, array $options = []): void
+    {
         $id = $options['id'];
 
         if ($this->assetManager !== null) {

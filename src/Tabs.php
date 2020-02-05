@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -53,7 +53,8 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
 class Tabs extends Widget
 {
     /**
-     * @var array list of tabs in the tabs widget. Each array element represents a single tab with the following structure:
+     * @var array list of tabs in the tabs widget. Each array element represents a single tab with the following
+     * structure:
      *
      * - label: string, required, the tab header label.
      * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
@@ -194,6 +195,7 @@ class Tabs extends Widget
             if (!ArrayHelper::remove($item, 'visible', true)) {
                 continue;
             }
+
             if (!array_key_exists('label', $item)) {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
@@ -209,19 +211,21 @@ class Tabs extends Widget
 
             ArrayHelper::setValue($items[$n], 'options', $headerOptions);
 
-            if (!isset($item['url'])) {
-                ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
-                ArrayHelper::setValue($items[$n], 'linkOptions.data.toggle', 'tab');
-                ArrayHelper::setValue($items[$n], 'linkOptions.role', 'tab');
-                ArrayHelper::setValue($items[$n], 'linkOptions.aria-controls', $options['id']);
-                if (!$disabled) {
-                    ArrayHelper::setValue($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
-                }
-            } else {
+            if (isset($item['url'])) {
                 continue;
             }
 
+            ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
+            ArrayHelper::setValue($items[$n], 'linkOptions.data.toggle', 'tab');
+            ArrayHelper::setValue($items[$n], 'linkOptions.role', 'tab');
+            ArrayHelper::setValue($items[$n], 'linkOptions.aria-controls', $options['id']);
+
+            if (!$disabled) {
+                ArrayHelper::setValue($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
+            }
+
             Html::addCssClass($options, ['widget' => 'tab-pane']);
+
             if ($selected) {
                 Html::addCssClass($options, 'active');
             }
@@ -258,7 +262,8 @@ class Tabs extends Widget
             $active = ArrayHelper::getValue($item, 'active', null);
             $visible = ArrayHelper::getValue($item, 'visible', true);
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
-            if ($visible && $active !== false && $disabled !== true) {
+
+            if ($visible && $active !== false && ($disabled !== true)) {
                 $this->items[$i]['active'] = true;
                 return;
             }
@@ -274,7 +279,7 @@ class Tabs extends Widget
      */
     public function renderPanes($panes): string
     {
-        return $this->renderTabContent ? "\n" . Html::tag('div', implode("\n", $panes), $this->tabContentOptions) : '';
+        return $this->renderTabContent ? ("\n" . Html::tag('div', implode("\n", $panes), $this->tabContentOptions)) : '';
     }
 
     /**

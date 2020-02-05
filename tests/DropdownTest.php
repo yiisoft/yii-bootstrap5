@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Dropdown;

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
@@ -11,7 +11,7 @@ use Yiisoft\Yii\Bootstrap4\Nav;
  *
  * NavTest
  */
-class NavTest extends TestCase
+final class NavTest extends TestCase
 {
     public function testIds(): void
     {

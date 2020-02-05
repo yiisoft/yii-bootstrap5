@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -187,8 +187,6 @@ class Nav extends Widget
      * Renders widget items.
      *
      * @return string
-     *
-     * @throws InvalidConfigException
      */
     public function renderItems(): string
     {
@@ -232,7 +230,6 @@ class Nav extends Widget
         $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
         $disabled = ArrayHelper::getValue($item, 'disabled', false);
         $active = $this->isItemActive($item);
-
 
         if (empty($items)) {
             $items = '';

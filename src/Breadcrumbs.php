@@ -87,8 +87,6 @@ class Breadcrumbs extends Widget
      * Renders the widget.
      *
      * @return string
-     *
-     * @throws InvalidConfigException
      */
     public function run(): string
     {
@@ -243,7 +241,7 @@ class Breadcrumbs extends Widget
         $this->navOptions = $value;
 
         return $this;
-    }  
+    }
 
     /**
      * {@see $options}
@@ -271,5 +269,5 @@ class Breadcrumbs extends Widget
         $this->tag = $value;
 
         return $this;
-    }    
+    }
 }

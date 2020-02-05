@@ -119,8 +119,6 @@ class Accordion extends Widget
      * Renders the widget.
      *
      * @return string
-     *
-     * @throws InvalidConfigException
      */
     public function run(): string
     {

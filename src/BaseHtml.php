@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -64,6 +64,7 @@ class BaseHtml extends \Yiisoft\Html\Html
                     'labelOptions' => ['class' => 'form-check-label'],
                     'value' => $value
                 ], $itemOptions);
+
                 return '<div class="form-check">' . static::radio($name, $checked, $options) . '</div>';
             };
         }
@@ -93,6 +94,7 @@ class BaseHtml extends \Yiisoft\Html\Html
                     'labelOptions' => ['class' => 'form-check-label'],
                     'value' => $value
                 ], $itemOptions);
+
                 return '<div class="form-check">' . Html::checkbox($name, $checked, $options) . '</div>';
             };
         }
@@ -142,6 +144,7 @@ class BaseHtml extends \Yiisoft\Html\Html
             } else {
                 $content = $input . "\n" . static::label($label, $options['id'], $labelOptions);
             }
+
             return $hidden . $content;
         }
 
