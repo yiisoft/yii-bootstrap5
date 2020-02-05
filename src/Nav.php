@@ -173,7 +173,6 @@ class Nav extends Widget
      */
     public function run(): string
     {
-
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-nav";
         }
