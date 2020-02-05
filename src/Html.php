@@ -11,6 +11,6 @@ namespace Yiisoft\Yii\Bootstrap4;
  * Attention: do not confuse {@see \Yiisoft\Yii\Bootstrap4\Html} and {@see \Yiisoft\Html\Html}, be careful in which
  * class you are using inside your views.
  */
-class Html extends BaseHtml
+abstract class Html extends BaseHtml
 {
 }

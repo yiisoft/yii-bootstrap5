@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Bootstrap4;
 /**
  * Widget.
  */
-class Widget extends \Yiisoft\Widget\Widget
+abstract class Widget extends \Yiisoft\Widget\Widget
 {
     use BootstrapWidgetTrait;
 
@@ -32,11 +32,6 @@ class Widget extends \Yiisoft\Widget\Widget
      * {@see getId()}
      */
     private static string $autoIdPrefix = 'w';
-
-    public function run(): string
-    {
-        return parent::run();
-    }
 
     /**
      * Returns the Id of the widget.
