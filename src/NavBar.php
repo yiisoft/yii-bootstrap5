@@ -51,7 +51,7 @@ use Yiisoft\Arrays\ArrayHelper;
  *        ->options([
  *            'class' => 'navbar navbar-dark bg-dark navbar-expand-lg text-white',
  *        ])
- *        ->init();
+ *        ->start();
  *
  *        echo Nav::widget()
  *            ->currentPath($currentPath)
@@ -60,7 +60,7 @@ use Yiisoft\Arrays\ArrayHelper;
  *                'class' => 'navbar-nav float-right ml-auto'
  *            ]);
  *
- *        NavBar::end(); ?>
+ *        echo NavBar::end(); ?>
  * ```
  * Note: $currentPath it must be injected from each controller to the main controller.
  *
