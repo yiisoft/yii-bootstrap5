@@ -56,7 +56,7 @@ class Progress extends Widget
 
     private array $barOptions = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";

@@ -80,7 +80,7 @@ class Modal extends Widget
         echo $this->renderBodyBegin() . "\n";
     }
 
-    public function run(): string
+    protected function run(): string
     {
         echo "\n" . $this->renderBodyEnd();
         echo "\n" . $this->renderFooter();

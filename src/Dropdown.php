@@ -34,7 +34,7 @@ class Dropdown extends Widget
 
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";

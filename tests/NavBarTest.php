@@ -16,12 +16,9 @@ final class NavBarTest extends TestCase
 {
     public function testRender(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         NavBar::counter(0);
 
-        NavBar::begin()
+        $html = NavBar::begin()
             ->brandLabel('My Company')
             ->brandUrl('/')
             ->options([
@@ -29,7 +26,7 @@ final class NavBarTest extends TestCase
             ])
             ->start();
 
-        echo NavBar::end();
+        $html .= NavBar::end();
 
         $expected = <<<EXPECTED
 <nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
@@ -42,82 +39,70 @@ final class NavBarTest extends TestCase
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testBrandImage(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         NavBar::counter(0);
 
-        NavBar::begin()
+        $html = NavBar::begin()
             ->brandImage('/images/test.jpg')
             ->brandUrl('/')
             ->start();
 
-        echo NavBar::end();
+        $html .= NavBar::end();
 
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
-            ob_get_clean()
+            $html
         );
     }
 
     public function testBrandLink(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         NavBar::counter(0);
 
-        NavBar::begin()
+        $html = NavBar::begin()
             ->brandLabel('Yii Framework')
             ->brandUrl('/index.php')
             ->start();
 
-        echo NavBar::end();
+        $html .= NavBar::end();
 
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
-            ob_get_clean()
+            $html
         );
     }
 
     public function testBrandSpan(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         NavBar::counter(0);
 
-        NavBar::begin()
+        $html = NavBar::begin()
             ->brandLabel('Yii Framework')
             ->brandUrl('')
             ->start();
 
-        echo NavBar::end();
+        $html .= NavBar::end();
 
         $this->assertStringContainsString(
             '<span class="navbar-brand">Yii Framework</span>',
-            ob_get_clean()
+            $html
         );
     }
 
     public function testNavAndForm(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         NavBar::counter(0);
 
-        NavBar::begin()
+        $html = NavBar::begin()
             ->brandLabel('My Company')
             ->brandUrl('/')
             ->start();
 
-        echo Nav::widget()
+        $html .= Nav::widget()
             ->items([
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
@@ -129,16 +114,17 @@ EXPECTED;
                     ]
                 ]
             ])
-            ->options(['class' => ['mr-auto']]);
+            ->options(['class' => ['mr-auto']])
+            ->render();
 
-        echo <<<HTML
+        $html .= <<<HTML
 <form class="form-inline my-2 my-lg-0">
 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 HTML;
 
-        echo NavBar::end();
+        $html .= NavBar::end();
 
         $expected = <<<EXPECTED
 <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -159,6 +145,6 @@ HTML;
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

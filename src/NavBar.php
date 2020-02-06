@@ -129,7 +129,7 @@ class NavBar extends Widget
 
     private array $options = [];
 
-    public function start(): void
+    public function start(): string
     {
         if (!isset($this->options['id'])) {
             $id = $this->getId();
@@ -172,31 +172,39 @@ class NavBar extends Widget
         $collapseOptions = $this->collapseOptions;
         $collapseTag = ArrayHelper::remove($collapseOptions, 'tag', 'div');
 
-        echo Html::beginTag($navTag, $navOptions) . "\n";
+        $htmlStart = '';
+
+        $htmlStart = Html::beginTag($navTag, $navOptions) . "\n";
 
         if ($this->renderInnerContainer) {
-            echo Html::beginTag('div', $this->innerContainerOptions) . "\n";
+            $htmlStart .= Html::beginTag('div', $this->innerContainerOptions) . "\n";
         }
 
-        echo $brand . "\n";
-        echo $this->renderToggleButton() . "\n";
+        $htmlStart .= $brand . "\n";
+        $htmlStart .= $this->renderToggleButton() . "\n";
 
-        echo Html::beginTag($collapseTag, $collapseOptions) . "\n";
+        $htmlStart .= Html::beginTag($collapseTag, $collapseOptions) . "\n";
+
+        return $htmlStart;
     }
 
-    public function run(): string
+    protected function run(): string
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 
-        echo Html::endTag($tag) . "\n";
+        $htmlRun = '';
+
+        $htmlRun = Html::endTag($tag) . "\n";
 
         if ($this->renderInnerContainer) {
-            echo Html::endTag('div') . "\n";
+            $htmlRun .= Html::endTag('div') . "\n";
         }
 
         $tag = ArrayHelper::remove($this->options, 'tag', 'nav');
 
-        return Html::endTag($tag);
+        $htmlRun .= Html::endTag($tag);
+
+        return $htmlRun;
     }
 
     /**
