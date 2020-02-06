@@ -62,12 +62,7 @@ class ButtonToolbar extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-toolbar";
@@ -111,12 +106,8 @@ class ButtonToolbar extends Widget
 
     /**
      * {@see $buttonGroups}
-     *
-     * @param array $value
-     *
-     * @return ButtonToolbar
      */
-    public function buttonGroups(array $value): ButtonToolbar
+    public function buttonGroups(array $value): self
     {
         $this->buttonGroups = $value;
 
@@ -125,12 +116,8 @@ class ButtonToolbar extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return ButtonToolbar
      */
-    public function options(array $value): ButtonToolbar
+    public function options(array $value): self
     {
         $this->options = $value;
 

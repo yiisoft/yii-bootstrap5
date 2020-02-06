@@ -58,12 +58,7 @@ class Alert extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-alert";
@@ -117,8 +112,6 @@ class Alert extends Widget
      * Initializes the widget options.
      *
      * This method sets the default values for various options.
-     *
-     * @return void
      */
     protected function initOptions(): void
     {
@@ -140,12 +133,8 @@ class Alert extends Widget
 
     /**
      * {@see $body}
-     *
-     * @param string $value
-     *
-     * @return Alert
      */
-    public function body(string $value): Alert
+    public function body(string $value): self
     {
         $this->body = $value;
 
@@ -154,12 +143,8 @@ class Alert extends Widget
 
     /**
      * {@see $closeButton}
-     *
-     * @param array $value
-     *
-     * @return Alert
      */
-    public function closeButton(array $value): Alert
+    public function closeButton(array $value): self
     {
         $this->closeButton = $value;
 
@@ -168,12 +153,8 @@ class Alert extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Alert
      */
-    public function options(array $value): Alert
+    public function options(array $value): self
     {
         $this->options = $value;
 

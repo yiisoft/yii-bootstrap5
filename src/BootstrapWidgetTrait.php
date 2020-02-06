@@ -24,9 +24,6 @@ use Yiisoft\Json\Json;
  */
 trait BootstrapWidgetTrait
 {
-    /**
-     * @var AssetManager $assetManager
-     */
     private ?AssetManager $assetManager = null;
 
     /**
@@ -76,8 +73,8 @@ trait BootstrapWidgetTrait
         }
 
         if ($this->enableClientOptions !== false) {
-            $options = Json::htmlEncode($this->clientOptions);
-            $js = "jQuery('#$id').$name($options);";
+            $optionsString = Json::htmlEncode($this->clientOptions);
+            $js = "jQuery('#$id').$name($optionsString);";
 
             if ($this->webView !== null) {
                 $this->webView->registerJs($js);

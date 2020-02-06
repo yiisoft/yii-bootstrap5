@@ -8,7 +8,7 @@ use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
- * Accordion renders an accordion bootstrap javascript component.
+ * Accordion renders an accordion bootstrap JavaScript component.
  *
  * For example:
  *
@@ -115,12 +115,7 @@ class Accordion extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-accordion";
@@ -224,7 +219,8 @@ class Accordion extends Widget
                 $headerToggle = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
-                    ->options($itemToggleOptions) . "\n";
+                    ->options($itemToggleOptions)
+                    ->render() . "\n";
             }
 
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
@@ -267,12 +263,8 @@ class Accordion extends Widget
 
     /**
      * {@see $autoCloseItems}
-     *
-     * @param bool $value
-     *
-     * @return Accordion
      */
-    public function autoCloseItems(bool $value): Accordion
+    public function autoCloseItems(bool $value): self
     {
         $this->autoCloseItems = $value;
 
@@ -281,26 +273,17 @@ class Accordion extends Widget
 
     /**
      * {@see $encodeLabels}
-     *
-     * @param bool $value
-     *
-     * @return Accordion
      */
-    public function encodeLabels(bool $value): Accordion
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
-
         return $this;
     }
 
     /**
      * {@see $items}
-     *
-     * @param array $value
-     *
-     * @return Accordion
      */
-    public function items(array $value): Accordion
+    public function items(array $value): self
     {
         $this->items = $value;
 
@@ -309,12 +292,8 @@ class Accordion extends Widget
 
     /**
      * {@see $itemToggleOptions}
-     *
-     * @param array $value
-     *
-     * @return Accordion
      */
-    public function itemToggleOptions(array $value): Accordion
+    public function itemToggleOptions(array $value): self
     {
         $this->itemToggleOptions = $value;
 
@@ -323,12 +302,8 @@ class Accordion extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Accordion
      */
-    public function options(array $value): Accordion
+    public function options(array $value): self
     {
         $this->options = $value;
 

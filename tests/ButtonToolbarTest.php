@@ -37,7 +37,7 @@ final class ButtonToolbarTest extends TestCase
                         ['label' => '3'],
                         ['label' => '4']
                     ])
-                    ->run(),
+                    ->render(),
                 [
                     'options' => [
                         'aria-label' => 'Second group'
@@ -49,7 +49,7 @@ final class ButtonToolbarTest extends TestCase
                     ]
                 ]
             ])
-            ->run();
+            ->render();
 
         $expected = <<<HTML
 <div id="w5-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w0-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w1-button" class="btn">1</button>

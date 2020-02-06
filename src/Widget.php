@@ -11,14 +11,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 {
     use BootstrapWidgetTrait;
 
-    /**
-     * @var string|null ?string $id
-     */
     private ?string $id = null;
-
-    /**
-     * @var boolean $autoGenerate
-     */
     private bool $autoGenerate = true;
 
     /**
@@ -49,10 +42,6 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 
     /**
      * Set the Id of the widget.
-     *
-     * @var string $value
-     *
-     * @return $this
      */
     public function setId(string $value): self
     {

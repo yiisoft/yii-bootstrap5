@@ -104,12 +104,7 @@ class ButtonDropdown extends Widget
      */
     private bool $renderContainer = true;
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         /* Set options id to button options id to ensure correct css selector in plugin initialisation */
         if (empty($this->options['id'])) {
@@ -197,24 +192,18 @@ class ButtonDropdown extends Widget
      */
     protected function renderDropdown(): string
     {
-        $config = $this->dropdown;
-
         /** @var Widget $dropdownClass */
         $dropdownClass = $this->dropdownClass;
 
         return $dropdownClass::widget()
             ->items($this->dropdown['items'])
-            ->run();
+            ->render();
     }
 
     /**
      * {@see $buttonOptions}
-     *
-     * @param array $value
-     *
-     * @return ButtonDropdown
      */
-    public function buttonOptions(array $value): ButtonDropdown
+    public function buttonOptions(array $value): self
     {
         $this->buttonOptions = $value;
 
@@ -223,12 +212,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $direction}
-     *
-     * @param string $value
-     *
-     * @return ButtonDropdown
      */
-    public function direction(string $value): ButtonDropdown
+    public function direction(string $value): self
     {
         $this->direction = $value;
 
@@ -237,12 +222,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $dropdown}
-     *
-     * @param array $value
-     *
-     * @return ButtonDropdown
      */
-    public function dropdown(array $value): ButtonDropdown
+    public function dropdown(array $value): self
     {
         $this->dropdown = $value;
 
@@ -251,12 +232,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $dropdownClass}
-     *
-     * @param string $value
-     *
-     * @return ButtonDropdown
      */
-    public function dropdownClass(string $value): ButtonDropdown
+    public function dropdownClass(string $value): self
     {
         $this->dropdownClass = $value;
 
@@ -265,12 +242,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $encodeLabel}
-     *
-     * @param bool $value
-     *
-     * @return ButtonDropdown
      */
-    public function encodeLabels(bool $value): ButtonDropdown
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -279,12 +252,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $label}
-     *
-     * @param string $value
-     *
-     * @return ButtonDropdown
      */
-    public function label(string $value): ButtonDropdown
+    public function label(string $value): self
     {
         $this->label = $value;
 
@@ -293,12 +262,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return ButtonDropdown
      */
-    public function options(array $value): ButtonDropdown
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -307,12 +272,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $renderContainer}
-     *
-     * @param bool $value
-     *
-     * @return ButtonDropdown
      */
-    public function renderContainer(bool $value): ButtonDropdown
+    public function renderContainer(bool $value): self
     {
         $this->renderContainer = $value;
 
@@ -321,12 +282,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $split}
-     *
-     * @param bool $value
-     *
-     * @return ButtonDropdown
      */
-    public function split(bool $value): ButtonDropdown
+    public function split(bool $value): self
     {
         $this->split = $value;
 
@@ -335,12 +292,8 @@ class ButtonDropdown extends Widget
 
     /**
      * {@see $tagName}
-     *
-     * @param string $value
-     *
-     * @return ButtonDropdown
      */
-    public function tagName(string $value): ButtonDropdown
+    public function tagName(string $value): self
     {
         $this->tagName = $value;
 

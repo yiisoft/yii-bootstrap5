@@ -166,12 +166,7 @@ class Nav extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-nav";
@@ -350,12 +345,8 @@ class Nav extends Widget
 
     /**
      * {@see $items}
-     *
-     * @param array $value
-     *
-     * @return Nav
      */
-    public function items(array $value): Nav
+    public function items(array $value): self
     {
         $this->items = $value;
 
@@ -364,12 +355,8 @@ class Nav extends Widget
 
     /**
      * {@see $encodeLabels}
-     *
-     * @param bool $value
-     *
-     * @return Nav
      */
-    public function encodeLabels(bool $value): Nav
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -378,12 +365,8 @@ class Nav extends Widget
 
     /**
      * {@see $label}
-     *
-     * @param string $value
-     *
-     * @return Nav
      */
-    public function label(string $value): Nav
+    public function label(string $value): self
     {
         $this->label = $value;
 
@@ -392,12 +375,8 @@ class Nav extends Widget
 
     /**
      * {@see $activateItems}
-     *
-     * @param bool $value
-     *
-     * @return Nav
      */
-    public function activateItems(bool $value): Nav
+    public function activateItems(bool $value): self
     {
         $this->activateItems = $value;
 
@@ -406,12 +385,8 @@ class Nav extends Widget
 
     /**
      * {@see $activateParents}
-     *
-     * @param bool $value
-     *
-     * @return Nav
      */
-    public function activateParents(bool $value): Nav
+    public function activateParents(bool $value): self
     {
         $this->activateParents = $value;
 
@@ -420,12 +395,8 @@ class Nav extends Widget
 
     /**
      * {@see $currentPath}
-     *
-     * @param string $value
-     *
-     * @return Nav
      */
-    public function currentPath(string $value): Nav
+    public function currentPath(string $value): self
     {
         $this->currentPath = $value;
 
@@ -434,12 +405,8 @@ class Nav extends Widget
 
     /**
      * {@see $params}
-     *
-     * @param string $value
-     *
-     * @return Nav
      */
-    public function params(string $value): Nav
+    public function params(string $value): self
     {
         $this->currentPath = $value;
 
@@ -448,12 +415,8 @@ class Nav extends Widget
 
     /**
      * {@see $dropdownClass}
-     *
-     * @param string $value
-     *
-     * @return Nav
      */
-    public function dropdownClass(string $value): Nav
+    public function dropdownClass(string $value): self
     {
         $this->dropdownClass = $value;
 
@@ -462,12 +425,8 @@ class Nav extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Nav
      */
-    public function options(array $value): Nav
+    public function options(array $value): self
     {
         $this->options = $value;
 

@@ -83,12 +83,7 @@ class Breadcrumbs extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-breadcrumb";
@@ -151,22 +146,18 @@ class Breadcrumbs extends Widget
         if (isset($link['url'])) {
             $options = $link;
             unset($options['template'], $options['label'], $options['url']);
-            $link = Html::a($label, $link['url'], $options);
+            $linkHtml = Html::a($label, $link['url'], $options);
         } else {
-            $link = $label;
+            $linkHtml = $label;
         }
 
-        return strtr($template, ['{link}' => $link]);
+        return strtr($template, ['{link}' => $linkHtml]);
     }
 
     /**
      * {@see $activeItemTemplate}
-     *
-     * @param string $value
-     *
-     * @return Breadcrumbs
      */
-    public function activeItemTemplate(string $value): Breadcrumbs
+    public function activeItemTemplate(string $value): self
     {
         $this->activeItemTemplate = $value;
 
@@ -175,12 +166,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $encodeLabels}
-     *
-     * @param bool $value
-     *
-     * @return Breadcrumbs
      */
-    public function encodeLabels(bool $value): Breadcrumbs
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -189,12 +176,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $homeLink}
-     *
-     * @param array $value
-     *
-     * @return Breadcrumbs
      */
-    public function homeLink(array $value): Breadcrumbs
+    public function homeLink(array $value): self
     {
         $this->homeLink = $value;
 
@@ -203,12 +186,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $itemTemplate}
-     *
-     * @param string $value
-     *
-     * @return Breadcrumbs
      */
-    public function itemTemplate(string $value): Breadcrumbs
+    public function itemTemplate(string $value): self
     {
         $this->itemTemplate = $value;
 
@@ -217,12 +196,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $links}
-     *
-     * @param array $value
-     *
-     * @return Breadcrumbs
      */
-    public function links(array $value): Breadcrumbs
+    public function links(array $value): self
     {
         $this->links = $value;
 
@@ -231,12 +206,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $navOptions}
-     *
-     * @param array $value
-     *
-     * @return Breadcrumbs
      */
-    public function navOptions(array $value): Breadcrumbs
+    public function navOptions(array $value): self
     {
         $this->navOptions = $value;
 
@@ -245,12 +216,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Breadcrumbs
      */
-    public function options(array $value): Breadcrumbs
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -259,12 +226,8 @@ class Breadcrumbs extends Widget
 
     /**
      * {@see $tag}
-     *
-     * @param string $value
-     *
-     * @return Breadcrumbs
      */
-    public function tag(string $value): Breadcrumbs
+    public function tag(string $value): self
     {
         $this->tag = $value;
 

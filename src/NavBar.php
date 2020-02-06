@@ -195,8 +195,6 @@ class NavBar extends Widget
 
     /**
      * Initializes the widget.
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -253,12 +251,7 @@ class NavBar extends Widget
         echo Html::beginTag($collapseTag, $collapseOptions) . "\n";
     }
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 
@@ -301,12 +294,8 @@ class NavBar extends Widget
 
     /**
      * {@see $collapseOptions}
-     *
-     * @param array $value
-     *
-     * @return NavBar
      */
-    public function collapseOptions(array $value): NavBar
+    public function collapseOptions(array $value): self
     {
         $this->collapseOptions = $value;
 
@@ -315,12 +304,8 @@ class NavBar extends Widget
 
     /**
      * {@see $brandLabel}
-     *
-     * @param string $value
-     *
-     * @return NavBar
      */
-    public function brandLabel(string $value): NavBar
+    public function brandLabel(string $value): self
     {
         $this->brandLabel = $value;
 
@@ -329,12 +314,8 @@ class NavBar extends Widget
 
     /**
      * {@see $brandImage}
-     *
-     * @param string $value
-     *
-     * @return NavBar
      */
-    public function brandImage(string $value): NavBar
+    public function brandImage(string $value): self
     {
         $this->brandImage = $value;
 
@@ -343,12 +324,8 @@ class NavBar extends Widget
 
     /**
      * {@see $brandUrl}
-     *
-     * @param string $value
-     *
-     * @return NavBar
      */
-    public function brandUrl(string $value): NavBar
+    public function brandUrl(string $value): self
     {
         $this->brandUrl = $value;
 
@@ -357,12 +334,8 @@ class NavBar extends Widget
 
     /**
      * {@see $brandOptions}
-     *
-     * @param array $value
-     *
-     * @return NavBar
      */
-    public function brandOptions(array $value): NavBar
+    public function brandOptions(array $value): self
     {
         $this->brandOptions = $value;
 
@@ -371,12 +344,8 @@ class NavBar extends Widget
 
     /**
      * {@see $screenReaderToggleText}
-     *
-     * @param string $value
-     *
-     * @return NavBar
      */
-    public function screenReaderToggleText(string $value): NavBar
+    public function screenReaderToggleText(string $value): self
     {
         $this->screenReaderToggleText = $value;
 
@@ -385,12 +354,8 @@ class NavBar extends Widget
 
     /**
      * {@see $togglerContent}
-     *
-     * @param string $value
-     *
-     * @return NavBar
      */
-    public function togglerContent(string $value): NavBar
+    public function togglerContent(string $value): self
     {
         $this->togglerContent = $value;
 
@@ -399,12 +364,8 @@ class NavBar extends Widget
 
     /**
      * {@see $togglerOptions}
-     *
-     * @param array $value
-     *
-     * @return NavBar
      */
-    public function togglerOptions(array $value): NavBar
+    public function togglerOptions(array $value): self
     {
         $this->togglerOptions = $value;
 
@@ -413,12 +374,8 @@ class NavBar extends Widget
 
     /**
      * {@see $renderInnerContainer}
-     *
-     * @param bool $value
-     *
-     * @return NavBar
      */
-    public function renderInnerContainer(bool $value): NavBar
+    public function renderInnerContainer(bool $value): self
     {
         $this->renderInnerContainer = $value;
 
@@ -427,12 +384,8 @@ class NavBar extends Widget
 
     /**
      * {@see $innerContainerOptions}
-     *
-     * @param array $value
-     *
-     * @return NavBar
      */
-    public function innerContainerOptions(array $value): NavBar
+    public function innerContainerOptions(array $value): self
     {
         $this->innerContainerOptions = $value;
 
@@ -441,12 +394,8 @@ class NavBar extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return NavBar
      */
-    public function options(array $value): NavBar
+    public function options(array $value): self
     {
         $this->options = $value;
 

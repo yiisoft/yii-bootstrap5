@@ -35,10 +35,7 @@ class BaseHtml extends \Yiisoft\Html\Html
     public static function staticControl(string $value, array $options = []): string
     {
         static::addCssClass($options, 'form-control-plaintext');
-
-        $value = (string)$value;
         $options['readonly'] = true;
-
         return static::input('text', null, $value, $options);
     }
 
@@ -46,13 +43,13 @@ class BaseHtml extends \Yiisoft\Html\Html
      * Generates a Bootstrap radiolist.
      *
      * @param string $name
-     * @param null $selection
+     * @param string|array|null $selection
      * @param array $items
      * @param array $options
      *
      * @return string
      */
-    public static function radioList($name, $selection = null, $items = [], $options = []): string
+    public static function radioList(string $name, $selection = null, array $items = [], array $options = []): string
     {
         if (!isset($options['item'])) {
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
@@ -76,7 +73,7 @@ class BaseHtml extends \Yiisoft\Html\Html
      * Generates a Bootstrap radiolist.
      *
      * @param string $name
-     * @param null $selection
+     * @param string|array|null $selection
      * @param array $items
      * @param array $options
      *

@@ -90,12 +90,7 @@ class Progress extends Widget
      */
     public array $barOptions = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";
@@ -168,12 +163,8 @@ class Progress extends Widget
 
     /**
      * {@see $bars}
-     *
-     * @param array $value
-     *
-     * @return Progress
      */
-    public function bars(array $value): Progress
+    public function bars(array $value): self
     {
         $this->bars = $value;
 
@@ -182,12 +173,8 @@ class Progress extends Widget
 
     /**
      * {@see $barOptions}
-     *
-     * @param array $value
-     *
-     * @return Progress
      */
-    public function barOptions(array $value): Progress
+    public function barOptions(array $value): self
     {
         $this->barOptions = $value;
 
@@ -196,12 +183,8 @@ class Progress extends Widget
 
     /**
      * {@see $label}
-     *
-     * @param string $value
-     *
-     * @return Progress
      */
-    public function label(string $value): Progress
+    public function label(string $value): self
     {
         $this->label = $value;
 
@@ -210,12 +193,8 @@ class Progress extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Progress
      */
-    public function options(array $value): Progress
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -224,12 +203,8 @@ class Progress extends Widget
 
     /**
      * {@see $percent}
-     *
-     * @param string $value
-     *
-     * @return Progress
      */
-    public function percent(string $value): Progress
+    public function percent(string $value): self
     {
         $this->percent = $value;
 

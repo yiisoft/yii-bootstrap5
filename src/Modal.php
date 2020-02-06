@@ -154,12 +154,7 @@ class Modal extends Widget
         echo $this->renderBodyBegin() . "\n";
     }
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         echo "\n" . $this->renderBodyEnd();
         echo "\n" . $this->renderFooter();
@@ -327,12 +322,8 @@ class Modal extends Widget
 
     /**
      * {@see $bodyOptions}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function bodyOptions(array $value): Modal
+    public function bodyOptions(array $value): self
     {
         $this->bodyOptions = $value;
 
@@ -341,12 +332,8 @@ class Modal extends Widget
 
     /**
      * {@see $closeButton}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function closeButton(array $value): Modal
+    public function closeButton(array $value): self
     {
         $this->closeButton = $value;
 
@@ -355,12 +342,8 @@ class Modal extends Widget
 
     /**
      * {@see $closeButtonEnabled}
-     *
-     * @param bool $value
-     *
-     * @return Modal
      */
-    public function closeButtonEnabled(bool $value): Modal
+    public function closeButtonEnabled(bool $value): self
     {
         $this->closeButtonEnabled = $value;
 
@@ -369,12 +352,8 @@ class Modal extends Widget
 
     /**
      * {@see $footer}
-     *
-     * @param string $value
-     *
-     * @return Modal
      */
-    public function footer(string $value): Modal
+    public function footer(string $value): self
     {
         $this->footer = $value;
 
@@ -383,12 +362,8 @@ class Modal extends Widget
 
     /**
      * {@see $footerOptions}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function footerOptions(array $value): Modal
+    public function footerOptions(array $value): self
     {
         $this->footerOptions = $value;
 
@@ -397,12 +372,8 @@ class Modal extends Widget
 
     /**
      * {@see $headerOptions}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function headerOptions(array $value): Modal
+    public function headerOptions(array $value): self
     {
         $this->headerOptions = $value;
 
@@ -411,12 +382,8 @@ class Modal extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function options(array $value): Modal
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -425,12 +392,8 @@ class Modal extends Widget
 
     /**
      * {@see $title}
-     *
-     * @param string $value
-     *
-     * @return Modal
      */
-    public function title(string $value): Modal
+    public function title(string $value): self
     {
         $this->title = $value;
 
@@ -439,12 +402,8 @@ class Modal extends Widget
 
     /**
      * {@see $titleOptions}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function titleOptions(array $value): Modal
+    public function titleOptions(array $value): self
     {
         $this->titleOptions = $value;
 
@@ -453,12 +412,8 @@ class Modal extends Widget
 
     /**
      * {@see $toggleButton}
-     *
-     * @param array $value
-     *
-     * @return Modal
      */
-    public function toggleButton(array $value): Modal
+    public function toggleButton(array $value): self
     {
         $this->toggleButton = $value;
 
@@ -467,12 +422,8 @@ class Modal extends Widget
 
     /**
      * {@see $toggleButtonEnabled}
-     *
-     * @param bool $value
-     *
-     * @return Modal
      */
-    public function toggleButtonEnabled(bool $value): Modal
+    public function toggleButtonEnabled(bool $value): self
     {
         $this->toggleButtonEnabled = $value;
 
@@ -481,12 +432,8 @@ class Modal extends Widget
 
     /**
      * {@see $size}
-     *
-     * @param string $value
-     *
-     * @return Modal
      */
-    public function size(string $value): Modal
+    public function size(string $value): self
     {
         $this->size = $value;
 

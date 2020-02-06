@@ -41,12 +41,7 @@ class Button extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button";
@@ -65,12 +60,8 @@ class Button extends Widget
 
     /**
      * {@see $encodeLabel}
-     *
-     * @param bool $value
-     *
-     * @return Button
      */
-    public function encodeLabels(bool $value): Button
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -79,12 +70,8 @@ class Button extends Widget
 
     /**
      * {@see $label}
-     *
-     * @param string $value
-     *
-     * @return Button
      */
-    public function label(string $value): Button
+    public function label(string $value): self
     {
         $this->label = $value;
 
@@ -93,12 +80,8 @@ class Button extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Button
      */
-    public function options(array $value): Button
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -107,12 +90,8 @@ class Button extends Widget
 
     /**
      * {@see $tagName}
-     *
-     * @param string $value
-     *
-     * @return Button
      */
-    public function tagName(string $value): Button
+    public function tagName(string $value): self
     {
         $this->tagName = $value;
 

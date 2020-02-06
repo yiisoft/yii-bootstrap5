@@ -77,12 +77,7 @@ class Carousel extends Widget
      */
     private array $options = ['data-ride' => 'carousel'];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-carousel";
@@ -107,8 +102,6 @@ class Carousel extends Widget
 
     /**
      * Renders carousel indicators.
-     *
-     * @return string the rendering result
      */
     public function renderIndicators(): string
     {
@@ -131,8 +124,6 @@ class Carousel extends Widget
 
     /**
      * Renders carousel items as specified on {@see items}.
-     *
-     * @return string the rendering result
      */
     public function renderItems(): string
     {
@@ -217,12 +208,8 @@ class Carousel extends Widget
 
     /**
      * {@see $controls}
-     *
-     * @param array $value
-     *
-     * @return Carousel
      */
-    public function controls(array $value): Carousel
+    public function controls(array $value): self
     {
         $this->controls = $value;
 
@@ -231,12 +218,8 @@ class Carousel extends Widget
 
     /**
      * {@see $crossfade}
-     *
-     * @param bool $value
-     *
-     * @return Carousel
      */
-    public function crossfade(bool $value): Carousel
+    public function crossfade(bool $value): self
     {
         $this->crossfade = $value;
 
@@ -245,12 +228,8 @@ class Carousel extends Widget
 
     /**
      * {@see $items}
-     *
-     * @param array $value
-     *
-     * @return Carousel
      */
-    public function items(array $value): Carousel
+    public function items(array $value): self
     {
         $this->items = $value;
 
@@ -259,12 +238,8 @@ class Carousel extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Carousel
      */
-    public function options(array $value): Carousel
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -273,12 +248,8 @@ class Carousel extends Widget
 
     /**
      * {@see $showIndicator}
-     *
-     * @param bool $value
-     *
-     * @return Carousel
      */
-    public function showIndicators(bool $value): Carousel
+    public function showIndicators(bool $value): self
     {
         $this->showIndicators = $value;
 

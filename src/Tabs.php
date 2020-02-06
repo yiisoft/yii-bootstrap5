@@ -145,12 +145,7 @@ class Tabs extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-tabs";
@@ -284,12 +279,8 @@ class Tabs extends Widget
 
     /**
      * {@see $dropdownClass}
-     *
-     * @param string $value
-     *
-     * @return Tabs
      */
-    public function dropdownClass(string $value): Tabs
+    public function dropdownClass(string $value): self
     {
         $this->dropdownClass = $value;
 
@@ -298,12 +289,8 @@ class Tabs extends Widget
 
     /**
      * {@see $encodeLabels}
-     *
-     * @param bool $value
-     *
-     * @return Tabs
      */
-    public function encodeLabels(bool $value): Tabs
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -312,12 +299,8 @@ class Tabs extends Widget
 
     /**
      * {@see $headerOptions}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function headerOptions(array $value): Tabs
+    public function headerOptions(array $value): self
     {
         $this->headerOptions = $value;
 
@@ -326,12 +309,8 @@ class Tabs extends Widget
 
     /**
      * {@see $items}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function items(array $value): Tabs
+    public function items(array $value): self
     {
         $this->items = $value;
 
@@ -340,12 +319,8 @@ class Tabs extends Widget
 
     /**
      * {@see $itemOptions}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function itemOptions(array $value): Tabs
+    public function itemOptions(array $value): self
     {
         $this->itemOptions = $value;
 
@@ -354,12 +329,8 @@ class Tabs extends Widget
 
     /**
      * {@see $linkOptions}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function linkOptions(array $value): Tabs
+    public function linkOptions(array $value): self
     {
         $this->linkOptions = $value;
 
@@ -368,12 +339,8 @@ class Tabs extends Widget
 
     /**
      * {@see $navType}
-     *
-     * @param string $value
-     *
-     * @return Tabs
      */
-    public function navType(string $value): Tabs
+    public function navType(string $value): self
     {
         $this->navType = $value;
 
@@ -382,12 +349,8 @@ class Tabs extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function options(array $value): Tabs
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -396,12 +359,8 @@ class Tabs extends Widget
 
     /**
      * {@see $panes}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function panes(array $value): Tabs
+    public function panes(array $value): self
     {
         $this->panes = $value;
 
@@ -410,12 +369,8 @@ class Tabs extends Widget
 
     /**
      * {@see $renderTabContent}
-     *
-     * @param bool $value
-     *
-     * @return Tabs
      */
-    public function renderTabContent(bool $value): Tabs
+    public function renderTabContent(bool $value): self
     {
         $this->renderTabContent = $value;
 
@@ -424,12 +379,8 @@ class Tabs extends Widget
 
     /**
      * {@see $tabContentOptions}
-     *
-     * @param array $value
-     *
-     * @return Tabs
      */
-    public function tabContentOptions(array $value): Tabs
+    public function tabContentOptions(array $value): self
     {
         $this->tabContentOptions = $value;
 

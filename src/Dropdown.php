@@ -77,12 +77,7 @@ class Dropdown extends Widget
         'role' => 'button',
     ];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";
@@ -189,12 +184,8 @@ class Dropdown extends Widget
 
     /**
      * {@see $items}
-     *
-     * @param array $value
-     *
-     * @return Dropdown
      */
-    public function items(array $value): Dropdown
+    public function items(array $value): self
     {
         $this->items = $value;
 
@@ -203,12 +194,8 @@ class Dropdown extends Widget
 
     /**
      * {@see $encodeLabel}
-     *
-     * @param bool $value
-     *
-     * @return Dropdown
      */
-    public function encodeLabels(bool $value): Dropdown
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -217,12 +204,8 @@ class Dropdown extends Widget
 
     /**
      * {@see $submenuOptions}
-     *
-     * @param array $value
-     *
-     * @return Dropdown
      */
-    public function submenuOptions(array $value): Dropdown
+    public function submenuOptions(array $value): self
     {
         $this->submenuOptions = $value;
 
@@ -231,12 +214,8 @@ class Dropdown extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return Dropdown
      */
-    public function options(array $value): Dropdown
+    public function options(array $value): self
     {
         $this->options = $value;
 

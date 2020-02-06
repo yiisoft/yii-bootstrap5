@@ -57,12 +57,7 @@ class ButtonGroup extends Widget
      */
     private array $options = [];
 
-    /**
-     * Renders the widget.
-     *
-     * @return string
-     */
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-group";
@@ -98,7 +93,7 @@ class ButtonGroup extends Widget
                     $button['encodeLabel'] = $this->encodeLabels;
                 }
 
-                if (!isset($button['options'], $button['options']['type'])) {
+                if (!isset($button['options']['type'])) {
                     ArrayHelper::setValue($button, 'options.type', 'button');
                 }
 
@@ -117,12 +112,8 @@ class ButtonGroup extends Widget
 
     /**
      * {@see $buttons}
-     *
-     * @param array $value
-     *
-     * @return ButtonGroup
      */
-    public function buttons(array $value): ButtonGroup
+    public function buttons(array $value): self
     {
         $this->buttons = $value;
 
@@ -131,12 +122,8 @@ class ButtonGroup extends Widget
 
     /**
      * {@see $encodeLabels}
-     *
-     * @param bool $value
-     *
-     * @return ButtonGroup
      */
-    public function encodeLabels(bool $value): ButtonGroup
+    public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
 
@@ -145,12 +132,8 @@ class ButtonGroup extends Widget
 
     /**
      * {@see $options}
-     *
-     * @param array $value
-     *
-     * @return ButtonGroup
      */
-    public function options(array $value): ButtonGroup
+    public function options(array $value): self
     {
         $this->options = $value;
 
