@@ -64,7 +64,7 @@ class Modal extends Widget
 
     private array $options = [];
 
-    public function start(): void
+    public function start(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-modal";
@@ -72,24 +72,31 @@ class Modal extends Widget
 
         $this->initOptions();
 
-        echo $this->renderToggleButton() . "\n";
-        echo Html::beginTag('div', $this->options) . "\n";
-        echo Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n";
-        echo Html::beginTag('div', ['class' => 'modal-content']) . "\n";
-        echo $this->renderHeader() . "\n";
-        echo $this->renderBodyBegin() . "\n";
+        $htmlStart = '';
+
+        $htmlStart .= $this->renderToggleButton() . "\n";
+        $htmlStart .= Html::beginTag('div', $this->options) . "\n";
+        $htmlStart .= Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n";
+        $htmlStart .= Html::beginTag('div', ['class' => 'modal-content']) . "\n";
+        $htmlStart .= $this->renderHeader() . "\n";
+        $htmlStart .= $this->renderBodyBegin() . "\n";
+
+        return $htmlStart;
     }
 
     protected function run(): string
     {
-        echo "\n" . $this->renderBodyEnd();
-        echo "\n" . $this->renderFooter();
-        echo "\n" . Html::endTag('div'); // modal-content
-        echo "\n" . Html::endTag('div'); // modal-dialog
+        $htmlRun = '';
+
+        $htmlRun .= "\n" . $this->renderBodyEnd();
+        $htmlRun .= "\n" . $this->renderFooter();
+        $htmlRun .= "\n" . Html::endTag('div'); // modal-content
+        $htmlRun .= "\n" . Html::endTag('div'); // modal-dialog
+        $htmlRun .= "\n" . Html::endTag('div');
 
         $this->registerPlugin('modal', $this->options);
 
-        return "\n" . Html::endTag('div');
+        return $htmlRun;
     }
 
     /**

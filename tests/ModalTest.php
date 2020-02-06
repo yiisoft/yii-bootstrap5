@@ -16,18 +16,15 @@ final class ModalTest extends TestCase
 {
     public function testBodyOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Modal::counter(0);
 
-        Modal::begin()
+        $html = Modal::begin()
             ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->closeButtonEnabled(false)
             ->toggleButtonEnabled(false)
             ->start();
 
-        echo Modal::end();
+        $html .= Modal::end();
 
         $expected = <<<HTML
 
@@ -44,17 +41,14 @@ final class ModalTest extends TestCase
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testContainerOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Modal::counter(0);
 
-        Modal::begin()
+        $html = Modal::begin()
             ->title('Modal title')
             ->toggleButtonEnabled(false)
             ->footer(
@@ -72,9 +66,9 @@ HTML;
             )
             ->start();
 
-        echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
 
-        echo Modal::end();
+        $html .= Modal::end();
 
         $expected = <<<HTML
 
@@ -97,17 +91,14 @@ HTML;
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testTriggerButton(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Modal::counter(0);
 
-        Modal::begin()
+        $html = Modal::begin()
             ->toggleButton([
                 'class' => ['btn', 'btn-primary'],
                 'label' => 'Launch demo modal'
@@ -125,13 +116,13 @@ HTML;
             )
             ->start();
 
-        echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
 
-        echo Modal::end();
+        $html .= Modal::end();
 
         $this->assertStringContainsString(
             '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#w0-modal">Launch demo modal</button>',
-            ob_get_clean()
+            $html
         );
     }
 }
