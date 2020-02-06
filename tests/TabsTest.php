@@ -419,6 +419,6 @@ final class TabsTest extends TestCase
 <div id="w0-tabs-tab1" class="tab-pane"><div>Content 2</div></div></div>
 HTML;
 
-        $this->assertEquals($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, ob_get_clean());
     }
 }
