@@ -34,3 +34,4 @@ phpunit.phar
 # nodejs
 /node_modules
 /package-lock.json
+.phpunit.result.cache
