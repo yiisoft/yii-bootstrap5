@@ -15,12 +15,9 @@ final class CarouselTest extends TestCase
 {
     public function testContainerOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Carousel::counter(0);
 
-        echo Carousel::widget()
+        $html = Carousel::widget()
             ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
@@ -43,7 +40,8 @@ final class CarouselTest extends TestCase
                         'class' => ['d-none', 'd-md-block']
                     ]
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-carousel" class="carousel slide" data-ride="carousel">
@@ -61,17 +59,15 @@ final class CarouselTest extends TestCase
 </div>
 
 HTML;
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testCrossfade(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Carousel::counter(0);
 
-        echo Carousel::widget()
+        $html = Carousel::widget()
             ->crossfade(true)
             ->items([
                 [
@@ -95,8 +91,9 @@ HTML;
                         'class' => ['d-none', 'd-md-block']
                     ]
                 ]
-            ]);
+            ])
+            ->render();
 
-        $this->assertStringContainsString('class="carousel slide carousel-fade"', ob_get_clean());
+        $this->assertStringContainsString('class="carousel slide carousel-fade"', $html);
     }
 }

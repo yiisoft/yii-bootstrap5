@@ -29,7 +29,7 @@ class Alert extends Widget
 
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-alert";
@@ -37,13 +37,13 @@ class Alert extends Widget
 
         $this->initOptions();
 
-        echo Html::beginTag('div', $this->options) . "\n";
+        $result = Html::beginTag('div', $this->options) . "\n"
+            . "\n" . $this->renderBodyEnd()
+            . "\n" . Html::endTag('div');
 
         $this->registerPlugin('alert', $this->options);
 
-        echo "\n" . $this->renderBodyEnd();
-
-        return "\n" . Html::endTag('div');
+        return $result;
     }
 
     /**
@@ -141,7 +141,7 @@ class Alert extends Widget
      */
     public function closeButtonEnabled(bool $value): self
     {
-        $this->closeButton = $value;
+        $this->closeButtonEnabled = $value;
 
         return $this;
     }

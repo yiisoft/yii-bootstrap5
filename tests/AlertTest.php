@@ -15,16 +15,14 @@ final class AlertTest extends TestCase
 {
     public function testNormalAlert(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Alert::counter(0);
 
-        echo Alert::widget()
+        $html = Alert::widget()
             ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
             ->options([
                 'class' => ['alert-warning']
-            ]);
+            ])
+            ->render();
 
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert-warning alert alert-dismissible" role="alert">
@@ -35,7 +33,7 @@ final class AlertTest extends TestCase
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expectedHtml, ob_get_clean());
+        $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
     /**
@@ -43,13 +41,11 @@ HTML;
      */
     public function testDismissibleAlert(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Alert::counter(0);
 
-        echo Alert::widget()
-            ->body("Message1");
+        $html = Alert::widget()
+            ->body("Message1")
+            ->render();
 
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">
@@ -60,6 +56,6 @@ Message1
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expectedHtml, ob_get_clean());
+        $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 }

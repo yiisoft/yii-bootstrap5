@@ -16,12 +16,9 @@ final class TabsTest extends TestCase
 {
     public function testRoleTabList(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -31,9 +28,10 @@ final class TabsTest extends TestCase
                     'label' => 'Page2',
                     'content' => 'Page2',
                 ],
-            ]);
+            ])
+            ->render();
 
-        $this->assertStringContainsString('<ul id="w0-tabs" class="nav nav-tabs" role="tablist">', ob_get_clean());
+        $this->assertStringContainsString('<ul id="w0-tabs" class="nav nav-tabs" role="tablist">', $html);
     }
 
     /**
@@ -43,12 +41,9 @@ final class TabsTest extends TestCase
      */
     public function testIds(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -81,7 +76,8 @@ final class TabsTest extends TestCase
                         ],
                     ]
                 ],
-            ]);
+            ])
+            ->render();
 
         $page1 = 'w0-tabs-tab0';
         $page2 = 'w0-tabs-dd1-tab0';
@@ -116,21 +112,16 @@ final class TabsTest extends TestCase
             ]),
         ];
 
-        $out = ob_get_clean();
-
         foreach ($shouldContain as $string) {
-            $this->assertStringContainsString($string, $out);
+            $this->assertStringContainsString($string, $html);
         }
     }
 
     public function testVisible(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -151,9 +142,8 @@ final class TabsTest extends TestCase
                         ['label' => 'Invisible External Link', 'url' => ['//other/dropdown/route'], 'visible' => false],
                     ]
                 ],
-            ]);
-
-        $html = ob_get_clean();
+            ])
+            ->render();
 
         $this-> assertStringNotContainsString('InvisiblePage', $html);
         $this-> assertStringNotContainsString('Invisible Page Content', $html);
@@ -164,12 +154,9 @@ final class TabsTest extends TestCase
 
     public function testDisabled(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -195,9 +182,8 @@ final class TabsTest extends TestCase
                         ['label' => 'Disabled External Link', 'url' => '/other/dropdown/route', 'disabled' => true],
                     ]
                 ],
-            ]);
-
-        $html = ob_get_clean();
+            ])
+            ->render();
 
         $this->assertStringContainsString(
             '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab0" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
@@ -223,14 +209,11 @@ final class TabsTest extends TestCase
 
     public function testItem(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         $checkTag = 'article';
 
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -242,22 +225,20 @@ final class TabsTest extends TestCase
                 ],
             ])
             ->itemOptions(['tag' => $checkTag])
-            ->renderTabContent(true);
+            ->renderTabContent(true)
+            ->render();
 
-        $this->assertStringContainsString('<' . $checkTag, ob_get_clean());
+        $this->assertStringContainsString('<' . $checkTag, $html);
     }
 
     public function testTabContentOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         $checkAttribute = 'test_attribute';
         $checkValue = 'check_attribute';
 
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -266,22 +247,18 @@ final class TabsTest extends TestCase
             ])
             ->tabContentOptions([
                 $checkAttribute => $checkValue
-            ]);
+            ])
+            ->render();
 
-        $out = ob_get_clean();
-
-        $this->assertStringContainsString($checkAttribute . '=', $out);
-        $this->assertStringContainsString($checkValue, $out);
+        $this->assertStringContainsString($checkAttribute . '=', $html);
+        $this->assertStringContainsString($checkValue, $html);
     }
 
     public function testActivateFirstVisibleTab(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Tab 1',
@@ -302,9 +279,8 @@ final class TabsTest extends TestCase
                     'content' => 'some content'
                 ]
             ])
-            ->options(['id' => 'mytab']);
-
-        $html = ob_get_clean();
+            ->options(['id' => 'mytab'])
+            ->render();
 
         $this-> assertStringNotContainsString(
             '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
@@ -322,12 +298,9 @@ final class TabsTest extends TestCase
 
     public function testActivateTab(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'label' => 'Tab 1',
@@ -348,22 +321,20 @@ final class TabsTest extends TestCase
                     'content' => 'some content'
                 ]
             ])
-            ->options(['id' => 'mytab']);
+            ->options(['id' => 'mytab'])
+            ->render();
 
         $this->assertStringContainsString(
             '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
-            ob_get_clean()
+            $html
         );
     }
 
     public function testTabLabelEncoding(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->encodeLabels(false)
             ->setId('mytab')
             ->items([
@@ -380,9 +351,8 @@ final class TabsTest extends TestCase
                     'label' => 'Tab 3<span>not encoded too</span>',
                     'content' => 'some content',
                 ],
-            ]);
-
-        $html = ob_get_clean();
+            ])
+            ->render();
 
         $this->assertStringContainsString('&lt;span&gt;encoded&lt;/span&gt;', $html);
         $this->assertStringContainsString('<span>not encoded</span>', $html);
@@ -394,12 +364,9 @@ final class TabsTest extends TestCase
      */
     public function testIdRendering(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Tabs::counter(0);
 
-        echo Tabs::widget()
+        $html = Tabs::widget()
             ->items([
                 [
                     'options' => ['id' => 'pane1'],
@@ -410,7 +377,8 @@ final class TabsTest extends TestCase
                     'label' => 'Tab 2',
                     'content' => '<div>Content 2</div>',
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
@@ -419,6 +387,6 @@ final class TabsTest extends TestCase
 <div id="w0-tabs-tab1" class="tab-pane"><div>Content 2</div></div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

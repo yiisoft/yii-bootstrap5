@@ -15,15 +15,13 @@ final class ProgressTest extends TestCase
 {
     public function testSimpleRender(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Progress::counter(0);
 
-        echo Progress::widget()
+        $html = Progress::widget()
             ->label('Progress')
             ->percent('25')
-            ->barOptions(['class' => 'bg-warning']);
+            ->barOptions(['class' => 'bg-warning'])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-progress" class="progress">
@@ -31,20 +29,18 @@ final class ProgressTest extends TestCase
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testRender(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Progress::counter(0);
 
-        echo Progress::widget()
+        $html = Progress::widget()
             ->bars([
                 ['label' => 'Progress', 'percent' => '25']
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-progress" class="progress">
@@ -52,22 +48,20 @@ HTML;
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testMultiple(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Progress::counter(0);
 
-        echo Progress::widget()
+        $html = Progress::widget()
             ->bars([
                 ['label' => '', 'percent' => '15'],
                 ['label' => '', 'percent' => '30', 'options' => ['class' => ['bg-success']]],
                 ['label' => '', 'percent' => '20', 'options' => ['class' => ['bg-info']]]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-progress" class="progress">
@@ -77,6 +71,6 @@ HTML;
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

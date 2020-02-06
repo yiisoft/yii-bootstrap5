@@ -13,26 +13,13 @@ use Yiisoft\Yii\Bootstrap4\ButtonDropdown;
  */
 final class ButtonDropdownTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testContainerOptions(): void
     {
         $containerClass = 'testClass';
 
-        ob_start();
-        ob_implicit_flush(0);
-
         ButtonDropdown::counter(0);
 
-        echo ButtonDropdown::widget()
+        $html = ButtonDropdown::widget()
             ->direction(ButtonDropdown::DIRECTION_UP)
             ->options([
                 'class' => $containerClass,
@@ -43,19 +30,17 @@ final class ButtonDropdownTest extends TestCase
                     ['label' => 'DropdownA', 'url' => '/'],
                     ['label' => 'DropdownB', 'url' => '#'],
                 ],
-            ]);
+            ])
+            ->render();
 
-        $this->assertStringContainsString("$containerClass dropup btn-group", ob_get_clean());
+        $this->assertStringContainsString("$containerClass dropup btn-group", $html);
     }
 
     public function testDirection(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         ButtonDropdown::counter(0);
 
-        echo ButtonDropdown::widget()
+        $html = ButtonDropdown::widget()
             ->direction(ButtonDropdown::DIRECTION_LEFT)
             ->label('Action')
             ->dropdown([
@@ -63,7 +48,8 @@ final class ButtonDropdownTest extends TestCase
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#'],
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
@@ -72,17 +58,14 @@ final class ButtonDropdownTest extends TestCase
 <a class="dropdown-item" href="#">ItemB</a></div></div>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testSplit(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         ButtonDropdown::counter(0);
 
-        echo ButtonDropdown::widget()
+        $html = ButtonDropdown::widget()
             ->direction(ButtonDropdown::DIRECTION_DOWN)
             ->label('Split dropdown')
             ->split(true)
@@ -91,7 +74,8 @@ EXPECTED;
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#']
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn">Split dropdown</button>
@@ -100,6 +84,6 @@ EXPECTED;
 <a class="dropdown-item" href="#">ItemB</a></div></div>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

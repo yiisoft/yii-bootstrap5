@@ -16,12 +16,9 @@ final class ButtonGroupTest extends TestCase
 {
     public function testContainerOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         ButtonGroup::counter(0);
 
-        echo ButtonGroup::widget()
+        $html = ButtonGroup::widget()
             ->buttons([
                 ['label' => 'button-A'],
                 ['label' => 'button-B', 'visible' => true],
@@ -29,7 +26,8 @@ final class ButtonGroupTest extends TestCase
                 Button::widget()
                     ->label('button-D')
                     ->render()
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w1-button-group" class="btn-group" role="group"><button type="button" id="w2-button" class="btn">button-A</button>
@@ -37,6 +35,6 @@ final class ButtonGroupTest extends TestCase
 <button id="w0-button" class="btn">button-D</button></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

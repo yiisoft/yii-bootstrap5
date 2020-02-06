@@ -15,12 +15,9 @@ final class NavTest extends TestCase
 {
     public function testIds(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -41,7 +38,8 @@ final class NavTest extends TestCase
                         ['label' => 'Page5', 'content' => 'Page5'],
                     ]
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
@@ -49,17 +47,14 @@ final class NavTest extends TestCase
 <h6 class="dropdown-header">Page3</h6></div></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testRenderDropdownWithDropdownOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -81,7 +76,8 @@ EXPECTED;
                         ['label' => 'Page5', 'content' => 'Page5'],
                     ]
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
@@ -89,17 +85,14 @@ EXPECTED;
 <h6 class="dropdown-header">Page3</h6></div></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testEmptyItems(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->items([
                 [
                     'label' => 'Page1',
@@ -116,7 +109,8 @@ EXPECTED;
                     'label' => 'Page4',
                     'items' => [],
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
@@ -125,7 +119,7 @@ EXPECTED;
 <li class="nav-item"><a class="nav-link" href="#">Page4</a></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -133,12 +127,9 @@ EXPECTED;
      */
     public function testExplicitActive(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->activateItems(false)
             ->items([
                 [
@@ -149,14 +140,15 @@ EXPECTED;
                     'label' => 'Item2',
                     'url' => '/site/index',
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
 <li class="nav-item"><a class="nav-link" href="/site/index">Item2</a></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -164,12 +156,9 @@ EXPECTED;
      */
     public function testImplicitActive(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->currentPath('/site/index')
             ->items([
                 [
@@ -180,14 +169,15 @@ EXPECTED;
                     'label' => 'Item2',
                     'url' => '/site/index',
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link active" href="#">Item1</a></li>
 <li class="nav-item"><a class="nav-link active" href="/site/index">Item2</a></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -195,12 +185,9 @@ EXPECTED;
      */
     public function testExplicitActiveSubitems(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->activateItems(false)
             ->currentPath('/site/index')
             ->items([
@@ -214,7 +201,8 @@ EXPECTED;
                         ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
                     ],
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
@@ -222,7 +210,7 @@ EXPECTED;
 <h6 class="dropdown-header">Page3</h6></div></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -230,12 +218,9 @@ EXPECTED;
      */
     public function testImplicitActiveSubitems(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->items([
                 [
                     'label' => 'Item1',
@@ -247,7 +232,8 @@ EXPECTED;
                         ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
                     ],
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
@@ -255,7 +241,7 @@ EXPECTED;
 <h6 class="dropdown-header">Page3</h6></div></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -264,12 +250,9 @@ EXPECTED;
      */
     public function testDeepActivateParents(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Nav::counter(0);
 
-        echo Nav::widget()
+        $html = Nav::widget()
             ->activateParents(true)
             ->items([
                 [
@@ -283,7 +266,8 @@ EXPECTED;
                         ],
                     ],
                 ],
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-toggle="dropdown">Dropdown</a><div id="w1-dropdown" class="dropdown-menu"><div class="dropdown active" aria-expanded="false">
@@ -292,6 +276,6 @@ EXPECTED;
 </div></div></li></ul>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

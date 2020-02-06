@@ -16,12 +16,9 @@ final class AccordionTest extends TestCase
 {
     public function testRender(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Accordion::counter(0);
 
-        echo Accordion::widget()
+        $html = Accordion::widget()
             ->items([
                 [
                     'label' => 'Collapsible Group Item #1',
@@ -74,7 +71,8 @@ final class AccordionTest extends TestCase
                     'encode' => true,
                     'footer' => 'Footer3'
                 ],
-            ]);
+            ])
+            ->render();
 
         $expectedHtml = <<<HTML
 <div id="w0-accordion" class="accordion">
@@ -118,7 +116,7 @@ final class AccordionTest extends TestCase
 
 HTML;
 
-        $this->assertEqualsWithoutLE($expectedHtml, ob_get_clean());
+        $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
     public function invalidItemsProvider(): array
@@ -137,8 +135,9 @@ HTML;
     {
         $this->expectException(InvalidConfigException::class);
 
-        echo Accordion::widget()
-            ->items($items);
+        Accordion::widget()
+            ->items($items)
+            ->render();
     }
 
     public function testAutoCloseItems(): void
@@ -154,24 +153,20 @@ HTML;
             ],
         ];
 
-        ob_start();
-        ob_implicit_flush(0);
-
         Accordion::counter(0);
 
-        echo Accordion::widget()
-            ->items($items);
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
 
-        $this->assertStringContainsString('data-parent="', ob_get_clean());
+        $this->assertStringContainsString('data-parent="', $html);
 
-        ob_start();
-        ob_implicit_flush(0);
-
-        echo Accordion::widget()
+        $html = Accordion::widget()
             ->autoCloseItems(false)
-            ->items($items);
+            ->items($items)
+            ->render();
 
-        $this->assertStringNotContainsString('data-parent="', ob_get_clean());
+        $this->assertStringNotContainsString('data-parent="', $html);
     }
 
     /**
@@ -190,42 +185,34 @@ HTML;
             ],
         ];
 
-        ob_start();
-        ob_implicit_flush(0);
-
         Accordion::counter(0);
 
-        echo Accordion::widget()
+        $html = Accordion::widget()
             ->items($items)
             ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => 'custom-toggle',
-            ]);
-
-        $output = ob_get_clean();
+            ])
+            ->render();
 
         $this->assertStringContainsString(
             '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w0-accordion-collapse0"',
-            $output
+            $html
         );
-        $this->assertStringNotContainsString('<button', $output);
+        $this->assertStringNotContainsString('<button', $html);
 
-        ob_start();
-        ob_implicit_flush(0);
-
-        echo Accordion::widget()
+        $html = Accordion::widget()
             ->items($items)
             ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => ['widget' => 'custom-toggle'],
-            ]);
-
-        $output = ob_get_clean();
+            ])
+            ->render();
 
         $this->assertStringContainsString(
             '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w1-accordion-collapse0"',
-            $output
+            $html
         );
-        $this->assertStringNotContainsString('collapse-toggle', $output);
+        $this->assertStringNotContainsString('collapse-toggle', $html);
     }
 }

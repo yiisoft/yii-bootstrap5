@@ -15,12 +15,9 @@ final class DropdownTest extends TestCase
 {
     public function testIds(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Dropdown::counter(0);
 
-        echo Dropdown::widget()
+        $html = Dropdown::widget()
             ->items([
                 [
                     'label' => 'Page1'
@@ -41,7 +38,8 @@ final class DropdownTest extends TestCase
                         ['label' => 'Page5', 'content' => 'Page5'],
                     ]
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <div id="w0-dropdown" class="dropdown-menu"><h6 class="dropdown-header">Page1</h6>
@@ -52,17 +50,14 @@ final class DropdownTest extends TestCase
 </div></div>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testSubMenuOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         Dropdown::counter(0);
 
-        echo Dropdown::widget()
+        $html = Dropdown::widget()
             ->submenuOptions(['class' => 'submenu-list'])
             ->items([
                 [
@@ -83,7 +78,8 @@ EXPECTED;
                         'class' => 'submenu-override',
                     ],
                 ]
-            ]);
+            ])
+            ->render();
 
         $expected = <<<EXPECTED
 <div id="w0-dropdown" class="dropdown-menu"><div class="dropdown" aria-expanded="false">
@@ -99,15 +95,12 @@ EXPECTED;
 </div></div>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testForms(): void
     {
         Dropdown::counter(0);
-
-        ob_start();
-        ob_implicit_flush(0);
 
         $form = <<<HTML
 <form class="px-4 py-3">
@@ -129,13 +122,14 @@ Remember me
 </form>
 HTML;
 
-        echo Dropdown::widget()
+        $html = Dropdown::widget()
             ->items([
                 $form,
                 '-',
                 ['label' => 'New around here? Sign up', 'url' => '#'],
                 ['label' => 'Forgot password?', 'url' => '#']
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-dropdown" class="dropdown-menu"><form class="px-4 py-3">
@@ -160,6 +154,6 @@ Remember me
 <a class="dropdown-item" href="#">Forgot password?</a></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

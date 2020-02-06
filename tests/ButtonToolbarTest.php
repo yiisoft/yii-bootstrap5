@@ -16,12 +16,9 @@ final class ButtonToolbarTest extends TestCase
 {
     public function testContainerOptions(): void
     {
-        ob_start();
-        ob_implicit_flush(0);
-
         ButtonToolbar::counter(0);
 
-        echo ButtonToolbar::widget()
+        $html = ButtonToolbar::widget()
             ->options([
                 'aria-label' => 'Toolbar with button groups'
             ])
@@ -61,7 +58,7 @@ final class ButtonToolbarTest extends TestCase
 <button type="button" id="w9-button" class="btn">7</button></div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testAdditionalContent(): void
@@ -74,12 +71,10 @@ HTML;
 <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
 </div>
 HTML;
-        ob_start();
-        ob_implicit_flush(0);
 
         ButtonToolbar::counter(0);
 
-        echo ButtonToolbar::widget()
+        $html = ButtonToolbar::widget()
             ->options([
                 'aria-label' => 'Toolbar with button groups'
             ])
@@ -97,7 +92,8 @@ HTML;
                     ]
                 ],
                 $addHtml
-            ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
 <div id="w0-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w1-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w2-button" class="btn">1</button>
@@ -112,6 +108,6 @@ HTML;
 </div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, ob_get_clean());
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }
