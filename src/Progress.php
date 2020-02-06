@@ -46,51 +46,17 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Progress extends Widget
 {
-    /**
-     * @var string the button label.
-     */
-    private string $label;
+    private ?string $label = null;
 
-    /**
-     * @var string|null the amount of progress as a percentage.
-     */
     private ?string $percent = null;
 
-    /**
-     * @var array a set of bars that are stacked together to form a single progress bar.
-     *
-     * Each bar is an array of the following structure:
-     *
-     * ```php
-     * [
-     *     // required, the amount of progress as a percentage.
-     *     'percent' => 30,
-     *     // optional, the label to be displayed on the bar
-     *     'label' => '30%',
-     *     // optional, array, additional HTML attributes for the bar tag
-     *     'options' => [],
-     * ]
-     * ```
-     */
-    private array $bars;
+    private array $bars = [];
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    /**
-     * @var array the HTML attributes of the bar. This property will only be considered if {@see bars} is empty
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are being rendered}
-     */
-    public array $barOptions = [];
+    private array $barOptions = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";
@@ -162,9 +128,22 @@ class Progress extends Widget
     }
 
     /**
-     * {@see $bars}
+     * Set of bars that are stacked together to form a single progress bar.
+     *
+     * Each bar is an array of the following structure:
+     *
+     * ```php
+     * [
+     *     // required, the amount of progress as a percentage.
+     *     'percent' => '30',
+     *     // optional, the label to be displayed on the bar
+     *     'label' => '30%',
+     *     // optional, array, additional HTML attributes for the bar tag
+     *     'options' => [],
+     * ]
+     * ```
      */
-    public function bars(array $value): self
+    public function bars(array $value): Progress
     {
         $this->bars = $value;
 
@@ -172,9 +151,11 @@ class Progress extends Widget
     }
 
     /**
-     * {@see $barOptions}
+     * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are being rendered}
      */
-    public function barOptions(array $value): self
+    public function barOptions(array $value): Progress
     {
         $this->barOptions = $value;
 
@@ -182,9 +163,9 @@ class Progress extends Widget
     }
 
     /**
-     * {@see $label}
+     * The button label.
      */
-    public function label(string $value): self
+    public function label(?string $value): self
     {
         $this->label = $value;
 
@@ -192,9 +173,11 @@ class Progress extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function options(array $value): Progress
     {
         $this->options = $value;
 
@@ -202,9 +185,9 @@ class Progress extends Widget
     }
 
     /**
-     * {@see $percent}
+     * The amount of progress as a percentage.
      */
-    public function percent(string $value): self
+    public function percent(?string $value): Progress
     {
         $this->percent = $value;
 

@@ -101,69 +101,20 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Nav extends Widget
 {
-    /**
-     * @var array list of items in the nav widget. Each array element represents a single  menu item which can be either
-     * a string or an array with the following structure:
-     *
-     * - label: string, required, the nav item label.
-     * - url: optional, the item's URL. Defaults to "#".
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item's link.
-     * - options: array, optional, the HTML attributes of the item container (LI).
-     * - active: bool, optional, whether the item should be on active state or not.
-     * - dropdownOptions: array, optional, the HTML options that will passed to the {@see Dropdown} widget.
-     * - items: array|string, optional, the configuration array for creating a {@see Dropdown} widget, or a string
-     *   representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
-     * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for
-     *   only this item.
-     *
-     * If a menu item is a string, it will be rendered directly without HTML encoding.
-     */
     private array $items = [];
 
-    /**
-     * @var bool whether the nav items labels should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var bool whether to automatically activate items according to whether their currentPath matches the currently
-     * requested.
-     *
-     * {@see isItemActive}
-     */
     private bool $activateItems = true;
 
-    /**
-     * @var bool whether to activate parent menu items when one of the corresponding child menu items is active.
-     */
     private bool $activateParents = false;
 
-    /**
-     * @var string $currentPath Allows you to assign the current path of the url from request controller.
-     */
     private ?string $currentPath = null;
 
-    /**
-     * @var array the parameters used to determine if a menu item is active or not. If not set, it will use `$_GET`.
-     *
-     * {@see currentPath}
-     * {@see isItemActive}
-     */
     private array $params = [];
 
-    /**
-     * @var string name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
-     */
     private string $dropdownClass = Dropdown::class;
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -344,7 +295,22 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $items}
+     * List of items in the nav widget. Each array element represents a single  menu item which can be either a string
+     * or an array with the following structure:
+     *
+     * - label: string, required, the nav item label.
+     * - url: optional, the item's URL. Defaults to "#".
+     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
+     * - linkOptions: array, optional, the HTML attributes of the item's link.
+     * - options: array, optional, the HTML attributes of the item container (LI).
+     * - active: bool, optional, whether the item should be on active state or not.
+     * - dropdownOptions: array, optional, the HTML options that will passed to the {@see Dropdown} widget.
+     * - items: array|string, optional, the configuration array for creating a {@see Dropdown} widget, or a string
+     *   representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
+     * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for
+     *   only this item.
+     *
+     * If a menu item is a string, it will be rendered directly without HTML encoding.
      */
     public function items(array $value): self
     {
@@ -354,7 +320,7 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $encodeLabels}
+     * Whether the nav items labels should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
@@ -374,7 +340,9 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $activateItems}
+     * Whether to automatically activate items according to whether their currentPath matches the currently requested.
+     *
+     * {@see isItemActive}
      */
     public function activateItems(bool $value): self
     {
@@ -384,7 +352,7 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $activateParents}
+     * Whether to activate parent menu items when one of the corresponding child menu items is active.
      */
     public function activateParents(bool $value): self
     {
@@ -394,9 +362,9 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $currentPath}
+     * Allows you to assign the current path of the url from request controller.
      */
-    public function currentPath(string $value): self
+    public function currentPath(?string $value): self
     {
         $this->currentPath = $value;
 
@@ -404,17 +372,20 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $params}
+     * The parameters used to determine if a menu item is active or not. If not set, it will use `$_GET`.
+     *
+     * {@see currentPath}
+     * {@see isItemActive}
      */
-    public function params(string $value): self
+    public function params(array $value): self
     {
-        $this->currentPath = $value;
+        $this->params = $value;
 
         return $this;
     }
 
     /**
-     * {@see $dropdownClass}
+     * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
      */
     public function dropdownClass(string $value): self
     {
@@ -424,7 +395,9 @@ class Nav extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

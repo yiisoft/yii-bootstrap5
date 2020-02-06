@@ -8,7 +8,7 @@ use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
- * Accordion renders an accordion bootstrap JavaScript component.
+ * Accordion renders an accordion bootstrap javascript component.
  *
  * For example:
  *
@@ -20,7 +20,7 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => 'Anim pariatur cliche...',
  *             // open its content by default
- *             'contentOptions' => ['class' => 'in']
+ *             'contentOptions' => ['class' => 'in'],
  *         ],
  *         // another group item
  *         [
@@ -34,88 +34,28 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => [
  *                 'Anim pariatur cliche...',
- *                 'Anim pariatur cliche...'
+ *                 'Anim pariatur cliche...',
  *             ],
  *             'contentOptions' => [...],
  *             'options' => [...],
- *             'footer' => 'Footer' // the footer label in list-group
+ *             'footer' => 'Footer' // the footer label in list-group,
  *         ],
  *     ]);
  * ```
  */
 class Accordion extends Widget
 {
-    /**
-     * @var array list of groups in the collapse widget. Each array element represents a single group with the following
-     * structure:
-     *
-     * - label: string, required, the group header label.
-     * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
-     *   global `$this->encodeLabels` param.
-     * - content: array|string|object, required, the content (HTML) of the group
-     * - options: array, optional, the HTML attributes of the group
-     * - contentOptions: optional, the HTML attributes of the group's content
-     *
-     * You may also specify this property as key-value pairs, where the key refers to the `label` and the value refers
-     * to `content`. If value is a string it is interpreted as label. If it is an array, it is interpreted as explained
-     * above.
-     *
-     * For example:
-     *
-     * ```php
-     * echo Accordion::widget([
-     *     'items' => [
-     *       'Introduction' => 'This is the first collapsible menu',
-     *       'Second panel' => [
-     *           'content' => 'This is the second collapsible menu',
-     *       ],
-     *       [
-     *           'label' => 'Third panel',
-     *           'content' => 'This is the third collapsible menu',
-     *       ],
-     *   ]
-     * ])
-     * ```
-     */
     private array $items = [];
 
-    /**
-     * @var bool whether the labels for header items should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var bool whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
-     *
-     * Set this to `false` to allow keeping multiple items open at once.
-     */
     private bool $autoCloseItems = true;
 
-    /**
-     * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
-     *
-     * For example:
-     *
-     * ```php
-     * [
-     *     'tag' => 'div',
-     *     'class' => 'custom-toggle',
-     * ]
-     * ```
-     *
-     */
     private array $itemToggleOptions = [];
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-accordion";
@@ -169,14 +109,15 @@ class Accordion extends Widget
     }
 
     /**
-     * Renders a single collapsible item group
+     * Renders a single collapsible item group.
+     *
      * @param string $header a label of the item group {@see items}
      * @param array $item a single item from {@see items}
      * @param int $index the item index as each item group content must have an id
      *
-     * @return string the rendering result
-     *
      * @throws InvalidConfigException
+     *
+     * @return string the rendering result
      */
     public function renderItem(string $header, array $item, int $index): string
     {
@@ -219,8 +160,7 @@ class Accordion extends Widget
                 $headerToggle = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
-                    ->options($itemToggleOptions)
-                    ->render() . "\n";
+                    ->options($itemToggleOptions) . "\n";
             }
 
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
@@ -262,7 +202,9 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see $autoCloseItems}
+     * Whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
+     *
+     * Set this to `false` to allow keeping multiple items open at once.
      */
     public function autoCloseItems(bool $value): self
     {
@@ -272,16 +214,45 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see $encodeLabels}
+     * Whether the labels for header items should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
         $this->encodeLabels = $value;
+
         return $this;
     }
 
     /**
-     * {@see $items}
+     * List of groups in the collapse widget. Each array element represents a single group with the following structure:
+     *
+     * - label: string, required, the group header label.
+     * - encode: bool, optional, whether this label should be HTML-encoded. This param will override global
+     *   `$this->encodeLabels` param.
+     * - content: array|string|object, required, the content (HTML) of the group
+     * - options: array, optional, the HTML attributes of the group
+     * - contentOptions: optional, the HTML attributes of the group's content
+     *
+     * You may also specify this property as key-value pairs, where the key refers to the `label` and the value refers
+     * to `content`. If value is a string it is interpreted as label. If it is an array, it is interpreted as explained
+     * above.
+     *
+     * For example:
+     *
+     * ```php
+     * echo Accordion::widget([
+     *     'items' => [
+     *       'Introduction' => 'This is the first collapsible menu',
+     *       'Second panel' => [
+     *           'content' => 'This is the second collapsible menu',
+     *       ],
+     *       [
+     *           'label' => 'Third panel',
+     *           'content' => 'This is the third collapsible menu',
+     *       ],
+     *   ]
+     * ])
+     * ```
      */
     public function items(array $value): self
     {
@@ -291,7 +262,16 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see $itemToggleOptions}
+     * The HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
+     *
+     * For example:
+     *
+     * ```php
+     * [
+     *     'tag' => 'div',
+     *     'class' => 'custom-toggle',
+     * ]
+     * ```
      */
     public function itemToggleOptions(array $value): self
     {
@@ -301,7 +281,9 @@ class Accordion extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

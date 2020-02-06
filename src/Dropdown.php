@@ -26,58 +26,15 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Dropdown extends Widget
 {
-    /**
-     * @var array list of menu items in the dropdown. Each array element can be either an HTML string, or an array
-     * representing a single menu with the following structure:
-     *
-     * - label: string, required, the label of the item link.
-     * - encode: bool, optional, whether to HTML-encode item label.
-     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
-     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item link.
-     * - options: array, optional, the HTML attributes of the item.
-     * - items: array, optional, the submenu items. The structure is the same as this property.
-     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
-     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
-     *   merged with {@see submenuOptions}.
-     *
-     * To insert divider use `-`.
-     */
     private array $items = [];
 
-    /**
-     * @var bool whether the labels for header items should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var array the HTML attributes for sub-menu container tags.
-     */
     private array $submenuOptions = [];
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    /**
-     * @var array $optionsLink
-     */
-    private array $optionsLink = [
-        'aria-haspopup' => 'true',
-        'aria-expanded' => 'false',
-        'id' => 'dropdownMenuLink',
-        'class' => 'btn btn-secondary dropdown-toggle',
-        'data-toggle' => 'dropdown',
-        'role' => 'button',
-    ];
-
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";
@@ -183,7 +140,22 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see $items}
+     * List of menu items in the dropdown. Each array element can be either an HTML string, or an array representing a
+     * single menu with the following structure:
+     *
+     * - label: string, required, the label of the item link.
+     * - encode: bool, optional, whether to HTML-encode item label.
+     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
+     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
+     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
+     * - linkOptions: array, optional, the HTML attributes of the item link.
+     * - options: array, optional, the HTML attributes of the item.
+     * - items: array, optional, the submenu items. The structure is the same as this property.
+     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
+     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
+     *   merged with {@see submenuOptions}.
+     *
+     * To insert divider use `-`.
      */
     public function items(array $value): self
     {
@@ -193,7 +165,7 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see $encodeLabel}
+     * Whether the labels for header items should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
@@ -203,7 +175,7 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see $submenuOptions}
+     * The HTML attributes for sub-menu container tags.
      */
     public function submenuOptions(array $value): self
     {
@@ -213,7 +185,9 @@ class Dropdown extends Widget
     }
 
     /**
-     * {@see $options}
+     * @var array the HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

@@ -17,28 +17,12 @@ namespace Yiisoft\Yii\Bootstrap4;
  */
 class Button extends Widget
 {
-    /**
-     * @var string the tag to use to render the button
-     */
     private string $tagName = 'button';
 
-    /**
-     * @var string the button label
-     */
     private string $label = 'Button';
 
-    /**
-     * @var bool whether the label should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -59,7 +43,7 @@ class Button extends Widget
     }
 
     /**
-     * {@see $encodeLabel}
+     * Whether the label should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
@@ -69,7 +53,7 @@ class Button extends Widget
     }
 
     /**
-     * {@see $label}
+     * The button label
      */
     public function label(string $value): self
     {
@@ -79,7 +63,9 @@ class Button extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -89,7 +75,7 @@ class Button extends Widget
     }
 
     /**
-     * {@see $tagName}
+     * The tag to use to render the button.
      */
     public function tagName(string $value): self
     {

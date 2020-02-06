@@ -26,32 +26,12 @@ trait BootstrapWidgetTrait
 {
     private ?AssetManager $assetManager = null;
 
-    /**
-     * @var array the options for the underlying Bootstrap JS plugin.
-     *
-     * Please refer to the corresponding Bootstrap plugin Web page for possible options.
-     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
-     * supported options (e.g. "remote").
-     */
     private array $clientOptions = [];
 
-    /**
-     * @var array the event handlers for the underlying Bootstrap JS plugin.
-     *
-     * Please refer to the corresponding Bootstrap plugin Web page for possible events.
-     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
-     * supported events (e.g. "shown").
-     */
     private array $clientEvents = [];
 
-    /**
-     * @var bool $enableClientOptions enable/disable script Bootstrap JS plugin.
-     */
     private bool $enableClientOptions = false;
 
-    /**
-     * @var object $webView The view where the Widget will be registered.
-     */
     private ?object $webView = null;
 
     /**
@@ -112,11 +92,12 @@ trait BootstrapWidgetTrait
     }
 
     /**
-     * {@see $clientEvents}
+     * The event handlers for the underlying Bootstrap JS plugin.
      *
-     * @param array $value
+     * Please refer to the corresponding Bootstrap plugin Web page for possible events.
      *
-     * @return $this
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
+     * supported events (e.g. "shown").
      */
     public function clientEvents(array $value): self
     {
@@ -126,11 +107,12 @@ trait BootstrapWidgetTrait
     }
 
     /**
-     * {@see $clientOptions}
+     * The options for the underlying Bootstrap JS plugin.
      *
-     * @param array $value
+     * Please refer to the corresponding Bootstrap plugin Web page for possible options.
      *
-     * @return $this
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
+     * supported options (e.g. "remote").
      */
     public function clientOptions(array $value): self
     {
@@ -144,6 +126,9 @@ trait BootstrapWidgetTrait
         return $this->clientOptions;
     }
 
+    /**
+     * Enable/Disable script Bootstrap JS plugin.
+     */
     public function enableClientOptions(bool $value): self
     {
         $this->enableClientOptions = $value;

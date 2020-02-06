@@ -18,7 +18,7 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  *         [
  *             'label' => 'One',
  *             'content' => 'Anim pariatur cliche...',
- *             'active' => true
+ *             'active' => true,
  *         ],
  *         [
  *             'label' => 'Two',
@@ -52,100 +52,29 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Tabs extends Widget
 {
-    /**
-     * @var array list of tabs in the tabs widget. Each array element represents a single tab with the following
-     * structure:
-     *
-     * - label: string, required, the tab header label.
-     * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
-     *   global `$this->encodeLabels` param.
-     * - headerOptions: array, optional, the HTML attributes of the tab header.
-     * - linkOptions: array, optional, the HTML attributes of the tab header link tags.
-     * - content: string, optional, the content (HTML) of the tab pane.
-     * - url: string, optional, an external URL. When this is specified, clicking on this tab will bring
-     *   the browser to this URL.
-     * - options: array, optional, the HTML attributes of the tab pane container.
-     * - active: bool, optional, whether this item tab header and pane should be active. If no item is marked as
-     *   'active' explicitly - the first one will be activated.
-     * - visible: bool, optional, whether the item tab header and pane should be visible or not. Defaults to true.
-     * - items: array, optional, can be used instead of `content` to specify a dropdown items
-     *   configuration array. Each item can hold three extra keys, besides the above ones:
-     *     * active: bool, optional, whether the item tab header and pane should be visible or not.
-     *     * content: string, required if `items` is not set. The content (HTML) of the tab pane.
-     *     * contentOptions: optional, array, the HTML attributes of the tab content container.
-     */
     private array $items = [];
 
-    /**
-     * @var array list of HTML attributes for the item container tags. This will be overwritten by the "options" set in
-     * individual {@see items}. The following special options are recognized:
-     *
-     * - tag: string, defaults to "div", the tag name of the item container tags.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $itemOptions = [];
 
-    /**
-     * @var array list of HTML attributes for the header container tags. This will be overwritten by the "headerOptions"
-     * set in individual {@see items}.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $headerOptions = [];
 
-    /**
-     * @var array list of HTML attributes for the tab header link tags. This will be overwritten by the "linkOptions"
-     * set in individual {@see items}.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $linkOptions = [];
 
-    /**
-     * @var bool whether the labels for header items should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var string specifies the Bootstrap tab styling.
-     */
     private string $navType = 'nav-tabs';
 
-    /**
-     * @var bool whether to render the `tab-content` container and its content. You may set this property to be false so
-     * that you can manually render `tab-content` yourself in case your tab contents are complex.
-     */
     private bool $renderTabContent = true;
 
-    /**
-     * @var array list of HTML attributes for the `tab-content` container. This will always contain the CSS class
-     * `tab-content`.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $tabContentOptions = [];
 
-    /**
-     * @var string name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
-     */
     public string $dropdownClass = Dropdown::class;
 
-    /**
-     * @var array Tab panes (contents)
-     */
     protected array $panes = [];
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-tabs";
@@ -233,7 +162,7 @@ class Tabs extends Widget
     }
 
     /**
-     * @return bool if there's active tab defined
+     * @return bool if there's active tab defined.
      */
     protected function hasActiveTab(): bool
     {
@@ -278,7 +207,7 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $dropdownClass}
+     * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      */
     public function dropdownClass(string $value): self
     {
@@ -288,7 +217,7 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $encodeLabels}
+     * Whether the labels for header items should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
@@ -298,7 +227,10 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $headerOptions}
+     * List of HTML attributes for the header container tags. This will be overwritten by the "headerOptions" set in
+     * individual {@see items}.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
     {
@@ -308,7 +240,25 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $items}
+     * List of tabs in the tabs widget. Each array element represents a single tab with the following structure:
+     *
+     * - label: string, required, the tab header label.
+     * - encode: bool, optional, whether this label should be HTML-encoded. This param will override
+     *   global `$this->encodeLabels` param.
+     * - headerOptions: array, optional, the HTML attributes of the tab header.
+     * - linkOptions: array, optional, the HTML attributes of the tab header link tags.
+     * - content: string, optional, the content (HTML) of the tab pane.
+     * - url: string, optional, an external URL. When this is specified, clicking on this tab will bring
+     *   the browser to this URL.
+     * - options: array, optional, the HTML attributes of the tab pane container.
+     * - active: bool, optional, whether this item tab header and pane should be active. If no item is marked as
+     *   'active' explicitly - the first one will be activated.
+     * - visible: bool, optional, whether the item tab header and pane should be visible or not. Defaults to true.
+     * - items: array, optional, can be used instead of `content` to specify a dropdown items
+     *   configuration array. Each item can hold three extra keys, besides the above ones:
+     *     * active: bool, optional, whether the item tab header and pane should be visible or not.
+     *     * content: string, required if `items` is not set. The content (HTML) of the tab pane.
+     *     * contentOptions: optional, array, the HTML attributes of the tab content container.
      */
     public function items(array $value): self
     {
@@ -318,7 +268,10 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $itemOptions}
+     * List of HTML attributes for the item container tags. This will be overwritten by the "options" set in individual
+     * {@see items}. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function itemOptions(array $value): self
     {
@@ -328,7 +281,10 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $linkOptions}
+     * List of HTML attributes for the tab header link tags. This will be overwritten by the "linkOptions" set in
+     * individual {@see items}.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function linkOptions(array $value): self
     {
@@ -338,7 +294,7 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $navType}
+     * Specifies the Bootstrap tab styling.
      */
     public function navType(string $value): self
     {
@@ -348,7 +304,9 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -358,7 +316,7 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $panes}
+     * Tab panes (contents).
      */
     public function panes(array $value): self
     {
@@ -368,7 +326,8 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $renderTabContent}
+     * Whether to render the `tab-content` container and its content. You may set this property to be false so that you
+     * can manually render `tab-content` yourself in case your tab contents are complex.
      */
     public function renderTabContent(bool $value): self
     {
@@ -378,7 +337,9 @@ class Tabs extends Widget
     }
 
     /**
-     * {@see $tabContentOptions}
+     * List of HTML attributes for the `tab-content` container. This will always contain the CSS class `tab-content`.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function tabContentOptions(array $value): self
     {

@@ -13,74 +13,26 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  * For example,
  *
  * ```php
- *    <?= Breadcrumbs::widget()
- *        ->links(['label' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]);
- *    ?>
+ * echo Breadcrumbs::widget()
+ *     ->links(['label' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]);
  * ```
  */
 class Breadcrumbs extends Widget
 {
-    /**
-     * @var string the name of the breadcrumb container tag.
-     */
     private string $tag = 'ol';
 
-    /**
-     * @var bool whether to HTML-encode the link labels.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var array the first hyperlink in the breadcrumbs (called home link).
-     *
-     * Please refer to {@see links} on the format of the link.
-     * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
-     * the home link will not be rendered.
-     */
     private array $homeLink = [];
 
-    /**
-     * @var array list of links to appear in the breadcrumbs. If this property is empty, the widget will not render
-     * anything. Each array element represents a single link in the breadcrumbs with the following structure:
-     *
-     * ```php
-     * [
-     *     'label' => 'label of the link',  // required
-     *     'url' => 'url of the link',      // optional, will be processed by Url::to()
-     *     'template' => 'own template of the item', // optional, if not set $this->itemTemplate will be used
-     * ]
-     * ```
-     *
-     *
-     */
     private array $links = [];
 
-    /**
-     * @var string the template used to render each inactive item in the breadcrumbs. The token `{link}` will be
-     * replaced with the actual HTML link for each inactive item.
-     */
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
 
-    /**
-     * @var string the template used to render each active item in the breadcrumbs. The token `{link}` will be replaced
-     * with the actual HTML link for each active item.
-     */
     private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
 
-    /**
-     * @var array the HTML attributes for the widgets nav container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $navOptions = ['aria-label' => 'breadcrumb'];
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -123,7 +75,7 @@ class Breadcrumbs extends Widget
      *
      * @param array $link the link to be rendered. It must contain the "label" element. The "url" element is optional.
      * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
-     *                         link.
+     * link.
      *
      * @return string the rendering result
      *
@@ -155,7 +107,8 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $activeItemTemplate}
+     * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
+     * actual HTML link for each active item.
      */
     public function activeItemTemplate(string $value): self
     {
@@ -165,7 +118,7 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $encodeLabels}
+     * Whether to HTML-encode the link labels.
      */
     public function encodeLabels(bool $value): self
     {
@@ -175,7 +128,12 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $homeLink}
+     * The first hyperlink in the breadcrumbs (called home link).
+     *
+     * Please refer to {@see links} on the format of the link.
+     *
+     * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
+     * the home link will not be rendered.
      */
     public function homeLink(array $value): self
     {
@@ -185,7 +143,8 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $itemTemplate}
+     * The template used to render each inactive item in the breadcrumbs. The token `{link}` will be replaced with the
+     * actual HTML link for each inactive item.
      */
     public function itemTemplate(string $value): self
     {
@@ -195,7 +154,16 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $links}
+     * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything. Each
+     * array element represents a single link in the breadcrumbs with the following structure:
+     *
+     * ```php
+     * [
+     *     'label' => 'label of the link',  // required
+     *     'url' => 'url of the link',      // optional, will be processed by Url::to()
+     *     'template' => 'own template of the item', // optional, if not set $this->itemTemplate will be used
+     * ]
+     * ```
      */
     public function links(array $value): self
     {
@@ -205,7 +173,9 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $navOptions}
+     * The HTML attributes for the widgets nav container tag.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function navOptions(array $value): self
     {
@@ -215,7 +185,9 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -225,7 +197,7 @@ class Breadcrumbs extends Widget
     }
 
     /**
-     * {@see $tag}
+     * The name of the breadcrumb container tag.
      */
     public function tag(string $value): self
     {

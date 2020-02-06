@@ -43,23 +43,8 @@ namespace Yiisoft\Yii\Bootstrap4;
  */
 class ButtonToolbar extends Widget
 {
-    /**
-     * @var array list of buttons groups. Each array element represents a single group which can be specified as a
-     * string or an array of the following structure:
-     *
-     * - buttons: array list of buttons. Either as array or string representation
-     * - options: array optional, the HTML attributes of the button group.
-     * - encodeLabels: bool whether to HTML-encode the button labels.
-     */
     private array $buttonGroups = [];
 
-    /**
-     * @var array the HTML attributes for the container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "div", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -105,7 +90,12 @@ class ButtonToolbar extends Widget
     }
 
     /**
-     * {@see $buttonGroups}
+     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
+     * array of the following structure:
+     *
+     * - buttons: array list of buttons. Either as array or string representation
+     * - options: array optional, the HTML attributes of the button group.
+     * - encodeLabels: bool whether to HTML-encode the button labels.
      */
     public function buttonGroups(array $value): self
     {
@@ -115,7 +105,9 @@ class ButtonToolbar extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

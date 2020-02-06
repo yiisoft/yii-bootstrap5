@@ -33,28 +33,10 @@ use Yiisoft\Arrays\ArrayHelper;
  */
 class ButtonGroup extends Widget
 {
-    /**
-     * @var array list of buttons. Each array element represents a single button which can be specified as a string or
-     * an array of the following structure:
-     *
-     * - label: string, required, the button label.
-     * - options: array, optional, the HTML attributes of the button.
-     * - visible: bool, optional, whether this button is visible. Defaults to true.
-     */
     private array $buttons = [];
 
-    /**
-     * @var bool whether to HTML-encode the button labels.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -111,7 +93,12 @@ class ButtonGroup extends Widget
     }
 
     /**
-     * {@see $buttons}
+     * List of buttons. Each array element represents a single button which can be specified as a string or an array of
+     * the following structure:
+     *
+     * - label: string, required, the button label.
+     * - options: array, optional, the HTML attributes of the button.
+     * - visible: bool, optional, whether this button is visible. Defaults to true.
      */
     public function buttons(array $value): self
     {
@@ -121,7 +108,7 @@ class ButtonGroup extends Widget
     }
 
     /**
-     * {@see $encodeLabels}
+     * Whether to HTML-encode the button labels.
      */
     public function encodeLabels(bool $value): self
     {
@@ -131,7 +118,9 @@ class ButtonGroup extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

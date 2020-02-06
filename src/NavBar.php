@@ -60,7 +60,7 @@ use Yiisoft\Arrays\ArrayHelper;
  *                'class' => 'navbar-nav float-right ml-auto'
  *            ]);
  *
- *        echo NavBar::end(); ?>
+ *    echo NavBar::end(); ?>
  * ```
  * Note: $currentPath it must be injected from each controller to the main controller.
  *
@@ -104,98 +104,31 @@ use Yiisoft\Arrays\ArrayHelper;
  *        return $content;
  *    }
  * ```
- *
- * @property-write array $containerOptions
- *
  */
 class NavBar extends Widget
 {
-    /**
-     * @var array the HTML attributes for the container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "div", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $collapseOptions = [];
 
-    /**
-     * @var string the text of the brand or empty if it's not used. Note that this is not HTML-encoded.
-     *
-     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
-     */
     private ?string $brandLabel = null;
 
-    /**
-     * @var string src of the brand image or empty if it's not used. Note that this param will override
-     * `$this->brandLabel` param.
-     *
-     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
-     */
     private ?string $brandImage = null;
 
-    /**
-     * @var string $url the URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand
-     * link. Default value is '/' will be used. You may set it to `null` if you want to have no link at all.
-     */
-    private string $brandUrl = '/';
+    private ?string $brandUrl = '/';
 
-    /**
-     * @var array the HTML attributes of the brand link.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $brandOptions = [];
 
-    /**
-     * @var string text to show for screen readers for the button to toggle the navbar.
-     */
     private string $screenReaderToggleText = 'Toggle navigation';
 
-    /**
-     * @var string the toggle button content. Defaults to bootstrap 4 default
-     * `<span class="navbar-toggler-icon"></span>`
-     */
     private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
 
-    /**
-     * @var array the HTML attributes of the navbar toggler button.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $togglerOptions = [];
 
-    /**
-     * @var bool whether the navbar content should be included in an inner div container which by default adds left and
-     * right padding. Set this to false for a 100% width navbar.
-     */
     private bool $renderInnerContainer = true;
 
-    /**
-     * @var array the HTML attributes of the inner container.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $innerContainerOptions = [];
 
-    /**
-     * @var bool $clientOptions
-     */
-    public bool $clientOptions = false;
-
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-
-    /**
-     * Initializes the widget.
-     */
     public function start(): void
     {
         if (!isset($this->options['id'])) {
@@ -251,7 +184,7 @@ class NavBar extends Widget
         echo Html::beginTag($collapseTag, $collapseOptions) . "\n";
     }
 
-    protected function run(): string
+    public function run(): string
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 
@@ -293,7 +226,9 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $collapseOptions}
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function collapseOptions(array $value): self
     {
@@ -303,9 +238,11 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $brandLabel}
+     * The text of the brand or empty if it's not used. Note that this is not HTML-encoded.
+     *
+     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    public function brandLabel(string $value): self
+    public function brandLabel(?string $value): self
     {
         $this->brandLabel = $value;
 
@@ -313,9 +250,11 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $brandImage}
+     * Src of the brand image or empty if it's not used. Note that this param will override `$this->brandLabel` param.
+     *
+     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    public function brandImage(string $value): self
+    public function brandImage(?string $value): self
     {
         $this->brandImage = $value;
 
@@ -323,9 +262,10 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $brandUrl}
+     * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
+     * is '/' will be used. You may set it to `null` if you want to have no link at all.
      */
-    public function brandUrl(string $value): self
+    public function brandUrl(?string $value): self
     {
         $this->brandUrl = $value;
 
@@ -333,7 +273,9 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $brandOptions}
+     * The HTML attributes of the brand link.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function brandOptions(array $value): self
     {
@@ -343,7 +285,7 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $screenReaderToggleText}
+     * Text to show for screen readers for the button to toggle the navbar.
      */
     public function screenReaderToggleText(string $value): self
     {
@@ -353,7 +295,7 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $togglerContent}
+     * The toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`.
      */
     public function togglerContent(string $value): self
     {
@@ -363,7 +305,9 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $togglerOptions}
+     * The HTML attributes of the navbar toggler button.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function togglerOptions(array $value): self
     {
@@ -373,7 +317,8 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $renderInnerContainer}
+     * Whether the navbar content should be included in an inner div container which by default adds left and right
+     * padding. Set this to false for a 100% width navbar.
      */
     public function renderInnerContainer(bool $value): self
     {
@@ -383,7 +328,9 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $innerContainerOptions}
+     * The HTML attributes of the inner container.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function innerContainerOptions(array $value): self
     {
@@ -393,7 +340,9 @@ class NavBar extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

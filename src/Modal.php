@@ -12,15 +12,16 @@ use Yiisoft\Arrays\ArrayHelper;
  * The following example will show the content enclosed between the {@see begin()} and {@see end()} calls within the
  * modal window:
  *
- * ~~~php
+ * ```php
  * Modal::begin()
  *     ->title('<h2>Hello world</h2>')
- *     ->toggleButton(['label' => 'click me']);
+ *     ->toggleButton(['label' => 'click me'])
+ *     ->start();
  *
  * echo 'Say hello...';
  *
- * Modal::end();
- * ~~~
+ * echo Modal::end();
+ * ```
  */
 class Modal extends Widget
 {
@@ -39,105 +40,30 @@ class Modal extends Widget
      */
     public const SIZE_DEFAULT = '';
 
-    /**
-     * @var string the tile content in the modal window.
-     */
     private ?string $title = null;
 
-    /**
-     * @var array additional title options.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $titleOptions = [];
 
-    /**
-     * @var array additional header options.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $headerOptions = [];
 
-    /**
-     * @var array body options.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $bodyOptions = [];
 
-    /**
-     * @var string the footer content in the modal window.
-     */
     private ?string $footer = null;
 
-    /**
-     * @var array additional footer options
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $footerOptions = [];
 
-    /**
-     * @var string the modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or empty for default.
-     */
     private ?string $size = null;
 
-    /**
-     * @var array the options for rendering the close button tag.
-     *
-     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
-     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to '&times;'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
-     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
-     */
     private array $closeButton = [];
 
-    /**
-     * @var bool $closeButtonEnabled. Enable/Disable close button.
-     */
     private bool $closeButtonEnabled = true;
 
-    /**
-     * @var array the options for rendering the toggle button tag.
-     *
-     * The toggle button is used to toggle the visibility of the modal window. If {@see toggleButtonEnabled} is false,
-     * no toggle button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to 'Show'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
-     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
-     */
     private array $toggleButton = [];
 
-    /**
-     * @var bool $toggleButtonEnabled. Enable/Disable toggle button.
-     */
     private bool $toggleButtonEnabled = true;
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    /**
-     * Initializes the widget.
-     *
-     * @return void
-     */
     public function start(): void
     {
         if (!isset($this->options['id'])) {
@@ -154,7 +80,7 @@ class Modal extends Widget
         echo $this->renderBodyBegin() . "\n";
     }
 
-    protected function run(): string
+    public function run(): string
     {
         echo "\n" . $this->renderBodyEnd();
         echo "\n" . $this->renderFooter();
@@ -321,7 +247,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $bodyOptions}
+     * Body options.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function bodyOptions(array $value): self
     {
@@ -331,7 +259,18 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $closeButton}
+     * The options for rendering the close button tag.
+     *
+     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
+     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
+     *
+     * The following special options are supported:
+     *
+     * - tag: string, the tag name of the button. Defaults to 'button'.
+     * - label: string, the label of the button. Defaults to '&times;'.
+     *
+     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
+     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      */
     public function closeButton(array $value): self
     {
@@ -341,7 +280,7 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $closeButtonEnabled}
+     * Enable/Disable close button.
      */
     public function closeButtonEnabled(bool $value): self
     {
@@ -351,9 +290,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $footer}
+     * The footer content in the modal window.
      */
-    public function footer(string $value): self
+    public function footer(?string $value): self
     {
         $this->footer = $value;
 
@@ -361,7 +300,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $footerOptions}
+     * Additional footer options.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function footerOptions(array $value): self
     {
@@ -371,7 +312,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $headerOptions}
+     * Additional header options.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
     {
@@ -381,7 +324,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $options}
+     * @var array the HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -391,9 +336,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $title}
+     * The title content in the modal window.
      */
-    public function title(string $value): self
+    public function title(?string $value): self
     {
         $this->title = $value;
 
@@ -401,7 +346,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $titleOptions}
+     * Additional title options.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function titleOptions(array $value): self
     {
@@ -411,7 +358,18 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $toggleButton}
+     * The options for rendering the toggle button tag.
+     *
+     * The toggle button is used to toggle the visibility of the modal window. If {@see toggleButtonEnabled} is false,
+     * no toggle button will be rendered.
+     *
+     * The following special options are supported:
+     *
+     * - tag: string, the tag name of the button. Defaults to 'button'.
+     * - label: string, the label of the button. Defaults to 'Show'.
+     *
+     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
+     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      */
     public function toggleButton(array $value): self
     {
@@ -421,7 +379,7 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $toggleButtonEnabled}
+     * Enable/Disable toggle button.
      */
     public function toggleButtonEnabled(bool $value): self
     {
@@ -431,9 +389,9 @@ class Modal extends Widget
     }
 
     /**
-     * {@see $size}
+     * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
      */
-    public function size(string $value): self
+    public function size(?string $value): self
     {
         $this->size = $value;
 

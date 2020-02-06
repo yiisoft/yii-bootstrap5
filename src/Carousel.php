@@ -31,50 +31,17 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Carousel extends Widget
 {
-    /**
-     * @var array the labels for the previous and the next control buttons.
-     *
-     * If empty, it means the previous and the next control buttons should not be displayed.
-     */
     private array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>',
         '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>'
     ];
 
-    /**
-     * @var bool whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
-     */
     private bool $showIndicators = true;
 
-    /**
-     * @var array list of slides in the carousel. Each array element represents a single slide with the following
-     * structure:
-     *
-     * ```php
-     * [
-     *     // required, slide content (HTML), such as an image tag
-     *     'content' => '<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
-     *     // optional, the caption (HTML) of the slide
-     *     'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
-     *     // optional the HTML attributes of the slide container
-     *     'options' => [],
-     * ]
-     * ```
-     */
     private array $items = [];
 
-    /**
-     * @var bool Animate slides with a fade transition instead of a slide. Defaults to `false`
-     */
     private bool $crossfade = false;
 
-    /**
-     * @var array the HTML attributes for the container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "div", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = ['data-ride' => 'carousel'];
 
     protected function run(): string
@@ -207,7 +174,9 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see $controls}
+     * The labels for the previous and the next control buttons.
+     *
+     * If empty, it means the previous and the next control buttons should not be displayed.
      */
     public function controls(array $value): self
     {
@@ -217,7 +186,7 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see $crossfade}
+     * Animate slides with a fade transition instead of a slide. Defaults to `false`
      */
     public function crossfade(bool $value): self
     {
@@ -227,7 +196,18 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see $items}
+     * List of slides in the carousel. Each array element represents a single slide with the following structure:
+     *
+     * ```php
+     * [
+     *     // required, slide content (HTML), such as an image tag
+     *     'content' => '<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
+     *     // optional, the caption (HTML) of the slide
+     *     'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
+     *     // optional the HTML attributes of the slide container
+     *     'options' => [],
+     * ]
+     * ```
      */
     public function items(array $value): self
     {
@@ -237,7 +217,9 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -247,7 +229,7 @@ class Carousel extends Widget
     }
 
     /**
-     * {@see $showIndicator}
+     * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
      */
     public function showIndicators(bool $value): self
     {

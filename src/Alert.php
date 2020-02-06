@@ -13,7 +13,7 @@ use Yiisoft\Arrays\ArrayHelper;
  *
  * ```php
  * echo Alert::widget()
- *     options([
+ *     ->options([
  *         'class' => 'alert-info',
  *     ])
  *     ->body('Say hello...');
@@ -21,41 +21,12 @@ use Yiisoft\Arrays\ArrayHelper;
  */
 class Alert extends Widget
 {
-    /**
-     * @var string the body content in the alert component. Alert widget will also be treated as the body content, and
-     * will be rendered before this.
-     */
     private ?string $body = null;
 
-    /**
-     * @var array the options for rendering the close button tag.
-     *
-     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
-     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to '&times;'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag.
-     * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts)
-     * for the supported HTML attributes.
-     */
     private array $closeButton = [];
 
-    /**
-     * @var bool $closeButtonEnabled. Enable/Disable close button.
-     */
     private bool $closeButtonEnabled = true;
 
-    /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "nav", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
     protected function run(): string
@@ -132,9 +103,10 @@ class Alert extends Widget
     }
 
     /**
-     * {@see $body}
+     * The body content in the alert component. Alert widget will also be treated as the body content, and will be
+     * rendered before this.
      */
-    public function body(string $value): self
+    public function body(?string $value): self
     {
         $this->body = $value;
 
@@ -142,7 +114,20 @@ class Alert extends Widget
     }
 
     /**
-     * {@see $closeButton}
+     * The options for rendering the close button tag.
+     *
+     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
+     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
+     *
+     * The following special options are supported:
+     *
+     * - tag: string, the tag name of the button. Defaults to 'button'.
+     * - label: string, the label of the button. Defaults to '&times;'.
+     *
+     * The rest of the options will be rendered as the HTML attributes of the button tag.
+     *
+     * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts) for the supported HTML
+     * attributes.
      */
     public function closeButton(array $value): self
     {
@@ -152,7 +137,19 @@ class Alert extends Widget
     }
 
     /**
-     * {@see $options}
+     * Enable/Disable close button.
+     */
+    public function closeButtonEnabled(bool $value): self
+    {
+        $this->closeButton = $value;
+
+        return $this;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {

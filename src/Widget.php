@@ -4,26 +4,16 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-/**
- * Widget.
- */
 abstract class Widget extends \Yiisoft\Widget\Widget
 {
     use BootstrapWidgetTrait;
 
     private ?string $id = null;
+
     private bool $autoGenerate = true;
 
-    /**
-     * @var int a counter used to generate {@see id} for widgets.
-     */
     private static int $counter = 0;
 
-    /**
-     * @var string the prefix to the automatically generated widget IDs.
-     *
-     * {@see getId()}
-     */
     private static string $autoIdPrefix = 'w';
 
     /**
@@ -50,8 +40,21 @@ abstract class Widget extends \Yiisoft\Widget\Widget
         return $this;
     }
 
+    /**
+     * Counter used to generate {@see id} for widgets.
+     */
     public static function counter(int $value): void
     {
         self::$counter = $value;
+    }
+
+    /**
+     * The prefix to the automatically generated widget IDs.
+     *
+     * {@see getId()}
+     */
+    public static function autoIdPrefix(string $value): void
+    {
+        self::$autoIdPrefix = $value;
     }
 }

@@ -45,63 +45,24 @@ class ButtonDropdown extends Widget
      */
     public const DIRECTION_UP = 'up';
 
-    /**
-     * @var string the button label
-     */
     private string $label = 'Button';
 
-    /**
-     * @var array the HTML attributes for the container tag. The following special options are recognized:
-     *
-     * - tag: string, defaults to "div", the name of the container tag.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $options = [];
 
-    /**
-     * @var array the HTML attributes of the button.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
     private array $buttonOptions = [];
 
-    /**
-     * @var array the configuration array for {@see Dropdown}.
-     */
     private array $dropdown = [];
 
-    /**
-     * @var string the drop-direction of the widget
-     *
-     * Possible values are 'left', 'right', 'up', or 'down' (default)
-     */
     private string $direction = self::DIRECTION_DOWN;
 
-    /**
-     * @var bool whether to display a group of split-styled button group.
-     */
     private bool $split = false;
 
-    /**
-     * @var string the tag to use to render the button
-     */
     private string $tagName = 'button';
 
-    /**
-     * @var bool whether the label should be HTML-encoded.
-     */
     private bool $encodeLabels = true;
 
-    /**
-     * @var string name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
-     */
     private string $dropdownClass = Dropdown::class;
 
-    /**
-     * @var bool whether to render the container using the {@see options} as HTML attributes. If set to `false`, the
-     * container element enclosing the button and dropdown will NOT be rendered.
-     */
     private bool $renderContainer = true;
 
     protected function run(): string
@@ -201,7 +162,9 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $buttonOptions}
+     * The HTML attributes of the button.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function buttonOptions(array $value): self
     {
@@ -211,7 +174,9 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $direction}
+     * The drop-direction of the widget.
+     *
+     * Possible values are 'left', 'right', 'up', or 'down' (default)
      */
     public function direction(string $value): self
     {
@@ -221,7 +186,18 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $dropdown}
+     * The configuration array for example:
+     *
+     * ```php
+     *    [
+     *        'items' => [
+     *            ['label' => 'DropdownA', 'url' => '/'],
+     *            ['label' => 'DropdownB', 'url' => '#'],
+     *        ],
+     *    ]
+     * ```
+     *
+     * {@see Dropdown}
      */
     public function dropdown(array $value): self
     {
@@ -231,7 +207,7 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $dropdownClass}
+     * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      */
     public function dropdownClass(string $value): self
     {
@@ -241,7 +217,7 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $encodeLabel}
+     * Whether the label should be HTML-encoded.
      */
     public function encodeLabels(bool $value): self
     {
@@ -251,7 +227,7 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $label}
+     * The button label.
      */
     public function label(string $value): self
     {
@@ -261,7 +237,9 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $options}
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -271,7 +249,8 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $renderContainer}
+     * Whether to render the container using the {@see options} as HTML attributes. If set to `false`, the container
+     * element enclosing the button and dropdown will NOT be rendered.
      */
     public function renderContainer(bool $value): self
     {
@@ -281,7 +260,7 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $split}
+     * Whether to display a group of split-styled button group.
      */
     public function split(bool $value): self
     {
@@ -291,7 +270,7 @@ class ButtonDropdown extends Widget
     }
 
     /**
-     * {@see $tagName}
+     * The tag to use to render the button.
      */
     public function tagName(string $value): self
     {
