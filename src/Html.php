@@ -52,7 +52,7 @@ class Html extends \Yiisoft\Html\Html
      *
      * @return string
      */
-    public static function radioList($name, $selection = null, $items = [], $options = []): string
+    public static function radioList(string $name, $selection = null, array $items = [], array $options = []): string
     {
         if (!isset($options['item'])) {
             $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
@@ -138,7 +138,7 @@ class Html extends \Yiisoft\Html\Html
 
             $input = static::input($type, $name, $value, $options);
 
-            if (isset($labelOptions['wrapInput']) && $labelOptions['wrapInput']) {
+            if (!empty($labelOptions['wrapInput'])) {
                 unset($labelOptions['wrapInput']);
                 $content = static::label($input . $label, $options['id'], $labelOptions);
             } else {

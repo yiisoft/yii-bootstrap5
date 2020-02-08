@@ -137,7 +137,7 @@ class NavBar extends Widget
             $this->collapseOptions['id'] = "{$id}-collapse";
         }
 
-        if (!isset($this->options['class']) || empty($this->options['class'])) {
+        if (empty($this->options['class'])) {
             Html::addCssClass($this->options, ['widget' => 'navbar', 'navbar-expand-lg', 'navbar-light', 'bg-light']);
         } else {
             Html::addCssClass($this->options, ['widget' => 'navbar']);
@@ -172,8 +172,6 @@ class NavBar extends Widget
         $collapseOptions = $this->collapseOptions;
         $collapseTag = ArrayHelper::remove($collapseOptions, 'tag', 'div');
 
-        $htmlStart = '';
-
         $htmlStart = Html::beginTag($navTag, $navOptions) . "\n";
 
         if ($this->renderInnerContainer) {
@@ -191,8 +189,6 @@ class NavBar extends Widget
     protected function run(): string
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
-
-        $htmlRun = '';
 
         $htmlRun = Html::endTag($tag) . "\n";
 

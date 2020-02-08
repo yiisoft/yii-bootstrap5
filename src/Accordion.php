@@ -160,7 +160,8 @@ class Accordion extends Widget
                 $headerToggle = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
-                    ->options($itemToggleOptions) . "\n";
+                    ->options($itemToggleOptions)
+                    ->render(). "\n";
             }
 
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);

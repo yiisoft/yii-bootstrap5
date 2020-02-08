@@ -151,59 +151,52 @@ class Modal extends Widget
     /**
      * Renders the HTML markup for the footer of the modal.
      *
-     * @param null $result
-     *
      * @return string the rendering result
      */
-    protected function renderFooter($result = null): ?string
+    protected function renderFooter(): ?string
     {
-        if ($this->footer !== null) {
-            Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
-
-            $result = Html::tag('div', "\n" . $this->footer . "\n", $this->footerOptions);
+        if ($this->footer === null) {
+            return null;
         }
 
-        return $result;
+        Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
+        return Html::tag('div', "\n" . $this->footer . "\n", $this->footerOptions);
     }
 
     /**
      * Renders the toggle button.
      *
-     * @param null $result
-     *
      * @return string the rendering result
      */
-    protected function renderToggleButton($result = null): ?string
+    protected function renderToggleButton(): ?string
     {
-        if ($this->toggleButtonEnabled !== false) {
-            $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
-            $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
-
-            $result = Html::tag($tag, $label, $this->toggleButton);
+        if ($this->toggleButtonEnabled === false) {
+            return null;
         }
 
-        return $result;
+        $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
+
+        return Html::tag($tag, $label, $this->toggleButton);
     }
 
     /**
      * Renders the close button.
      *
-     * @param null $result
-     *
      * @return string the rendering result
      */
-    protected function renderCloseButton($result = null): ?string
+    protected function renderCloseButton(): ?string
     {
-        if ($this->closeButtonEnabled !== false) {
-            $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-            $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
-                'aria-hidden' => 'true'
-            ]));
-
-            $result = Html::tag($tag, $label, $this->closeButton);
+        if ($this->closeButtonEnabled === false) {
+            return null;
         }
 
-        return $result;
+        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
+            'aria-hidden' => 'true'
+        ]));
+
+        return Html::tag($tag, $label, $this->closeButton);
     }
 
     /**

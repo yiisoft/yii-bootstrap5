@@ -31,7 +31,7 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  */
 class Carousel extends Widget
 {
-    private array $controls = [
+    private ?array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>',
         '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>'
     ];
@@ -164,21 +164,21 @@ class Carousel extends Widget
                 ]);
         }
 
-        if ($this->controls === false) {
+        if ($this->controls === null) {
             return '';
         }
 
         throw new InvalidConfigException(
-            'The "controls" property must be either false or an array of two elements.'
+            'The "controls" property must be either null or an array of two elements.'
         );
     }
 
     /**
      * The labels for the previous and the next control buttons.
      *
-     * If empty, it means the previous and the next control buttons should not be displayed.
+     * If null, it means the previous and the next control buttons should not be displayed.
      */
-    public function controls(array $value): self
+    public function controls(?array $value): self
     {
         $this->controls = $value;
 

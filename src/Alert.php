@@ -37,13 +37,11 @@ class Alert extends Widget
 
         $this->initOptions();
 
-        $result = Html::beginTag('div', $this->options) . "\n"
-            . "\n" . $this->renderBodyEnd()
-            . "\n" . Html::endTag('div');
-
         $this->registerPlugin('alert', $this->options);
 
-        return $result;
+        return Html::beginTag('div', $this->options) . "\n"
+            . "\n" . $this->renderBodyEnd()
+            . "\n" . Html::endTag('div');
     }
 
     /**

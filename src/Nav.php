@@ -277,21 +277,20 @@ class Nav extends Widget
      * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
      *
      * @param array|string $item the menu item to be checked
-     * @param bool $result returns if the item is active
      *
      * @return bool whether the menu item is active
      */
-    protected function isItemActive($item, bool $result = false): bool
+    protected function isItemActive($item): bool
     {
         if (isset($item['active'])) {
             return ArrayHelper::getValue($item, 'active', false);
         }
 
         if (isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems) {
-            $result = true;
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     /**
