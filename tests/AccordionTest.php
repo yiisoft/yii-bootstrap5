@@ -1,21 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
-use yii\base\DynamicModel;
 use Yiisoft\Yii\Bootstrap4\Accordion;
-use yii\widgets\ActiveForm;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
- * @group bootstrap4
+ * Tests for Accordion widget
+ *
+ * AccordionTest
  */
-class AccordionTest extends TestCase
+final class AccordionTest extends TestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
-        Accordion::$counter = 0;
-        $output = Accordion::widget([
-            'items' => [
+        Accordion::counter(0);
+
+        $html = Accordion::widget()
+            ->items([
                 [
                     'label' => 'Collapsible Group Item #1',
                     'content' => [
@@ -67,30 +71,30 @@ class AccordionTest extends TestCase
                     'encode' => true,
                     'footer' => 'Footer3'
                 ],
-            ]
-        ]);
+            ])
+            ->render();
 
-        $this->assertEqualsWithoutLE(<<<HTML
-<div id="w0" class="accordion">
-<div class="card"><div id="w0-collapse0-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w1" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse0" aria-expanded aria-controls="w0-collapse0">Collapsible Group Item #1</button>
+        $expectedHtml = <<<HTML
+<div id="w0-accordion" class="accordion">
+<div class="card"><div id="w0-accordion-collapse0-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w1-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true" aria-controls="w0-accordion-collapse0">Collapsible Group Item #1</button>
 </h5></div>
-<div id="w0-collapse0" class="collapse show" aria-labelledby="w0-collapse0-heading" data-parent="#w0">
+<div id="w0-accordion-collapse0" class="collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item">test content1</li>
 <li class="list-group-item">test content2</li>
 </ul>
 
 </div></div>
-<div id="testId" class="testClass card"><div id="w0-collapse1-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w2" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse1" aria-controls="w0-collapse1">Collapsible Group Item #2</button>
+<div id="testId" class="testClass card"><div id="w0-accordion-collapse1-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w2-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="false" aria-controls="w0-accordion-collapse1">Collapsible Group Item #2</button>
 </h5></div>
-<div id="w0-collapse1" class="testContentOptions collapse" aria-labelledby="w0-collapse1-heading" data-parent="#w0">
+<div id="w0-accordion-collapse1" class="testContentOptions collapse" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">
 <div class="card-body">Das ist das Haus vom Nikolaus</div>
 
 <div class="card-footer">Footer</div>
 </div></div>
-<div id="testId2" class="testClass2 card"><div id="w0-collapse2-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w3" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse2" aria-controls="w0-collapse2"><h1>Collapsible Group Item #3</h1></button>
+<div id="testId2" class="testClass2 card"><div id="w0-accordion-collapse2-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w3-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false" aria-controls="w0-accordion-collapse2"><h1>Collapsible Group Item #3</h1></button>
 </h5></div>
-<div id="w0-collapse2" class="testContentOptions2 collapse" aria-labelledby="w0-collapse2-heading" data-parent="#w0">
+<div id="w0-accordion-collapse2" class="testContentOptions2 collapse" aria-labelledby="w0-accordion-collapse2-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
 <li class="list-group-item"><h2>test content2</h2></li>
@@ -98,9 +102,9 @@ class AccordionTest extends TestCase
 
 <div class="card-footer">Footer2</div>
 </div></div>
-<div id="testId3" class="testClass3 card"><div id="w0-collapse3-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w4" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse3" aria-controls="w0-collapse3">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button>
+<div id="testId3" class="testClass3 card"><div id="w0-accordion-collapse3-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w4-button" class="btn-link btn" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false" aria-controls="w0-accordion-collapse3">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button>
 </h5></div>
-<div id="w0-collapse3" class="testContentOptions3 collapse" aria-labelledby="w0-collapse3-heading" data-parent="#w0">
+<div id="w0-accordion-collapse3" class="testContentOptions3 collapse" aria-labelledby="w0-accordion-collapse3-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
 <li class="list-group-item"><h2>test content2</h2></li>
@@ -110,67 +114,12 @@ class AccordionTest extends TestCase
 </div></div>
 </div>
 
-HTML
-        , $output);
+HTML;
+
+        $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
-    public function testLabelKeys()
-    {
-        ob_start();
-        $form = ActiveForm::begin(['action' => '/something']);
-        ActiveForm::end();
-        ob_end_clean();
-
-        Accordion::$counter = 0;
-        $output = Accordion::widget([
-            'items' => [
-                'Item1' => 'Content1',
-                'Item2' => [
-                    'content' => 'Content2',
-                ],
-                [
-                    'label' => 'Item3',
-                    'content' => 'Content3',
-                ],
-                'FormField' => $form->field(new DynamicModel(['test']), 'test', ['template' => '{input}']),
-            ]
-        ]);
-
-        $this->assertEqualsWithoutLE(<<<HTML
-<div id="w0" class="accordion">
-<div class="card"><div id="w0-collapse0-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w1" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse0" aria-expanded aria-controls="w0-collapse0">Item1</button>
-</h5></div>
-<div id="w0-collapse0" class="collapse show" aria-labelledby="w0-collapse0-heading" data-parent="#w0">
-<div class="card-body">Content1</div>
-
-</div></div>
-<div class="card"><div id="w0-collapse1-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w2" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse1" aria-controls="w0-collapse1">Item2</button>
-</h5></div>
-<div id="w0-collapse1" class="collapse" aria-labelledby="w0-collapse1-heading" data-parent="#w0">
-<div class="card-body">Content2</div>
-
-</div></div>
-<div class="card"><div id="w0-collapse2-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w3" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse2" aria-controls="w0-collapse2">Item3</button>
-</h5></div>
-<div id="w0-collapse2" class="collapse" aria-labelledby="w0-collapse2-heading" data-parent="#w0">
-<div class="card-body">Content3</div>
-
-</div></div>
-<div class="card"><div id="w0-collapse3-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w4" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse3" aria-controls="w0-collapse3">FormField</button>
-</h5></div>
-<div id="w0-collapse3" class="collapse" aria-labelledby="w0-collapse3-heading" data-parent="#w0">
-<div class="card-body"><div class="form-group field-dynamicmodel-test">
-<input type="text" id="dynamicmodel-test" class="form-control" name="DynamicModel[test]">
-</div></div>
-
-</div></div>
-</div>
-
-HTML
-        , $output);
-    }
-
-    public function invalidItemsProvider()
+    public function invalidItemsProvider(): array
     {
         return [
             [ ['content'] ], // only content without label key
@@ -181,54 +130,17 @@ HTML
 
     /**
      * @dataProvider invalidItemsProvider
-     * @expectedException \yii\exceptions\InvalidConfigException
      */
-    public function testMissingLabel($items)
+    public function testMissingLabel($items): void
     {
-        Accordion::widget([
-            'items' => $items,
-        ]);
+        $this->expectException(InvalidConfigException::class);
+
+        Accordion::widget()
+            ->items($items)
+            ->render();
     }
 
-    /**
-     * @see https://github.com/yiisoft/yii2/issues/8357
-     */
-    public function testRenderObject()
-    {
-        $template = ['template' => '{input}'];
-        ob_start();
-        $form = ActiveForm::begin(['action' => '/something']);
-        ActiveForm::end();
-        ob_end_clean();
-        $model = new Data\Singer();
-
-        Accordion::$counter = 0;
-        $output = Accordion::widget([
-            'items' => [
-                [
-                    'label' => 'Collapsible Group Item #1',
-                    'content' => $form->field($model, 'firstName', $template)
-                ],
-            ]
-        ]);
-
-        $this->assertEqualsWithoutLE(<<<HTML
-<div id="w0" class="accordion">
-<div class="card"><div id="w0-collapse0-heading" class="card-header"><h5 class="mb-0"><button type="button" id="w1" class="btn-link btn" data-toggle="collapse" data-target="#w0-collapse0" aria-expanded aria-controls="w0-collapse0">Collapsible Group Item #1</button>
-</h5></div>
-<div id="w0-collapse0" class="collapse show" aria-labelledby="w0-collapse0-heading" data-parent="#w0">
-<div class="card-body"><div class="form-group field-singer-firstname">
-<input type="text" id="singer-firstname" class="form-control" name="Singer[firstName]">
-</div></div>
-
-</div></div>
-</div>
-
-HTML
-        , $output);
-    }
-
-    public function testAutoCloseItems()
+    public function testAutoCloseItems(): void
     {
         $items = [
             [
@@ -241,21 +153,26 @@ HTML
             ],
         ];
 
-        $output = Accordion::widget([
-            'items' => $items
-        ]);
-        $this->assertContains('data-parent="', $output);
-        $output = Accordion::widget([
-            'autoCloseItems' => false,
-            'items' => $items
-        ]);
-        $this->assertNotContains('data-parent="', $output);
+        Accordion::counter(0);
+
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
+
+        $this->assertStringContainsString('data-parent="', $html);
+
+        $html = Accordion::widget()
+            ->autoCloseItems(false)
+            ->items($items)
+            ->render();
+
+        $this->assertStringNotContainsString('data-parent="', $html);
     }
 
     /**
      * @depends testRender
      */
-    public function testItemToggleTag()
+    public function testItemToggleTag(): void
     {
         $items = [
             [
@@ -268,26 +185,34 @@ HTML
             ],
         ];
 
-        Accordion::$counter = 0;
+        Accordion::counter(0);
 
-        $output = Accordion::widget([
-            'items' => $items,
-            'itemToggleOptions' => [
+        $html = Accordion::widget()
+            ->items($items)
+            ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => 'custom-toggle',
-            ],
-        ]);
-        $this->assertContains('<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w0-collapse0" ', $output);
-        $this->assertNotContains('<button', $output);
+            ])
+            ->render();
 
-        $output = Accordion::widget([
-            'items' => $items,
-            'itemToggleOptions' => [
+        $this->assertStringContainsString(
+            '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w0-accordion-collapse0"',
+            $html
+        );
+        $this->assertStringNotContainsString('<button', $html);
+
+        $html = Accordion::widget()
+            ->items($items)
+            ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => ['widget' => 'custom-toggle'],
-            ],
-        ]);
-        $this->assertContains('<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w1-collapse0" ', $output);
-        $this->assertNotContains('collapse-toggle', $output);
+            ])
+            ->render();
+
+        $this->assertStringContainsString(
+            '<h5 class="mb-0"><a type="button" class="custom-toggle" href="#w1-accordion-collapse0"',
+            $html
+        );
+        $this->assertStringNotContainsString('collapse-toggle', $html);
     }
 }

@@ -1,13 +1,9 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use Yii;
 use Yiisoft\Arrays\ArrayHelper;
 
 /**
@@ -16,45 +12,110 @@ use Yiisoft\Arrays\ArrayHelper;
  * For example,
  *
  * ```php
- * echo Alert::widget([
- *     'options' => [
+ * echo Alert::widget()
+ *     ->options([
  *         'class' => 'alert-info',
- *     ],
- *     'body' => 'Say hello...',
- * ]);
+ *     ])
+ *     ->body('Say hello...');
  * ```
- *
- * The following example will show the content enclosed between the [[begin()]]
- * and [[end()]] calls within the alert box:
- *
- * ```php
- * Alert::begin([
- *     'options' => [
- *         'class' => 'alert-warning',
- *     ],
- * ]);
- *
- * echo 'Say hello...';
- *
- * Alert::end();
- * ```
- *
- * @see https://getbootstrap.com/docs/4.2/components/alerts/
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @author Simon Karlen <simi.albi@gmail.com>
  */
 class Alert extends Widget
 {
+    private ?string $body = null;
+
+    private array $closeButton = [];
+
+    private bool $closeButtonEnabled = true;
+
+    private array $options = [];
+
+    protected function run(): string
+    {
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = "{$this->getId()}-alert";
+        }
+
+        $this->initOptions();
+
+        $this->registerPlugin('alert', $this->options);
+
+        return Html::beginTag('div', $this->options) . "\n"
+            . "\n" . $this->renderBodyEnd()
+            . "\n" . Html::endTag('div');
+    }
+
     /**
-     * @var string the body content in the alert component. Note that anything between
-     * the [[begin()]] and [[end()]] calls of the Alert widget will also be treated
-     * as the body content, and will be rendered before this.
+     * Renders the alert body and the close button (if any).
+     *
+     * @return string the rendering result
      */
-    public $body;
+    protected function renderBodyEnd(): string
+    {
+        return $this->body . "\n" .  $this->renderCloseButton() . "\n";
+    }
+
     /**
-     * @var array|false the options for rendering the close button tag.
-     * The close button is displayed in the header of the modal window. Clicking
-     * on the button will hide the modal window. If this is false, no close button will be rendered.
+     * Renders the close button.
+     *
+     * @return string the rendering result
+     */
+    protected function renderCloseButton(): ?string
+    {
+        if ($this->closeButtonEnabled === false) {
+            return null;
+        }
+
+        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
+            'aria-hidden' => 'true'
+        ]));
+
+        if ($tag === 'button' && !isset($this->closeButton['type'])) {
+            $this->closeButton['type'] = 'button';
+        }
+
+        return Html::tag($tag, $label, $this->closeButton);
+    }
+
+    /**
+     * Initializes the widget options.
+     *
+     * This method sets the default values for various options.
+     */
+    protected function initOptions(): void
+    {
+        Html::addCssClass($this->options, ['widget' => 'alert']);
+
+        if ($this->closeButtonEnabled !== false) {
+            $this->closeButton = [
+                'data-dismiss' => 'alert',
+                'class' => ['widget' => 'close'],
+            ];
+
+            Html::addCssClass($this->options, ['alert-dismissible']);
+        }
+
+        if (!isset($this->options['role'])) {
+            $this->options['role'] = 'alert';
+        }
+    }
+
+    /**
+     * The body content in the alert component. Alert widget will also be treated as the body content, and will be
+     * rendered before this.
+     */
+    public function body(?string $value): self
+    {
+        $this->body = $value;
+
+        return $this;
+    }
+
+    /**
+     * The options for rendering the close button tag.
+     *
+     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
+     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
      *
      * The following special options are supported:
      *
@@ -62,83 +123,36 @@ class Alert extends Widget
      * - label: string, the label of the button. Defaults to '&times;'.
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag.
-     * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts)
-     * for the supported HTML attributes.
+     *
+     * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts) for the supported HTML
+     * attributes.
      */
-    public $closeButton = [];
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init(): void
+    public function closeButton(array $value): self
     {
-        parent::init();
+        $this->closeButton = $value;
 
-        $this->initOptions();
-
-        echo Html::beginTag('div', $this->options) . "\n";
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Enable/Disable close button.
      */
-    public function run()
+    public function closeButtonEnabled(bool $value): self
     {
-        echo "\n" . $this->renderBodyEnd();
-        echo "\n" . Html::endTag('div');
+        $this->closeButtonEnabled = $value;
 
-        $this->registerPlugin('alert');
+        return $this;
     }
 
     /**
-     * Renders the alert body and the close button (if any).
-     * @return string the rendering result
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    protected function renderBodyEnd()
+    public function options(array $value): self
     {
-        return $this->body . "\n" .  $this->renderCloseButton() . "\n";
-    }
+        $this->options = $value;
 
-    /**
-     * Renders the close button.
-     * @return string the rendering result
-     */
-    protected function renderCloseButton()
-    {
-        if (($closeButton = $this->closeButton) !== false) {
-            $tag = ArrayHelper::remove($closeButton, 'tag', 'button');
-            $label = ArrayHelper::remove($closeButton, 'label', Html::tag('span', '&times;', [
-                'aria-hidden' => 'true'
-            ]));
-            if ($tag === 'button' && !isset($closeButton['type'])) {
-                $closeButton['type'] = 'button';
-            }
-
-            return Html::tag($tag, $label, $closeButton);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Initializes the widget options.
-     * This method sets the default values for various options.
-     */
-    protected function initOptions()
-    {
-        Html::addCssClass($this->options, ['widget' => 'alert']);
-
-        if ($this->closeButton !== false) {
-            $this->closeButton = array_merge([
-                'data-dismiss' => 'alert',
-                'class' => ['widget' => 'close'],
-            ], $this->closeButton);
-
-            Html::addCssClass($this->options, ['alert-dismissible']);
-        }
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'alert';
-        }
+        return $this;
     }
 }

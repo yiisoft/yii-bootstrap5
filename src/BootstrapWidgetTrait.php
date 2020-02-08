@@ -1,14 +1,12 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
-use Yii;
-use yii\helpers\Json;
+use Yiisoft\Yii\Bootstrap4\Assets\BootstrapAsset;
+use Yiisoft\Assets\AssetManager;
+use Yiisoft\Json\Json;
 
 /**
  * BootstrapWidgetTrait is the trait, which provides basic for all bootstrap widgets features.
@@ -16,90 +14,137 @@ use yii\helpers\Json;
  * Note: class, which uses this trait must declare public field named `options` with the array default value:
  *
  * ```php
- * class MyWidget extends \yii\base\Widget
+ * class MyWidget extends \Yiisoft\Widget\Widget
  * {
  *     use BootstrapWidgetTrait;
- *
- *     public $options = [];
  * }
  * ```
  *
  * This field is not present in the trait in order to avoid possible PHP Fatal error on definition conflict.
- *
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @author Paul Klimov <klimov.paul@gmail.com>
  */
 trait BootstrapWidgetTrait
 {
-    /**
-     * @var array the options for the underlying Bootstrap JS plugin.
-     * Please refer to the corresponding Bootstrap plugin Web page for possible options.
-     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
-     * how to use the "Modal" plugin and the supported options (e.g. "remote").
-     */
-    public $clientOptions = [];
-    /**
-     * @var array the event handlers for the underlying Bootstrap JS plugin.
-     * Please refer to the corresponding Bootstrap plugin Web page for possible events.
-     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
-     * how to use the "Modal" plugin and the supported events (e.g. "shown").
-     */
-    public $clientEvents = [];
+    private ?AssetManager $assetManager = null;
 
+    private array $clientOptions = [];
+
+    private array $clientEvents = [];
+
+    private bool $enableClientOptions = false;
+
+    private ?object $webView = null;
 
     /**
-     * Initializes the widget.
-     * This method will register the bootstrap asset bundle. If you override this method,
-     * make sure you call the parent implementation first.
-     */
-    public function init(): void
-    {
-        parent::init();
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-    }
-
-    /**
-     * Registers a specific Bootstrap plugin and the related events
+     * Registers a specific Bootstrap plugin and the related events.
+     *
      * @param string $name the name of the Bootstrap plugin
+     * @param array $options
+     *
+     * @return void
      */
-    protected function registerPlugin($name)
+    protected function registerPlugin(string $name, array $options = []): void
     {
-        $view = $this->getView();
+        $id = $options['id'];
 
-        BootstrapPluginAsset::register($view);
-
-        $id = $this->options['id'];
-
-        if ($this->clientOptions !== false) {
-            $options = empty($this->clientOptions) ? '' : Json::htmlEncode($this->clientOptions);
-            $js = "jQuery('#$id').$name($options);";
-            $view->registerJs($js);
+        if ($this->assetManager !== null) {
+            $this->assetManager->register([
+                BootstrapAsset::class
+            ]);
         }
 
-        $this->registerClientEvents();
+        if ($this->enableClientOptions !== false) {
+            $optionsString = Json::htmlEncode($this->clientOptions);
+            $js = "jQuery('#$id').$name($optionsString);";
+
+            if ($this->webView !== null) {
+                $this->webView->registerJs($js);
+            }
+        }
+
+        $this->registerClientEvents($id);
     }
 
     /**
-     * Registers JS event handlers that are listed in [[clientEvents]].
+     * Registers JS event handlers that are listed in {@see clientEvents}.
+     *
+     * @param string $id
      */
-    protected function registerClientEvents()
+    protected function registerClientEvents(string $id): void
     {
-        if (!empty($this->clientEvents)) {
-            $id = $this->options['id'];
+        if ($this->clientEvents) {
             $js = [];
+
             foreach ($this->clientEvents as $event => $handler) {
                 $js[] = "jQuery('#$id').on('$event', $handler);";
             }
-            $this->getView()->registerJs(implode("\n", $js));
+
+            if ($this->webView !== null) {
+                $this->webView->registerJs(implode("\n", $js));
+            }
         }
     }
 
+    public function assetManager(AssetManager $value): self
+    {
+        $this->assetManager = $value;
+
+        return $this;
+    }
+
     /**
-     * @return \yii\web\View the view object that can be used to render views or view files.
-     * @see \yii\base\Widget::getView()
+     * The event handlers for the underlying Bootstrap JS plugin.
+     *
+     * Please refer to the corresponding Bootstrap plugin Web page for possible events.
+     *
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
+     * supported events (e.g. "shown").
      */
-    abstract public function getView();
+    public function clientEvents(array $value): self
+    {
+        $this->clientEvents = $value;
+
+        return $this;
+    }
+
+    /**
+     * The options for the underlying Bootstrap JS plugin.
+     *
+     * Please refer to the corresponding Bootstrap plugin Web page for possible options.
+     *
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
+     * supported options (e.g. "remote").
+     */
+    public function clientOptions(array $value): self
+    {
+        $this->clientOptions = $value;
+
+        return $this;
+    }
+
+    public function getClientOptions(): array
+    {
+        return $this->clientOptions;
+    }
+
+    /**
+     * Enable/Disable script Bootstrap JS plugin.
+     */
+    public function enableClientOptions(bool $value): self
+    {
+        $this->enableClientOptions = $value;
+
+        return $this;
+    }
+
+    public function getEnableClientOptions(): bool
+    {
+        return $this->enableClientOptions;
+    }
+
+    public function webView(object $value): self
+    {
+        $this->webView = $value;
+
+        return $this;
+    }
 }

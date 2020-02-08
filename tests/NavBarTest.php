@@ -1,31 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Nav;
 use Yiisoft\Yii\Bootstrap4\NavBar;
 
 /**
- * Tests for NavBar widget
+ * Tests for NavBar widget.
  *
- * @group bootstrap4
+ * NavBarTest
  */
-class NavBarTest extends TestCase
+final class NavBarTest extends TestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
-        NavBar::$counter = 0;
+        NavBar::counter(0);
 
-        $out = NavBar::widget([
-            'brandLabel' => 'My Company',
-            'brandUrl' => '/',
-            'options' => [
+        $html = NavBar::begin()
+            ->brandLabel('My Company')
+            ->brandUrl('/')
+            ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
-            ],
-        ]);
+            ])
+            ->start();
+
+        $html .= NavBar::end();
 
         $expected = <<<EXPECTED
-<nav id="w0" class="navbar-inverse navbar-static-top navbar-frontend navbar" role="navigation">
+<nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -35,86 +39,102 @@ class NavBarTest extends TestCase
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
-    public function testBrandImage()
+    public function testBrandImage(): void
     {
-        $out = NavBar::widget([
-            'brandImage' => '/images/test.jpg',
-            'brandUrl' => '/',
-        ]);
+        NavBar::counter(0);
 
-        $this->assertContains('<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>', $out);
+        $html = NavBar::begin()
+            ->brandImage('/images/test.jpg')
+            ->brandUrl('/')
+            ->start();
+
+        $html .= NavBar::end();
+
+        $this->assertStringContainsString(
+            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
+            $html
+        );
     }
 
-    public function testBrandLink()
+    public function testBrandLink(): void
     {
-        $out = NavBar::widget([
-            'brandLabel' => 'Yii Framework',
-            'brandUrl' => false,
-        ]);
+        NavBar::counter(0);
 
-        $this->assertContains('<a class="navbar-brand" href="/index.php">Yii Framework</a>', $out);
+        $html = NavBar::begin()
+            ->brandLabel('Yii Framework')
+            ->brandUrl('/index.php')
+            ->start();
+
+        $html .= NavBar::end();
+
+        $this->assertStringContainsString(
+            '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
+            $html
+        );
     }
 
-    public function testBrandSpan()
+    public function testBrandSpan(): void
     {
-        $out = NavBar::widget([
-            'brandLabel' => 'Yii Framework',
-            'brandUrl' => null,
-        ]);
+        NavBar::counter(0);
 
-        $this->assertContains('<span class="navbar-brand">Yii Framework</span>', $out);
+        $html = NavBar::begin()
+            ->brandLabel('Yii Framework')
+            ->brandUrl('')
+            ->start();
+
+        $html .= NavBar::end();
+
+        $this->assertStringContainsString(
+            '<span class="navbar-brand">Yii Framework</span>',
+            $html
+        );
     }
 
-    /**
-     * @depends testRender
-     */
-    public function testNavAndForm()
+    public function testNavAndForm(): void
     {
-        NavBar::$counter = 0;
+        NavBar::counter(0);
 
-        ob_start();
-        NavBar::begin([
-            'brandLabel' => 'My Company',
-            'brandUrl' => '/',
-            'options' => [
-            ],
-        ]);
-        echo Nav::widget([
-            'options' => [
-                'class' => ['mr-auto']
-            ],
-            'items' => [
+        $html = NavBar::begin()
+            ->brandLabel('My Company')
+            ->brandUrl('/')
+            ->start();
+
+        $html .= Nav::widget()
+            ->items([
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
                 ['label' => 'Dropdown', 'items' => [
-                    ['label' => 'Action', 'url' => '#'],
-                    ['label' => 'Another action', 'url' => '#'],
-                    '-',
-                    ['label' => 'Something else here', 'url' => '#'],
-                ]]
-            ]
-        ]);
-        echo <<<HTML
+                        ['label' => 'Action', 'url' => '#'],
+                        ['label' => 'Another action', 'url' => '#'],
+                        '-',
+                        ['label' => 'Something else here', 'url' => '#'],
+                    ]
+                ]
+            ])
+            ->options(['class' => ['mr-auto']])
+            ->render();
+
+        $html .= <<<HTML
 <form class="form-inline my-2 my-lg-0">
 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 HTML;
-        NavBar::end();
-        $out = ob_get_clean();
+
+        $html .= NavBar::end();
 
         $expected = <<<EXPECTED
-<nav id="w0" class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 <div id="w0-collapse" class="collapse navbar-collapse">
-<ul id="w1" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+<ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
 <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2" class="dropdown-menu"><a class="dropdown-item" href="#">Action</a>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2-dropdown" class="dropdown-menu"><a class="dropdown-item" href="#">Action</a>
 <a class="dropdown-item" href="#">Another action</a>
 <div class="dropdown-divider"></div>
 <a class="dropdown-item" href="#">Something else here</a></div></li></ul><form class="form-inline my-2 my-lg-0">
@@ -125,6 +145,6 @@ HTML;
 </nav>
 EXPECTED;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

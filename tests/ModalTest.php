@@ -1,27 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Html;
 use Yiisoft\Yii\Bootstrap4\Modal;
 
 /**
- * @group bootstrap4
+ * Tests for Modal widget.
+ *
+ * ModalTest.
  */
-class ModalTest extends TestCase
+final class ModalTest extends TestCase
 {
-    public function testBodyOptions()
+    public function testBodyOptions(): void
     {
-        Modal::$counter = 0;
-        $out = Modal::widget([
-            'closeButton' => false,
-            'bodyOptions' => ['class' => 'modal-body test', 'style' => 'text-align:center;']
-        ]);
+        Modal::counter(0);
 
+        $html = Modal::begin()
+            ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
+            ->closeButtonEnabled(false)
+            ->toggleButtonEnabled(false)
+            ->start();
+
+        $html .= Modal::end();
 
         $expected = <<<HTML
 
-<div id="w0" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog ">
 <div class="modal-content">
 
@@ -34,41 +41,42 @@ class ModalTest extends TestCase
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
-    /**
-     * @depends testBodyOptions
-     */
-    public function testContainerOptions()
+    public function testContainerOptions(): void
     {
-        Modal::$counter = 0;
+        Modal::counter(0);
 
-        ob_start();
-        Modal::begin([
-            'title' => 'Modal title',
-            'footer' => Html::button('Close', [
+        $html = Modal::begin()
+            ->title('Modal title')
+            ->toggleButtonEnabled(false)
+            ->footer(
+                Html::button('Close', [
                     'type' => 'button',
                     'class' => ['btn', 'btn-secondary'],
                     'data' => [
                         'dismiss' => 'modal'
                     ]
-                ]) . "\n" . Html::button('Save changes', [
+                ]) . "\n" .
+                Html::button('Save changes', [
                     'type' => 'button',
                     'class' => ['btn', 'btn-primary']
                 ])
-        ]);
-        echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
-        Modal::end();
-        $out = ob_get_clean();
+            )
+            ->start();
+
+        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+
+        $html .= Modal::end();
 
         $expected = <<<HTML
 
-<div id="w0" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-label">
+<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
 <div class="modal-dialog ">
 <div class="modal-content">
 <div class="modal-header">
-<h5 id="w0-label" class="modal-title">Modal title</h5>
+<h5 id="w0-modal-label" class="modal-title">Modal title</h5>
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 </div>
 <div class="modal-body">
@@ -83,33 +91,38 @@ HTML;
 </div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
-    public function testTriggerButton()
+    public function testTriggerButton(): void
     {
-        Modal::$counter = 0;
+        Modal::counter(0);
 
-        ob_start();
-        Modal::begin([
-            'toggleButton' => [
+        $html = Modal::begin()
+            ->toggleButton([
                 'class' => ['btn', 'btn-primary'],
                 'label' => 'Launch demo modal'
-            ],
-            'title' => 'Modal title',
-            'footer' => Html::button('Close', [
+            ])
+            ->title('Modal title')
+            ->footer(
+                Html::button('Close', [
                     'type' => 'button',
                     'class' => ['btn', 'btn-secondary']
-                ]) . "\n" . Html::button('Save changes', [
+                ]) . "\n" .
+                Html::button('Save changes', [
                     'type' => 'button',
                     'class' => ['btn', 'btn-primary']
                 ])
-        ]);
-        echo '<p>Woohoo, you\'re reading this text in a modal!</p>';
-        Modal::end();
-        $out = ob_get_clean();
+            )
+            ->start();
 
-        $this->assertContains('<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#w0">Launch demo modal</button>',
-            $out);
+        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+
+        $html .= Modal::end();
+
+        $this->assertStringContainsString(
+            '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#w0-modal">Launch demo modal</button>',
+            $html
+        );
     }
 }

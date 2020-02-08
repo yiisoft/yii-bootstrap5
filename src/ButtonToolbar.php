@@ -1,9 +1,6 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -15,8 +12,8 @@ namespace Yiisoft\Yii\Bootstrap4;
  *
  * ```php
  * // a button toolbar with items configuration
- * echo ButtonToolbar::widget([
- *     'buttonGroups' => [
+ * echo ButtonToolbar::widget()
+ *     ->buttonGroups([
  *         [
  *             'buttons' => [
  *                 ['label' => '1', 'class' => ['btn-secondary']],
@@ -39,73 +36,83 @@ namespace Yiisoft\Yii\Bootstrap4;
  *                 ['label' => '8', 'class' => ['btn-secondary']]
  *             ]
  *         ]
- *     ]
- * ]);
+ *     ]);
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
- *
- * @see https://getbootstrap.com/docs/4.2/components/buttons/
- * @see https://getbootstrap.com/docs/4.2/components/button-group/#button-toolbar
- *
- * @author Simon Karlen <simi.albi@gmail.com>
  */
 class ButtonToolbar extends Widget
 {
-    /**
-     * @var array list of buttons groups. Each array element represents a single group
-     * which can be specified as a string or an array of the following structure:
-     *
-     * - buttons: array list of buttons. Either as array or string representation
-     * - options: array optional, the HTML attributes of the button group.
-     * - encodeLabels: bool whether to HTML-encode the button labels.
-     */
-    public $buttonGroups = [];
+    private array $buttonGroups = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function init(): void
+    private array $options = [];
+
+    protected function run(): string
     {
-        parent::init();
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = "{$this->getId()}-button-toolbar";
+        }
+
         Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
+
         if (!isset($this->options['role'])) {
             $this->options['role'] = 'toolbar';
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     * @throws \Exception
-     */
-    public function run()
-    {
-        BootstrapAsset::register($this->getView());
         return Html::tag('div', $this->renderButtonGroups(), $this->options);
     }
 
     /**
-     * Generates the button groups that compound the toolbar as specified on [[buttonGroups]].
+     * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
+     *
      * @return string the rendering result.
-     * @throws \Exception
      */
-    protected function renderButtonGroups()
+    protected function renderButtonGroups(): string
     {
         $buttonGroups = [];
-        foreach ($this->buttonGroups as $group) {
-            if (is_array($group)) {
-                $group['view'] = $this->getView();
 
+        foreach ($this->buttonGroups as $group) {
+            if (\is_array($group)) {
                 if (!isset($group['buttons'])) {
                     continue;
                 }
 
-                $buttonGroups[] = ButtonGroup::widget($group);
+                $buttonGroups[] = ButtonGroup::widget()
+                    ->buttons($group['buttons'])
+                    ->options($group['options'])
+                    ->run();
             } else {
                 $buttonGroups[] = $group;
             }
         }
 
         return implode("\n", $buttonGroups);
+    }
+
+    /**
+     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
+     * array of the following structure:
+     *
+     * - buttons: array list of buttons. Either as array or string representation
+     * - options: array optional, the HTML attributes of the button group.
+     * - encodeLabels: bool whether to HTML-encode the button labels.
+     */
+    public function buttonGroups(array $value): self
+    {
+        $this->buttonGroups = $value;
+
+        return $this;
+    }
+
+    /**
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function options(array $value): self
+    {
+        $this->options = $value;
+
+        return $this;
     }
 }

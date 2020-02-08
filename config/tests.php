@@ -1,27 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+use Yiisoft\Aliases\Aliases;
+
 return [
-    'app' => [
-        'id' => 'testapp',
-        'aliases' => [
-            '@webroot' => '@Yiisoft/Yii/Bootstrap4/Tests',
-            '@public'  => '@Yiisoft/Yii/Bootstrap4/Tests',
-            '@web'     => '@Yiisoft/Yii/Bootstrap4/Tests',
-            '@bower'   => '@vendor/bower-asset',
-            '@npm'     => '@vendor/npm-asset',
-        ],
-    ],
-    'request' => [
-        'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
-        'scriptFile' => __DIR__ . '/index.php',
-        'scriptUrl' => '/index.php',
-    ],
-    'assetManager' => [
-        '__class'   => \yii\web\AssetManager::class,
-        'basePath'  => '@webroot/assets',
-        'baseUrl'   => '@web/assets',
-    ],
-    'session' => [
-        '__class' => \Yiisoft\Yii\Bootstrap4\Tests\Data\Session::class,
+    Aliases::class => [
+        '@root' => dirname(__DIR__, 1),
+        '@public' => '@root/tests/public',
+        '@basePath' => '@public/assets',
+        '@web'  => '/',
+        '@npm' => '@root/node_modules',
+        '@view' => '@public/view',
     ],
 ];

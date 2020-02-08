@@ -1,27 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
+use Yiisoft\Yii\Bootstrap4\Html;
 use Yiisoft\Yii\Bootstrap4\Tabs;
-use yii\helpers\Html;
 
 /**
- * Tests for Tabs widget
+ * Tests for Tabs widget.
  *
- * @group bootstrap4
+ * TabsTest
  */
-class TabsTest extends TestCase
+final class TabsTest extends TestCase
 {
+    public function testRoleTabList(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
+                [
+                    'label' => 'Page1',
+                    'content' => 'Page1',
+                ],
+                [
+                    'label' => 'Page2',
+                    'content' => 'Page2',
+                ],
+            ])
+            ->render();
+
+        $this->assertStringContainsString('<ul id="w0-tabs" class="nav nav-tabs" role="tablist">', $html);
+    }
+
     /**
      * Each tab should have a corresponding unique ID
      *
-     * @see https://github.com/yiisoft/yii2/issues/6150
+     * {@see https://github.com/yiisoft/yii2/issues/6150}
      */
-    public function testIds()
+    public function testIds(): void
     {
-        Tabs::$counter = 0;
-        $out = Tabs::widget([
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -53,17 +76,17 @@ class TabsTest extends TestCase
                         ],
                     ]
                 ],
-            ]
-        ]);
+            ])
+            ->render();
 
-        $page1 = 'w0-tab0';
-        $page2 = 'w0-dd1-tab0';
-        $page3 = 'w0-dd1-tab1';
-        $page4 = 'w0-dd2-tab0';
-        $page5 = 'w0-dd2-tab1';
+        $page1 = 'w0-tabs-tab0';
+        $page2 = 'w0-tabs-dd1-tab0';
+        $page3 = 'w0-tabs-dd1-tab1';
+        $page4 = 'w0-tabs-dd2-tab0';
+        $page5 = 'w0-tabs-dd2-tab1';
 
         $shouldContain = [
-            'w0', // nav widget container
+            'w0-tabs', // nav widget container
             "#$page1", // Page1
 
             'w1', // Dropdown1
@@ -90,15 +113,16 @@ class TabsTest extends TestCase
         ];
 
         foreach ($shouldContain as $string) {
-            $this->assertContains($string, $out);
+            $this->assertStringContainsString($string, $html);
         }
     }
 
-    public function testVisible()
+    public function testVisible(): void
     {
-        Tabs::$counter = 0;
-        $html = Tabs::widget([
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -118,22 +142,79 @@ class TabsTest extends TestCase
                         ['label' => 'Invisible External Link', 'url' => ['//other/dropdown/route'], 'visible' => false],
                     ]
                 ],
-            ]
-        ]);
+            ])
+            ->render();
 
-        $this->assertNotContains('InvisiblePage', $html);
-        $this->assertNotContains('Invisible Page Content', $html);
-        $this->assertNotContains('InvisibleItem', $html);
-        $this->assertNotContains('Invisible Item Content', $html);
-        $this->assertNotContains('Invisible External Link', $html);
+        $this-> assertStringNotContainsString('InvisiblePage', $html);
+        $this-> assertStringNotContainsString('Invisible Page Content', $html);
+        $this-> assertStringNotContainsString('InvisibleItem', $html);
+        $this-> assertStringNotContainsString('Invisible Item Content', $html);
+        $this-> assertStringNotContainsString('Invisible External Link', $html);
     }
 
-    public function testItem()
+    public function testDisabled(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
+                [
+                    'label' => 'Page1',
+                    'content' => 'Page1',
+                    'disabled' => true
+                ],
+                [
+                    'label' => 'Page2',
+                    'content' => 'Page2',
+                ],
+                [
+                    'label' => 'DisabledPage',
+                    'content' => 'Disabled Page Content',
+                    'disabled' => true
+                ],
+                [
+                    'label' => 'Dropdown1',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2'],
+                        ['label' => 'DisabledItem', 'content' => 'Disabled Item Content', 'disabled' => true],
+                        ['label' => 'Page3', 'content' => 'Page3'],
+                        ['label' => 'External Link', 'url' => '/other/dropdown/route'],
+                        ['label' => 'Disabled External Link', 'url' => '/other/dropdown/route', 'disabled' => true],
+                    ]
+                ],
+            ])
+            ->render();
+
+        $this->assertStringContainsString(
+            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab0" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
+            $html
+        );
+        $this->assertStringContainsString(
+            '<li class="nav-item"><a class="nav-link active" href="#w0-tabs-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="true">Page2</a></li>',
+            $html
+        );
+        $this->assertStringContainsString(
+            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab2" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
+            $html
+        );
+        $this->assertStringContainsString(
+            '<a class="dropdown-item disabled" href="#w0-tabs-dd3-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
+            $html
+        );
+        $this->assertStringContainsString(
+            '<a class="dropdown-item disabled" href="/other/dropdown/route" tabindex="-1" aria-disabled="true">Disabled External Link</a>',
+            $html
+        );
+    }
+
+    public function testItem(): void
     {
         $checkTag = 'article';
 
-        $out = Tabs::widget([
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -142,40 +223,43 @@ class TabsTest extends TestCase
                     'label' => 'Page2',
                     'content' => 'Page2',
                 ],
-            ],
-            'itemOptions' => ['tag' => $checkTag],
-            'renderTabContent' => true,
-        ]);
+            ])
+            ->itemOptions(['tag' => $checkTag])
+            ->renderTabContent(true)
+            ->render();
 
-        $this->assertContains('<' . $checkTag, $out);
+        $this->assertStringContainsString('<' . $checkTag, $html);
     }
 
-    public function testTabContentOptions()
+    public function testTabContentOptions(): void
     {
-        $checkAttribute = "test_attribute";
-        $checkValue = "check_attribute";
+        $checkAttribute = 'test_attribute';
+        $checkValue = 'check_attribute';
 
-        $out = Tabs::widget([
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1'
                 ]
-            ],
-            'tabContentOptions' => [
+            ])
+            ->tabContentOptions([
                 $checkAttribute => $checkValue
-            ]
-        ]);
+            ])
+            ->render();
 
-        $this->assertContains($checkAttribute . '=', $out);
-        $this->assertContains($checkValue, $out);
+        $this->assertStringContainsString($checkAttribute . '=', $html);
+        $this->assertStringContainsString($checkValue, $html);
     }
 
-    public function testActivateFirstVisibleTab()
+    public function testActivateFirstVisibleTab(): void
     {
-        $html = Tabs::widget([
-            'id' => 'mytab',
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
@@ -183,7 +267,8 @@ class TabsTest extends TestCase
                 ],
                 [
                     'label' => 'Tab 2',
-                    'content' => 'some content'
+                    'content' => 'some content',
+                    'disabled' => true
                 ],
                 [
                     'label' => 'Tab 3',
@@ -193,20 +278,30 @@ class TabsTest extends TestCase
                     'label' => 'Tab 4',
                     'content' => 'some content'
                 ]
-            ]
-        ]);
+            ])
+            ->options(['id' => 'mytab'])
+            ->render();
 
-        $this->assertNotContains('<li class="nav-item active"><a class="nav-link active" href="#mytab-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
-            $html);
-        $this->assertContains('<li class="nav-item active"><a class="nav-link active" href="#mytab-tab1" data-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
-            $html);
+        $this-> assertStringNotContainsString(
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
+            $html
+        );
+        $this-> assertStringNotContainsString(
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab1" data-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
+            $html
+        );
+        $this->assertStringContainsString(
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
+            $html
+        );
     }
 
-    public function testActivateTab()
+    public function testActivateTab(): void
     {
-        $html = Tabs::widget([
-            'id' => 'mytab',
-            'items' => [
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
@@ -225,9 +320,73 @@ class TabsTest extends TestCase
                     'label' => 'Tab 4',
                     'content' => 'some content'
                 ]
-            ]
-        ]);
-        $this->assertContains('<li class="nav-item active"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
-            $html);
+            ])
+            ->options(['id' => 'mytab'])
+            ->render();
+
+        $this->assertStringContainsString(
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
+            $html
+        );
+    }
+
+    public function testTabLabelEncoding(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->encodeLabels(false)
+            ->setId('mytab')
+            ->items([
+                [
+                    'label' => 'Tab 1<span>encoded</span>',
+                    'content' => 'some content',
+                    'encode' => true,
+                ],
+                [
+                    'label' => 'Tab 2<span>not encoded</span>',
+                    'content' => 'some content',
+                ],
+                [
+                    'label' => 'Tab 3<span>not encoded too</span>',
+                    'content' => 'some content',
+                ],
+            ])
+            ->render();
+
+        $this->assertStringContainsString('&lt;span&gt;encoded&lt;/span&gt;', $html);
+        $this->assertStringContainsString('<span>not encoded</span>', $html);
+        $this->assertStringContainsString('<span>not encoded too</span>', $html);
+    }
+
+    /**
+     * {@see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339}
+     */
+    public function testIdRendering(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([
+                [
+                    'options' => ['id' => 'pane1'],
+                    'label' => 'Tab 1',
+                    'content' => '<div>Content 1</div>',
+                ],
+                [
+                    'label' => 'Tab 2',
+                    'content' => '<div>Content 2</div>',
+                ],
+            ])
+            ->render();
+
+        $expected = <<<HTML
+<ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
+<li class="nav-item"><a class="nav-link" href="#w0-tabs-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="false">Tab 2</a></li></ul>
+<div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div>
+<div id="w0-tabs-tab1" class="tab-pane"><div>Content 2</div></div></div>
+HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

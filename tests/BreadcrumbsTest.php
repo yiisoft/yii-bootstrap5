@@ -1,37 +1,38 @@
 <?php
-/**
- * @package yii-bootstrap4
- * @author Simon Karlen <simi.albi@gmail.com>
- */
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4\Tests;
 
 use Yiisoft\Yii\Bootstrap4\Breadcrumbs;
 
 /**
- * @group bootstrap4
+ * Tests for Breadcrumbs widget
+ *
+ * BreadcrumbsTest
  */
-class BreadcrumbsTest extends TestCase
+final class BreadcrumbsTest extends TestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
-        Breadcrumbs::$counter = 0;
-        $out = Breadcrumbs::widget([
-            'homeLink' => ['label' => 'Home', 'url' => '#'],
-            'links' => [
+        Breadcrumbs::counter(0);
+
+        $html = Breadcrumbs::widget()
+            ->homeLink(['label' => 'Home', 'url' => '#'])
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data']
-            ]
-        ]);
+            ])
+            ->render();
 
         $expected = <<<HTML
-<nav aria-label="breadcrumb"><ol id="w0" class="breadcrumb"><li class="breadcrumb-item"><a href="#">Home</a></li>
+<nav aria-label="breadcrumb"><ol id="w0-breadcrumb" class="breadcrumb"><li class="breadcrumb-item"><a href="#">Home</a></li>
 <li class="breadcrumb-item"><a href="#">Library</a></li>
 <li class="breadcrumb-item active" aria-current="page">Data</li>
 </ol></nav>
 HTML;
 
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

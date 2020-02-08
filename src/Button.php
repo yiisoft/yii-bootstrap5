@@ -1,9 +1,6 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
+
+declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap4;
 
@@ -13,48 +10,77 @@ namespace Yiisoft\Yii\Bootstrap4;
  * For example,
  *
  * ```php
- * echo Button::widget([
- *     'label' => 'Action',
- *     'options' => ['class' => 'btn-lg'],
- * ]);
+ * echo Button::widget()
+ *     ->label('Action')
+ *     ->options(['class' => 'btn-lg']);
  * ```
- * @see http://getbootstrap.com/javascript/#buttons
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
  */
 class Button extends Widget
 {
-    /**
-     * @var string the tag to use to render the button
-     */
-    public $tagName = 'button';
-    /**
-     * @var string the button label
-     */
-    public $label = 'Button';
-    /**
-     * @var bool whether the label should be HTML-encoded.
-     */
-    public $encodeLabel = true;
+    private string $tagName = 'button';
 
+    private string $label = 'Button';
 
-    /**
-     * Initializes the widget.
-     * If you override this method, make sure you call the parent implementation first.
-     */
-    public function init(): void
+    private bool $encodeLabels = true;
+
+    private array $options = [];
+
+    protected function run(): string
     {
-        parent::init();
-        $this->clientOptions = false;
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = "{$this->getId()}-button";
+        }
+
         Html::addCssClass($this->options, ['widget' => 'btn']);
+
+        $this->registerPlugin('button', $this->options);
+
+        return Html::tag(
+            $this->tagName,
+            $this->encodeLabels ? Html::encode($this->label) : $this->label,
+            $this->options
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Whether the label should be HTML-encoded.
      */
-    public function run()
+    public function encodeLabels(bool $value): self
     {
-        $this->registerPlugin('button');
-        return Html::tag($this->tagName, $this->encodeLabel ? Html::encode($this->label) : $this->label,
-            $this->options);
+        $this->encodeLabels = $value;
+
+        return $this;
+    }
+
+    /**
+     * The button label
+     */
+    public function label(string $value): self
+    {
+        $this->label = $value;
+
+        return $this;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function options(array $value): self
+    {
+        $this->options = $value;
+
+        return $this;
+    }
+
+    /**
+     * The tag to use to render the button.
+     */
+    public function tagName(string $value): self
+    {
+        $this->tagName = $value;
+
+        return $this;
     }
 }
