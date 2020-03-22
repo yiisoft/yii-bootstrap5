@@ -252,9 +252,7 @@ class Nav extends Widget
                 }
             }
 
-            $childItems = ArrayHelper::getValue($child, 'items');
-
-            if (\is_array($childItems)) {
+            if (is_array($child) && ($childItems = ArrayHelper::getValue($child, 'items')) && \is_array($childItems)) {
                 $activeParent = false;
                 $items[$i]['items'] = $this->isChildActive($childItems, $activeParent);
 
