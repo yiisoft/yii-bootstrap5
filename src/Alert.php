@@ -51,7 +51,7 @@ class Alert extends Widget
      */
     protected function renderBodyEnd(): string
     {
-        return $this->body . "\n" .  $this->renderCloseButton() . "\n";
+        return $this->body . "\n" . $this->renderCloseButton() . "\n";
     }
 
     /**
