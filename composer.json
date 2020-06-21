@@ -1,0 +1,58 @@
+{
+    "name": "yiisoft/yii-bootstrap5",
+    "type": "library",
+    "description": "Yii Framework Twitter Bootstrap 4 Extension",
+    "keywords": [
+        "yii",
+        "bootstrap5"
+    ],
+    "license": "BSD-3-Clause",
+    "support": {
+        "source": "https://github.com/yiisoft/yii-bootstrap5",
+        "issues": "https://github.com/yiisoft/yii-bootstrap5/issues",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.4",
+        "foxy/foxy": "^1.1@dev",
+        "yiisoft/arrays": "^3.0@dev",
+        "yiisoft/assets": "^1.0@dev",
+        "yiisoft/html": "^3.0@dev",
+        "yiisoft/json": "^3.0@dev",
+        "yiisoft/widget": "^3.0@dev"
+    },
+    "require-dev": {
+        "yiisoft/composer-config-plugin": "^1.0@dev",
+        "phpunit/phpunit": "^9.0",
+        "yiisoft/aliases": "^1.0",
+        "yiisoft/di": "^3.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yiisoft\\Yii\\Bootstrap5\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Yiisoft\\Yii\\Bootstrap5\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        },
+        "config": {
+            "sort-packages": true
+        },
+        "config-plugin": {
+            "tests": "config/tests.php"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

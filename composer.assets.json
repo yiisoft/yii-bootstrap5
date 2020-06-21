@@ -1,0 +1,5 @@
+{
+    "require": {
+         "npm-asset/bootstrap": "^5.0.0"
+    }
+}
