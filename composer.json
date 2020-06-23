@@ -4,12 +4,12 @@
     "description": "Yii Framework Twitter Bootstrap 4 Extension",
     "keywords": [
         "yii",
-        "bootstrap4"
+        "bootstrap5"
     ],
     "license": "BSD-3-Clause",
     "support": {
-        "source": "https://github.com/yiisoft/yii-bootstrap4",
-        "issues": "https://github.com/yiisoft/yii-bootstrap4/issues",
+        "source": "https://github.com/yiisoft/yii-bootstrap5",
+        "issues": "https://github.com/yiisoft/yii-bootstrap5/issues",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii"
