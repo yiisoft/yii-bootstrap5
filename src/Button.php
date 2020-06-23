@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4;
+namespace Yiisoft\Yii\Bootstrap5;
 
 /**
  * Button renders a bootstrap button.

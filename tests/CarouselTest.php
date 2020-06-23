@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4\Tests;
+namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap4\Carousel;
+use Yiisoft\Yii\Bootstrap5\Carousel;
 
 /**
  * Tests for Carousel widget.

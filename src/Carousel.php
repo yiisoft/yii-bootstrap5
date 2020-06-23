@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4;
+namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Widget\Exception\InvalidConfigException;

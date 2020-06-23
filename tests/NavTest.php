@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4\Tests;
+namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap4\Nav;
+use Yiisoft\Yii\Bootstrap5\Nav;
 
 /**
  * Tests for Nav widget.

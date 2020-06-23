@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4\Assets;
+namespace Yiisoft\Yii\Bootstrap5\Assets;
 
 use Yiisoft\Assets\AssetBundle;
 
@@ -34,10 +34,5 @@ class BootstrapAsset extends AssetBundle
             'css/bootstrap.css',
             'js/bootstrap.bundle.js'
         ],
-    ];
-
-    public array $depends = [
-        JqueryAsset::class,
-        PopperAsset::class,
     ];
 }

@@ -1,15 +1,15 @@
 {
-    "name": "yiisoft/yii-bootstrap4",
+    "name": "yiisoft/yii-bootstrap5",
     "type": "library",
     "description": "Yii Framework Twitter Bootstrap 4 Extension",
     "keywords": [
         "yii",
-        "bootstrap4"
+        "bootstrap5"
     ],
     "license": "BSD-3-Clause",
     "support": {
-        "source": "https://github.com/yiisoft/yii-bootstrap4",
-        "issues": "https://github.com/yiisoft/yii-bootstrap4/issues",
+        "source": "https://github.com/yiisoft/yii-bootstrap5",
+        "issues": "https://github.com/yiisoft/yii-bootstrap5/issues",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii"
@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap4\\": "src"
+            "Yiisoft\\Yii\\Bootstrap5\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap4\\Tests\\": "tests"
+            "Yiisoft\\Yii\\Bootstrap5\\Tests\\": "tests"
         }
     },
     "extra": {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4;
+namespace Yiisoft\Yii\Bootstrap5;
 
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.

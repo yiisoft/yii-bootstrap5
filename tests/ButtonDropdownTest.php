@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4\Tests;
+namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap4\ButtonDropdown;
+use Yiisoft\Yii\Bootstrap5\ButtonDropdown;
 
 /**
  * Tests for ButtonDropdown widget
