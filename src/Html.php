@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap4;
+namespace Yiisoft\Yii\Bootstrap5;
 
 /**
  * Html is an enhanced version of {@see \Yiisoft\Html\Html} helper class dedicated to the Bootstrap needs.

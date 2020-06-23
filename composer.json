@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/yii-bootstrap4",
+    "name": "yiisoft/yii-bootstrap5",
     "type": "library",
     "description": "Yii Framework Twitter Bootstrap 4 Extension",
     "keywords": [
@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap4\\": "src"
+            "Yiisoft\\Yii\\Bootstrap5\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap4\\Tests\\": "tests"
+            "Yiisoft\\Yii\\Bootstrap5\\Tests\\": "tests"
         }
     },
     "extra": {
