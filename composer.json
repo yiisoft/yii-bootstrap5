@@ -1,7 +1,7 @@
 {
     "name": "yiisoft/yii-bootstrap5",
     "type": "library",
-    "description": "Yii Framework Twitter Bootstrap 4 Extension",
+    "description": "Yii Framework Twitter Bootstrap 5 Extension",
     "keywords": [
         "yii",
         "bootstrap5"
