@@ -11,7 +11,7 @@ use Yiisoft\Assets\AssetBundle;
  *
  * BootstrapAsset.
  *
- * @package Bootstrap4
+ * @package Bootstrap5
  */
 class BootstrapAsset extends AssetBundle
 {
