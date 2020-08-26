@@ -22,7 +22,7 @@
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",
         "yiisoft/html": "^3.0@dev",
-        "yiisoft/json": "^3.0@dev",
+        "yiisoft/json": "^1.0",
         "yiisoft/widget": "^3.0@dev"
     },
     "require-dev": {
