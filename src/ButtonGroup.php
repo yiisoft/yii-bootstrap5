@@ -76,7 +76,7 @@ class ButtonGroup extends Widget
                 }
 
                 if (!isset($button['options']['type'])) {
-                    ArrayHelper::setValue($button, 'options.type', 'button');
+                    ArrayHelper::setValueByPath($button, 'options.type', 'button');
                 }
 
                 $buttons[] = Button::widget()
