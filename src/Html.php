@@ -14,14 +14,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 class Html extends \Yiisoft\Html\Html
 {
     /**
-     * @var array list of tag attributes that should be specially handled when their values are of array type.
-     *
-     * In particular, if the value of the `data` attribute is `['name' => 'xyz', 'age' => 13]`, two attributes will be
-     * generated instead of one: `data-name="xyz" data-age="13"`.
-     */
-    public static array $dataAttributes = ['data', 'data-ng', 'ng', 'aria'];
-
-    /**
      * Renders Bootstrap static form control.
      *
      * @param string $value static control value.

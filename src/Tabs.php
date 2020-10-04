@@ -140,12 +140,12 @@ class Tabs extends Widget
             }
 
             ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
-            ArrayHelper::setValue($items[$n], 'linkOptions.data.toggle', 'tab');
-            ArrayHelper::setValue($items[$n], 'linkOptions.role', 'tab');
-            ArrayHelper::setValue($items[$n], 'linkOptions.aria-controls', $options['id']);
+            ArrayHelper::setValueByPath($items[$n], 'linkOptions.data.toggle', 'tab');
+            ArrayHelper::setValueByPath($items[$n], 'linkOptions.role', 'tab');
+            ArrayHelper::setValueByPath($items[$n], 'linkOptions.aria-controls', $options['id']);
 
             if (!$disabled) {
-                ArrayHelper::setValue($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
+                ArrayHelper::setValueByPath($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
             }
 
             Html::addCssClass($options, ['widget' => 'tab-pane']);
