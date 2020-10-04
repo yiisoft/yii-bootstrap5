@@ -9,7 +9,7 @@ return [
         '@root' => dirname(__DIR__, 1),
         '@public' => '@root/tests/public',
         '@basePath' => '@public/assets',
-        '@web'  => '/',
+        '@baseUrl'  => '/',
         '@npm' => '@root/node_modules',
         '@view' => '@public/view',
     ],
