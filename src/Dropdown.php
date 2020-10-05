@@ -202,7 +202,8 @@ class Dropdown extends Widget
     }
 
     /**
-     * @param array the HTML attributes for the widget container tag. The following special options are recognized.
+     * @param array $value the HTML attributes for the widget container tag. The following special options are
+     * recognized.
      *
      * @return $this
      *
