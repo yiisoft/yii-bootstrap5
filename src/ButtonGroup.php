@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Factory\Exceptions\InvalidConfigException;
+use Yiisoft\Html\Html;
+
+use function implode;
+use function is_array;
 
 /**
  * ButtonGroup renders a button group bootstrap component.
@@ -34,9 +39,7 @@ use Yiisoft\Arrays\ArrayHelper;
 class ButtonGroup extends Widget
 {
     private array $buttons = [];
-
     private bool $encodeLabels = true;
-
     private array $options = [];
 
     protected function run(): string
@@ -57,6 +60,8 @@ class ButtonGroup extends Widget
     /**
      * Generates the buttons that compound the group as specified on {@see buttons}.
      *
+     * @throws InvalidConfigException
+     *
      * @return string the rendering result.
      */
     protected function renderButtons(): string
@@ -64,7 +69,7 @@ class ButtonGroup extends Widget
         $buttons = [];
 
         foreach ($this->buttons as $button) {
-            if (\is_array($button)) {
+            if (is_array($button)) {
                 $visible = ArrayHelper::remove($button, 'visible', true);
 
                 if ($visible === false) {
@@ -83,7 +88,7 @@ class ButtonGroup extends Widget
                                  ->encodeLabels($button['encodeLabel'])
                                  ->label($button['label'])
                                  ->options($button['options'])
-                                 ->run();
+                                 ->render();
             } else {
                 $buttons[] = $button;
             }
@@ -99,6 +104,10 @@ class ButtonGroup extends Widget
      * - label: string, required, the button label.
      * - options: array, optional, the HTML attributes of the button.
      * - visible: bool, optional, whether this button is visible. Defaults to true.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function buttons(array $value): self
     {
@@ -109,6 +118,10 @@ class ButtonGroup extends Widget
 
     /**
      * Whether to HTML-encode the button labels.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function encodeLabels(bool $value): self
     {
@@ -121,6 +134,10 @@ class ButtonGroup extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {

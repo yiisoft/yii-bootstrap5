@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function count;
+use function implode;
+use function is_string;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.
@@ -37,11 +43,8 @@ class Carousel extends Widget
     ];
 
     private bool $showIndicators = true;
-
     private array $items = [];
-
     private bool $crossfade = false;
-
     private array $options = ['data-ride' => 'carousel'];
 
     protected function run(): string
@@ -109,13 +112,13 @@ class Carousel extends Widget
      * @param string|array $item a single item from {@see items}
      * @param int $index the item index as the first item should be set to `active`
      *
-     * @return string the rendering result
+     * @throws JsonException|InvalidConfigException if the item is invalid.
      *
-     * @throws InvalidConfigException if the item is invalid
+     * @return string the rendering result.
      */
     public function renderItem($item, int $index): string
     {
-        if (\is_string($item)) {
+        if (is_string($item)) {
             $content = $item;
             $caption = null;
             $options = [];
@@ -147,9 +150,11 @@ class Carousel extends Widget
     /**
      * Renders previous and next control buttons.
      *
-     * @throws InvalidConfigException if {@see controls} is invalid.
+     * @throws JsonException|InvalidConfigException if {@see controls} is invalid.
+     *
+     * @return string
      */
-    public function renderControls(): ?string
+    public function renderControls(): string
     {
         if (isset($this->controls[0], $this->controls[1])) {
             return Html::a($this->controls[0], '#' . $this->options['id'], [
@@ -177,6 +182,10 @@ class Carousel extends Widget
      * The labels for the previous and the next control buttons.
      *
      * If null, it means the previous and the next control buttons should not be displayed.
+     *
+     * @param array|null $value
+     *
+     * @return $this
      */
     public function controls(?array $value): self
     {
@@ -186,7 +195,11 @@ class Carousel extends Widget
     }
 
     /**
-     * Animate slides with a fade transition instead of a slide. Defaults to `false`
+     * Animate slides with a fade transition instead of a slide. Defaults to `false`.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function crossfade(bool $value): self
     {
@@ -208,6 +221,9 @@ class Carousel extends Widget
      *     'options' => [],
      * ]
      * ```
+     * @param array $value
+     *
+     * @return $this
      */
     public function items(array $value): self
     {
@@ -220,6 +236,10 @@ class Carousel extends Widget
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {
@@ -230,6 +250,10 @@ class Carousel extends Widget
 
     /**
      * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function showIndicators(bool $value): self
     {
