@@ -25,6 +25,8 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 [![Build Status](https://travis-ci.com/yiisoft/yii-bootstrap5.svg?branch=master)](https://travis-ci.com/yiisoft/yii-bootstrap5)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/yii-bootstrap5/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-bootstrap5/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/yii-bootstrap5/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-bootstrap5/?branch=master)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fyii-bootstrap5%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/yii-bootstrap5/master)
+[![static analysis](https://github.com/yiisoft/yii-bootstrap5/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/yii-bootstrap5/actions?query=workflow%3A%22static+analysis%22)
 
 Installation
 ------------
