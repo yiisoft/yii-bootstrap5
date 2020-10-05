@@ -130,8 +130,12 @@ HTML;
 
     /**
      * @dataProvider invalidItemsProvider
+     *
+     * @param array $items
+     *
+     * @throws \Yiisoft\Factory\Exceptions\InvalidConfigException
      */
-    public function testMissingLabel($items): void
+    public function testMissingLabel(array $items): void
     {
         $this->expectException(InvalidConfigException::class);
 

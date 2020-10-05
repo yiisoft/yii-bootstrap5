@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Composer\Config\Builder;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
-use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Assets\AssetManager;
 use Yiisoft\Files\FileHelper;
 use Yiisoft\Di\Container;
-use Yiisoft\Widget\Widget;
 use Yiisoft\Widget\WidgetFactory;
+
+use function closedir;
+use function is_dir;
+use function opendir;
+use function readdir;
+use function str_replace;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -25,26 +26,21 @@ abstract class TestCase extends BaseTestCase
     protected $aliases;
 
     /**
-     * @var AssetManager $assetManager
-     */
-    protected $assetManager;
-
-    /**
      * @var ContainerInterface $container
      */
     private $container;
 
-    /**
-     * @var WebView $webView
-     */
-    protected $webView;
-
     protected function setUp(): void
     {
-        parent::setUp();
-        $config = require Builder::path('tests');
-        $this->container = new Container($config);
-        $this->aliases = $this->container->get(Aliases::class);
+        $this->container = new Container([]);
+        $this->aliases = new Aliases([
+            '@root' => dirname(__DIR__, 1),
+            '@public' => '@root/tests/public',
+            '@basePath' => '@public/assets',
+            '@baseUrl'  => '/',
+            '@npm' => '@root/node_modules',
+            '@view' => '@public/view',
+        ]);
 
         WidgetFactory::initialize($this->container, []);
     }
@@ -68,6 +64,7 @@ abstract class TestCase extends BaseTestCase
     {
         $expected = str_replace("\r\n", "\n", $expected);
         $actual = str_replace("\r\n", "\n", $actual);
+
         $this->assertEquals($expected, $actual, $message);
     }
 
@@ -83,6 +80,7 @@ abstract class TestCase extends BaseTestCase
     {
         $expected = str_replace(['/', '\\'], '/', $expected);
         $actual = str_replace(['/', '\\'], '/', $actual);
+
         $this->assertSame($expected, $actual);
     }
 
@@ -90,19 +88,22 @@ abstract class TestCase extends BaseTestCase
     {
         $handle = opendir($dir = $this->aliases->get($basePath));
         if ($handle === false) {
-            throw new \Exception("Unable to open directory: $dir");
+            throw new RuntimeException("Unable to open directory: $dir");
         }
         while (($file = readdir($handle)) !== false) {
             if ($file === '.' || $file === '..' || $file === '.gitignore') {
                 continue;
             }
+
             $path = $dir . DIRECTORY_SEPARATOR . $file;
+
             if (is_dir($path)) {
                 FileHelper::removeDirectory($path);
             } else {
                 FileHelper::unlink($path);
             }
         }
+
         closedir($handle);
     }
 }

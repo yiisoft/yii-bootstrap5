@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
 
 /**
  * Alert renders an alert bootstrap component.
@@ -22,11 +24,8 @@ use Yiisoft\Arrays\ArrayHelper;
 class Alert extends Widget
 {
     private ?string $body = null;
-
     private array $closeButton = [];
-
     private bool $closeButtonEnabled = true;
-
     private array $options = [];
 
     protected function run(): string
@@ -47,6 +46,8 @@ class Alert extends Widget
     /**
      * Renders the alert body and the close button (if any).
      *
+     * @throws JsonException
+     *
      * @return string the rendering result
      */
     protected function renderBodyEnd(): string
@@ -56,6 +57,8 @@ class Alert extends Widget
 
     /**
      * Renders the close button.
+     *
+     * @throws JsonException
      *
      * @return string the rendering result
      */
@@ -103,6 +106,10 @@ class Alert extends Widget
     /**
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
     public function body(?string $value): self
     {
@@ -126,6 +133,10 @@ class Alert extends Widget
      *
      * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts) for the supported HTML
      * attributes.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function closeButton(array $value): self
     {
@@ -136,6 +147,10 @@ class Alert extends Widget
 
     /**
      * Enable/Disable close button.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function closeButtonEnabled(bool $value): self
     {
@@ -148,6 +163,10 @@ class Alert extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {

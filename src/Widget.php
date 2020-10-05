@@ -8,12 +8,9 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 {
     use BootstrapWidgetTrait;
 
-    private ?string $id = null;
-
+    private string $id;
     private bool $autoGenerate = true;
-
     private static int $counter = 0;
-
     private static string $autoIdPrefix = 'w';
 
     /**
@@ -32,6 +29,10 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 
     /**
      * Set the Id of the widget.
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function setId(string $value): self
     {
@@ -42,6 +43,8 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 
     /**
      * Counter used to generate {@see id} for widgets.
+     *
+     * @param int $value
      */
     public static function counter(int $value): void
     {
@@ -50,6 +53,8 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 
     /**
      * The prefix to the automatically generated widget IDs.
+     *
+     * @param string $value
      *
      * {@see getId()}
      */

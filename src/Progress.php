@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_merge;
+use function implode;
+use function rtrim;
+use function trim;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -47,13 +54,9 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
 class Progress extends Widget
 {
     private ?string $label = null;
-
     private ?string $percent = null;
-
     private array $bars = [];
-
     private array $options = [];
-
     private array $barOptions = [];
 
     protected function run(): string
@@ -72,7 +75,7 @@ class Progress extends Widget
      *
      * @return string the rendering result.
      *
-     * @throws InvalidConfigException if the "percent" option is not set in a stacked progress bar.
+     * @throws JsonException|InvalidConfigException if the "percent" option is not set in a stacked progress bar.
      */
     protected function renderProgress(): string
     {
@@ -108,13 +111,15 @@ class Progress extends Widget
      * @param string $label , optional, the label to display at the bar
      * @param array $options the HTML attributes of the bar
      *
+     * @throws JsonException
+     *
      * @return string the rendering result.
      */
     protected function renderBar(string $percent, string $label = '', array $options = []): string
     {
-        $valuePercent = (float)trim(rtrim($percent, '%'));
+        $valuePercent = (float) trim(rtrim($percent, '%'));
 
-        $options = \array_merge($options, [
+        $options = array_merge($options, [
             'role' => 'progressbar',
             'aria-valuenow' => $percent,
             'aria-valuemin' => 0,
@@ -142,8 +147,12 @@ class Progress extends Widget
      *     'options' => [],
      * ]
      * ```
+     *
+     * @param array $value
+     *
+     * @return $this
      */
-    public function bars(array $value): Progress
+    public function bars(array $value): self
     {
         $this->bars = $value;
 
@@ -153,9 +162,13 @@ class Progress extends Widget
     /**
      * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
      *
+     * @param array $value
+     *
+     * @return $this
+     *
      * {@see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are being rendered}
      */
-    public function barOptions(array $value): Progress
+    public function barOptions(array $value): self
     {
         $this->barOptions = $value;
 
@@ -164,6 +177,10 @@ class Progress extends Widget
 
     /**
      * The button label.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
     public function label(?string $value): self
     {
@@ -175,9 +192,13 @@ class Progress extends Widget
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
+     * @param array $value
+     *
+     * @return $this
+     *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): Progress
+    public function options(array $value): self
     {
         $this->options = $value;
 
@@ -186,8 +207,12 @@ class Progress extends Widget
 
     /**
      * The amount of progress as a percentage.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
-    public function percent(?string $value): Progress
+    public function percent(?string $value): self
     {
         $this->percent = $value;
 

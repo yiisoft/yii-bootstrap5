@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_key_exists;
+use function implode;
+use function is_array;
+use function strtr;
 
 /**
  * Button renders a bootstrap button.
@@ -20,19 +27,12 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
 class Breadcrumbs extends Widget
 {
     private string $tag = 'ol';
-
     private bool $encodeLabels = true;
-
     private array $homeLink = [];
-
     private array $links = [];
-
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
-
     private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
-
     private array $navOptions = ['aria-label' => 'breadcrumb'];
-
     private array $options = [];
 
     protected function run(): string
@@ -61,7 +61,7 @@ class Breadcrumbs extends Widget
         }
 
         foreach ($this->links as $link) {
-            if (!\is_array($link)) {
+            if (!is_array($link)) {
                 $link = ['label' => $link];
             }
 
@@ -79,13 +79,13 @@ class Breadcrumbs extends Widget
      *
      * @return string the rendering result
      *
-     * @throws InvalidConfigException if `$link` does not have "label" element.
+     * @throws JsonException|InvalidConfigException if `$link` does not have "label" element.
      */
     protected function renderItem(array $link, string $template): string
     {
         $encodeLabel = ArrayHelper::remove($link, 'encode', $this->encodeLabels);
 
-        if (\array_key_exists('label', $link)) {
+        if (array_key_exists('label', $link)) {
             $label = $encodeLabel ? Html::encode($link['label']) : $link['label'];
         } else {
             throw new InvalidConfigException('The "label" element is required for each link.');
@@ -109,6 +109,10 @@ class Breadcrumbs extends Widget
     /**
      * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each active item.
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function activeItemTemplate(string $value): self
     {
@@ -119,6 +123,10 @@ class Breadcrumbs extends Widget
 
     /**
      * Whether to HTML-encode the link labels.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function encodeLabels(bool $value): self
     {
@@ -134,6 +142,10 @@ class Breadcrumbs extends Widget
      *
      * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
      * the home link will not be rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function homeLink(array $value): self
     {
@@ -145,6 +157,10 @@ class Breadcrumbs extends Widget
     /**
      * The template used to render each inactive item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each inactive item.
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function itemTemplate(string $value): self
     {
@@ -164,6 +180,9 @@ class Breadcrumbs extends Widget
      *     'template' => 'own template of the item', // optional, if not set $this->itemTemplate will be used
      * ]
      * ```
+     * @param array $value
+     *
+     * @return $this
      */
     public function links(array $value): self
     {
@@ -176,6 +195,10 @@ class Breadcrumbs extends Widget
      * The HTML attributes for the widgets nav container tag.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function navOptions(array $value): self
     {
@@ -188,6 +211,10 @@ class Breadcrumbs extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {
@@ -198,6 +225,10 @@ class Breadcrumbs extends Widget
 
     /**
      * The name of the breadcrumb container tag.
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function tag(string $value): self
     {

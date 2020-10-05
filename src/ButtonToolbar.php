@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Factory\Exceptions\InvalidConfigException;
+use Yiisoft\Html\Html;
+
+use function implode;
+use function is_array;
+
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.
  * Use utility classes as needed to space out groups, buttons, and more.
@@ -44,7 +50,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 class ButtonToolbar extends Widget
 {
     private array $buttonGroups = [];
-
     private array $options = [];
 
     protected function run(): string
@@ -65,6 +70,8 @@ class ButtonToolbar extends Widget
     /**
      * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
      *
+     * @throws InvalidConfigException
+     *
      * @return string the rendering result.
      */
     protected function renderButtonGroups(): string
@@ -72,7 +79,7 @@ class ButtonToolbar extends Widget
         $buttonGroups = [];
 
         foreach ($this->buttonGroups as $group) {
-            if (\is_array($group)) {
+            if (is_array($group)) {
                 if (!isset($group['buttons'])) {
                     continue;
                 }
@@ -80,7 +87,7 @@ class ButtonToolbar extends Widget
                 $buttonGroups[] = ButtonGroup::widget()
                     ->buttons($group['buttons'])
                     ->options($group['options'])
-                    ->run();
+                    ->render();
             } else {
                 $buttonGroups[] = $group;
             }
@@ -96,6 +103,10 @@ class ButtonToolbar extends Widget
      * - buttons: array list of buttons. Either as array or string representation
      * - options: array optional, the HTML attributes of the button group.
      * - encodeLabels: bool whether to HTML-encode the button labels.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function buttonGroups(array $value): self
     {
@@ -108,6 +119,10 @@ class ButtonToolbar extends Widget
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+
+use function array_merge;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a button.
@@ -41,27 +45,16 @@ class Modal extends Widget
     public const SIZE_DEFAULT = '';
 
     private ?string $title = null;
-
     private array $titleOptions = [];
-
     private array $headerOptions = [];
-
     private array $bodyOptions = [];
-
     private ?string $footer = null;
-
     private array $footerOptions = [];
-
     private ?string $size = null;
-
     private array $closeButton = [];
-
     private bool $closeButtonEnabled = true;
-
     private array $toggleButton = [];
-
     private bool $toggleButtonEnabled = true;
-
     private array $options = [];
 
     public function start(): string
@@ -102,6 +95,8 @@ class Modal extends Widget
     /**
      * Renders the header HTML markup of the modal.
      *
+     * @throws JsonException
+     *
      * @return string the rendering result
      */
     protected function renderHeader(): string
@@ -129,6 +124,8 @@ class Modal extends Widget
     /**
      * Renders the opening tag of the modal body.
      *
+     * @throws JsonException
+     *
      * @return string the rendering result
      */
     protected function renderBodyBegin(): string
@@ -151,6 +148,8 @@ class Modal extends Widget
     /**
      * Renders the HTML markup for the footer of the modal.
      *
+     * @throws JsonException
+     *
      * @return string the rendering result
      */
     protected function renderFooter(): ?string
@@ -165,6 +164,8 @@ class Modal extends Widget
 
     /**
      * Renders the toggle button.
+     *
+     * @throws JsonException
      *
      * @return string the rendering result
      */
@@ -182,6 +183,8 @@ class Modal extends Widget
 
     /**
      * Renders the close button.
+     *
+     * @throws JsonException
      *
      * @return string the rendering result
      */
@@ -206,7 +209,7 @@ class Modal extends Widget
      */
     protected function initOptions(): void
     {
-        $this->options = \array_merge([
+        $this->options = array_merge([
             'class' => 'fade',
             'role' => 'dialog',
             'tabindex' => -1,
@@ -216,10 +219,10 @@ class Modal extends Widget
         Html::addCssClass($this->options, ['widget' => 'modal']);
 
         if ($this->getEnableClientOptions() !== false) {
-            $this->clientOptions(\array_merge(['show' => false], $this->getClientOptions()));
+            $this->clientOptions(array_merge(['show' => false], $this->getClientOptions()));
         }
 
-        $this->titleOptions = \array_merge([
+        $this->titleOptions = array_merge([
             'id' => $this->options['id'] . '-label'
         ], $this->titleOptions);
 
@@ -228,7 +231,7 @@ class Modal extends Widget
         }
 
         if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = \array_merge([
+            $this->closeButton = array_merge([
                 'data-dismiss' => 'modal',
                 'class' => 'close',
                 'type' => 'button',
@@ -236,7 +239,7 @@ class Modal extends Widget
         }
 
         if ($this->toggleButton !== array()) {
-            $this->toggleButton = \array_merge([
+            $this->toggleButton = array_merge([
                 'data-toggle' => 'modal',
                 'type' => 'button'
             ], $this->toggleButton);
@@ -250,6 +253,10 @@ class Modal extends Widget
      * Body options.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function bodyOptions(array $value): self
     {
@@ -271,6 +278,10 @@ class Modal extends Widget
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function closeButton(array $value): self
     {
@@ -281,6 +292,10 @@ class Modal extends Widget
 
     /**
      * Enable/Disable close button.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function closeButtonEnabled(bool $value): self
     {
@@ -291,6 +306,10 @@ class Modal extends Widget
 
     /**
      * The footer content in the modal window.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
     public function footer(?string $value): self
     {
@@ -301,6 +320,10 @@ class Modal extends Widget
 
     /**
      * Additional footer options.
+     *
+     * @param array $value
+     *
+     * @return $this
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -314,6 +337,10 @@ class Modal extends Widget
     /**
      * Additional header options.
      *
+     * @param array $value
+     *
+     * @return $this
+     *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
@@ -324,7 +351,10 @@ class Modal extends Widget
     }
 
     /**
-     * @var array the HTML attributes for the widget container tag. The following special options are recognized.
+     * @param array $value the HTML attributes for the widget container tag. The following special options are
+     * recognized.
+     *
+     * @return $this
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -337,6 +367,10 @@ class Modal extends Widget
 
     /**
      * The title content in the modal window.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
     public function title(?string $value): self
     {
@@ -349,6 +383,10 @@ class Modal extends Widget
      * Additional title options.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function titleOptions(array $value): self
     {
@@ -370,6 +408,10 @@ class Modal extends Widget
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function toggleButton(array $value): self
     {
@@ -380,6 +422,10 @@ class Modal extends Widget
 
     /**
      * Enable/Disable toggle button.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function toggleButtonEnabled(bool $value): self
     {
@@ -390,6 +436,10 @@ class Modal extends Widget
 
     /**
      * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
+     *
+     * @param string|null $value
+     *
+     * @return $this
      */
     public function size(?string $value): self
     {
