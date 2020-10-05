@@ -26,11 +26,11 @@
         "yiisoft/widget": "^3.0@dev"
     },
     "require-dev": {
-        "yiisoft/composer-config-plugin": "^1.0@dev",
+        "infection/infection": "^0.16.3",
         "phpunit/phpunit": "^9.3",
+        "vimeo/psalm": "^3.15",
         "yiisoft/aliases": "^1.0",
-        "yiisoft/di": "^3.0@dev",
-        "phan/phan": "^3.0"
+        "yiisoft/di": "^3.0@dev"
     },
     "autoload": {
         "psr-4": {
@@ -48,9 +48,6 @@
         },
         "config": {
             "sort-packages": true
-        },
-        "config-plugin": {
-            "tests": "config/tests.php"
         }
     },
     "config": {

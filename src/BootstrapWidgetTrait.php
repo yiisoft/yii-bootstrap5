@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
 use Yiisoft\Assets\AssetManager;
 use Yiisoft\Json\Json;
+
+use function implode;
 
 /**
  * BootstrapWidgetTrait is the trait, which provides basic for all bootstrap widgets features.
@@ -25,13 +28,9 @@ use Yiisoft\Json\Json;
 trait BootstrapWidgetTrait
 {
     private ?AssetManager $assetManager = null;
-
     private array $clientOptions = [];
-
     private array $clientEvents = [];
-
     private bool $enableClientOptions = false;
-
     private ?object $webView = null;
 
     /**
@@ -39,6 +38,8 @@ trait BootstrapWidgetTrait
      *
      * @param string $name the name of the Bootstrap plugin
      * @param array $options
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -98,6 +99,10 @@ trait BootstrapWidgetTrait
      *
      * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
      * supported events (e.g. "shown").
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function clientEvents(array $value): self
     {
@@ -113,6 +118,10 @@ trait BootstrapWidgetTrait
      *
      * For example, [this page](http://getbootstrap.com/javascript/#modals) shows how to use the "Modal" plugin and the
      * supported options (e.g. "remote").
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function clientOptions(array $value): self
     {
@@ -128,6 +137,10 @@ trait BootstrapWidgetTrait
 
     /**
      * Enable/Disable script Bootstrap JS plugin.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function enableClientOptions(bool $value): self
     {

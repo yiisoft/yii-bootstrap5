@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Html\Html;
+
 /**
  * Button renders a bootstrap button.
  *
@@ -18,11 +20,8 @@ namespace Yiisoft\Yii\Bootstrap5;
 class Button extends Widget
 {
     private string $tagName = 'button';
-
     private string $label = 'Button';
-
     private bool $encodeLabels = true;
-
     private array $options = [];
 
     protected function run(): string
@@ -44,6 +43,10 @@ class Button extends Widget
 
     /**
      * Whether the label should be HTML-encoded.
+     *
+     * @param bool $value
+     *
+     * @return $this
      */
     public function encodeLabels(bool $value): self
     {
@@ -54,6 +57,10 @@ class Button extends Widget
 
     /**
      * The button label
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function label(string $value): self
     {
@@ -66,6 +73,10 @@ class Button extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
      */
     public function options(array $value): self
     {
@@ -76,6 +87,10 @@ class Button extends Widget
 
     /**
      * The tag to use to render the button.
+     *
+     * @param string $value
+     *
+     * @return $this
      */
     public function tagName(string $value): self
     {

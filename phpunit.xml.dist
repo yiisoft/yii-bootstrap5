@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit bootstrap="./tests/bootstrap.php"
-		colors="true"
-		verbose="true"
-		convertErrorsToExceptions="true"
-		convertNoticesToExceptions="true"
-		convertWarningsToExceptions="true"
-		stopOnFailure="false">
-		<testsuites>
-			<testsuite name="Test Suite">
-				<directory>./tests</directory>
-			</testsuite>
-		</testsuites>
+
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true" verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false">
+
+  <coverage>
+    <include>
+      <directory>./src</directory>
+    </include>
+    <exclude>
+      <directory>./tests</directory>
+      <directory>./vendor</directory>
+    </exclude>
+  </coverage>
+
+  <testsuites>
+    <testsuite name="yiiBootstrap5">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
