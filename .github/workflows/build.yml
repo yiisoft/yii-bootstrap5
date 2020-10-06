@@ -79,7 +79,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
         run: vendor/bin/phpunit --coverage-clover=coverage.clover --colors=always
 
-      - name: Run tests with phpunit without coverage on Windows
+      - name: Run tests with phpunit without coverage on Windows php 7.4 - 8.0 and Linux php 7.4
         if: matrix.os == 'windows-latest' || (matrix.os == 'ubuntu-latest' && matrix.php-version == '8.0')
         run: vendor/bin/phpunit --colors=always
 
