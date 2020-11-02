@@ -18,7 +18,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4|^8.0",
-        "foxy/foxy": "^1.1@dev",
+        "npm-asset/bootstrap": "^5.0.0",
+        "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",
         "yiisoft/html": "^3.0@dev",
@@ -26,9 +27,9 @@
         "yiisoft/widget": "^3.0@dev"
     },
     "require-dev": {
-        "infection/infection": "^0.16.3",
-        "phpunit/phpunit": "^9.3",
-        "vimeo/psalm": "^3.15",
+        "infection/infection": "^0.19.0",
+        "phpunit/phpunit": "^9.4",
+        "vimeo/psalm": "^4.0",
         "yiisoft/aliases": "^1.0",
         "yiisoft/di": "^3.0@dev"
     },
@@ -46,11 +47,22 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         },
-        "config": {
-            "sort-packages": true
+        "installer-types": [
+            "npm-asset"
+        ],
+        "installer-paths": {
+            "./node_modules/{$name}": [
+                "type:npm-asset"
+            ]
         }
     },
     "config": {
         "sort-packages": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
