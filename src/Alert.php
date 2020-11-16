@@ -69,9 +69,7 @@ class Alert extends Widget
         }
 
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
-            'aria-hidden' => 'true'
-        ]));
+        $label = ArrayHelper::remove($this->closeButton, 'label', '');
 
         if ($tag === 'button' && !isset($this->closeButton['type'])) {
             $this->closeButton['type'] = 'button';
@@ -91,8 +89,9 @@ class Alert extends Widget
 
         if ($this->closeButtonEnabled !== false) {
             $this->closeButton = [
+                'aria-label' => 'Close',
+                'class' => ['widget' => 'btn-close'],
                 'data-dismiss' => 'alert',
-                'class' => ['widget' => 'close'],
             ];
 
             Html::addCssClass($this->options, ['alert-dismissible']);
