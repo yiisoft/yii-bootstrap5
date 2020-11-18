@@ -27,9 +27,9 @@
         "yiisoft/widget": "^3.0@dev"
     },
     "require-dev": {
-        "infection/infection": "^0.19.0",
         "phpunit/phpunit": "^9.4",
-        "vimeo/psalm": "^4.0",
+        "roave/infection-static-analysis-plugin": "^1.4",
+        "vimeo/psalm": "^4.1",
         "yiisoft/aliases": "^1.0",
         "yiisoft/di": "^3.0@dev"
     },
