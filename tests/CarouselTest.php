@@ -23,23 +23,23 @@ final class CarouselTest extends TestCase
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
                 ],
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=Second+slide" class="d-block w-100">',
                     'caption' => '<h5>Second slide label</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
                 ],
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=Third+slide" class="d-block w-100">',
                     'caption' => '<h5>Third slide label</h5><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
-                ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
+                ],
             ])
             ->render();
 
@@ -74,23 +74,23 @@ HTML;
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
                 ],
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=Second+slide" class="d-block w-100">',
                     'caption' => '<h5>Second slide label</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
                 ],
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=Third+slide" class="d-block w-100">',
                     'caption' => '<h5>Third slide label</h5><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>',
                     'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block']
-                    ]
-                ]
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
+                ],
             ])
             ->render();
 

@@ -17,13 +17,12 @@ final class AssetTest extends TestCase
             [
                 'Css',
                 BootstrapAsset::class,
-            ]
+            ],
         ];
     }
 
     /**
      * @dataProvider registerDataProvider
-     *
      *
      * @param string $type
      * @param string $asset

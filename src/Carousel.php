@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
-
 use function count;
 use function implode;
 use function is_string;
+use JsonException;
+
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.
@@ -39,7 +39,7 @@ class Carousel extends Widget
 {
     private ?array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>',
-        '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>'
+        '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>',
     ];
 
     private bool $showIndicators = true;
@@ -66,7 +66,7 @@ class Carousel extends Widget
             $this->renderIndicators(),
             $this->renderItems(),
             $this->renderControls(),
-            Html::endTag('div')
+            Html::endTag('div'),
         ]) . "\n";
     }
 
@@ -109,10 +109,10 @@ class Carousel extends Widget
     /**
      * Renders a single carousel item
      *
-     * @param string|array $item a single item from {@see items}
+     * @param array|string $item a single item from {@see items}
      * @param int $index the item index as the first item should be set to `active`
      *
-     * @throws JsonException|InvalidConfigException if the item is invalid.
+     * @throws InvalidConfigException|JsonException if the item is invalid.
      *
      * @return string the rendering result.
      */
@@ -150,7 +150,7 @@ class Carousel extends Widget
     /**
      * Renders previous and next control buttons.
      *
-     * @throws JsonException|InvalidConfigException if {@see controls} is invalid.
+     * @throws InvalidConfigException|JsonException if {@see controls} is invalid.
      *
      * @return string
      */
@@ -158,14 +158,14 @@ class Carousel extends Widget
     {
         if (isset($this->controls[0], $this->controls[1])) {
             return Html::a($this->controls[0], '#' . $this->options['id'], [
-                    'class' => 'carousel-control-prev',
-                    'data-slide' => 'prev',
-                    'role' => 'button'
-                ]) . "\n"
+                'class' => 'carousel-control-prev',
+                'data-slide' => 'prev',
+                'role' => 'button',
+            ]) . "\n"
                 . Html::a($this->controls[1], '#' . $this->options['id'], [
                     'class' => 'carousel-control-next',
                     'data-slide' => 'next',
-                    'role' => 'button'
+                    'role' => 'button',
                 ]);
         }
 
@@ -221,6 +221,7 @@ class Carousel extends Widget
      *     'options' => [],
      * ]
      * ```
+     *
      * @param array $value
      *
      * @return $this

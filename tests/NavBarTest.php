@@ -107,12 +107,12 @@ EXPECTED;
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
                 ['label' => 'Dropdown', 'items' => [
-                        ['label' => 'Action', 'url' => '#'],
-                        ['label' => 'Another action', 'url' => '#'],
-                        '-',
-                        ['label' => 'Something else here', 'url' => '#'],
-                    ]
-                ]
+                    ['label' => 'Action', 'url' => '#'],
+                    ['label' => 'Another action', 'url' => '#'],
+                    '-',
+                    ['label' => 'Something else here', 'url' => '#'],
+                ],
+                ],
             ])
             ->options(['class' => ['mr-auto']])
             ->render();

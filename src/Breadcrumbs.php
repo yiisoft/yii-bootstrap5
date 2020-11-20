@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
-
 use function array_key_exists;
 use function implode;
 use function is_array;
+use JsonException;
+
 use function strtr;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Button renders a bootstrap button.
@@ -51,7 +51,7 @@ class Breadcrumbs extends Widget
 
         $links = [];
 
-        if ($this->homeLink === array()) {
+        if ($this->homeLink === []) {
             $links[] = $this->renderItem([
                 'label' => 'Home',
                 'url' => '/',
@@ -70,6 +70,7 @@ class Breadcrumbs extends Widget
 
         return Html::tag('nav', Html::tag($this->tag, implode('', $links), $this->options), $this->navOptions);
     }
+
     /**
      * Renders a single breadcrumb item.
      *
@@ -77,9 +78,9 @@ class Breadcrumbs extends Widget
      * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
      * link.
      *
-     * @return string the rendering result
+     * @throws InvalidConfigException|JsonException if `$link` does not have "label" element.
      *
-     * @throws JsonException|InvalidConfigException if `$link` does not have "label" element.
+     * @return string the rendering result
      */
     protected function renderItem(array $link, string $template): string
     {
@@ -180,6 +181,7 @@ class Breadcrumbs extends Widget
      *     'template' => 'own template of the item', // optional, if not set $this->itemTemplate will be used
      * ]
      * ```
+     *
      * @param array $value
      *
      * @return $this

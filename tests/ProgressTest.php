@@ -38,7 +38,7 @@ HTML;
 
         $html = Progress::widget()
             ->bars([
-                ['label' => 'Progress', 'percent' => '25']
+                ['label' => 'Progress', 'percent' => '25'],
             ])
             ->render();
 
@@ -59,7 +59,7 @@ HTML;
             ->bars([
                 ['label' => '', 'percent' => '15'],
                 ['label' => '', 'percent' => '30', 'options' => ['class' => ['bg-success']]],
-                ['label' => '', 'percent' => '20', 'options' => ['class' => ['bg-info']]]
+                ['label' => '', 'percent' => '20', 'options' => ['class' => ['bg-info']]],
             ])
             ->render();
 

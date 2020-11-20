@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
-
 use function is_array;
 use function is_string;
+use JsonException;
+use Yiisoft\Arrays\ArrayHelper;
+
+use Yiisoft\Html\Html;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Nav renders a nav HTML component.
@@ -152,7 +152,7 @@ class Nav extends Widget
     /**
      * Renders a widget's item.
      *
-     * @param string|array $item the item to render.
+     * @param array|string $item the item to render.
      *
      * @throws InvalidConfigException|JsonException
      *
@@ -285,11 +285,11 @@ class Nav extends Widget
             return ArrayHelper::getValue($item, 'active', false);
         }
 
-        if (isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems) {
-            return true;
-        }
+        return (bool) (isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems)
 
-        return false;
+
+
+         ;
     }
 
     /**

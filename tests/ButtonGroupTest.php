@@ -25,7 +25,7 @@ final class ButtonGroupTest extends TestCase
                 ['label' => 'button-C', 'visible' => false],
                 Button::widget()
                     ->label('button-D')
-                    ->render()
+                    ->render(),
             ])
             ->render();
 

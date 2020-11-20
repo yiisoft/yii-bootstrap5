@@ -20,31 +20,31 @@ final class ButtonToolbarTest extends TestCase
 
         $html = ButtonToolbar::widget()
             ->options([
-                'aria-label' => 'Toolbar with button groups'
+                'aria-label' => 'Toolbar with button groups',
             ])
             ->buttonGroups([
                 ButtonGroup::widget()
                     ->options([
                         'aria-label' => 'First group',
-                        'class' => ['mr-2']
+                        'class' => ['mr-2'],
                     ])
                     ->buttons([
                         ['label' => '1'],
                         ['label' => '2'],
                         ['label' => '3'],
-                        ['label' => '4']
+                        ['label' => '4'],
                     ])
                     ->render(),
                 [
                     'options' => [
-                        'aria-label' => 'Second group'
+                        'aria-label' => 'Second group',
                     ],
                     'buttons' => [
                         ['label' => '5'],
                         ['label' => '6'],
-                        ['label' => '7']
-                    ]
-                ]
+                        ['label' => '7'],
+                    ],
+                ],
             ])
             ->render();
 
@@ -76,22 +76,22 @@ HTML;
 
         $html = ButtonToolbar::widget()
             ->options([
-                'aria-label' => 'Toolbar with button groups'
+                'aria-label' => 'Toolbar with button groups',
             ])
             ->buttonGroups([
                 [
                     'options' => [
                         'aria-label' => 'First group',
-                        'class' => ['mr-2']
+                        'class' => ['mr-2'],
                     ],
                     'buttons' => [
                         ['label' => '1'],
                         ['label' => '2'],
                         ['label' => '3'],
-                        ['label' => '4']
-                    ]
+                        ['label' => '4'],
+                    ],
                 ],
-                $addHtml
+                $addHtml,
             ])
             ->render();
 

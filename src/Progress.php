@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use function array_merge;
+use function implode;
 use JsonException;
+use function rtrim;
+
+use function trim;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
-
-use function array_merge;
-use function implode;
-use function rtrim;
-use function trim;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -73,9 +73,9 @@ class Progress extends Widget
     /**
      * Renders the progress.
      *
-     * @return string the rendering result.
+     * @throws InvalidConfigException|JsonException if the "percent" option is not set in a stacked progress bar.
      *
-     * @throws JsonException|InvalidConfigException if the "percent" option is not set in a stacked progress bar.
+     * @return string the rendering result.
      */
     protected function renderProgress(): string
     {
@@ -83,7 +83,7 @@ class Progress extends Widget
 
         if (empty($this->bars)) {
             $this->bars = [
-                ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions]
+                ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions],
             ];
         }
 
@@ -123,7 +123,7 @@ class Progress extends Widget
             'role' => 'progressbar',
             'aria-valuenow' => $percent,
             'aria-valuemin' => 0,
-            'aria-valuemax' => 100
+            'aria-valuemax' => 100,
         ]);
 
         Html::addCssClass($options, ['widget' => 'progress-bar']);

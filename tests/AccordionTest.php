@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Accordion;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+use Yiisoft\Yii\Bootstrap5\Accordion;
 
 /**
  * Tests for Accordion widget
@@ -24,52 +24,52 @@ final class AccordionTest extends TestCase
                     'label' => 'Collapsible Group Item #1',
                     'content' => [
                         'test content1',
-                        'test content2'
+                        'test content2',
                     ],
                 ],
                 [
                     'label' => 'Collapsible Group Item #2',
                     'content' => 'Das ist das Haus vom Nikolaus',
                     'contentOptions' => [
-                        'class' => 'testContentOptions'
+                        'class' => 'testContentOptions',
                     ],
                     'options' => [
                         'class' => 'testClass',
-                        'id' => 'testId'
+                        'id' => 'testId',
                     ],
-                    'footer' => 'Footer'
+                    'footer' => 'Footer',
                 ],
                 [
                     'label' => '<h1>Collapsible Group Item #3</h1>',
                     'content' => [
                         '<h2>test content1</h2>',
-                        '<h2>test content2</h2>'
+                        '<h2>test content2</h2>',
                     ],
                     'contentOptions' => [
-                        'class' => 'testContentOptions2'
+                        'class' => 'testContentOptions2',
                     ],
                     'options' => [
                         'class' => 'testClass2',
-                        'id' => 'testId2'
+                        'id' => 'testId2',
                     ],
                     'encode' => false,
-                    'footer' => 'Footer2'
+                    'footer' => 'Footer2',
                 ],
                 [
                     'label' => '<h1>Collapsible Group Item #4</h1>',
                     'content' => [
                         '<h2>test content1</h2>',
-                        '<h2>test content2</h2>'
+                        '<h2>test content2</h2>',
                     ],
                     'contentOptions' => [
-                        'class' => 'testContentOptions3'
+                        'class' => 'testContentOptions3',
                     ],
                     'options' => [
                         'class' => 'testClass3',
-                        'id' => 'testId3'
+                        'id' => 'testId3',
                     ],
                     'encode' => true,
-                    'footer' => 'Footer3'
+                    'footer' => 'Footer3',
                 ],
             ])
             ->render();

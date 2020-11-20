@@ -54,14 +54,14 @@ final class TabsTest extends TestCase
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3'],
-                    ]
+                    ],
                 ],
                 [
                     'label' => 'Dropdown2',
                     'items' => [
                         ['label' => 'Page4', 'content' => 'Page4'],
                         ['label' => 'Page5', 'content' => 'Page5'],
-                    ]
+                    ],
                 ],
                 [
                     'label' => $extAnchor1 = 'External link',
@@ -72,9 +72,9 @@ final class TabsTest extends TestCase
                     'items' => [
                         [
                             'label' => $extAnchor2 = 'External Dropdown Link',
-                            'url' => $extUrl2 = ['//other/dropdown/route']
+                            'url' => $extUrl2 = ['//other/dropdown/route'],
                         ],
-                    ]
+                    ],
                 ],
             ])
             ->render();
@@ -108,7 +108,7 @@ final class TabsTest extends TestCase
             "id=\"$page5\"",
             Html::a($extAnchor1, $extUrl1, ['class' => 'nav-link']),
             Html::a($extAnchor2, $extUrl2, [/*'tabindex' => -1, */
-                'class' => 'dropdown-item'
+                'class' => 'dropdown-item',
             ]),
         ];
 
@@ -130,7 +130,7 @@ final class TabsTest extends TestCase
                 [
                     'label' => 'InvisiblePage',
                     'content' => 'Invisible Page Content',
-                    'visible' => false
+                    'visible' => false,
                 ],
                 [
                     'label' => 'Dropdown1',
@@ -140,7 +140,7 @@ final class TabsTest extends TestCase
                         ['label' => 'Page3', 'content' => 'Page3'],
                         ['label' => 'External Link', 'url' => ['//other/dropdown/route']],
                         ['label' => 'Invisible External Link', 'url' => ['//other/dropdown/route'], 'visible' => false],
-                    ]
+                    ],
                 ],
             ])
             ->render();
@@ -161,7 +161,7 @@ final class TabsTest extends TestCase
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
-                    'disabled' => true
+                    'disabled' => true,
                 ],
                 [
                     'label' => 'Page2',
@@ -170,7 +170,7 @@ final class TabsTest extends TestCase
                 [
                     'label' => 'DisabledPage',
                     'content' => 'Disabled Page Content',
-                    'disabled' => true
+                    'disabled' => true,
                 ],
                 [
                     'label' => 'Dropdown1',
@@ -180,7 +180,7 @@ final class TabsTest extends TestCase
                         ['label' => 'Page3', 'content' => 'Page3'],
                         ['label' => 'External Link', 'url' => '/other/dropdown/route'],
                         ['label' => 'Disabled External Link', 'url' => '/other/dropdown/route', 'disabled' => true],
-                    ]
+                    ],
                 ],
             ])
             ->render();
@@ -242,11 +242,11 @@ final class TabsTest extends TestCase
             ->items([
                 [
                     'label' => 'Page1',
-                    'content' => 'Page1'
-                ]
+                    'content' => 'Page1',
+                ],
             ])
             ->tabContentOptions([
-                $checkAttribute => $checkValue
+                $checkAttribute => $checkValue,
             ])
             ->render();
 
@@ -263,21 +263,21 @@ final class TabsTest extends TestCase
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
-                    'visible' => false
+                    'visible' => false,
                 ],
                 [
                     'label' => 'Tab 2',
                     'content' => 'some content',
-                    'disabled' => true
+                    'disabled' => true,
                 ],
                 [
                     'label' => 'Tab 3',
-                    'content' => 'some content'
+                    'content' => 'some content',
                 ],
                 [
                     'label' => 'Tab 4',
-                    'content' => 'some content'
-                ]
+                    'content' => 'some content',
+                ],
             ])
             ->options(['id' => 'mytab'])
             ->render();
@@ -305,21 +305,21 @@ final class TabsTest extends TestCase
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
-                    'visible' => false
+                    'visible' => false,
                 ],
                 [
                     'label' => 'Tab 2',
-                    'content' => 'some content'
+                    'content' => 'some content',
                 ],
                 [
                     'label' => 'Tab 3',
                     'content' => 'some content',
-                    'active' => true
+                    'active' => true,
                 ],
                 [
                     'label' => 'Tab 4',
-                    'content' => 'some content'
-                ]
+                    'content' => 'some content',
+                ],
             ])
             ->options(['id' => 'mytab'])
             ->render();

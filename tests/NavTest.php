@@ -28,7 +28,7 @@ final class NavTest extends TestCase
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3'],
-                    ]
+                    ],
                 ],
                 [
                     'label' => 'Dropdown2',
@@ -36,8 +36,8 @@ final class NavTest extends TestCase
                     'items' => [
                         ['label' => 'Page4', 'content' => 'Page4'],
                         ['label' => 'Page5', 'content' => 'Page5'],
-                    ]
-                ]
+                    ],
+                ],
             ])
             ->render();
 
@@ -66,7 +66,7 @@ EXPECTED;
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3'],
-                    ]
+                    ],
                 ],
                 [
                     'label' => 'Dropdown2',
@@ -74,8 +74,8 @@ EXPECTED;
                     'items' => [
                         ['label' => 'Page4', 'content' => 'Page4'],
                         ['label' => 'Page5', 'content' => 'Page5'],
-                    ]
-                ]
+                    ],
+                ],
             ])
             ->render();
 
