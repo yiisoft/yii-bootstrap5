@@ -56,12 +56,12 @@ HTML;
                     'type' => 'button',
                     'class' => ['btn', 'btn-secondary'],
                     'data' => [
-                        'dismiss' => 'modal'
-                    ]
+                        'dismiss' => 'modal',
+                    ],
                 ]) . "\n" .
                 Html::button('Save changes', [
                     'type' => 'button',
-                    'class' => ['btn', 'btn-primary']
+                    'class' => ['btn', 'btn-primary'],
                 ])
             )
             ->start();
@@ -101,17 +101,17 @@ HTML;
         $html = Modal::begin()
             ->toggleButton([
                 'class' => ['btn', 'btn-primary'],
-                'label' => 'Launch demo modal'
+                'label' => 'Launch demo modal',
             ])
             ->title('Modal title')
             ->footer(
                 Html::button('Close', [
                     'type' => 'button',
-                    'class' => ['btn', 'btn-secondary']
+                    'class' => ['btn', 'btn-secondary'],
                 ]) . "\n" .
                 Html::button('Save changes', [
                     'type' => 'button',
-                    'class' => ['btn', 'btn-primary']
+                    'class' => ['btn', 'btn-primary'],
                 ])
             )
             ->start();

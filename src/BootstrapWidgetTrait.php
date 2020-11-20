@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use function implode;
 use JsonException;
-use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
 use Yiisoft\Assets\AssetManager;
 use Yiisoft\Json\Json;
 
-use function implode;
+use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
 
 /**
  * BootstrapWidgetTrait is the trait, which provides basic for all bootstrap widgets features.
@@ -40,8 +40,6 @@ trait BootstrapWidgetTrait
      * @param array $options
      *
      * @throws JsonException
-     *
-     * @return void
      */
     protected function registerPlugin(string $name, array $options = []): void
     {
@@ -49,7 +47,7 @@ trait BootstrapWidgetTrait
 
         if ($this->assetManager !== null) {
             $this->assetManager->register([
-                BootstrapAsset::class
+                BootstrapAsset::class,
             ]);
         }
 

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
-
 use function array_key_exists;
 use function array_merge;
 use function array_merge_recursive;
 use function implode;
+
 use function is_string;
+use JsonException;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Dropdown renders a Bootstrap dropdown menu component.
@@ -58,9 +58,9 @@ class Dropdown extends Widget
      * @param array $items the menu items to be rendered
      * @param array $options the container HTML attributes
      *
-     * @return string the rendering result.
+     * @throws InvalidConfigException|JsonException if the label option is not specified in one of the items.
      *
-     * @throws JsonException|InvalidConfigException if the label option is not specified in one of the items.
+     * @return string the rendering result.
      */
     protected function renderItems(array $items, array $options = []): string
     {
@@ -128,7 +128,7 @@ class Dropdown extends Widget
                     'data-toggle' => 'dropdown',
                     'aria-haspopup' => 'true',
                     'aria-expanded' => 'false',
-                    'role' => 'button'
+                    'role' => 'button',
                 ], $linkOptions));
 
                 $lines[] = self::widget()

@@ -20,7 +20,7 @@ final class DropdownTest extends TestCase
         $html = Dropdown::widget()
             ->items([
                 [
-                    'label' => 'Page1'
+                    'label' => 'Page1',
                 ],
                 [
                     'label' => 'Dropdown1',
@@ -28,7 +28,7 @@ final class DropdownTest extends TestCase
                     'items' => [
                         ['label' => 'Page2'],
                         ['label' => 'Page3'],
-                    ]
+                    ],
                 ],
                 [
                     'label' => 'Dropdown2',
@@ -36,8 +36,8 @@ final class DropdownTest extends TestCase
                     'items' => [
                         ['label' => 'Page4', 'content' => 'Page4'],
                         ['label' => 'Page5', 'content' => 'Page5'],
-                    ]
-                ]
+                    ],
+                ],
             ])
             ->render();
 
@@ -65,7 +65,7 @@ EXPECTED;
                     'items' => [
                         ['label' => 'Page1', 'content' => 'Page2'],
                         ['label' => 'Page2', 'content' => 'Page3'],
-                    ]
+                    ],
                 ],
                 '-',
                 [
@@ -77,7 +77,7 @@ EXPECTED;
                     'submenuOptions' => [
                         'class' => 'submenu-override',
                     ],
-                ]
+                ],
             ])
             ->render();
 
@@ -127,7 +127,7 @@ HTML;
                 $form,
                 '-',
                 ['label' => 'New around here? Sign up', 'url' => '#'],
-                ['label' => 'Forgot password?', 'url' => '#']
+                ['label' => 'Forgot password?', 'url' => '#'],
             ])
             ->render();
 

@@ -21,7 +21,7 @@ final class BreadcrumbsTest extends TestCase
             ->homeLink(['label' => 'Home', 'url' => '#'])
             ->links([
                 ['label' => 'Library', 'url' => '#'],
-                ['label' => 'Data']
+                ['label' => 'Data'],
             ])
             ->render();
 

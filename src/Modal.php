@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use function array_merge;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
 
-use function array_merge;
+use Yiisoft\Html\Html;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a button.
@@ -196,7 +196,7 @@ class Modal extends Widget
 
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
         $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
-            'aria-hidden' => 'true'
+            'aria-hidden' => 'true',
         ]));
 
         return Html::tag($tag, $label, $this->closeButton);
@@ -213,7 +213,7 @@ class Modal extends Widget
             'class' => 'fade',
             'role' => 'dialog',
             'tabindex' => -1,
-            'aria-hidden' => 'true'
+            'aria-hidden' => 'true',
         ], $this->options);
 
         Html::addCssClass($this->options, ['widget' => 'modal']);
@@ -223,7 +223,7 @@ class Modal extends Widget
         }
 
         $this->titleOptions = array_merge([
-            'id' => $this->options['id'] . '-label'
+            'id' => $this->options['id'] . '-label',
         ], $this->titleOptions);
 
         if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== null) {
@@ -238,10 +238,10 @@ class Modal extends Widget
             ], $this->closeButton);
         }
 
-        if ($this->toggleButton !== array()) {
+        if ($this->toggleButton !== []) {
             $this->toggleButton = array_merge([
                 'data-toggle' => 'modal',
-                'type' => 'button'
+                'type' => 'button',
             ], $this->toggleButton);
             if (!isset($this->toggleButton['data-target']) && !isset($this->toggleButton['href'])) {
                 $this->toggleButton['data-target'] = '#' . $this->options['id'];

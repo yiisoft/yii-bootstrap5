@@ -22,17 +22,17 @@ class BootstrapAsset extends AssetBundle
     public ?string $sourcePath = '@npm/bootstrap/dist';
 
     public array $css = [
-        'css/bootstrap.css'
+        'css/bootstrap.css',
     ];
 
     public array $js = [
-        'js/bootstrap.bundle.js'
+        'js/bootstrap.bundle.js',
     ];
 
     public array $publishOptions = [
         'only' => [
             'css/bootstrap.css',
-            'js/bootstrap.bundle.js'
+            'js/bootstrap.bundle.js',
         ],
     ];
 }

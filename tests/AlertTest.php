@@ -20,7 +20,7 @@ final class AlertTest extends TestCase
         $html = Alert::widget()
             ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
             ->options([
-                'class' => ['alert-warning']
+                'class' => ['alert-warning'],
             ])
             ->render();
 
@@ -44,7 +44,7 @@ HTML;
         Alert::counter(0);
 
         $html = Alert::widget()
-            ->body("Message1")
+            ->body('Message1')
             ->render();
 
         $expectedHtml = <<<HTML
