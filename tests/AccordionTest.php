@@ -36,7 +36,7 @@ final class AccordionTest extends TestCase
                     'options' => [
                         'class' => 'testClass',
                         'id' => 'testId',
-                    ]
+                    ],
                 ],
                 [
                     'label' => '<h1>Collapsible Group Item #3</h1>',

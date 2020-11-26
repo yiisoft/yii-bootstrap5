@@ -40,7 +40,7 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  *             'contentOptions' => [...],
  *             'options' => [...],
  *         ],
- *         // if you want to swap out .card-block with .list-group, you may use the following
+ *         // if you want to swap out .accordion-body with .list-group, you may provide an array
  *         [
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => [
