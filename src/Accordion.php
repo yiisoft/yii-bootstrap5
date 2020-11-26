@@ -182,7 +182,7 @@ class Accordion extends Widget
                         'class' => 'list-group-item',
                     ],
                     'encode' => false,
-                    ]) . "\n";
+                ]) . "\n";
             } else {
                 throw new InvalidConfigException('The "content" option should be a string, array or object.');
             }
