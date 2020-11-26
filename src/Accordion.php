@@ -49,7 +49,6 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  *             ],
  *             'contentOptions' => [...],
  *             'options' => [...],
- *             'footer' => 'Footer' // the footer label in list-group,
  *         ],
  *     ]);
  * ```
@@ -107,7 +106,7 @@ class Accordion extends Widget
             $header = ArrayHelper::remove($item, 'label');
             $options = ArrayHelper::getValue($item, 'options', []);
 
-            Html::addCssClass($options, ['panel' => 'card']);
+            Html::addCssClass($options, ['panel' => 'accordion-item']);
 
             $items[] = Html::tag('div', $this->renderItem($header, $item, $index++), $options);
         }
@@ -175,7 +174,7 @@ class Accordion extends Widget
             $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
 
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
-                $content = Html::tag('div', $item['content'], ['class' => 'card-body']) . "\n";
+                $content = Html::tag('div', $item['content'], ['class' => 'accordion-body']) . "\n";
             } elseif (is_array($item['content'])) {
                 $content = Html::ul($item['content'], [
                     'class' => 'list-group',
@@ -197,13 +196,9 @@ class Accordion extends Widget
             $options['data-parent'] = '#' . $this->options['id'];
         }
 
-        $group[] = Html::tag('div', $header, ['class' => 'card-header', 'id' => $options['id'] . '-heading']);
+        $group[] = Html::tag('div', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
         $group[] = Html::beginTag('div', $options);
         $group[] = $content;
-
-        if (isset($item['footer'])) {
-            $group[] = Html::tag('div', $item['footer'], ['class' => 'card-footer']);
-        }
 
         $group[] = Html::endTag('div');
 
