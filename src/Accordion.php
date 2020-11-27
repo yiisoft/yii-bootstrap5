@@ -162,7 +162,7 @@ class Accordion extends Widget
                 ArrayHelper::remove($itemToggleOptions, 'data-target');
                 $headerToggle = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
-                Html::addCssClass($itemToggleOptions, 'btn-link');
+                Html::addCssClass($itemToggleOptions, 'accordion-button');
                 $headerToggle = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
