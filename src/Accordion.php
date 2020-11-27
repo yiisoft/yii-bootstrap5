@@ -193,7 +193,7 @@ class Accordion extends Widget
             $options['data-parent'] = '#' . $this->options['id'];
         }
 
-        $group[] = Html::tag('div', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
+        $group[] = Html::tag('h2', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
         $group[] = Html::beginTag('div', $options);
         $group[] = $content;
 

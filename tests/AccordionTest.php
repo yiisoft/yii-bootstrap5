@@ -73,8 +73,8 @@ final class AccordionTest extends TestCase
 
         $expectedHtml = <<<HTML
 <div id="w0-accordion" class="accordion">
-<div class="accordion-item"><div id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" id="w1-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true" aria-controls="w0-accordion-collapse0">Collapsible Group Item #1</button>
-</div>
+<div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" id="w1-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true" aria-controls="w0-accordion-collapse0">Collapsible Group Item #1</button>
+</h2>
 <div id="w0-accordion-collapse0" class="collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item">test content1</li>
@@ -82,14 +82,14 @@ final class AccordionTest extends TestCase
 </ul>
 
 </div></div>
-<div id="testId" class="testClass accordion-item"><div id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" id="w2-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="false" aria-controls="w0-accordion-collapse1">Collapsible Group Item #2</button>
-</div>
+<div id="testId" class="testClass accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" id="w2-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="false" aria-controls="w0-accordion-collapse1">Collapsible Group Item #2</button>
+</h2>
 <div id="w0-accordion-collapse1" class="testContentOptions collapse" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">
 <div class="accordion-body">Das ist das Haus vom Nikolaus</div>
 
 </div></div>
-<div id="testId2" class="testClass2 accordion-item"><div id="w0-accordion-collapse2-heading" class="accordion-header"><button type="button" id="w3-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false" aria-controls="w0-accordion-collapse2"><h1>Collapsible Group Item #3</h1></button>
-</div>
+<div id="testId2" class="testClass2 accordion-item"><h2 id="w0-accordion-collapse2-heading" class="accordion-header"><button type="button" id="w3-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false" aria-controls="w0-accordion-collapse2"><h1>Collapsible Group Item #3</h1></button>
+</h2>
 <div id="w0-accordion-collapse2" class="testContentOptions2 collapse" aria-labelledby="w0-accordion-collapse2-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
@@ -97,8 +97,8 @@ final class AccordionTest extends TestCase
 </ul>
 
 </div></div>
-<div id="testId3" class="testClass3 accordion-item"><div id="w0-accordion-collapse3-heading" class="accordion-header"><button type="button" id="w4-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false" aria-controls="w0-accordion-collapse3">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button>
-</div>
+<div id="testId3" class="testClass3 accordion-item"><h2 id="w0-accordion-collapse3-heading" class="accordion-header"><button type="button" id="w4-button" class="accordion-button btn" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false" aria-controls="w0-accordion-collapse3">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button>
+</h2>
 <div id="w0-accordion-collapse3" class="testContentOptions3 collapse" aria-labelledby="w0-accordion-collapse3-heading" data-parent="#w0-accordion">
 <ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
