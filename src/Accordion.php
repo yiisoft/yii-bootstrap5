@@ -160,17 +160,15 @@ class Accordion extends Widget
             /** @psalm-suppress ConflictingReferenceConstraint */
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-target');
-                $headerToggle = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
+                $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
                 Html::addCssClass($itemToggleOptions, 'accordion-button');
-                $headerToggle = Button::widget()
+                $header = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
                     ->options($itemToggleOptions)
                     ->render() . "\n";
             }
-
-            $header = Html::tag('h5', $headerToggle, ['class' => 'mb-0']);
 
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
                 $content = Html::tag('div', $item['content'], ['class' => 'accordion-body']) . "\n";
