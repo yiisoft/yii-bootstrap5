@@ -26,23 +26,22 @@ use Yiisoft\Widget\Exception\InvalidConfigException;
  * ```php
  * echo Accordion::widget()
  *     ->items([
- *         // equivalent to the above
  *         [
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => 'Anim pariatur cliche...',
  *             // open its content by default
- *             'contentOptions' => ['class' => 'in'],
+ *             'contentOptions' => ['class' => 'show'],
  *         ],
  *         // another group item
  *         [
- *             'label' => 'Collapsible Group Item #1',
+ *             'label' => 'Collapsible Group Item #2',
  *             'content' => 'Anim pariatur cliche...',
  *             'contentOptions' => [...],
  *             'options' => [...],
  *         ],
  *         // if you want to swap out .accordion-body with .list-group, you may provide an array
  *         [
- *             'label' => 'Collapsible Group Item #1',
+ *             'label' => 'Collapsible Group Item #3',
  *             'content' => [
  *                 'Anim pariatur cliche...',
  *                 'Anim pariatur cliche...',
