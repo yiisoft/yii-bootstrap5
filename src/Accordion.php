@@ -131,7 +131,7 @@ class Accordion extends Widget
             $options = ArrayHelper::getValue($item, 'contentOptions', []);
             $options['id'] = $id;
 
-            Html::addCssClass($options, ['widget' => 'collapse']);
+            Html::addCssClass($options, ['accordion-body', 'collapse']);
 
             if ($index === 0) {
                 Html::addCssClass($options, 'show');
@@ -161,7 +161,10 @@ class Accordion extends Widget
                 ArrayHelper::remove($itemToggleOptions, 'data-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
-                Html::addCssClass($itemToggleOptions, ['accordion-button', 'collapsed']);
+                Html::addCssClass($itemToggleOptions, 'accordion-button');
+                if ($index !== 0) {
+                    Html::addCssClass($itemToggleOptions, 'collapsed');
+                }
                 $header = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
@@ -170,7 +173,7 @@ class Accordion extends Widget
             }
 
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
-                $content = Html::tag('div', $item['content'], ['class' => 'accordion-body']) . "\n";
+                $content = $item['content'];
             } elseif (is_array($item['content'])) {
                 $content = Html::ul($item['content'], [
                     'class' => 'list-group',
@@ -192,11 +195,9 @@ class Accordion extends Widget
             $options['data-parent'] = '#' . $this->options['id'];
         }
 
-        $group[] = Html::tag('h2', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
-        $group[] = Html::beginTag('div', $options);
-        $group[] = $content;
 
-        $group[] = Html::endTag('div');
+        $group[] = Html::tag('h2', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
+        $group[] = Html::div($content, $options);
 
         return implode("\n", $group);
     }
