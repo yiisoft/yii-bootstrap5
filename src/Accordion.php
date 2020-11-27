@@ -165,11 +165,7 @@ class Accordion extends Widget
                 if ($index !== 0) {
                     Html::addCssClass($itemToggleOptions, 'collapsed');
                 }
-                $header = Button::widget()
-                    ->label($header)
-                    ->encodeLabels(false)
-                    ->options($itemToggleOptions)
-                    ->render() . "\n";
+                $header = Html::button($header, $itemToggleOptions);
             }
 
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
