@@ -153,7 +153,6 @@ class Accordion extends Widget
                 'data-toggle' => 'collapse',
                 'data-target' => '#' . $options['id'],
                 'aria-expanded' => ($index === 0) ? 'true' : 'false',
-                'aria-controls' => $options['id'],
             ], $this->itemToggleOptions);
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
@@ -162,7 +161,7 @@ class Accordion extends Widget
                 ArrayHelper::remove($itemToggleOptions, 'data-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
-                Html::addCssClass($itemToggleOptions, 'accordion-button');
+                Html::addCssClass($itemToggleOptions, ['accordion-button', 'collapsed']);
                 $header = Button::widget()
                     ->label($header)
                     ->encodeLabels(false)
