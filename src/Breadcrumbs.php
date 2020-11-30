@@ -78,7 +78,7 @@ class Breadcrumbs extends Widget
      * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
      * link.
      *
-     * @throws RuntimeException|JsonException if `$link` does not have "label" element.
+     * @throws JsonException|RuntimeException if `$link` does not have "label" element.
      *
      * @return string the rendering result
      */

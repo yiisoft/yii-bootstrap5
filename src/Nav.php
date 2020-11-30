@@ -130,7 +130,7 @@ class Nav extends Widget
     /**
      * Renders widget items.
      *
-     * @throws RuntimeException|JsonException
+     * @throws JsonException|RuntimeException
      *
      * @return string
      */
@@ -154,7 +154,7 @@ class Nav extends Widget
      *
      * @param array|string $item the item to render.
      *
-     * @throws RuntimeException|JsonException
+     * @throws JsonException|RuntimeException
      *
      * @return string the rendering result.
      */

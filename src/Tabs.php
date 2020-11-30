@@ -95,7 +95,7 @@ class Tabs extends Widget
      * @param array $items
      * @param string $prefix
      *
-     * @throws RuntimeException|JsonException
+     * @throws JsonException|RuntimeException
      */
     protected function prepareItems(array &$items, string $prefix = ''): void
     {

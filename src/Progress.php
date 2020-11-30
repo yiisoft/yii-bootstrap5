@@ -73,7 +73,7 @@ class Progress extends Widget
     /**
      * Renders the progress.
      *
-     * @throws RuntimeException|JsonException if the "percent" option is not set in a stacked progress bar.
+     * @throws JsonException|RuntimeException if the "percent" option is not set in a stacked progress bar.
      *
      * @return string the rendering result.
      */

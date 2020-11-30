@@ -112,7 +112,7 @@ class Carousel extends Widget
      * @param array|string $item a single item from {@see items}
      * @param int $index the item index as the first item should be set to `active`
      *
-     * @throws RuntimeException|JsonException if the item is invalid.
+     * @throws JsonException|RuntimeException if the item is invalid.
      *
      * @return string the rendering result.
      */
@@ -150,7 +150,7 @@ class Carousel extends Widget
     /**
      * Renders previous and next control buttons.
      *
-     * @throws RuntimeException|JsonException if {@see controls} is invalid.
+     * @throws JsonException|RuntimeException if {@see controls} is invalid.
      *
      * @return string
      */

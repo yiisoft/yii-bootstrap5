@@ -58,7 +58,7 @@ class Dropdown extends Widget
      * @param array $items the menu items to be rendered
      * @param array $options the container HTML attributes
      *
-     * @throws RuntimeException|JsonException if the label option is not specified in one of the items.
+     * @throws JsonException|RuntimeException if the label option is not specified in one of the items.
      *
      * @return string the rendering result.
      */
