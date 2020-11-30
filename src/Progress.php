@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
+use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
 
 use function array_merge;
 use function implode;
@@ -73,7 +73,7 @@ class Progress extends Widget
     /**
      * Renders the progress.
      *
-     * @throws InvalidConfigException|JsonException if the "percent" option is not set in a stacked progress bar.
+     * @throws RuntimeException|JsonException if the "percent" option is not set in a stacked progress bar.
      *
      * @return string the rendering result.
      */
@@ -92,7 +92,7 @@ class Progress extends Widget
         foreach ($this->bars as $bar) {
             $label = ArrayHelper::getValue($bar, 'label', '');
             if (!isset($bar['percent'])) {
-                throw new InvalidConfigException("The 'percent' option is required.");
+                throw new RuntimeException('The "percent" option is required.');
             }
             $options = ArrayHelper::getValue($bar, 'options', []);
             $bars[] = $this->renderBar($bar['percent'], $label, $options);

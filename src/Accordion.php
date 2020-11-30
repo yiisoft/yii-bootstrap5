@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
+use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
 
 use function array_column;
 use function array_key_exists;
@@ -83,7 +83,7 @@ class Accordion extends Widget
     /**
      * Renders collapsible items as specified on {@see items}.
      *
-     * @throws InvalidConfigException|JsonException
+     * @throws RuntimeException|JsonException
      *
      * @return string the rendering result
      */
@@ -91,7 +91,7 @@ class Accordion extends Widget
     {
         $items = [];
         $index = 0;
-        $expanded = array_search(true, array_column($this->items, 'expand'));
+        $expanded = array_search(true, array_column($this->items, 'expand'), true);
 
         foreach ($this->items as $key => $item) {
             if (!is_array($item)) {
@@ -104,7 +104,7 @@ class Accordion extends Widget
 
             if (!array_key_exists('label', $item)) {
                 if (is_int($key)) {
-                    throw new InvalidConfigException("The 'label' option is required.");
+                    throw new RuntimeException('The "label" option is required.');
                 }
 
                 $item['label'] = $key;
@@ -128,7 +128,7 @@ class Accordion extends Widget
      * @param array $item a single item from {@see items}
      * @param int $index the item index as each item group content must have an id
      *
-     * @throws InvalidConfigException|JsonException
+     * @throws RuntimeException|JsonException
      *
      * @return string the rendering result
      */
@@ -188,10 +188,10 @@ class Accordion extends Widget
                     'encode' => false,
                 ]) . "\n";
             } else {
-                throw new InvalidConfigException('The "content" option should be a string, array or object.');
+                throw new RuntimeException('The "content" option should be a string, array or object.');
             }
         } else {
-            throw new InvalidConfigException('The "content" option is required.');
+            throw new RuntimeException('The "content" option is required.');
         }
 
         $group = [];
