@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function implode;
-use function is_array;
 use Yiisoft\Arrays\ArrayHelper;
-
 use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Html\Html;
+
+use function implode;
+use function is_array;
 
 /**
  * ButtonGroup renders a button group bootstrap component.

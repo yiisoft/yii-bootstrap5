@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_merge;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
-
 use Yiisoft\Html\Html;
+
+use function array_merge;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a button.
@@ -17,10 +17,10 @@ use Yiisoft\Html\Html;
  * modal window:
  *
  * ```php
- * Modal::begin()
+ * Modal::widget()
  *     ->title('<h2>Hello world</h2>')
  *     ->toggleButton(['label' => 'click me'])
- *     ->start();
+ *     ->begin();
  *
  * echo 'Say hello...';
  *
@@ -57,39 +57,35 @@ class Modal extends Widget
     private bool $toggleButtonEnabled = true;
     private array $options = [];
 
-    public function start(): string
+    public function begin(): ?string
     {
+        parent::begin();
+
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-modal";
         }
 
         $this->initOptions();
 
-        $htmlStart = '';
-
-        $htmlStart .= $this->renderToggleButton() . "\n";
-        $htmlStart .= Html::beginTag('div', $this->options) . "\n";
-        $htmlStart .= Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n";
-        $htmlStart .= Html::beginTag('div', ['class' => 'modal-content']) . "\n";
-        $htmlStart .= $this->renderHeader() . "\n";
-        $htmlStart .= $this->renderBodyBegin() . "\n";
-
-        return $htmlStart;
+        return
+            $this->renderToggleButton() . "\n" .
+            Html::beginTag('div', $this->options) . "\n" .
+            Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n" .
+            Html::beginTag('div', ['class' => 'modal-content']) . "\n" .
+            $this->renderHeader() . "\n" .
+            $this->renderBodyBegin() . "\n";
     }
 
     protected function run(): string
     {
-        $htmlRun = '';
-
-        $htmlRun .= "\n" . $this->renderBodyEnd();
-        $htmlRun .= "\n" . $this->renderFooter();
-        $htmlRun .= "\n" . Html::endTag('div'); // modal-content
-        $htmlRun .= "\n" . Html::endTag('div'); // modal-dialog
-        $htmlRun .= "\n" . Html::endTag('div');
-
         $this->registerPlugin('modal', $this->options);
 
-        return $htmlRun;
+        return
+            "\n" . $this->renderBodyEnd() .
+            "\n" . $this->renderFooter() .
+            "\n" . Html::endTag('div') . // modal-content
+            "\n" . Html::endTag('div') . // modal-dialog
+            "\n" . Html::endTag('div');
     }
 
     /**

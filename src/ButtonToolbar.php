@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function implode;
-use function is_array;
-
 use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Html\Html;
+
+use function implode;
+use function is_array;
 
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.

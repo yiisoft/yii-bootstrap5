@@ -18,11 +18,11 @@ final class ModalTest extends TestCase
     {
         Modal::counter(0);
 
-        $html = Modal::begin()
+        $html = Modal::widget()
             ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->closeButtonEnabled(false)
             ->toggleButtonEnabled(false)
-            ->start();
+            ->begin();
 
         $html .= Modal::end();
 
@@ -48,7 +48,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::begin()
+        $html = Modal::widget()
             ->title('Modal title')
             ->toggleButtonEnabled(false)
             ->footer(
@@ -64,7 +64,7 @@ HTML;
                     'class' => ['btn', 'btn-primary'],
                 ])
             )
-            ->start();
+            ->begin();
 
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
 
@@ -98,7 +98,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::begin()
+        $html = Modal::widget()
             ->toggleButton([
                 'class' => ['btn', 'btn-primary'],
                 'label' => 'Launch demo modal',
@@ -114,7 +114,7 @@ HTML;
                     'class' => ['btn', 'btn-primary'],
                 ])
             )
-            ->start();
+            ->begin();
 
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
 

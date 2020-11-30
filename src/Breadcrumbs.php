@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
+use RuntimeException;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+
 use function array_key_exists;
 use function implode;
 use function is_array;
-use JsonException;
-
 use function strtr;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Button renders a bootstrap button.
@@ -78,7 +78,7 @@ class Breadcrumbs extends Widget
      * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
      * link.
      *
-     * @throws InvalidConfigException|JsonException if `$link` does not have "label" element.
+     * @throws RuntimeException|JsonException if `$link` does not have "label" element.
      *
      * @return string the rendering result
      */
@@ -89,7 +89,7 @@ class Breadcrumbs extends Widget
         if (array_key_exists('label', $link)) {
             $label = $encodeLabel ? Html::encode($link['label']) : $link['label'];
         } else {
-            throw new InvalidConfigException('The "label" element is required for each link.');
+            throw new RuntimeException('The "label" element is required for each link.');
         }
 
         if (isset($link['template'])) {

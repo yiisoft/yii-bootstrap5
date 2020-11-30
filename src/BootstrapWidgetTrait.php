@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function implode;
 use JsonException;
 use Yiisoft\Assets\AssetManager;
 use Yiisoft\Json\Json;
-
 use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
+
+use function implode;
 
 /**
  * BootstrapWidgetTrait is the trait, which provides basic for all bootstrap widgets features.

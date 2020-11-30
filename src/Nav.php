@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
+use RuntimeException;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+
 use function is_array;
 use function is_string;
-use JsonException;
-use Yiisoft\Arrays\ArrayHelper;
-
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Nav renders a nav HTML component.
@@ -130,7 +130,7 @@ class Nav extends Widget
     /**
      * Renders widget items.
      *
-     * @throws InvalidConfigException|JsonException
+     * @throws RuntimeException|JsonException
      *
      * @return string
      */
@@ -154,7 +154,7 @@ class Nav extends Widget
      *
      * @param array|string $item the item to render.
      *
-     * @throws InvalidConfigException|JsonException
+     * @throws RuntimeException|JsonException
      *
      * @return string the rendering result.
      */
@@ -165,7 +165,7 @@ class Nav extends Widget
         }
 
         if (!isset($item['label'])) {
-            throw new InvalidConfigException("The 'label' option is required.");
+            throw new RuntimeException("The 'label' option is required.");
         }
 
         $encodeLabel = $item['encode'] ?? $this->encodeLabels;

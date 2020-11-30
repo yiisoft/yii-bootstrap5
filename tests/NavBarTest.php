@@ -18,13 +18,13 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::begin()
+        $html = NavBar::widget()
             ->brandLabel('My Company')
             ->brandUrl('/')
             ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
-            ->start();
+            ->begin();
 
         $html .= NavBar::end();
 
@@ -46,10 +46,10 @@ EXPECTED;
     {
         NavBar::counter(0);
 
-        $html = NavBar::begin()
+        $html = NavBar::widget()
             ->brandImage('/images/test.jpg')
             ->brandUrl('/')
-            ->start();
+            ->begin();
 
         $html .= NavBar::end();
 
@@ -63,10 +63,10 @@ EXPECTED;
     {
         NavBar::counter(0);
 
-        $html = NavBar::begin()
+        $html = NavBar::widget()
             ->brandLabel('Yii Framework')
             ->brandUrl('/index.php')
-            ->start();
+            ->begin();
 
         $html .= NavBar::end();
 
@@ -80,10 +80,10 @@ EXPECTED;
     {
         NavBar::counter(0);
 
-        $html = NavBar::begin()
+        $html = NavBar::widget()
             ->brandLabel('Yii Framework')
             ->brandUrl('')
-            ->start();
+            ->begin();
 
         $html .= NavBar::end();
 
@@ -97,10 +97,10 @@ EXPECTED;
     {
         NavBar::counter(0);
 
-        $html = NavBar::begin()
+        $html = NavBar::widget()
             ->brandLabel('My Company')
             ->brandUrl('/')
-            ->start();
+            ->begin();
 
         $html .= Nav::widget()
             ->items([

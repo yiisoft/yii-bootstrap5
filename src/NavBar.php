@@ -47,13 +47,13 @@ use Yiisoft\Html\Html;
  *        ];
  *    }
  *
- *    <?php NavBar::begin()
+ *    <?php NavBar::widget()
  *        ->brandLabel('My Application Basic')
  *        ->brandUrl('/')
  *        ->options([
  *            'class' => 'navbar navbar-dark bg-dark navbar-expand-lg text-white',
  *        ])
- *        ->start();
+ *        ->begin();
  *
  *        echo Nav::widget()
  *            ->currentPath($currentPath)
@@ -121,8 +121,10 @@ class NavBar extends Widget
     private array $innerContainerOptions = [];
     private array $options = [];
 
-    public function start(): string
+    public function begin(): ?string
     {
+        parent::begin();
+
         if (!isset($this->options['id'])) {
             $id = $this->getId();
             $this->options['id'] = "{$id}-navbar";
