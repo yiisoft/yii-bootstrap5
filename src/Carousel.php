@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
+use RuntimeException;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Html\Html;
+
 use function count;
 use function implode;
 use function is_string;
-use JsonException;
-
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Html\Html;
-use Yiisoft\Widget\Exception\InvalidConfigException;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.
@@ -112,7 +112,7 @@ class Carousel extends Widget
      * @param array|string $item a single item from {@see items}
      * @param int $index the item index as the first item should be set to `active`
      *
-     * @throws InvalidConfigException|JsonException if the item is invalid.
+     * @throws RuntimeException|JsonException if the item is invalid.
      *
      * @return string the rendering result.
      */
@@ -135,7 +135,7 @@ class Carousel extends Widget
 
             $options = ArrayHelper::getValue($item, 'options', []);
         } else {
-            throw new InvalidConfigException('The "content" option is required.');
+            throw new RuntimeException('The "content" option is required.');
         }
 
         Html::addCssClass($options, ['widget' => 'carousel-item']);
@@ -150,7 +150,7 @@ class Carousel extends Widget
     /**
      * Renders previous and next control buttons.
      *
-     * @throws InvalidConfigException|JsonException if {@see controls} is invalid.
+     * @throws RuntimeException|JsonException if {@see controls} is invalid.
      *
      * @return string
      */
@@ -173,7 +173,7 @@ class Carousel extends Widget
             return '';
         }
 
-        throw new InvalidConfigException(
+        throw new RuntimeException(
             'The "controls" property must be either null or an array of two elements.'
         );
     }
