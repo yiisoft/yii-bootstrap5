@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_key_exists;
-use function array_merge;
-use function array_merge_recursive;
-use function implode;
-
-use function is_string;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_key_exists;
+use function array_merge;
+use function array_merge_recursive;
+use function implode;
+use function is_string;
 
 /**
  * Dropdown renders a Bootstrap dropdown menu component.

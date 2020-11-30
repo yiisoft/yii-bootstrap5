@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_key_exists;
-use function implode;
-use function is_array;
 use JsonException;
-
-use function strtr;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_key_exists;
+use function implode;
+use function is_array;
+use function strtr;
 
 /**
  * Button renders a bootstrap button.

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_merge;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
-
 use Yiisoft\Html\Html;
+
+use function array_merge;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a button.
@@ -17,10 +17,10 @@ use Yiisoft\Html\Html;
  * modal window:
  *
  * ```php
- * Modal::begin()
+ * Modal::widget()
  *     ->title('<h2>Hello world</h2>')
  *     ->toggleButton(['label' => 'click me'])
- *     ->start();
+ *     ->begin();
  *
  * echo 'Say hello...';
  *
@@ -57,8 +57,10 @@ class Modal extends Widget
     private bool $toggleButtonEnabled = true;
     private array $options = [];
 
-    public function start(): string
+    public function begin(): ?string
     {
+        parent::begin();
+
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-modal";
         }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function count;
-use function implode;
-use function is_string;
 use JsonException;
-
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function count;
+use function implode;
+use function is_string;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.

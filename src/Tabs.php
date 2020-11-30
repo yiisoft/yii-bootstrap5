@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_key_exists;
-use function array_merge;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_key_exists;
+use function array_merge;
 
 /**
  * Tabs renders a Tab bootstrap javascript component.

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function is_array;
-use function is_string;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
-
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function is_array;
+use function is_string;
 
 /**
  * Nav renders a nav HTML component.

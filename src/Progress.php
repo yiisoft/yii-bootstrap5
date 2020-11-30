@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use function array_merge;
-use function implode;
 use JsonException;
-use function rtrim;
-
-use function trim;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Exception\InvalidConfigException;
+
+use function array_merge;
+use function implode;
+use function rtrim;
+use function trim;
 
 /**
  * Progress renders a bootstrap progress bar component.
