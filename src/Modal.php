@@ -67,31 +67,25 @@ class Modal extends Widget
 
         $this->initOptions();
 
-        $htmlStart = '';
-
-        $htmlStart .= $this->renderToggleButton() . "\n";
-        $htmlStart .= Html::beginTag('div', $this->options) . "\n";
-        $htmlStart .= Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n";
-        $htmlStart .= Html::beginTag('div', ['class' => 'modal-content']) . "\n";
-        $htmlStart .= $this->renderHeader() . "\n";
-        $htmlStart .= $this->renderBodyBegin() . "\n";
-
-        return $htmlStart;
+        return
+            $this->renderToggleButton() . "\n" .
+            Html::beginTag('div', $this->options) . "\n" .
+            Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n" .
+            Html::beginTag('div', ['class' => 'modal-content']) . "\n" .
+            $this->renderHeader() . "\n" .
+            $this->renderBodyBegin() . "\n";
     }
 
     protected function run(): string
     {
-        $htmlRun = '';
-
-        $htmlRun .= "\n" . $this->renderBodyEnd();
-        $htmlRun .= "\n" . $this->renderFooter();
-        $htmlRun .= "\n" . Html::endTag('div'); // modal-content
-        $htmlRun .= "\n" . Html::endTag('div'); // modal-dialog
-        $htmlRun .= "\n" . Html::endTag('div');
-
         $this->registerPlugin('modal', $this->options);
 
-        return $htmlRun;
+        return
+            "\n" . $this->renderBodyEnd() .
+            "\n" . $this->renderFooter() .
+            "\n" . Html::endTag('div') . // modal-content
+            "\n" . Html::endTag('div') . // modal-dialog
+            "\n" . Html::endTag('div');
     }
 
     /**
