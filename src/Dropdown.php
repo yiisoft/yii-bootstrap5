@@ -100,7 +100,7 @@ class Dropdown extends Widget
             $url = $item['url'] ?? null;
 
             if (empty($item['items'])) {
-                if ($item['label'] === '-') {
+                if ($label === '-') {
                     $content = Html::div('', ['class' => 'dropdown-divider']);
                 } elseif ($enclose === false) {
                     $content = $label;
