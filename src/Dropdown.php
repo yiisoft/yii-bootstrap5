@@ -68,7 +68,7 @@ class Dropdown extends Widget
 
         foreach ($items as $item) {
             if (is_string($item)) {
-                $item = ['label' => $item, 'encode' => false, 'isString' => true];
+                $item = ['label' => $item, 'encode' => false, 'enclose' => false];
             }
 
             if (isset($item['visible']) && !$item['visible']) {
@@ -85,7 +85,7 @@ class Dropdown extends Widget
             $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
             $active = ArrayHelper::getValue($item, 'active', false);
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
-            $isString = ArrayHelper::getValue($item, 'isString', false);
+            $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
             Html::addCssClass($linkOptions, 'dropdown-item');
 
@@ -102,7 +102,7 @@ class Dropdown extends Widget
             if (empty($item['items'])) {
                 if ($item['label'] === '-') {
                     $content = Html::div('', ['class' => 'dropdown-divider']);
-                } elseif ($isString === true) {
+                } elseif ($enclose === false) {
                     $content = $label;
                 } elseif ($url === null) {
                     $content = Html::tag('h6', $label, ['class' => 'dropdown-header']);
