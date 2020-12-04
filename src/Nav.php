@@ -285,11 +285,7 @@ class Nav extends Widget
             return ArrayHelper::getValue($item, 'active', false);
         }
 
-        return (isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems)
-
-
-
-         ;
+        return isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems;
     }
 
     /**
