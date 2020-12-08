@@ -127,7 +127,9 @@ HTML;
                 $form,
                 '-',
                 ['label' => 'New around here? Sign up', 'url' => '#'],
+                ['label' => '-'],
                 ['label' => 'Forgot password?', 'url' => '#'],
+                ['label' => '-', 'visible' => false],
             ])
             ->render();
 
@@ -151,6 +153,7 @@ Remember me
 </form>
 <div class="dropdown-divider"></div>
 <a class="dropdown-item" href="#">New around here? Sign up</a>
+<div class="dropdown-divider"></div>
 <a class="dropdown-item" href="#">Forgot password?</a></div>
 HTML;
 
