@@ -64,7 +64,7 @@ class ButtonToolbar extends Widget
             $this->options['role'] = 'toolbar';
         }
 
-        return Html::tag('div', $this->renderButtonGroups(), $this->options);
+        return Html::div($this->renderButtonGroups(), $this->options);
     }
 
     /**

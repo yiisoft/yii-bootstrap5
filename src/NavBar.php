@@ -152,7 +152,7 @@ class NavBar extends Widget
         if ($this->brandLabel !== null) {
             Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
             if (empty($this->brandUrl)) {
-                $brand = Html::tag('span', $this->brandLabel, $this->brandOptions);
+                $brand = Html::span($this->brandLabel, $this->brandOptions);
             } else {
                 $brand = Html::a(
                     $this->brandLabel,

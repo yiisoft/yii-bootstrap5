@@ -54,8 +54,10 @@ final class ButtonDropdownTest extends TestCase
         $expected = <<<EXPECTED
 <div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 
-<div id="w1-dropdown" class="dropdown-menu"><a class="dropdown-item" href="#">ItemA</a>
-<a class="dropdown-item" href="#">ItemB</a></div></div>
+<div id="w1-dropdown" class="dropdown-menu"><ul class="dropdown" aria-expanded="false">
+<li><a class="dropdown-item" href="#">ItemA</a></li>
+<li><a class="dropdown-item" href="#">ItemB</a></li>
+</ul></div></div>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -80,8 +82,10 @@ EXPECTED;
         $expected = <<<EXPECTED
 <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn">Split dropdown</button>
 <button id="w0-button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
-<div id="w2-dropdown" class="dropdown-menu"><a class="dropdown-item" href="#">ItemA</a>
-<a class="dropdown-item" href="#">ItemB</a></div></div>
+<div id="w2-dropdown" class="dropdown-menu"><ul class="dropdown" aria-expanded="false">
+<li><a class="dropdown-item" href="#">ItemA</a></li>
+<li><a class="dropdown-item" href="#">ItemB</a></li>
+</ul></div></div>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);

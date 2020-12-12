@@ -101,10 +101,9 @@ class Modal extends Widget
 
         if ($this->title !== null) {
             Html::addCssClass($this->titleOptions, ['widget' => 'modal-title']);
-            $header = Html::tag('h5', $this->title, $this->titleOptions);
-        } else {
-            $header = '';
         }
+
+        $header = ($this->title === null) ? '' : Html::tag('h5', $this->title, $this->titleOptions);
 
         if ($button !== null) {
             $header .= "\n" . $button;
@@ -114,7 +113,7 @@ class Modal extends Widget
 
         Html::addCssClass($this->headerOptions, ['widget' => 'modal-header']);
 
-        return Html::tag('div', "\n" . $header . "\n", $this->headerOptions);
+        return Html::div($header, $this->headerOptions);
     }
 
     /**
@@ -155,7 +154,7 @@ class Modal extends Widget
         }
 
         Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
-        return Html::tag('div', "\n" . $this->footer . "\n", $this->footerOptions);
+        return Html::div($this->footer, $this->footerOptions);
     }
 
     /**
@@ -191,7 +190,7 @@ class Modal extends Widget
         }
 
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
+        $label = ArrayHelper::remove($this->closeButton, 'label', Html::span('&times;', [
             'aria-hidden' => 'true',
         ]));
 

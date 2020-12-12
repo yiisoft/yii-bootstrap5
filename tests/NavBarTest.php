@@ -134,10 +134,12 @@ HTML;
 <div id="w0-collapse" class="collapse navbar-collapse">
 <ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
 <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2-dropdown" class="dropdown-menu"><a class="dropdown-item" href="#">Action</a>
-<a class="dropdown-item" href="#">Another action</a>
-<div class="dropdown-divider"></div>
-<a class="dropdown-item" href="#">Something else here</a></div></li></ul><form class="form-inline my-2 my-lg-0">
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown</a><div id="w2-dropdown" class="dropdown-menu"><ul class="dropdown" aria-expanded="false">
+<li><a class="dropdown-item" href="#">Action</a></li>
+<li><a class="dropdown-item" href="#">Another action</a></li>
+<li><div class="dropdown-divider"></div></li>
+<li><a class="dropdown-item" href="#">Something else here</a></li>
+</ul></div></li></ul><form class="form-inline my-2 my-lg-0">
 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form></div>
