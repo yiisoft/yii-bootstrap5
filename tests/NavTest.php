@@ -222,6 +222,39 @@ EXPECTED;
     }
 
     /**
+     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
+     */
+    public function testImplicitActiveSubitems(): void
+    {
+        Nav::counter(0);
+
+        $html = Nav::widget()
+            ->items([
+                [
+                    'label' => 'Item1',
+                ],
+                [
+                    'label' => 'Item2',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2', 'url' => '/site/index'],
+                        ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
+                    ],
+                ],
+            ])
+            ->render();
+
+        $expected = <<<EXPECTED
+<ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item" href="/site/index">Page2</a></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li></ul>
+EXPECTED;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    /**
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/96
      * @see https://github.com/yiisoft/yii2-bootstrap/issues/157
      */
