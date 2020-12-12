@@ -145,7 +145,6 @@ class Dropdown extends Widget
             $lines,
             array_merge_recursive(['aria-expanded' => 'false', 'encode' => false], $options)
         );
-        return Html::div($menu, $options);
     }
 
     /**
