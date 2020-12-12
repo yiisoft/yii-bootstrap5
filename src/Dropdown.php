@@ -12,7 +12,6 @@ use Yiisoft\Html\Html;
 use function array_key_exists;
 use function array_merge;
 use function array_merge_recursive;
-use function implode;
 use function is_string;
 
 /**
@@ -118,7 +117,7 @@ class Dropdown extends Widget
                     $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
                 }
 
-                Html::addCssClass($submenuOptions, ['dropdown-submenu']);
+                Html::addCssClass($submenuOptions, ['dropdown-menu']);
                 Html::addCssClass($linkOptions, ['dropdown-toggle']);
 
                 $lines[] = Html::a($label, $url, array_merge([
@@ -128,18 +127,23 @@ class Dropdown extends Widget
                     'role' => 'button',
                 ], $linkOptions))
 
-                . self::widget()
-                    ->items($item['items'])
-                    ->options($submenuOptions)
-                    ->submenuOptions($submenuOptions)
-                    ->encodeLabels($this->encodeLabels)
-                    ->render();
+                . Html::tag(
+                    'ul',
+                    self::widget()
+                        ->items($item['items'])
+                        ->options($submenuOptions)
+                        ->submenuOptions($submenuOptions)
+                        ->encodeLabels($this->encodeLabels)
+                        ->render(),
+                    array_merge_recursive(['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false], $itemOptions
+                    )
+                );
             }
         }
 
-        $menu = Html::ul(
+        return Html::ul(
             $lines,
-            array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false', 'encode' => false], $itemOptions)
+            array_merge_recursive(['aria-expanded' => 'false', 'encode' => false], $options)
         );
         return Html::div($menu, $options);
     }
