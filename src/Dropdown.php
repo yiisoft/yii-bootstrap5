@@ -135,7 +135,9 @@ class Dropdown extends Widget
                         ->submenuOptions($submenuOptions)
                         ->encodeLabels($this->encodeLabels)
                         ->render(),
-                    array_merge_recursive(['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false], $itemOptions
+                    array_merge_recursive(
+                        ['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false],
+                        $itemOptions
                     )
                 );
             }
