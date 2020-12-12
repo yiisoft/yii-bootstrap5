@@ -38,14 +38,14 @@ use function is_string;
 class Carousel extends Widget
 {
     private ?array $controls = [
-        '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>',
-        '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>',
+        '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
+        '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>',
     ];
 
     private bool $showIndicators = true;
     private array $items = [];
     private bool $crossfade = false;
-    private array $options = ['data-ride' => 'carousel'];
+    private array $options = ['data-bs-ride' => 'carousel'];
 
     protected function run(): string
     {
@@ -82,7 +82,7 @@ class Carousel extends Widget
         $indicators = [];
 
         for ($i = 0, $count = count($this->items); $i < $count; $i++) {
-            $options = ['data-target' => '#' . $this->options['id'], 'data-slide-to' => $i];
+            $options = ['data-bs-target' => '#' . $this->options['id'], 'data-bs-slide-to' => $i];
             if ($i === 0) {
                 Html::addCssClass($options, 'active');
             }
@@ -159,12 +159,12 @@ class Carousel extends Widget
         if (isset($this->controls[0], $this->controls[1])) {
             return Html::a($this->controls[0], '#' . $this->options['id'], [
                 'class' => 'carousel-control-prev',
-                'data-slide' => 'prev',
+                'data-bs-slide' => 'prev',
                 'role' => 'button',
             ]) . "\n"
                 . Html::a($this->controls[1], '#' . $this->options['id'], [
                     'class' => 'carousel-control-next',
-                    'data-slide' => 'next',
+                    'data-bs-slide' => 'next',
                     'role' => 'button',
                 ]);
         }
