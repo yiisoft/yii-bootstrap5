@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Html\Html;
 
@@ -84,9 +85,10 @@ class ButtonToolbar extends Widget
                     continue;
                 }
 
+                $options = ArrayHelper::getValue($group, 'options', []);
                 $buttonGroups[] = ButtonGroup::widget()
                     ->buttons($group['buttons'])
-                    ->options($group['options'])
+                    ->options($options)
                     ->render();
             } else {
                 $buttonGroups[] = $group;
