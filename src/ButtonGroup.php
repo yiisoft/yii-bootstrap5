@@ -54,7 +54,7 @@ class ButtonGroup extends Widget
             $this->options['role'] = 'group';
         }
 
-        return Html::tag('div', $this->renderButtons(), $this->options);
+        return Html::div($this->renderButtons(), $this->options);
     }
 
     /**

@@ -12,7 +12,6 @@ use Yiisoft\Html\Html;
 use function array_key_exists;
 use function array_merge;
 use function array_merge_recursive;
-use function implode;
 use function is_string;
 
 /**
@@ -118,32 +117,36 @@ class Dropdown extends Widget
                     $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
                 }
 
-                Html::addCssClass($submenuOptions, ['dropdown-submenu']);
+                Html::addCssClass($submenuOptions, ['dropdown-menu']);
                 Html::addCssClass($linkOptions, ['dropdown-toggle']);
 
-                $lines[] = Html::beginTag(
-                    'div',
-                    array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions)
-                );
-
                 $lines[] = Html::a($label, $url, array_merge([
-                    'data-toggle' => 'dropdown',
+                    'data-bs-toggle' => 'dropdown',
                     'aria-haspopup' => 'true',
                     'aria-expanded' => 'false',
                     'role' => 'button',
-                ], $linkOptions));
+                ], $linkOptions))
 
-                $lines[] = self::widget()
-                    ->items($item['items'])
-                    ->options($submenuOptions)
-                    ->submenuOptions($submenuOptions)
-                    ->encodeLabels($this->encodeLabels)
-                    ->render();
-                $lines[] = Html::endTag('div');
+                . Html::tag(
+                    'ul',
+                    self::widget()
+                        ->items($item['items'])
+                        ->options($submenuOptions)
+                        ->submenuOptions($submenuOptions)
+                        ->encodeLabels($this->encodeLabels)
+                        ->render(),
+                    array_merge_recursive(
+                        ['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false],
+                        $itemOptions
+                    )
+                );
             }
         }
 
-        return Html::tag('div', implode("\n", $lines), $options);
+        return Html::ul(
+            $lines,
+            array_merge_recursive(['aria-expanded' => 'false', 'encode' => false], $options)
+        );
     }
 
     /**

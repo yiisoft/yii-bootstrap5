@@ -73,11 +73,7 @@ class Accordion extends Widget
 
         Html::addCssClass($this->options, 'accordion');
 
-        return implode("\n", [
-            Html::beginTag('div', $this->options),
-            $this->renderItems(),
-            Html::endTag('div'),
-        ]) . "\n";
+        return Html::div($this->renderItems(), $this->options);
     }
 
     /**
@@ -115,7 +111,7 @@ class Accordion extends Widget
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
-            $items[] = Html::tag('div', $this->renderItem($header, $item, $index++), $options);
+            $items[] = Html::div($this->renderItem($header, $item, $index++), $options);
         }
 
         return implode("\n", $items);
