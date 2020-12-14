@@ -227,7 +227,7 @@ class Modal extends Widget
 
         if ($this->closeButtonEnabled !== false) {
             $this->closeButton = array_merge([
-                'data-dismiss' => 'modal',
+                'data-bs-dismiss' => 'modal',
                 'class' => 'close',
                 'type' => 'button',
             ], $this->closeButton);
@@ -235,11 +235,11 @@ class Modal extends Widget
 
         if ($this->toggleButton !== []) {
             $this->toggleButton = array_merge([
-                'data-toggle' => 'modal',
+                'data-bs-toggle' => 'modal',
                 'type' => 'button',
             ], $this->toggleButton);
-            if (!isset($this->toggleButton['data-target']) && !isset($this->toggleButton['href'])) {
-                $this->toggleButton['data-target'] = '#' . $this->options['id'];
+            if (!isset($this->toggleButton['data-bs-target']) && !isset($this->toggleButton['href'])) {
+                $this->toggleButton['data-bs-target'] = '#' . $this->options['id'];
             }
         }
     }

@@ -52,7 +52,7 @@ final class ButtonDropdownTest extends TestCase
             ->render();
 
         $expected = <<<EXPECTED
-<div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+<div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 
 <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
 <li><a class="dropdown-item" href="#">ItemA</a></li>
@@ -81,7 +81,7 @@ EXPECTED;
 
         $expected = <<<EXPECTED
 <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn">Split dropdown</button>
-<button id="w0-button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
+<button id="w0-button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
 <ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
 <li><a class="dropdown-item" href="#">ItemA</a></li>
 <li><a class="dropdown-item" href="#">ItemB</a></li>

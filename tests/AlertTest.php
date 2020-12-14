@@ -26,7 +26,7 @@ final class AlertTest extends TestCase
 
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert-warning alert alert-dismissible" role="alert"><strong>Holy guacamole!</strong> You should check in on some of those fields below.
-<button type="button" class="btn-close" aria-label="Close" data-dismiss="alert"></button>
+<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
 </div>
 HTML;
 
@@ -46,7 +46,7 @@ HTML;
 
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
-<button type="button" class="btn-close" aria-label="Close" data-dismiss="alert"></button>
+<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
 </div>
 HTML;
 

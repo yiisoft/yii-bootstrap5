@@ -180,7 +180,7 @@ class Nav extends Widget
         if (empty($items)) {
             $items = '';
         } else {
-            $linkOptions['data-toggle'] = 'dropdown';
+            $linkOptions['data-bs-toggle'] = 'dropdown';
 
             Html::addCssClass($options, ['widget' => 'dropdown']);
             Html::addCssClass($linkOptions, ['widget' => 'dropdown-toggle']);

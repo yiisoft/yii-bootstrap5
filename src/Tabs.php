@@ -135,7 +135,7 @@ class Tabs extends Widget
             }
 
             ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
-            ArrayHelper::setValueByPath($items[$n], 'linkOptions.data.toggle', 'tab');
+            ArrayHelper::setValueByPath($items[$n], 'linkOptions.data.bs-toggle', 'tab');
             ArrayHelper::setValueByPath($items[$n], 'linkOptions.role', 'tab');
             ArrayHelper::setValueByPath($items[$n], 'linkOptions.aria-controls', $options['id']);
 
