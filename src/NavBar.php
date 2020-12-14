@@ -215,8 +215,8 @@ class NavBar extends Widget
             ArrayHelper::merge($options, [
                 'type' => 'button',
                 'data' => [
-                    'toggle' => 'collapse',
-                    'target' => '#' . $this->collapseOptions['id'],
+                    'bs-toggle' => 'collapse',
+                    'bs-target' => '#' . $this->collapseOptions['id'],
                 ],
                 'aria-controls' => $this->collapseOptions['id'],
                 'aria-expanded' => 'false',

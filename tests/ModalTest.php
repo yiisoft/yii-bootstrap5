@@ -56,7 +56,7 @@ HTML;
                     'type' => 'button',
                     'class' => ['btn', 'btn-secondary'],
                     'data' => [
-                        'dismiss' => 'modal',
+                        'bs-dismiss' => 'modal',
                     ],
                 ]) . "\n" .
                 Html::button('Save changes', [
@@ -76,11 +76,11 @@ HTML;
 <div class="modal-dialog ">
 <div class="modal-content">
 <div class="modal-header"><h5 id="w0-modal-label" class="modal-title">Modal title</h5>
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button></div>
+<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button></div>
 <div class="modal-body">
 <p>Woohoo, you're reading this text in a modal!</p>
 </div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 <button type="button" class="btn btn-primary">Save changes</button></div>
 </div>
 </div>
@@ -117,7 +117,7 @@ HTML;
         $html .= Modal::end();
 
         $this->assertStringContainsString(
-            '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#w0-modal">Launch demo modal</button>',
+            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#w0-modal">Launch demo modal</button>',
             $html
         );
     }

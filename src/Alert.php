@@ -89,7 +89,7 @@ class Alert extends Widget
             $this->closeButton = [
                 'aria-label' => 'Close',
                 'class' => ['widget' => 'btn-close'],
-                'data-dismiss' => 'alert',
+                'data-bs-dismiss' => 'alert',
             ];
 
             Html::addCssClass($this->options, ['alert-dismissible']);

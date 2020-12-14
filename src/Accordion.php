@@ -155,15 +155,15 @@ class Accordion extends Widget
             $itemToggleOptions = array_merge([
                 'tag' => 'button',
                 'type' => 'button',
-                'data-toggle' => 'collapse',
-                'data-target' => '#' . $options['id'],
+                'data-bs-toggle' => 'collapse',
+                'data-bs-target' => '#' . $options['id'],
                 'aria-expanded' => $expand ? 'true' : 'false',
             ], $this->itemToggleOptions);
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
             /** @psalm-suppress ConflictingReferenceConstraint */
             if ($itemToggleTag === 'a') {
-                ArrayHelper::remove($itemToggleOptions, 'data-target');
+                ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
                 Html::addCssClass($itemToggleOptions, 'accordion-button');
@@ -193,7 +193,7 @@ class Accordion extends Widget
         $group = [];
 
         if ($this->autoCloseItems) {
-            $options['data-parent'] = '#' . $this->options['id'];
+            $options['data-bs-parent'] = '#' . $this->options['id'];
         }
 
 

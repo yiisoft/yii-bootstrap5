@@ -103,7 +103,7 @@ class ButtonDropdown extends Widget
         if ($this->split) {
             $buttonOptions = $this->buttonOptions;
 
-            $this->buttonOptions['data-toggle'] = 'dropdown';
+            $this->buttonOptions['data-bs-toggle'] = 'dropdown';
             $this->buttonOptions['aria-haspopup'] = 'true';
             $this->buttonOptions['aria-expanded'] = 'false';
 
@@ -121,7 +121,7 @@ class ButtonDropdown extends Widget
 
             Html::addCssClass($buttonOptions, ['toggle' => 'dropdown-toggle']);
 
-            $buttonOptions['data-toggle'] = 'dropdown';
+            $buttonOptions['data-bs-toggle'] = 'dropdown';
             $buttonOptions['aria-haspopup'] = 'true';
             $buttonOptions['aria-expanded'] = 'false';
             $splitButton = '';
