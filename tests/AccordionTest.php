@@ -72,22 +72,22 @@ final class AccordionTest extends TestCase
             ->render();
 
         $expectedHtml = <<<HTML
-<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true">Collapsible Group Item #1</button></h2>
-<div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion"><ul class="list-group">
+<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Collapsible Group Item #1</button></h2>
+<div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"><ul class="list-group">
 <li class="list-group-item">test content1</li>
 <li class="list-group-item">test content2</li>
 </ul>
 </div></div>
-<div id="testId" class="testClass accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="false">Collapsible Group Item #2</button></h2>
-<div id="w0-accordion-collapse1" class="testContentOptions accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">Das ist das Haus vom Nikolaus</div></div>
-<div id="testId2" class="testClass2 accordion-item"><h2 id="w0-accordion-collapse2-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse2" aria-expanded="false"><h1>Collapsible Group Item #3</h1></button></h2>
-<div id="w0-accordion-collapse2" class="testContentOptions2 accordion-body collapse" aria-labelledby="w0-accordion-collapse2-heading" data-parent="#w0-accordion"><ul class="list-group">
+<div id="testId" class="testClass accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false">Collapsible Group Item #2</button></h2>
+<div id="w0-accordion-collapse1" class="testContentOptions accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Das ist das Haus vom Nikolaus</div></div>
+<div id="testId2" class="testClass2 accordion-item"><h2 id="w0-accordion-collapse2-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse2" aria-expanded="false"><h1>Collapsible Group Item #3</h1></button></h2>
+<div id="w0-accordion-collapse2" class="testContentOptions2 accordion-body collapse" aria-labelledby="w0-accordion-collapse2-heading" data-bs-parent="#w0-accordion"><ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
 <li class="list-group-item"><h2>test content2</h2></li>
 </ul>
 </div></div>
-<div id="testId3" class="testClass3 accordion-item"><h2 id="w0-accordion-collapse3-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse3" aria-expanded="false">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button></h2>
-<div id="w0-accordion-collapse3" class="testContentOptions3 accordion-body collapse" aria-labelledby="w0-accordion-collapse3-heading" data-parent="#w0-accordion"><ul class="list-group">
+<div id="testId3" class="testClass3 accordion-item"><h2 id="w0-accordion-collapse3-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse3" aria-expanded="false">&lt;h1&gt;Collapsible Group Item #4&lt;/h1&gt;</button></h2>
+<div id="w0-accordion-collapse3" class="testContentOptions3 accordion-body collapse" aria-labelledby="w0-accordion-collapse3-heading" data-bs-parent="#w0-accordion"><ul class="list-group">
 <li class="list-group-item"><h2>test content1</h2></li>
 <li class="list-group-item"><h2>test content2</h2></li>
 </ul>
@@ -141,14 +141,14 @@ HTML;
             ->items($items)
             ->render();
 
-        $this->assertStringContainsString('data-parent="', $html);
+        $this->assertStringContainsString('data-bs-parent="', $html);
 
         $html = Accordion::widget()
             ->autoCloseItems(false)
             ->items($items)
             ->render();
 
-        $this->assertStringNotContainsString('data-parent="', $html);
+        $this->assertStringNotContainsString('data-bs-parent="', $html);
     }
 
     public function testExpandOptions()
@@ -171,10 +171,10 @@ HTML;
             ->render();
 
         $this->assertEqualsWithoutLE(<<<HTML
-<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
-<div id="w0-accordion-collapse0" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion">Content 1</div></div>
-<div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="true">Item 2</button></h2>
-<div id="w0-accordion-collapse1" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">Content 2</div></div></div>
+<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
+<div id="w0-accordion-collapse0" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
+<div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="true">Item 2</button></h2>
+<div id="w0-accordion-collapse1" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
 HTML
         , $html);
     }

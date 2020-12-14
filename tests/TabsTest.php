@@ -186,19 +186,19 @@ final class TabsTest extends TestCase
             ->render();
 
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab0" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
+            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab0" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#w0-tabs-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="true">Page2</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#w0-tabs-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="true">Page2</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab2" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
+            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab2" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<a class="dropdown-item disabled" href="#w0-tabs-dd3-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
+            '<a class="dropdown-item disabled" href="#w0-tabs-dd3-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
             $html
         );
         $this->assertStringContainsString(
@@ -283,15 +283,15 @@ final class TabsTest extends TestCase
             ->render();
 
         $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
             $html
         );
         $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab1" data-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab1" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
             $html
         );
     }
@@ -325,7 +325,7 @@ final class TabsTest extends TestCase
             ->render();
 
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
             $html
         );
     }
@@ -381,8 +381,8 @@ final class TabsTest extends TestCase
             ->render();
 
         $expected = <<<HTML
-<ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
-<li class="nav-item"><a class="nav-link" href="#w0-tabs-tab1" data-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="false">Tab 2</a></li></ul>
+<ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
+<li class="nav-item"><a class="nav-link" href="#w0-tabs-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="false">Tab 2</a></li></ul>
 <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div>
 <div id="w0-tabs-tab1" class="tab-pane"><div>Content 2</div></div></div>
 HTML;
