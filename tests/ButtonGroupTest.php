@@ -37,4 +37,23 @@ HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
     }
+
+    public function testButtonOptions(): void
+    {
+        ButtonGroup::counter(0);
+
+        $html = ButtonGroup::widget()
+            ->buttons([
+                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
+                ['label' => 'button-B'],
+            ])
+            ->render();
+
+        $expected = <<<HTML
+<div id="w0-button-group" class="btn-group" role="group"><button type="submit" id="w1-button" class="btn-primary btn">button-A</button>
+<button type="button" id="w2-button" class="btn">button-B</button></div>
+HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
 }

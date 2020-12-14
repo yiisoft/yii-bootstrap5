@@ -61,6 +61,30 @@ HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
+    public function testButtonOptions(): void
+    {
+        ButtonToolbar::counter(0);
+
+        $html = ButtonToolbar::widget()
+            ->buttonGroups([
+                [
+                    'buttons' => [
+                        ['label' => '1', 'options' => ['class' => 'btn-secondary', 'tabindex' => 2, 'type' => 'reset']],
+                        ['label' => '2', 'options' => ['class' => 'btn-primary', 'tabindex' => 1, 'type' => 'submit']],
+                    ],
+                    'class' => ['mr-2'],
+                ],
+            ])
+            ->render();
+
+        $expected = <<<HTML
+<div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"><div id="w1-button-group" class="btn-group" role="group"><button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2">1</button>
+<button type="submit" id="w3-button" class="btn-primary btn" tabindex="1">2</button></div></div>
+HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
     public function testAdditionalContent(): void
     {
         $addHtml = <<<HTML
