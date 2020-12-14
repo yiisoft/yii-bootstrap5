@@ -72,8 +72,7 @@ final class AccordionTest extends TestCase
             ->render();
 
         $expectedHtml = <<<HTML
-<div id="w0-accordion" class="accordion">
-<div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true">Collapsible Group Item #1</button></h2>
+<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="true">Collapsible Group Item #1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion"><ul class="list-group">
 <li class="list-group-item">test content1</li>
 <li class="list-group-item">test content2</li>
@@ -92,9 +91,7 @@ final class AccordionTest extends TestCase
 <li class="list-group-item"><h2>test content1</h2></li>
 <li class="list-group-item"><h2>test content2</h2></li>
 </ul>
-</div></div>
-</div>
-
+</div></div></div>
 HTML;
 
         $this->assertEqualsWithoutLE($expectedHtml, $html);
@@ -174,13 +171,10 @@ HTML;
             ->render();
 
         $this->assertEqualsWithoutLE(<<<HTML
-<div id="w0-accordion" class="accordion">
-<div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
+<div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse0-heading" data-parent="#w0-accordion">Content 1</div></div>
 <div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button" data-toggle="collapse" data-target="#w0-accordion-collapse1" aria-expanded="true">Item 2</button></h2>
-<div id="w0-accordion-collapse1" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">Content 2</div></div>
-</div>
-
+<div id="w0-accordion-collapse1" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse1-heading" data-parent="#w0-accordion">Content 2</div></div></div>
 HTML
         , $html);
     }

@@ -43,8 +43,10 @@ final class NavTest extends TestCase
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><div id="w1-dropdown" class="dropdown-menu"><h6 class="dropdown-header">Page2</h6>
-<h6 class="dropdown-header">Page3</h6></div></li></ul>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><h6 class="dropdown-header">Page2</h6></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li></ul>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -81,8 +83,10 @@ EXPECTED;
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><div id="test1" class="test dropdown-menu" data-id="t1"><h6 class="dropdown-header">Page2</h6>
-<h6 class="dropdown-header">Page3</h6></div></li></ul>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><ul id="test1" class="test dropdown-menu" aria-expanded="false" data-id="t1">
+<li><h6 class="dropdown-header">Page2</h6></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li></ul>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -114,8 +118,10 @@ EXPECTED;
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><div id="w1-dropdown" class="dropdown-menu"><h6 class="dropdown-header">Page2</h6>
-<h6 class="dropdown-header">Page3</h6></div></li>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><h6 class="dropdown-header">Page2</h6></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li>
 <li class="nav-item"><a class="nav-link" href="#">Page4</a></li></ul>
 EXPECTED;
 
@@ -206,8 +212,10 @@ EXPECTED;
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Item2</a><div id="w1-dropdown" class="dropdown-menu"><a class="dropdown-item" href="site/index">Page2</a>
-<h6 class="dropdown-header">Page3</h6></div></li></ul>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item" href="site/index">Page2</a></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li></ul>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -237,8 +245,10 @@ EXPECTED;
 
         $expected = <<<EXPECTED
 <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Item2</a><div id="w1-dropdown" class="dropdown-menu"><a class="dropdown-item" href="/site/index">Page2</a>
-<h6 class="dropdown-header">Page3</h6></div></li></ul>
+<li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item" href="/site/index">Page2</a></li>
+<li><h6 class="dropdown-header">Page3</h6></li>
+</ul></li></ul>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -270,10 +280,11 @@ EXPECTED;
             ->render();
 
         $expected = <<<EXPECTED
-<ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-toggle="dropdown">Dropdown</a><div id="w1-dropdown" class="dropdown-menu"><div class="dropdown active" aria-expanded="false">
-<a class="dropdown-item dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a>
-<div id="w2-dropdown" class="dropdown-submenu dropdown-menu"><h6 class="dropdown-header">Page</h6></div>
-</div></div></li></ul>
+<ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-toggle="dropdown">Dropdown</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul class="dropdown active" aria-expanded="false"><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><h6 class="dropdown-header">Page</h6></li>
+</ul></ul></li>
+</ul></li></ul>
 EXPECTED;
 
         $this->assertEqualsWithoutLE($expected, $html);

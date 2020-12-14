@@ -129,7 +129,7 @@ class Progress extends Widget
         Html::addCssClass($options, ['widget' => 'progress-bar']);
         Html::addCssStyle($options, ['width' => $valuePercent . '%'], true);
 
-        return Html::tag('div', $label, $options);
+        return Html::div($label, $options);
     }
 
     /**

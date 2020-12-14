@@ -200,7 +200,7 @@ class Tabs extends Widget
      */
     public function renderPanes(array $panes): string
     {
-        return $this->renderTabContent ? ("\n" . Html::tag('div', implode("\n", $panes), $this->tabContentOptions)) : '';
+        return $this->renderTabContent ? ("\n" . Html::div(implode("\n", $panes), $this->tabContentOptions)) : '';
     }
 
     /**

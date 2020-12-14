@@ -61,13 +61,10 @@ class Carousel extends Widget
 
         $this->registerPlugin('carousel', $this->options);
 
-        return implode("\n", [
-            Html::beginTag('div', $this->options),
-            $this->renderIndicators(),
-            $this->renderItems(),
-            $this->renderControls(),
-            Html::endTag('div'),
-        ]) . "\n";
+        return Html::div(
+            $this->renderIndicators() . $this->renderItems() . $this->renderControls(),
+            $this->options
+        );
     }
 
     /**
@@ -103,7 +100,7 @@ class Carousel extends Widget
             $items[] = $this->renderItem($iValue, $i);
         }
 
-        return Html::tag('div', implode("\n", $items), ['class' => 'carousel-inner']);
+        return Html::div(implode("\n", $items), ['class' => 'carousel-inner']);
     }
 
     /**
@@ -130,7 +127,7 @@ class Carousel extends Widget
                 $captionOptions = ArrayHelper::remove($item, 'captionOptions', []);
                 Html::addCssClass($captionOptions, ['widget' => 'carousel-caption']);
 
-                $caption = Html::tag('div', $caption, $captionOptions);
+                $caption = Html::div($caption, $captionOptions);
             }
 
             $options = ArrayHelper::getValue($item, 'options', []);
@@ -144,7 +141,7 @@ class Carousel extends Widget
             Html::addCssClass($options, 'active');
         }
 
-        return Html::tag('div', $content . "\n" . $caption, $options);
+        return Html::div($content . "\n" . $caption, $options);
     }
 
     /**
