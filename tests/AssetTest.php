@@ -19,10 +19,6 @@ final class AssetTest extends TestCase
                 'Css',
                 BootstrapAsset::class,
             ],
-            [
-                'Css',
-                BootstrapIconsAsset::class,
-            ],
         ];
     }
 
