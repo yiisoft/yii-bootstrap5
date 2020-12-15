@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
-use Yiisoft\Yii\Bootstrap5\Assets\BootstrapIconsAsset;
 
 final class AssetTest extends TestCase
 {
@@ -18,10 +17,6 @@ final class AssetTest extends TestCase
             [
                 'Css',
                 BootstrapAsset::class,
-            ],
-            [
-                'Css',
-                BootstrapIconsAsset::class,
             ],
         ];
     }
