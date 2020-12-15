@@ -26,8 +26,6 @@ final class BootstrapIconsAsset extends AssetBundle
         'bootstrap-icons.css',
     ];
 
-    public array $publishOptions = [];
-
     public function __construct()
     {
         $pathMatcher = new PathMatcher();

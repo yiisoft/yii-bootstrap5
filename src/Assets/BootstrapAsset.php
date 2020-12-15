@@ -30,8 +30,6 @@ final class BootstrapAsset extends AssetBundle
         'js/bootstrap.bundle.js',
     ];
 
-    public array $publishOptions = [];
-
     public function __construct()
     {
         $pathMatcher = new PathMatcher();
