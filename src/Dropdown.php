@@ -31,7 +31,7 @@ use function is_string;
  * </div>
  * ```
  */
-class Dropdown extends Widget
+final class Dropdown extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;

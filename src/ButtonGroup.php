@@ -36,7 +36,7 @@ use function is_array;
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
-class ButtonGroup extends Widget
+final class ButtonGroup extends Widget
 {
     private array $buttons = [];
     private bool $encodeLabels = true;

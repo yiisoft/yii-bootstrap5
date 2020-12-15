@@ -55,7 +55,7 @@ use function array_merge;
  *     ]);
  * ```
  */
-class Tabs extends Widget
+final class Tabs extends Widget
 {
     private array $items = [];
     private array $itemOptions = [];

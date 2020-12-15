@@ -35,13 +35,12 @@ use function is_string;
  *     ]);
  * ```
  */
-class Carousel extends Widget
+final class Carousel extends Widget
 {
     private ?array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
         '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>',
     ];
-
     private bool $showIndicators = true;
     private array $items = [];
     private bool $crossfade = false;

@@ -25,7 +25,7 @@ use Yiisoft\Html\Html;
  *     ]);
  * ```
  */
-class ButtonDropdown extends Widget
+final class ButtonDropdown extends Widget
 {
     /**
      * The css class part of dropdown

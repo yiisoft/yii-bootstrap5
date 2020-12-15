@@ -17,7 +17,7 @@ use Yiisoft\Html\Html;
  *     ->options(['class' => 'btn-lg']);
  * ```
  */
-class Button extends Widget
+final class Button extends Widget
 {
     private string $tagName = 'button';
     private string $label = 'Button';

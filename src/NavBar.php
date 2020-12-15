@@ -107,7 +107,7 @@ use Yiisoft\Html\Html;
  *    }
  * ```
  */
-class NavBar extends Widget
+final class NavBar extends Widget
 {
     private array $collapseOptions = [];
     private ?string $brandLabel = null;

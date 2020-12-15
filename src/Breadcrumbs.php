@@ -24,7 +24,7 @@ use function strtr;
  *     ->links(['label' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]);
  * ```
  */
-class Breadcrumbs extends Widget
+final class Breadcrumbs extends Widget
 {
     private string $tag = 'ol';
     private bool $encodeLabels = true;

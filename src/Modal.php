@@ -27,7 +27,7 @@ use function array_merge;
  * echo Modal::end();
  * ```
  */
-class Modal extends Widget
+final class Modal extends Widget
 {
     /**
      * The additional css class of large modal

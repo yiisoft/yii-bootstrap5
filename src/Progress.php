@@ -51,7 +51,7 @@ use function trim;
  *     ]);
  * ```
  */
-class Progress extends Widget
+final class Progress extends Widget
 {
     private ?string $label = null;
     private ?string $percent = null;

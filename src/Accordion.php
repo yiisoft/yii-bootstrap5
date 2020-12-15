@@ -55,7 +55,7 @@ use function is_string;
  *     ]);
  * ```
  */
-class Accordion extends Widget
+final class Accordion extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
