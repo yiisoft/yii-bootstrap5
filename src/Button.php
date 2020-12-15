@@ -17,7 +17,7 @@ use Yiisoft\Html\Html;
  *     ->options(['class' => 'btn-lg']);
  * ```
  */
-class Button extends Widget
+final class Button extends Widget
 {
     private string $tagName = 'button';
     private string $label = 'Button';
@@ -30,6 +30,7 @@ class Button extends Widget
             $this->options['id'] = "{$this->getId()}-button";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn']);
 
         $this->registerPlugin('button', $this->options);

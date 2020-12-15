@@ -25,7 +25,7 @@ use Yiisoft\Html\Html;
  *     ]);
  * ```
  */
-class ButtonDropdown extends Widget
+final class ButtonDropdown extends Widget
 {
     /**
      * The css class part of dropdown
@@ -71,6 +71,7 @@ class ButtonDropdown extends Widget
         $html = $this->renderButton() . "\n" . $this->renderDropdown();
 
         if ($this->renderContainer) {
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($this->options, ['widget' => 'drop' . $this->direction, 'btn-group']);
 
             $options = $this->options;

@@ -104,7 +104,7 @@ use function is_string;
  * {@see http://getbootstrap.com/components/#dropdowns}
  * {@see http://getbootstrap.com/components/#nav}
  */
-class Nav extends Widget
+final class Nav extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
@@ -122,6 +122,7 @@ class Nav extends Widget
             $this->options['id'] = "{$this->getId()}-nav";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'nav']);
 
         return $this->renderItems();

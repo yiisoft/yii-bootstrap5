@@ -21,7 +21,7 @@ use Yiisoft\Html\Html;
  *     ->body('Say hello...');
  * ```
  */
-class Alert extends Widget
+final class Alert extends Widget
 {
     private ?string $body = null;
     private array $closeButton = [];

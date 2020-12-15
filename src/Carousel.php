@@ -35,13 +35,12 @@ use function is_string;
  *     ]);
  * ```
  */
-class Carousel extends Widget
+final class Carousel extends Widget
 {
     private ?array $controls = [
         '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
         '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>',
     ];
-
     private bool $showIndicators = true;
     private array $items = [];
     private bool $crossfade = false;
@@ -53,6 +52,7 @@ class Carousel extends Widget
             $this->options['id'] = "{$this->getId()}-carousel";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'carousel', 'slide']);
 
         if ($this->crossfade) {
@@ -81,6 +81,7 @@ class Carousel extends Widget
         for ($i = 0, $count = count($this->items); $i < $count; $i++) {
             $options = ['data-bs-target' => '#' . $this->options['id'], 'data-bs-slide-to' => $i];
             if ($i === 0) {
+                /** @psalm-suppress InvalidArgument */
                 Html::addCssClass($options, 'active');
             }
             $indicators[] = Html::tag('li', '', $options);

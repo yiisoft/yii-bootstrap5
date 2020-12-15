@@ -48,7 +48,7 @@ use function is_array;
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
-class ButtonToolbar extends Widget
+final class ButtonToolbar extends Widget
 {
     private array $buttonGroups = [];
     private array $options = [];
@@ -59,6 +59,7 @@ class ButtonToolbar extends Widget
             $this->options['id'] = "{$this->getId()}-button-toolbar";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
 
         if (!isset($this->options['role'])) {
