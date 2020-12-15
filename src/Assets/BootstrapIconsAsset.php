@@ -14,20 +14,16 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
  *
  * @package Bootstrap5
  */
-final class BootstrapAsset extends AssetBundle
+final class BootstrapIconsAsset extends AssetBundle
 {
     public ?string $basePath = '@assets';
 
     public ?string $baseUrl = '@assetsUrl';
 
-    public ?string $sourcePath = '@npm/bootstrap/dist';
+    public ?string $sourcePath = '@npm/bootstrap-icons/font';
 
     public array $css = [
-        'css/bootstrap.css',
-    ];
-
-    public array $js = [
-        'js/bootstrap.bundle.js',
+        'bootstrap-icons.css',
     ];
 
     public array $publishOptions = [];
@@ -37,12 +33,7 @@ final class BootstrapAsset extends AssetBundle
         $pathMatcher = new PathMatcher();
 
         $this->publishOptions = [
-            'filter' => $pathMatcher->only(
-                'css/bootstrap.css',
-                'css/bootstrap.css.map',
-                'js/bootstrap.bundle.js',
-                'js/bootstrap.bundle.js.map',
-            ),
+            'filter' => $pathMatcher->only('bootstrap-icons.css', 'fonts/*'),
         ];
     }
 }
