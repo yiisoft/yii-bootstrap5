@@ -48,6 +48,7 @@ final class ButtonGroup extends Widget
             $this->options['id'] = "{$this->getId()}-button-group";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn-group']);
 
         if (!isset($this->options['role'])) {

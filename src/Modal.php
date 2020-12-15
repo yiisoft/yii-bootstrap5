@@ -211,6 +211,7 @@ final class Modal extends Widget
             'aria-hidden' => 'true',
         ], $this->options);
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'modal']);
 
         if ($this->getEnableClientOptions() !== false) {

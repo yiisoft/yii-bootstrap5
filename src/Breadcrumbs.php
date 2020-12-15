@@ -41,6 +41,7 @@ final class Breadcrumbs extends Widget
             $this->options['id'] = "{$this->getId()}-breadcrumb";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'breadcrumb']);
 
         $this->registerPlugin('breadcrumb', $this->options);

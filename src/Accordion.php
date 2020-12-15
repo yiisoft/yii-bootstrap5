@@ -71,6 +71,7 @@ final class Accordion extends Widget
 
         $this->registerPlugin('collapse', $this->options);
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, 'accordion');
 
         return Html::div($this->renderItems(), $this->options);

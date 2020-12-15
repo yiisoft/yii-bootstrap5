@@ -52,6 +52,7 @@ final class Carousel extends Widget
             $this->options['id'] = "{$this->getId()}-carousel";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'carousel', 'slide']);
 
         if ($this->crossfade) {
@@ -80,6 +81,7 @@ final class Carousel extends Widget
         for ($i = 0, $count = count($this->items); $i < $count; $i++) {
             $options = ['data-bs-target' => '#' . $this->options['id'], 'data-bs-slide-to' => $i];
             if ($i === 0) {
+                /** @psalm-suppress InvalidArgument */
                 Html::addCssClass($options, 'active');
             }
             $indicators[] = Html::tag('li', '', $options);

@@ -132,8 +132,10 @@ final class NavBar extends Widget
         }
 
         if (empty($this->options['class'])) {
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($this->options, ['widget' => 'navbar', 'navbar-expand-lg', 'navbar-light', 'bg-light']);
         } else {
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($this->options, ['widget' => 'navbar']);
         }
 

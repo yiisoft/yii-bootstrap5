@@ -30,6 +30,7 @@ final class Button extends Widget
             $this->options['id'] = "{$this->getId()}-button";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn']);
 
         $this->registerPlugin('button', $this->options);

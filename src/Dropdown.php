@@ -44,6 +44,7 @@ final class Dropdown extends Widget
             $this->options['id'] = "{$this->getId()}-dropdown";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
         $this->registerClientEvents($this->options['id']);

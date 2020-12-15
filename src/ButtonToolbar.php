@@ -59,6 +59,7 @@ final class ButtonToolbar extends Widget
             $this->options['id'] = "{$this->getId()}-button-toolbar";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
 
         if (!isset($this->options['role'])) {

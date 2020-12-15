@@ -75,6 +75,7 @@ final class Tabs extends Widget
             $this->options['id'] = "{$this->getId()}-tabs";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'nav', $this->navType]);
         Html::addCssClass($this->tabContentOptions, 'tab-content');
 
@@ -143,12 +144,14 @@ final class Tabs extends Widget
                 ArrayHelper::setValueByPath($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
             }
 
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($options, ['widget' => 'tab-pane']);
 
             if ($selected) {
                 Html::addCssClass($options, 'active');
             }
 
+            /** @psalm-suppress ConflictingReferenceConstraint */
             if ($this->renderTabContent) {
                 $tag = ArrayHelper::remove($options, 'tag', 'div');
                 $this->panes[] = Html::tag($tag, $item['content'] ?? '', $options);
