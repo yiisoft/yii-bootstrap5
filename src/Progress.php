@@ -51,7 +51,7 @@ use function trim;
  *     ]);
  * ```
  */
-class Progress extends Widget
+final class Progress extends Widget
 {
     private ?string $label = null;
     private ?string $percent = null;
@@ -65,6 +65,7 @@ class Progress extends Widget
             $this->options['id'] = "{$this->getId()}-progress";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'progress']);
 
         return $this->renderProgress();
@@ -126,6 +127,7 @@ class Progress extends Widget
             'aria-valuemax' => 100,
         ]);
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($options, ['widget' => 'progress-bar']);
         Html::addCssStyle($options, ['width' => $valuePercent . '%'], true);
 

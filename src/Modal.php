@@ -27,7 +27,7 @@ use function array_merge;
  * echo Modal::end();
  * ```
  */
-class Modal extends Widget
+final class Modal extends Widget
 {
     /**
      * The additional css class of large modal
@@ -211,6 +211,7 @@ class Modal extends Widget
             'aria-hidden' => 'true',
         ], $this->options);
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'modal']);
 
         if ($this->getEnableClientOptions() !== false) {

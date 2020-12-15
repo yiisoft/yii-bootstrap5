@@ -107,7 +107,7 @@ use Yiisoft\Html\Html;
  *    }
  * ```
  */
-class NavBar extends Widget
+final class NavBar extends Widget
 {
     private array $collapseOptions = [];
     private ?string $brandLabel = null;
@@ -132,8 +132,10 @@ class NavBar extends Widget
         }
 
         if (empty($this->options['class'])) {
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($this->options, ['widget' => 'navbar', 'navbar-expand-lg', 'navbar-light', 'bg-light']);
         } else {
+            /** @psalm-suppress InvalidArgument */
             Html::addCssClass($this->options, ['widget' => 'navbar']);
         }
 

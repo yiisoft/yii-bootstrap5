@@ -31,7 +31,7 @@ use function is_string;
  * </div>
  * ```
  */
-class Dropdown extends Widget
+final class Dropdown extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
@@ -44,6 +44,7 @@ class Dropdown extends Widget
             $this->options['id'] = "{$this->getId()}-dropdown";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
         $this->registerClientEvents($this->options['id']);

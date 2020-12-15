@@ -19,6 +19,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "npm-asset/bootstrap": "^5.0.0",
+        "npm-asset/bootstrap-icons": "^1.2.1",
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",

@@ -36,7 +36,7 @@ use function is_array;
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
-class ButtonGroup extends Widget
+final class ButtonGroup extends Widget
 {
     private array $buttons = [];
     private bool $encodeLabels = true;
@@ -48,6 +48,7 @@ class ButtonGroup extends Widget
             $this->options['id'] = "{$this->getId()}-button-group";
         }
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn-group']);
 
         if (!isset($this->options['role'])) {

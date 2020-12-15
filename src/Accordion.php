@@ -55,7 +55,7 @@ use function is_string;
  *     ]);
  * ```
  */
-class Accordion extends Widget
+final class Accordion extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
@@ -71,6 +71,7 @@ class Accordion extends Widget
 
         $this->registerPlugin('collapse', $this->options);
 
+        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, 'accordion');
 
         return Html::div($this->renderItems(), $this->options);
