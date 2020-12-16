@@ -3,7 +3,7 @@
         <img src="https://yiisoft.github.io/docs/images/yii_logo.svg" height="100px">
     </a>
     <a href="http://getbootstrap.com/" target="_blank" rel="external">
-        <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="80px">
+        <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="100px">
     </a>
     <h1 align="center">Yii Framework Twitter Bootstrap 5 Extension</h1>
     <br>
