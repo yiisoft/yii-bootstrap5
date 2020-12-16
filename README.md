@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="80px">
+        <img src="https://yiisoft.github.io/docs/images/yii_logo.svg" height="100px">
     </a>
     <a href="http://getbootstrap.com/" target="_blank" rel="external">
         <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="80px">
