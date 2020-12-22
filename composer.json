@@ -22,6 +22,7 @@
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",
+        "yiisoft/composer-config-plugin": "^1.0",
         "yiisoft/html": "^3.0@dev",
         "yiisoft/json": "^1.0",
         "yiisoft/widget": "^3.0@dev"
@@ -48,13 +49,9 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         },
-        "installer-types": [
-            "npm-asset"
-        ],
-        "installer-paths": {
-            "./node_modules/{$name}": [
-                "type:npm-asset"
-            ]
+        "config-plugin": {
+            "params": "config/params.php",
+            "web": "config/web/*.php"
         }
     },
     "config": {
