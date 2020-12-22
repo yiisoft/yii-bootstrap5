@@ -22,7 +22,6 @@
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^3.0@dev",
         "yiisoft/assets": "^1.0@dev",
-        "yiisoft/composer-config-plugin": "^1.0",
         "yiisoft/html": "^3.0@dev",
         "yiisoft/json": "^1.0",
         "yiisoft/widget": "^3.0@dev"
