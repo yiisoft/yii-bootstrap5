@@ -48,13 +48,9 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         },
-        "installer-types": [
-            "npm-asset"
-        ],
-        "installer-paths": {
-            "./node_modules/{$name}": [
-                "type:npm-asset"
-            ]
+        "config-plugin": {
+            "params": "config/params.php",
+            "web": "config/web/*.php"
         }
     },
     "config": {
