@@ -40,7 +40,7 @@ use function trim;
  * // striped animated
  * echo Progress::widget()
  *     ->percent('70')
- *     ->options'(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
+ *     ->options(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
  *
  * // stacked bars
  * echo Progress::widget()
@@ -80,11 +80,9 @@ final class Progress extends Widget
      */
     protected function renderProgress(): string
     {
-        $out = Html::beginTag('div', $this->options) . "\n";
-
         if (empty($this->bars)) {
             $this->bars = [
-                ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions],
+                ['label' => $this->label ?? '', 'percent' => $this->percent, 'options' => $this->barOptions],
             ];
         }
 
@@ -99,10 +97,7 @@ final class Progress extends Widget
             $bars[] = $this->renderBar($bar['percent'], $label, $options);
         }
 
-        $out .= implode("\n", $bars) . "\n";
-        $out .= Html::endTag('div');
-
-        return $out;
+        return Html::div(implode("\n", $bars), $this->options);
     }
 
     /**
