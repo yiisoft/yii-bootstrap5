@@ -23,7 +23,7 @@ use function trim;
  * // default with label
  * echo Progress::widget()
  *     ->percent('60')
- *     ->label(test);
+ *     ->label('test');
  *
  * // styled
  * echo Progress::widget()
@@ -40,7 +40,7 @@ use function trim;
  * // striped animated
  * echo Progress::widget()
  *     ->percent('70')
- *     ->options(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
+ *     ->barOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
  *
  * // stacked bars
  * echo Progress::widget()
