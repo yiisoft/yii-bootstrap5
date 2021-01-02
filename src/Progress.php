@@ -53,7 +53,7 @@ use function trim;
  */
 final class Progress extends Widget
 {
-    private ?string $label = null;
+    private string $label = '';
     private ?string $percent = null;
     private array $bars = [];
     private array $options = [];
@@ -82,7 +82,7 @@ final class Progress extends Widget
     {
         if (empty($this->bars)) {
             $this->bars = [
-                ['label' => $this->label ?? '', 'percent' => $this->percent, 'options' => $this->barOptions],
+                ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions],
             ];
         }
 
