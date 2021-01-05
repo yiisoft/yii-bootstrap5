@@ -16,6 +16,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "provide": {
+        "yiisoft/yii-bootstrap": "1.0"
+    },
     "require": {
         "php": "^7.4|^8.0",
         "npm-asset/bootstrap": "^5.0.0",
