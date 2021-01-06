@@ -16,10 +16,10 @@ class ToastTest extends TestCase
     public function testBodyOptions()
     {
         Toast::counter(0);
-        $out = Toast::widget()
+        $html = Toast::widget()
             ->bodyOptions(['class' => 'toast-body test', 'style' => ['text-align' => 'center']])
             ->begin();
-        $out .= Toast::end();
+        $html .= Toast::end();
 
         $expected = <<<HTML
 <div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -33,7 +33,7 @@ class ToastTest extends TestCase
 </div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -50,7 +50,7 @@ HTML;
             ->begin();
         echo 'Woohoo, you\'re reading this text in a toast!';
         echo Toast::end();
-        $out = ob_get_clean();
+        $html = ob_get_clean();
 
         $expected = <<<HTML
 <div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -65,13 +65,13 @@ HTML;
 </div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testDateTimeOptions()
     {
         Toast::counter(0);
-        $out = Toast::widget()
+        $html = Toast::widget()
             ->title('Toast title')
             ->dateTime('a minute ago')
             ->dateTimeOptions([
@@ -79,7 +79,7 @@ HTML;
                 'style' => ['text-align' => 'right'],
             ])
             ->begin();
-        $out .= Toast::end();
+        $html .= Toast::end();
 
         $expected = <<<HTML
 <div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -94,20 +94,20 @@ HTML;
 </div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testTitleOptions()
     {
         Toast::counter(0);
-        $out = Toast::widget()
+        $html = Toast::widget()
             ->title('Toast title')
             ->titleOptions([
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])
             ->begin();
-        $out .= Toast::end();
+        $html .= Toast::end();
 
         $expected = <<<HTML
 <div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -121,6 +121,6 @@ HTML;
 </div></div>
 HTML;
 
-        $this->assertEqualsWithoutLE($expected, $out);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }
