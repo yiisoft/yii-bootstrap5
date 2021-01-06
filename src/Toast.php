@@ -101,6 +101,7 @@ final class Toast extends Widget
     private array $dateTimeOptions = [];
     /**
      * @var array additional header options
+     *
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $headerOptions = [];
