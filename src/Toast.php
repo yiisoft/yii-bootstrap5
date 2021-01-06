@@ -135,16 +135,14 @@ final class Toast extends Widget
         return
             Html::beginTag('div', $this->options) . "\n" .
             $this->renderHeader() . "\n" .
-            $this->renderBodyBegin() . "\n";
+            $this->renderBodyBegin();
     }
 
     protected function run(): string
     {
         $this->registerPlugin('toast', $this->options);
 
-        return
-            "\n" . $this->renderBodyEnd() .
-            "\n" . Html::endTag('div');
+        return $this->renderBodyEnd() . Html::endTag('div');
     }
 
     /**

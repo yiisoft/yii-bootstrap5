@@ -30,10 +30,7 @@ class ToastTest extends TestCase
 </button>
 </div>
 <div class="toast-body test" style="text-align: center;">
-
-
-</div>
-</div>
+</div></div>
 HTML;
 
         $this->assertEqualsWithoutLE($expected, $out);
@@ -64,11 +61,8 @@ HTML;
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<div class="toast-body">
-Woohoo, you're reading this text in a toast!
-
-</div>
-</div>
+<div class="toast-body">Woohoo, you're reading this text in a toast!
+</div></div>
 HTML;
 
         $this->assertEqualsWithoutLE($expected, $out);
@@ -97,10 +91,7 @@ HTML;
 </button>
 </div>
 <div class="toast-body">
-
-
-</div>
-</div>
+</div></div>
 HTML;
 
         $this->assertEqualsWithoutLE($expected, $out);
@@ -127,10 +118,7 @@ HTML;
 </button>
 </div>
 <div class="toast-body">
-
-
-</div>
-</div>
+</div></div>
 HTML;
 
         $this->assertEqualsWithoutLE($expected, $out);
