@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
+
+use function array_merge;
 
 /**
  * Toasts renders an toast bootstrap component.
