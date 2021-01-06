@@ -104,6 +104,10 @@ final class Toast extends Widget
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $bodyOptions = [];
+    /**
+     * @var array options
+     */
+    private array $options = [];
 
     public function begin(): ?string
     {
