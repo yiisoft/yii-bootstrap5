@@ -43,14 +43,12 @@ HTML;
     {
         Toast::counter(0);
 
-        ob_start();
-        echo Toast::widget()
+        $html = Toast::widget()
             ->dateTime('a minute ago')
             ->title('Toast title')
             ->begin();
-        echo 'Woohoo, you\'re reading this text in a toast!';
-        echo Toast::end();
-        $html = ob_get_clean();
+        $html .= 'Woohoo, you\'re reading this text in a toast!';
+        $html .= Toast::end();
 
         $expected = <<<HTML
 <div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
