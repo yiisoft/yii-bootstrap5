@@ -40,6 +40,7 @@ use function array_merge;
  * ```
  *
  * @see https://getbootstrap.com/docs/components/toasts/
+ *
  * @author Simon Karlen <simi.albi@outlook.com>
  */
 final class Toast extends Widget
@@ -105,6 +106,7 @@ final class Toast extends Widget
     private array $headerOptions = [];
     /**
      * @var array body options
+     *
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $bodyOptions = [];
@@ -114,6 +116,7 @@ final class Toast extends Widget
     private array $options = [];
     /**
      * @var array footer options
+     *
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $footerOptions = [];
@@ -202,7 +205,7 @@ final class Toast extends Widget
     {
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
         $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
-            'aria-hidden' => 'true'
+            'aria-hidden' => 'true',
         ]));
 
         return Html::tag($tag, "\n" . $label . "\n", $this->closeButton);
@@ -221,7 +224,7 @@ final class Toast extends Widget
             'aria' => ['label' => 'Close'],
             'data' => ['bs-dismiss' => 'toast'],
             'class' => ['widget' => 'btn-close'],
-            'type' => 'button'
+            'type' => 'button',
         ], $this->closeButton);
 
         if (!isset($this->options['role'])) {
@@ -231,7 +234,7 @@ final class Toast extends Widget
         if (!isset($this->options['aria']) && !isset($this->options['aria-live'])) {
             $this->options['aria'] = [
                 'live' => 'assertive',
-                'atomic' => 'true'
+                'atomic' => 'true',
             ];
         }
     }
