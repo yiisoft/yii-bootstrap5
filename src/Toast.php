@@ -55,6 +55,10 @@ final class Toast extends Widget
      */
     private string $title = '';
     /**
+     * @var string The footer content in the toast.
+     */
+    private string $footer = '';
+    /**
      * @var string The date time the toast message references to.
      * This will be formatted as relative time (via formatter component). It will be omitted if
      * set to `false` (default).
@@ -108,6 +112,11 @@ final class Toast extends Widget
      * @var array options
      */
     private array $options = [];
+    /**
+     * @var array footer options
+     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     */
+    private array $footerOptions = [];
 
     public function begin(): ?string
     {
