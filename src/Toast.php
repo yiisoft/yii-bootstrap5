@@ -11,32 +11,30 @@ use Yiisoft\Html\Html;
 use function array_merge;
 
 /**
- * Toasts renders an toast bootstrap component.
+ * Toasts renders a toast bootstrap widget.
  *
  * For example,
  *
  * ```php
-  * Toast::widget()
+  * echo Toast::widget()
  *     ->title('Hello world!')
  *     ->dateTime('a minute ago')
  *     ->body('Say hello...')
- * ])
- * ->begin();
+ *     ->begin();
  * ```
  *
- * The following example will show the content enclosed between the [[begin()]]
- * and [[end()]] calls within the toast box:
+ * The following example will show the content enclosed between the {@see begin()}
+ * and {@see end()} calls within the toast box:
  *
  * ```php
- * Toast::widget()
+ * echo Toast::widget()
  *     ->title('Hello world!')
  *     ->dateTime('a minute ago')
- * ])
- * ->begin();
+ *     ->begin();
  *
  * echo 'Say hello...';
  *
- * Toast::end();
+ * echo Toast::end();
  * ```
  *
  * @see https://getbootstrap.com/docs/components/toasts/
@@ -47,7 +45,7 @@ final class Toast extends Widget
 {
     /**
      * @var string the body content in the alert component. Note that anything between
-     * the [[begin()]] and [[end()]] calls of the Toast widget will also be treated
+     * the {@see begin()} and {@see end()} calls of the Toast widget will also be treated
      * as the body content, and will be rendered before this.
      */
     private string $body = '';
@@ -86,7 +84,7 @@ final class Toast extends Widget
      *
      * - tag: string, the tag name of the button. Defaults to 'strong'.
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     public array $titleOptions = [];
     /**
@@ -96,19 +94,19 @@ final class Toast extends Widget
      *
      * - tag: string, the tag name of the button. Defaults to 'small'.
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $dateTimeOptions = [];
     /**
      * @var array additional header options
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $headerOptions = [];
     /**
      * @var array body options
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $bodyOptions = [];
     /**
@@ -118,7 +116,7 @@ final class Toast extends Widget
     /**
      * @var array footer options
      *
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     private array $footerOptions = [];
 
@@ -241,7 +239,7 @@ final class Toast extends Widget
     /**
      * Body options.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -300,7 +298,7 @@ final class Toast extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function dateTimeOptions(array $value): self
     {
@@ -330,7 +328,7 @@ final class Toast extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function footerOptions(array $value): self
     {
@@ -346,7 +344,7 @@ final class Toast extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
     {
@@ -361,7 +359,7 @@ final class Toast extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
@@ -387,7 +385,7 @@ final class Toast extends Widget
     /**
      * Additional title options.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
