@@ -37,7 +37,7 @@ use function array_merge;
  * echo Toast::end();
  * ```
  *
- * @see https://getbootstrap.com/docs/components/toasts/
+ * @see https://getbootstrap.com/docs/5.0/components/toasts/
  *
  * @author Simon Karlen <simi.albi@outlook.com>
  */
@@ -73,7 +73,7 @@ final class Toast extends Widget
      * - label: string, the label of the button. Defaults to '&times;'.
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag.
-     * Please refer to the [Toast documentation](https://getbootstrap.com/docs/4.5/components/toasts/)
+     * Please refer to the [Toast documentation](https://getbootstrap.com/docs/5.0/components/toasts/)
      * for the supported HTML attributes.
      */
     private array $closeButton = [];
@@ -264,7 +264,7 @@ final class Toast extends Widget
      * - label: string, the label of the button. Defaults to '&times;'.
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
-     * [Toast plugin help](https://getbootstrap.com/docs/components/toasts/) for the supported HTML attributes.
+     * [Toast plugin help](https://getbootstrap.com/docs/5.0/components/toasts/) for the supported HTML attributes.
      *
      * @param array $value
      *
