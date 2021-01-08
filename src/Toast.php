@@ -38,8 +38,6 @@ use function array_merge;
  * ```
  *
  * @see https://getbootstrap.com/docs/5.0/components/toasts/
- *
- * @author Simon Karlen <simi.albi@outlook.com>
  */
 final class Toast extends Widget
 {
