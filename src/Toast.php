@@ -52,10 +52,6 @@ final class Toast extends Widget
      */
     private string $title = '';
     /**
-     * @var string The footer content in the toast.
-     */
-    private string $footer = '';
-    /**
      * @var string The date time the toast message references to.
      * This will be formatted as relative time (via formatter component). It will be omitted if
      * set to `false` (default).
@@ -111,12 +107,6 @@ final class Toast extends Widget
      * @var array options
      */
     private array $options = [];
-    /**
-     * @var array footer options
-     *
-     * @see Html::renderTagAttributes() for details on how attributes are being rendered.
-     */
-    private array $footerOptions = [];
 
     public function begin(): ?string
     {
@@ -144,9 +134,9 @@ final class Toast extends Widget
     /**
      * Renders the header HTML markup of the toast.
      *
+     * @return string the rendering result
      * @throws JsonException
      *
-     * @return string the rendering result
      */
     private function renderHeader(): string
     {
@@ -169,9 +159,9 @@ final class Toast extends Widget
     /**
      * Renders the opening tag of the toast body.
      *
+     * @return string the rendering result
      * @throws JsonException
      *
-     * @return string the rendering result
      */
     private function renderBodyBegin(): string
     {
@@ -192,9 +182,9 @@ final class Toast extends Widget
     /**
      * Renders the close button.
      *
+     * @return string the rendering result
      * @throws JsonException
      *
-     * @return string the rendering result
      */
     private function renderCloseButton(): ?string
     {
@@ -235,13 +225,9 @@ final class Toast extends Widget
     }
 
     /**
-     * Body options.
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
-     * @param array $value
-     *
-     * @return $this
+     * @param array $value Body options.
      */
     public function bodyOptions(array $value): self
     {
@@ -306,36 +292,6 @@ final class Toast extends Widget
     }
 
     /**
-     * The footer content in the toast window.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     */
-    public function footer(?string $value): self
-    {
-        $this->footer = $value;
-
-        return $this;
-    }
-
-    /**
-     * Additional footer options.
-     *
-     * @param array $value
-     *
-     * @return $this
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function footerOptions(array $value): self
-    {
-        $this->footerOptions = $value;
-
-        return $this;
-    }
-
-    /**
      * Additional header options.
      *
      * @param array $value
@@ -369,11 +325,11 @@ final class Toast extends Widget
     /**
      * The title content in the toast window.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function title(?string $value): self
+    public function title(string $value): self
     {
         $this->title = $value;
 
