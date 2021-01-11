@@ -23,7 +23,7 @@ use function trim;
  * // default with label
  * echo Progress::widget()
  *     ->percent('60')
- *     ->label(test);
+ *     ->label('test');
  *
  * // styled
  * echo Progress::widget()
@@ -40,7 +40,7 @@ use function trim;
  * // striped animated
  * echo Progress::widget()
  *     ->percent('70')
- *     ->options'(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
+ *     ->barOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
  *
  * // stacked bars
  * echo Progress::widget()
@@ -53,7 +53,7 @@ use function trim;
  */
 final class Progress extends Widget
 {
-    private ?string $label = null;
+    private string $label = '';
     private ?string $percent = null;
     private array $bars = [];
     private array $options = [];
@@ -80,8 +80,6 @@ final class Progress extends Widget
      */
     protected function renderProgress(): string
     {
-        $out = Html::beginTag('div', $this->options) . "\n";
-
         if (empty($this->bars)) {
             $this->bars = [
                 ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions],
@@ -99,10 +97,7 @@ final class Progress extends Widget
             $bars[] = $this->renderBar($bar['percent'], $label, $options);
         }
 
-        $out .= implode("\n", $bars) . "\n";
-        $out .= Html::endTag('div');
-
-        return $out;
+        return Html::div(implode("\n", $bars), $this->options);
     }
 
     /**
