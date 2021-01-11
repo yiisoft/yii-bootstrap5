@@ -134,9 +134,9 @@ final class Toast extends Widget
     /**
      * Renders the header HTML markup of the toast.
      *
-     * @return string the rendering result
      * @throws JsonException
      *
+     * @return string the rendering result
      */
     private function renderHeader(): string
     {
@@ -159,9 +159,9 @@ final class Toast extends Widget
     /**
      * Renders the opening tag of the toast body.
      *
-     * @return string the rendering result
      * @throws JsonException
      *
+     * @return string the rendering result
      */
     private function renderBodyBegin(): string
     {
@@ -182,9 +182,9 @@ final class Toast extends Widget
     /**
      * Renders the close button.
      *
-     * @return string the rendering result
      * @throws JsonException
      *
+     * @return string the rendering result
      */
     private function renderCloseButton(): ?string
     {
