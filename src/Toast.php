@@ -84,7 +84,7 @@ final class Toast extends Widget
      *
      * @see Html::renderTagAttributes() for details on how attributes are being rendered.
      */
-    public array $titleOptions = [];
+    private array $titleOptions = [];
     /**
      * @var array additional date time part options
      *
@@ -148,7 +148,7 @@ final class Toast extends Widget
      *
      * @return string the rendering result
      */
-    protected function renderHeader(): string
+    private function renderHeader(): string
     {
         $button = $this->renderCloseButton();
         $tag = ArrayHelper::remove($this->titleOptions, 'tag', 'strong');
@@ -173,7 +173,7 @@ final class Toast extends Widget
      *
      * @return string the rendering result
      */
-    protected function renderBodyBegin(): string
+    private function renderBodyBegin(): string
     {
         Html::addCssClass($this->bodyOptions, ['widget' => 'toast-body']);
         return Html::beginTag('div', $this->bodyOptions);
@@ -184,7 +184,7 @@ final class Toast extends Widget
      *
      * @return string the rendering result
      */
-    protected function renderBodyEnd(): string
+    private function renderBodyEnd(): string
     {
         return $this->body . "\n" . Html::endTag('div');
     }
@@ -196,7 +196,7 @@ final class Toast extends Widget
      *
      * @return string the rendering result
      */
-    protected function renderCloseButton(): ?string
+    private function renderCloseButton(): ?string
     {
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
         $label = ArrayHelper::remove($this->closeButton, 'label', Html::tag('span', '&times;', [
@@ -211,7 +211,7 @@ final class Toast extends Widget
      *
      * This method sets the default values for various options.
      */
-    protected function initOptions(): void
+    private function initOptions(): void
     {
         Html::addCssClass($this->options, ['widget' => 'toast']);
 
