@@ -77,7 +77,6 @@ HTML;
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withEncodeLabels(true)
             ->withLinks([
                 ['label' => '<span><i class=fas fa-home></i>Home</span>', 'url' => '#'],
                 ['label' => 'Data'],
@@ -92,7 +91,7 @@ HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = Breadcrumbs::widget()
-            ->withEncodeLabels(false)
+            ->withoutEncodeLabels()
             ->withLinks([
                 ['label' => '<span><i class=fas fa-home></i>Home</span>', 'url' => '#'],
                 ['label' => 'Data'],
@@ -192,7 +191,7 @@ HTML;
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withEncodeTags(true)
+            ->withEncodeTags()
             ->withLinks([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
