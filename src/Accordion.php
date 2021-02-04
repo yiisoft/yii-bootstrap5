@@ -27,7 +27,7 @@ use function is_string;
  *
  * ```php
  * echo Accordion::widget()
- *     ->items([
+ *     ->witItems([
  *         [
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => 'Anim pariatur cliche...',
@@ -59,6 +59,7 @@ final class Accordion extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private bool $autoCloseItems = true;
     private array $itemToggleOptions = [];
     private array $options = [];
@@ -73,6 +74,10 @@ final class Accordion extends Widget
 
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, 'accordion');
+
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
+        }
 
         return Html::div($this->renderItems(), $this->options);
     }
@@ -100,15 +105,15 @@ final class Accordion extends Widget
             }
 
             if (!array_key_exists('label', $item)) {
-                if (is_int($key)) {
-                    throw new RuntimeException('The "label" option is required.');
-                }
-
-                $item['label'] = $key;
+                throw new RuntimeException('The "label" option is required.');
             }
 
             $header = ArrayHelper::remove($item, 'label');
             $options = ArrayHelper::getValue($item, 'options', []);
+
+            if ($this->encodeTags === false) {
+                $options = array_merge($options, ['encode' => false]);
+            }
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
@@ -160,6 +165,11 @@ final class Accordion extends Widget
                 'data-bs-target' => '#' . $options['id'],
                 'aria-expanded' => $expand ? 'true' : 'false',
             ], $this->itemToggleOptions);
+
+            if ($this->encodeTags === false) {
+                $itemToggleOptions = array_merge($itemToggleOptions, ['encode' => false]);
+            }
+
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
             /** @psalm-suppress ConflictingReferenceConstraint */
@@ -177,13 +187,15 @@ final class Accordion extends Widget
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
                 $content = $item['content'];
             } elseif (is_array($item['content'])) {
-                $content = Html::ul($item['content'], [
-                    'class' => 'list-group',
-                    'itemOptions' => [
-                        'class' => 'list-group-item',
-                    ],
-                    'encode' => false,
-                ]) . "\n";
+                $ulOptions = ['class' => 'list-group'];
+                $ulItemOptions = ['itemOptions' => ['class' => 'list-group-item']];
+
+                if ($this->encodeTags === false) {
+                    $ulOptions = array_merge($ulOptions, ['encode' => false]);
+                    $ulItemOptions['itemOptions'] = array_merge($ulItemOptions['itemOptions'], ['encode' => false]);
+                }
+
+                $content = Html::ul($item['content'], array_merge($ulOptions, $ulItemOptions)) . "\n";
             } else {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
@@ -197,8 +209,14 @@ final class Accordion extends Widget
             $options['data-bs-parent'] = '#' . $this->options['id'];
         }
 
+        $groupOptions = ['class' => 'accordion-header', 'id' => $options['id'] . '-heading'];
 
-        $group[] = Html::tag('h2', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
+        if ($this->encodeTags === false) {
+            $options = array_merge($options, ['encode' => false]);
+            $groupOptions = array_merge($groupOptions, ['encode' => false]);
+        }
+
+        $group[] = Html::tag('h2', $header, $groupOptions);
         $group[] = Html::div($content, $options);
 
         return implode("\n", $group);
@@ -213,11 +231,12 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function autoCloseItems(bool $value): self
+    public function withAutoCloseItems(bool $value): self
     {
-        $this->autoCloseItems = $value;
+        $new = clone $this;
+        $new->autoCloseItems = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -227,11 +246,12 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withEncodeLabels(bool $value): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -252,7 +272,7 @@ final class Accordion extends Widget
      *
      * ```php
      * echo Accordion::widget([
-     *     'items' => [
+     *     'withItems' => [
      *       'Introduction' => 'This is the first collapsible menu',
      *       'Second panel' => [
      *           'content' => 'This is the second collapsible menu',
@@ -269,11 +289,12 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function items(array $value): self
+    public function withItems(array $value): self
     {
-        $this->items = $value;
+        $new = clone $this;
+        $new->items = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -292,26 +313,43 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function itemToggleOptions(array $value): self
+    public function withItemToggleOptions(array $value): self
     {
-        $this->itemToggleOptions = $value;
+        $new = clone $this;
+        $new->itemToggleOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function options(array $value): self
+    public function withOptions(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding of the Widget tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withencodeTags(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
     }
 }
