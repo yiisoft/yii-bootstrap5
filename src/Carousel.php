@@ -60,8 +60,6 @@ final class Carousel extends Widget
             Html::addCssClass($this->options, 'carousel-fade');
         }
 
-        $this->registerPlugin('carousel', $this->options);
-
         if ($this->encodeTags === false) {
             $this->options = array_merge($this->options, ['encode' => false]);
         }

@@ -88,8 +88,6 @@ final class ButtonDropdown extends Widget
             $html = Html::tag($tag, $html, $options);
         }
 
-        $this->registerPlugin('dropdown', $this->options);
-
         return $html;
     }
 

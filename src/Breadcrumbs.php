@@ -49,8 +49,6 @@ final class Breadcrumbs extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'breadcrumb']);
 
-        $this->registerPlugin('breadcrumb', $this->options);
-
         $links = [];
 
         if ($this->homeLink === []) {

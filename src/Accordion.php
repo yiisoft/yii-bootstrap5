@@ -70,8 +70,6 @@ final class Accordion extends Widget
             $this->options['id'] = "{$this->getId()}-accordion";
         }
 
-        $this->registerPlugin('collapse', $this->options);
-
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, 'accordion');
 

@@ -34,8 +34,6 @@ final class Button extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn']);
 
-        $this->registerPlugin('button', $this->options);
-
         if ($this->encodeTags === false) {
             $this->options = array_merge($this->options, ['encode' => false]);
         }

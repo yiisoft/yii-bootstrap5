@@ -37,8 +37,6 @@ final class Alert extends Widget
 
         $this->initOptions();
 
-        $this->registerPlugin('alert', $this->options);
-
         return Html::div($this->renderBodyEnd(), $this->options);
     }
 

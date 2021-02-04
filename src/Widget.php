@@ -6,8 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 abstract class Widget extends \Yiisoft\Widget\Widget
 {
-    use BootstrapWidgetTrait;
-
     private string $id;
     private bool $autoGenerate = true;
     private static int $counter = 0;
