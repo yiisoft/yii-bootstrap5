@@ -13,8 +13,8 @@ use Yiisoft\Html\Html;
  *
  * ```php
  * echo Button::widget()
- *     ->label('Action')
- *     ->options(['class' => 'btn-lg']);
+ *     ->withLabel('Action')
+ *     ->withOptions(['class' => 'btn-lg']);
  * ```
  */
 final class Button extends Widget
@@ -22,9 +22,10 @@ final class Button extends Widget
     private string $tagName = 'button';
     private string $label = 'Button';
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button";
@@ -34,6 +35,10 @@ final class Button extends Widget
         Html::addCssClass($this->options, ['widget' => 'btn']);
 
         $this->registerPlugin('button', $this->options);
+
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
+        }
 
         return Html::tag(
             $this->tagName,
@@ -49,11 +54,12 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withEncodeLabels(bool $value): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -63,27 +69,29 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function label(string $value): self
+    public function withLabel(string $value): self
     {
-        $this->label = $value;
+        $new = clone $this;
+        $new->label = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function options(array $value): self
+    public function withOptions(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -93,10 +101,26 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function tagName(string $value): self
+    public function withTagName(string $value): self
     {
-        $this->tagName = $value;
+        $new = clone $this;
+        $new->tagName = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
     }
 }
