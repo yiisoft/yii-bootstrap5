@@ -90,7 +90,7 @@ final class ButtonGroup extends Widget
      *
      * @return $this
      */
-    public function withEncodeLabels(bool $value): self
+    public function withoutEncodeLabels(bool $value = false): self
     {
         $new = clone $this;
         $new->encodeLabels = $value;
@@ -122,7 +122,7 @@ final class ButtonGroup extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value): self
+    public function withEncodeTags(bool $value = true): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
@@ -158,7 +158,7 @@ final class ButtonGroup extends Widget
                 }
 
                 $buttons[] = Button::widget()
-                    ->withEncodeLabels($button['encodeLabel'])
+                    ->withoutEncodeLabels($button['encodeLabel'])
                     ->withLabel($button['label'])
                     ->withOptions($button['options'])
                     ->render();
