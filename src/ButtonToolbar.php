@@ -20,7 +20,7 @@ use function is_array;
  * ```php
  * // a button toolbar with items configuration
  * echo ButtonToolbar::widget()
- *     ->buttonGroups([
+ *     ->withButtonGroups([
  *         [
  *             'buttons' => [
  *                 ['label' => '1', 'class' => ['btn-secondary']],
@@ -50,10 +50,11 @@ use function is_array;
  */
 final class ButtonToolbar extends Widget
 {
+    private bool $encodeTags = false;
     private array $buttonGroups = [];
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-toolbar";
@@ -66,37 +67,11 @@ final class ButtonToolbar extends Widget
             $this->options['role'] = 'toolbar';
         }
 
-        return Html::div($this->renderButtonGroups(), $this->options);
-    }
-
-    /**
-     * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
-     *
-     * @throws InvalidConfigException
-     *
-     * @return string the rendering result.
-     */
-    protected function renderButtonGroups(): string
-    {
-        $buttonGroups = [];
-
-        foreach ($this->buttonGroups as $group) {
-            if (is_array($group)) {
-                if (!isset($group['buttons'])) {
-                    continue;
-                }
-
-                $options = ArrayHelper::getValue($group, 'options', []);
-                $buttonGroups[] = ButtonGroup::widget()
-                    ->buttons($group['buttons'])
-                    ->options($options)
-                    ->render();
-            } else {
-                $buttonGroups[] = $group;
-            }
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
         }
 
-        return implode("\n", $buttonGroups);
+        return Html::div($this->renderButtonGroups(), $this->options);
     }
 
     /**
@@ -111,26 +86,74 @@ final class ButtonToolbar extends Widget
      *
      * @return $this
      */
-    public function buttonGroups(array $value): self
+    public function withButtonGroups(array $value): self
     {
-        $this->buttonGroups = $value;
+        $new = clone $this;
+        $new->buttonGroups = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function options(array $value): self
+    public function withOptions(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
     }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
+    }
+
+    /**
+     * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
+     *
+     * @throws InvalidConfigException
+     *
+     * @return string the rendering result.
+     */
+    private function renderButtonGroups(): string
+    {
+        $buttonGroups = [];
+
+        foreach ($this->buttonGroups as $group) {
+            if (is_array($group)) {
+                if (!isset($group['buttons'])) {
+                    continue;
+                }
+
+                $options = ArrayHelper::getValue($group, 'options', []);
+                $buttonGroups[] = ButtonGroup::widget()
+                    ->withButtons($group['buttons'])
+                    ->withOptions($options)
+                    ->render();
+            } else {
+                $buttonGroups[] = $group;
+            }
+        }
+
+        return implode("\n", $buttonGroups);
+    }
+
 }
