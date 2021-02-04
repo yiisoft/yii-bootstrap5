@@ -118,7 +118,7 @@ final class ButtonToolbar extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value): self
+    public function withEncodeTags(bool $value = true): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
