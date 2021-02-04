@@ -205,7 +205,7 @@ final class Accordion extends Widget
      *
      * @return self
      */
-    public function withencodeTags(bool $value): self
+    public function withEncodeTags(bool $value): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
