@@ -15,10 +15,10 @@ use Yiisoft\Html\Html;
  *
  * ```php
  * echo Alert::widget()
- *     ->options([
+ *     ->withOptions([
  *         'class' => 'alert-info',
  *     ])
- *     ->body('Say hello...');
+ *     ->withBody('Say hello...');
  * ```
  */
 final class Alert extends Widget
@@ -26,6 +26,7 @@ final class Alert extends Widget
     private ?string $body = null;
     private array $closeButton = [];
     private bool $closeButtonEnabled = true;
+    private bool $encodeTags = false;
     private array $options = [];
 
     protected function run(): string
@@ -86,13 +87,21 @@ final class Alert extends Widget
         Html::addCssClass($this->options, ['widget' => 'alert']);
 
         if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = [
-                'aria-label' => 'Close',
-                'class' => ['widget' => 'btn-close'],
-                'data-bs-dismiss' => 'alert',
-            ];
+            $this->closeButton = array_merge(
+                $this->closeButton,
+                [
+                    'aria-label' => 'Close',
+                    'data-bs-dismiss' => 'alert',
+                ],
+            );
 
+            Html::addCssclass($this->closeButton, 'btn-close');
             Html::addCssClass($this->options, ['alert-dismissible']);
+        }
+
+        if ($this->encodeTags === false) {
+            $this->closeButton = array_merge($this->closeButton, ['encode' => false]);
+            $this->options = array_merge($this->options, ['encode' => false]);
         }
 
         if (!isset($this->options['role'])) {
@@ -108,11 +117,12 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function body(?string $value): self
+    public function withBody(?string $value): self
     {
-        $this->body = $value;
+        $new = clone $this;
+        $new->body = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -135,40 +145,58 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function closeButton(array $value): self
+    public function withCloseButton(array $value): self
     {
-        $this->closeButton = $value;
+        $new = clone $this;
+        $new->closeButton = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Enable/Disable close button.
+     * Disable close button.
      *
      * @param bool $value
      *
      * @return $this
      */
-    public function closeButtonEnabled(bool $value): self
+    public function withCloseButtonDisabled(bool $value = false): self
     {
-        $this->closeButtonEnabled = $value;
+        $new = clone $this;
+        $new->closeButtonEnabled = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function options(array $value): self
+    public function withOptions(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
     }
 }
