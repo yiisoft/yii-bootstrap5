@@ -339,7 +339,7 @@ final class Accordion extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding of the Widget tags html.
+     * Allows you to enable or disable the encoding tags html.
      *
      * @param bool $value
      *
