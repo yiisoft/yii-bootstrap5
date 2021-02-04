@@ -19,7 +19,7 @@ use function is_array;
  * ```php
  * // a button group with items configuration
  * echo ButtonGroup::widget()
- *     ->buttons([
+ *     ->withButtons([
  *         ['label' => 'A'],
  *         ['label' => 'B'],
  *         ['label' => 'C', 'visible' => false],
@@ -27,7 +27,7 @@ use function is_array;
  *
  * // button group with an item as a string
  * echo ButtonGroup::widget()
- *     ->buttons([
+ *     ->withButtons([
  *         Button::widget()
  *             ->label('A'),
  *         ['label' => 'B'],
@@ -40,9 +40,10 @@ final class ButtonGroup extends Widget
 {
     private array $buttons = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-group";
@@ -55,7 +56,78 @@ final class ButtonGroup extends Widget
             $this->options['role'] = 'group';
         }
 
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
+        }
+
         return Html::div($this->renderButtons(), $this->options);
+    }
+
+    /**
+     * List of buttons. Each array element represents a single button which can be specified as a string or an array of
+     * the following structure:
+     *
+     * - label: string, required, the button label.
+     * - options: array, optional, the HTML attributes of the button.
+     * - visible: bool, optional, whether this button is visible. Defaults to true.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function withButtons(array $value): self
+    {
+        $new = clone $this;
+        $new->buttons = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether to HTML-encode the button labels.
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function withEncodeLabels(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeLabels = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function withOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
     }
 
     /**
@@ -65,7 +137,7 @@ final class ButtonGroup extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderButtons(): string
+    private function renderButtons(): string
     {
         $buttons = [];
 
@@ -86,64 +158,15 @@ final class ButtonGroup extends Widget
                 }
 
                 $buttons[] = Button::widget()
-                                 ->encodeLabels($button['encodeLabel'])
-                                 ->label($button['label'])
-                                 ->options($button['options'])
-                                 ->render();
+                    ->withEncodeLabels($button['encodeLabel'])
+                    ->withLabel($button['label'])
+                    ->withOptions($button['options'])
+                    ->render();
             } else {
                 $buttons[] = $button;
             }
         }
 
         return implode("\n", $buttons);
-    }
-
-    /**
-     * List of buttons. Each array element represents a single button which can be specified as a string or an array of
-     * the following structure:
-     *
-     * - label: string, required, the button label.
-     * - options: array, optional, the HTML attributes of the button.
-     * - visible: bool, optional, whether this button is visible. Defaults to true.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function buttons(array $value): self
-    {
-        $this->buttons = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether to HTML-encode the button labels.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function encodeLabels(bool $value): self
-    {
-        $this->encodeLabels = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
     }
 }
