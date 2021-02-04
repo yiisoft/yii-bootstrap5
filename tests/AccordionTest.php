@@ -70,7 +70,7 @@ final class AccordionTest extends TestCase
                 ],
             ])
             ->render();
-        $expectedHtml = <<<HTML
+        $expected = <<<HTML
 <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Collapsible Group Item #1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"><ul class="list-group">
 <li class="list-group-item">test content1</li>
@@ -92,7 +92,7 @@ final class AccordionTest extends TestCase
 </ul>
 </div></div></div>
 HTML;
-        $this->assertEqualsWithoutLE($expectedHtml, $html);
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function invalidItemsProvider(): array
@@ -168,13 +168,13 @@ HTML;
         ];
 
         $html = Accordion::widget()->withItems($items)->render();
-        $this->assertEqualsWithoutLE(<<<HTML
+        $expected = <<<HTML
 <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
 <div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="true">Item 2</button></h2>
 <div id="w0-accordion-collapse1" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
-HTML
-        , $html);
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     /**
@@ -238,13 +238,13 @@ HTML
         ];
 
         $html = Accordion::widget()->withItems($items)->withOptions(['class' => 'testMe'])->render();
-        $this->assertEqualsWithoutLE(<<<HTML
+        $expected = <<<HTML
 <div id="w0-accordion" class="testMe accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
 <div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false">Item 2</button></h2>
 <div id="w0-accordion-collapse1" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
-HTML
-        , $html);
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testEncodeLabels(): void
@@ -263,22 +263,22 @@ HTML
         ];
 
         $html = Accordion::widget()->withItems($items)->withEncodeLabels(true)->render();
-        $this->assertEqualsWithoutLE(<<<HTML
+        $expected = <<<HTML
 <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
 <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
 <div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false">&lt;span&gt;&lt;i class="fas fa-eye"&gt;Item 2&lt;/i&gt;&lt;/span&gt;</button></h2>
 <div id="w0-accordion-collapse1" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
-HTML
-        , $html);
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
 
         $html = Accordion::widget()->withItems($items)->withEncodeLabels(false)->render();
-        $this->assertEqualsWithoutLE(<<<HTML
+        $expected = <<<HTML
 <div id="w1-accordion" class="accordion"><div class="accordion-item"><h2 id="w1-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w1-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
 <div id="w1-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w1-accordion-collapse0-heading" data-bs-parent="#w1-accordion">Content 1</div></div>
 <div class="accordion-item"><h2 id="w1-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w1-accordion-collapse1" aria-expanded="false"><span><i class="fas fa-eye">Item 2</i></span></button></h2>
 <div id="w1-accordion-collapse1" class="accordion-body collapse" aria-labelledby="w1-accordion-collapse1-heading" data-bs-parent="#w1-accordion">Content 2</div></div></div>
-HTML
-        , $html);
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testEncodeTags(): void
@@ -297,12 +297,12 @@ HTML
         ];
 
         $html = Accordion::widget()->withItems($items)->withEncodeTags(true)->render();
-        $this->assertEqualsWithoutLE(<<<HTML
+        $expected = <<<HTML
 <div id="w0-accordion" class="accordion">&lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse0-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true"&amp;amp;gt;Item 1&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
 &amp;lt;div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 1&amp;lt;/div&amp;gt;&lt;/div&gt;
 &lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse1-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false"&amp;amp;gt;&amp;amp;amp;amp;lt;span&amp;amp;amp;amp;gt;&amp;amp;amp;amp;lt;i class="fas fa-eye"&amp;amp;amp;amp;gt;Item 2&amp;amp;amp;amp;lt;/i&amp;amp;amp;amp;gt;&amp;amp;amp;amp;lt;/span&amp;amp;amp;amp;gt;&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
 &amp;lt;div id="w0-accordion-collapse1" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 2&amp;lt;/div&amp;gt;&lt;/div&gt;</div>
-HTML
-        , $html);
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }
