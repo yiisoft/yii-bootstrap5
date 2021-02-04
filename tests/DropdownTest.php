@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 
 /**
@@ -13,14 +14,21 @@ use Yiisoft\Yii\Bootstrap5\Dropdown;
  */
 final class DropdownTest extends TestCase
 {
-    public function testIds(): void
+    public function testRender(): void
     {
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->items([
+            ->withItems([
                 [
                     'label' => 'Page1',
+                    'url' => '#',
+                    'disabled' => true,
+                ],
+                [
+                    'label' => 'Page2',
+                    'url' => '#',
+                    'active' => true,
                 ],
                 [
                     'label' => 'Dropdown1',
@@ -40,18 +48,25 @@ final class DropdownTest extends TestCase
                 ],
             ])
             ->render();
-
-        $expected = <<<EXPECTED
+        $expected = <<<HTML
 <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><h6 class="dropdown-header">Page1</h6></li>
+<li><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
+<li><a class="dropdown-item active" href="#">Page2</a></li>
 <li><a class="dropdown-item dropdown-toggle" href="#test" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
 <li><h6 class="dropdown-header">Page2</h6></li>
 <li><h6 class="dropdown-header">Page3</h6></li>
 </ul></ul></li>
 </ul>
-EXPECTED;
-
+HTML;
         $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testMissingLabel(): void
+    {
+        Dropdown::counter(0);
+
+        $this->expectException(RuntimeException::class);
+        $html = Dropdown::widget()->withItems([['url' => '#test']])->render();
     }
 
     public function testSubMenuOptions(): void
@@ -59,8 +74,7 @@ EXPECTED;
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->submenuOptions(['class' => 'submenu-list'])
-            ->items([
+            ->withItems([
                 [
                     'label' => 'Dropdown1',
                     'items' => [
@@ -80,9 +94,9 @@ EXPECTED;
                     ],
                 ],
             ])
+            ->withSubmenuOptions(['class' => 'submenu-list'])
             ->render();
-
-        $expected = <<<EXPECTED
+        $expected = <<<HTML
 <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
 <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="submenu-list dropdown-menu" aria-expanded="false">
 <li><h6 class="dropdown-header">Page1</h6></li>
@@ -94,8 +108,7 @@ EXPECTED;
 <li><h6 class="dropdown-header">Page4</h6></li>
 </ul></ul></li>
 </ul>
-EXPECTED;
-
+HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -124,7 +137,7 @@ Remember me
 HTML;
 
         $html = Dropdown::widget()
-            ->items([
+            ->withItems([
                 $form,
                 '-',
                 ['label' => 'New around here? Sign up', 'url' => '#'],
@@ -133,7 +146,6 @@ HTML;
                 ['label' => '-', 'visible' => false],
             ])
             ->render();
-
         $expected = <<<HTML
 <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
 <li><form class="px-4 py-3">
@@ -159,7 +171,6 @@ Remember me
 <li><a class="dropdown-item" href="#">Forgot password?</a></li>
 </ul>
 HTML;
-
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }

@@ -23,7 +23,7 @@ use function is_string;
  * <div class="dropdown">
  *     <?php
  *         echo Dropdown::widget()
- *             ->items([
+ *             ->withItems([
  *                 ['label' => 'DropdownA', 'url' => '/'],
  *                 ['label' => 'DropdownB', 'url' => '#'],
  *             ]);
@@ -35,21 +35,102 @@ final class Dropdown extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $submenuOptions = [];
     private array $options = [];
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
+        Html::addCssClass($this->options, 'dropdown-menu');
 
         $this->registerClientEvents($this->options['id']);
 
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['itemOptions' => ['encode' =>false], 'encode' => false]);
+        }
+
         return $this->renderItems($this->items, $this->options);
+    }
+
+    /**
+     * List of menu items in the dropdown. Each array element can be either an HTML string, or an array representing a
+     * single menu with the following structure:
+     *
+     * - label: string, required, the label of the item link.
+     * - encode: bool, optional, whether to HTML-encode item label.
+     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
+     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
+     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
+     * - linkOptions: array, optional, the HTML attributes of the item link.
+     * - options: array, optional, the HTML attributes of the item.
+     * - items: array, optional, the submenu items. The structure is the same as this property.
+     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
+     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
+     *   merged with {@see submenuOptions}.
+     *
+     * To insert divider use `-`.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function withItems(array $value): self
+    {
+        $new = clone $this;
+        $new->items = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether the labels for header items should be HTML-encoded.
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function withEncodeLabels(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeLabels = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for sub-menu container tags.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function withSubmenuOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->submenuOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * @param array $value the HTML attributes for the widget container tag. The following special options are
+     * recognized.
+     *
+     * @return $this
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function withOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
     }
 
     /**
@@ -62,7 +143,7 @@ final class Dropdown extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderItems(array $items, array $options = []): string
+    private function renderItems(array $items, array $options = []): string
     {
         $lines = [];
 
@@ -88,6 +169,11 @@ final class Dropdown extends Widget
             $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
             Html::addCssClass($linkOptions, 'dropdown-item');
+
+            if ($this->encodeTags === false) {
+                $linkOptions = array_merge($linkOptions, ['encode' => false]);
+                $itemOptions = array_merge($itemOptions, ['encode' => false]);
+            }
 
             if ($disabled) {
                 ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
@@ -131,94 +217,21 @@ final class Dropdown extends Widget
                 . Html::tag(
                     'ul',
                     self::widget()
-                        ->items($item['items'])
-                        ->options($submenuOptions)
-                        ->submenuOptions($submenuOptions)
-                        ->encodeLabels($this->encodeLabels)
+                        ->withItems($item['items'])
+                        ->withOptions($submenuOptions)
+                        ->withSubmenuOptions($submenuOptions)
+                        ->withEncodeLabels($this->encodeLabels)
                         ->render(),
-                    array_merge_recursive(
-                        ['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false],
+                    array_merge(
+                        ['aria-expanded' => 'false', 'class' => ['dropdown']],
                         $itemOptions
                     )
                 );
             }
         }
 
-        return Html::ul(
-            $lines,
-            array_merge_recursive(['aria-expanded' => 'false', 'encode' => false], $options)
-        );
-    }
+        $options = array_merge(['aria-expanded' => 'false'], $options);
 
-    /**
-     * List of menu items in the dropdown. Each array element can be either an HTML string, or an array representing a
-     * single menu with the following structure:
-     *
-     * - label: string, required, the label of the item link.
-     * - encode: bool, optional, whether to HTML-encode item label.
-     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
-     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item link.
-     * - options: array, optional, the HTML attributes of the item.
-     * - items: array, optional, the submenu items. The structure is the same as this property.
-     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
-     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
-     *   merged with {@see submenuOptions}.
-     *
-     * To insert divider use `-`.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function items(array $value): self
-    {
-        $this->items = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether the labels for header items should be HTML-encoded.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function encodeLabels(bool $value): self
-    {
-        $this->encodeLabels = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for sub-menu container tags.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function submenuOptions(array $value): self
-    {
-        $this->submenuOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
-     * recognized.
-     *
-     * @return $this
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
+        return Html::ul($lines, $options);
     }
 }
