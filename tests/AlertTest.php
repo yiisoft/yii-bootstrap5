@@ -23,13 +23,11 @@ final class AlertTest extends TestCase
                 'class' => ['alert-warning'],
             ])
             ->render();
-
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert-warning alert alert-dismissible" role="alert"><strong>Holy guacamole!</strong> You should check in on some of those fields below.
 <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
 </div>
 HTML;
-
         $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
@@ -40,16 +38,12 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()
-            ->withBody('Message1')
-            ->render();
-
+        $html = Alert::widget()->withBody('Message1')->render();
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
 <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
 </div>
 HTML;
-
         $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
@@ -57,17 +51,12 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()
-            ->withBody('Message1')
-            ->withCloseButtonDisabled()
-            ->render();
-
+        $html = Alert::widget()->withBody('Message1')->withCloseButtonDisabled()->render();
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert" role="alert">Message1
 
 </div>
 HTML;
-
         $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
@@ -75,17 +64,12 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()
-            ->withBody('Message1')
-            ->withCloseButton(['class' => 'btn-lg'])
-            ->render();
-
+        $html = Alert::widget()->withBody('Message1')->withCloseButton(['class' => 'btn-lg'])->render();
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
 <button type="button" class="btn-lg btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
 </div>
 HTML;
-
         $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 
@@ -93,17 +77,12 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()
-            ->withBody('Message1')
-            ->withEncodeTags(true)
-            ->render();
-
+        $html = Alert::widget()->withBody('Message1')->withEncodeTags(true)->render();
         $expectedHtml = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
 &lt;button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"&gt;&lt;/button&gt;
 </div>
 HTML;
-
         $this->assertEqualsWithoutLE($expectedHtml, $html);
     }
 }
