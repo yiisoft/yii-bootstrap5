@@ -48,8 +48,6 @@ final class Dropdown extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, 'dropdown-menu');
 
-        $this->registerClientEvents($this->options['id']);
-
         if ($this->encodeTags === false) {
             $this->options = array_merge($this->options, ['itemOptions' => ['encode' =>false], 'encode' => false]);
         }

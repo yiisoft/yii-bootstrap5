@@ -343,7 +343,7 @@ final class ButtonDropdown extends Widget
 
         return $dropdownClass::widget()
             ->withItems($this->dropdown['items'])
-            ->withEncodeLabels($this->encodeLabels)
+            ->withoutEncodeLabels($this->encodeLabels)
             ->render();
     }
 }
