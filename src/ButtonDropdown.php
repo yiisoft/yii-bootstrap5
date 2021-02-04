@@ -175,7 +175,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withEncodeLabels(bool $value): self
+    public function withoutEncodeLabels(bool $value = false): self
     {
         $new = clone $this;
         $new->encodeLabels = $value;
@@ -223,7 +223,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withRenderContainer(bool $value): self
+    public function withoutRenderContainer(bool $value = false): self
     {
         $new = clone $this;
         $new->renderContainer = $value;
@@ -238,7 +238,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withSplit(bool $value): self
+    public function withSplit(bool $value = true): self
     {
         $new = clone $this;
         $new->split = $value;
@@ -268,7 +268,7 @@ final class ButtonDropdown extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value): self
+    public function withEncodeTags(bool $value = true): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
@@ -306,7 +306,7 @@ final class ButtonDropdown extends Widget
 
             $splitButton = Button::widget()
                 ->withLabel('<span class="sr-only">Toggle Dropdown</span>')
-                ->withEncodeLabels(false)
+                ->withoutEncodeLabels()
                 ->withOptions($this->buttonOptions)
                 ->render();
         } else {
@@ -329,7 +329,7 @@ final class ButtonDropdown extends Widget
             ->withTagName($this->tagName)
             ->withLabel($label)
             ->withOptions($buttonOptions)
-            ->withEncodeLabels(false)
+            ->withoutEncodeLabels()
             ->render()
             . "\n" . $splitButton;
     }

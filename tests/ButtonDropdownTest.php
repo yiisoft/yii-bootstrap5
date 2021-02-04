@@ -73,7 +73,7 @@ HTML;
         $html = ButtonDropdown::widget()
             ->withDirection(ButtonDropdown::DIRECTION_DOWN)
             ->withLabel('Split dropdown')
-            ->withSplit(true)
+            ->withSplit()
             ->withDropdown([
                 'items' => [
                     ['label' => 'ItemA', 'url' => '#'],
@@ -153,7 +153,6 @@ HTML;
                     ]
                 ]
             )
-            ->withEncodeLabels(true)
             ->render();
         $expected = <<<HTML
 <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -174,7 +173,7 @@ HTML;
                     ]
                 ]
             )
-            ->withEncodeLabels(false)
+            ->withoutEncodeLabels()
             ->render();
         $expected = <<<HTML
 <div id="w2-button-dropdown" class="dropdown btn-group"><button id="w2-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -212,7 +211,7 @@ HTML;
 
         $html = ButtonDropdown::widget()
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
-            ->withRenderContainer(false)
+            ->withoutRenderContainer()
             ->render();
         $expected = <<<HTML
 <button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -250,7 +249,7 @@ HTML;
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withEncodeTags(true)
+            ->withEncodeTags()
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
 
