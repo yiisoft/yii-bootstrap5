@@ -30,7 +30,6 @@ HTML;
 
         $html = Button::widget()
             ->withLabel('<span><i class=fas fas-save></i>Save</span>')
-            ->withEncodeLabels(true)
             ->render();
         $expectedHtml = <<<HTML
 <button id="w0-button" class="btn">&lt;span&gt;&lt;i class=fas fas-save&gt;&lt;/i&gt;Save&lt;/span&gt;</button>
@@ -39,7 +38,7 @@ HTML;
 
         $html = Button::widget()
             ->withLabel('<span><i class=fas fas-save></i>Save</span>')
-            ->withEncodeLabels(false)
+            ->withoutEncodeLabels()
             ->render();
         $expectedHtml = <<<HTML
 <button id="w1-button" class="btn"><span><i class=fas fas-save></i>Save</span></button>
@@ -73,7 +72,7 @@ HTML;
     {
         Button::counter(0);
 
-        $html = Button::widget()->withLabel('Save')->withEncodeTags(true)->render();
+        $html = Button::widget()->withLabel('Save')->withEncodeTags()->render();
         $expectedHtml = <<<HTML
 <button id="w0-button" class="btn">Save</button>
 HTML;
