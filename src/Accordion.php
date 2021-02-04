@@ -91,7 +91,7 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function withAutoCloseItems(bool $value): self
+    public function withoutAutoCloseItems(bool $value = false): self
     {
         $new = clone $this;
         $new->autoCloseItems = $value;
@@ -106,7 +106,7 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function withEncodeLabels(bool $value): self
+    public function withoutEncodeLabels(bool $value = false): self
     {
         $new = clone $this;
         $new->encodeLabels = $value;
@@ -205,7 +205,7 @@ final class Accordion extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value): self
+    public function withEncodeTags(bool $value = true): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
