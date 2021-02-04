@@ -18,8 +18,8 @@ use function array_merge;
  *
  * ```php
  * Modal::widget()
- *     ->title('<h2>Hello world</h2>')
- *     ->toggleButton(['label' => 'click me'])
+ *     ->withTitle('<h2>Hello world</h2>')
+ *     ->withToggleButton(['label' => 'click me'])
  *     ->begin();
  *
  * echo 'Say hello...';
@@ -56,6 +56,7 @@ final class Modal extends Widget
     private array $toggleButton = [];
     private bool $toggleButtonEnabled = true;
     private array $options = [];
+    private bool $encodeTags = false;
 
     public function begin(): ?string
     {
@@ -63,6 +64,10 @@ final class Modal extends Widget
 
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-modal";
+        }
+
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
         }
 
         $this->initOptions();
@@ -76,10 +81,8 @@ final class Modal extends Widget
             $this->renderBodyBegin() . "\n";
     }
 
-    protected function run(): string
+    public function run(): string
     {
-        $this->registerPlugin('modal', $this->options);
-
         return
             "\n" . $this->renderBodyEnd() .
             "\n" . $this->renderFooter() .
@@ -89,176 +92,20 @@ final class Modal extends Widget
     }
 
     /**
-     * Renders the header HTML markup of the modal.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderHeader(): string
-    {
-        $button = $this->renderCloseButton();
-
-        if ($this->title !== null) {
-            Html::addCssClass($this->titleOptions, ['widget' => 'modal-title']);
-        }
-
-        $header = ($this->title === null) ? '' : Html::tag('h5', $this->title, $this->titleOptions);
-
-        if ($button !== null) {
-            $header .= "\n" . $button;
-        } elseif ($header === '') {
-            return '';
-        }
-
-        Html::addCssClass($this->headerOptions, ['widget' => 'modal-header']);
-
-        return Html::div($header, $this->headerOptions);
-    }
-
-    /**
-     * Renders the opening tag of the modal body.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderBodyBegin(): string
-    {
-        Html::addCssClass($this->bodyOptions, ['widget' => 'modal-body']);
-
-        return Html::beginTag('div', $this->bodyOptions);
-    }
-
-    /**
-     * Renders the closing tag of the modal body.
-     *
-     * @return string the rendering result
-     */
-    protected function renderBodyEnd(): string
-    {
-        return Html::endTag('div');
-    }
-
-    /**
-     * Renders the HTML markup for the footer of the modal.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderFooter(): ?string
-    {
-        if ($this->footer === null) {
-            return null;
-        }
-
-        Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
-        return Html::div($this->footer, $this->footerOptions);
-    }
-
-    /**
-     * Renders the toggle button.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderToggleButton(): ?string
-    {
-        if ($this->toggleButtonEnabled === false) {
-            return null;
-        }
-
-        $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
-
-        return Html::tag($tag, $label, $this->toggleButton);
-    }
-
-    /**
-     * Renders the close button.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderCloseButton(): ?string
-    {
-        if ($this->closeButtonEnabled === false) {
-            return null;
-        }
-
-        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', Html::span('&times;', [
-            'aria-hidden' => 'true',
-        ]));
-
-        return Html::tag($tag, $label, $this->closeButton);
-    }
-
-    /**
-     * Initializes the widget options.
-     *
-     * This method sets the default values for various options.
-     */
-    protected function initOptions(): void
-    {
-        $this->options = array_merge([
-            'class' => 'fade',
-            'role' => 'dialog',
-            'tabindex' => -1,
-            'aria-hidden' => 'true',
-        ], $this->options);
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'modal']);
-
-        if ($this->getEnableClientOptions() !== false) {
-            $this->clientOptions(array_merge(['show' => false], $this->getClientOptions()));
-        }
-
-        $this->titleOptions = array_merge([
-            'id' => $this->options['id'] . '-label',
-        ], $this->titleOptions);
-
-        if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== null) {
-            $this->options['aria-labelledby'] = $this->titleOptions['id'];
-        }
-
-        if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = array_merge([
-                'data-bs-dismiss' => 'modal',
-                'class' => 'close',
-                'type' => 'button',
-            ], $this->closeButton);
-        }
-
-        if ($this->toggleButton !== []) {
-            $this->toggleButton = array_merge([
-                'data-bs-toggle' => 'modal',
-                'type' => 'button',
-            ], $this->toggleButton);
-            if (!isset($this->toggleButton['data-bs-target']) && !isset($this->toggleButton['href'])) {
-                $this->toggleButton['data-bs-target'] = '#' . $this->options['id'];
-            }
-        }
-    }
-
-    /**
      * Body options.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function bodyOptions(array $value): self
+    public function withBodyOptions(array $value): self
     {
-        $this->bodyOptions = $value;
+        $new = clone $this;
+        $new->bodyOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -279,25 +126,27 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function closeButton(array $value): self
+    public function withCloseButton(array $value): self
     {
-        $this->closeButton = $value;
+        $new = clone $this;
+        $new->closeButton = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Enable/Disable close button.
+     * Disable close button.
      *
      * @param bool $value
      *
      * @return $this
      */
-    public function closeButtonEnabled(bool $value): self
+    public function withoutCloseButton(bool $value = false): self
     {
-        $this->closeButtonEnabled = $value;
+        $new = clone $this;
+        $new->closeButtonEnabled = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -307,11 +156,12 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function footer(?string $value): self
+    public function withFooter(?string $value): self
     {
-        $this->footer = $value;
+        $new = clone $this;
+        $new->footer = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -321,13 +171,14 @@ final class Modal extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function footerOptions(array $value): self
+    public function withFooterOptions(array $value): self
     {
-        $this->footerOptions = $value;
+        $new = clone $this;
+        $new->footerOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -337,13 +188,14 @@ final class Modal extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function headerOptions(array $value): self
+    public function withHeaderOptions(array $value): self
     {
-        $this->headerOptions = $value;
+        $new = clone $this;
+        $new->headerOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -352,13 +204,14 @@ final class Modal extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function withOptions(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -368,27 +221,29 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function title(?string $value): self
+    public function withTitle(?string $value): self
     {
-        $this->title = $value;
+        $new = clone $this;
+        $new->title = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * Additional title options.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
      * @return $this
      */
-    public function titleOptions(array $value): self
+    public function withTitleOptions(array $value): self
     {
-        $this->titleOptions = $value;
+        $new = clone $this;
+        $new->titleOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -409,25 +264,27 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function toggleButton(array $value): self
+    public function withToggleButton(array $value): self
     {
-        $this->toggleButton = $value;
+        $new = clone $this;
+        $new->toggleButton = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Enable/Disable toggle button.
+     * Disable toggle button.
      *
      * @param bool $value
      *
      * @return $this
      */
-    public function toggleButtonEnabled(bool $value): self
+    public function withoutToggleButton(bool $value = false): self
     {
-        $this->toggleButtonEnabled = $value;
+        $new = clone $this;
+        $new->toggleButtonEnabled = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -437,10 +294,201 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function size(?string $value): self
+    public function withSize(?string $value): self
     {
-        $this->size = $value;
+        $new = clone $this;
+        $new->size = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
+    }
+
+    /**
+     * Renders the header HTML markup of the modal.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderHeader(): string
+    {
+        $button = $this->renderCloseButton();
+
+        if ($this->title !== null) {
+            Html::addCssClass($this->titleOptions, 'modal-title');
+        }
+
+        $header = ($this->title === null) ? '' : Html::tag('h5', $this->title, $this->titleOptions);
+
+        if ($button !== null) {
+            $header .= "\n" . $button;
+        } elseif ($header === '') {
+            return '';
+        }
+
+        Html::addCssClass($this->headerOptions, 'modal-header');
+
+        if ($this->encodeTags === false) {
+            $this->headerOptions = array_merge($this->headerOptions, ['encode' =>false]);
+        }
+
+        return Html::div($header, $this->headerOptions);
+    }
+
+    /**
+     * Renders the opening tag of the modal body.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderBodyBegin(): string
+    {
+        Html::addCssClass($this->bodyOptions, ['widget' => 'modal-body']);
+
+        if ($this->encodeTags === false) {
+            $this->bodyOptions = array_merge($this->bodyOptions, ['encode' =>false]);
+        }
+
+        return Html::beginTag('div', $this->bodyOptions);
+    }
+
+    /**
+     * Renders the closing tag of the modal body.
+     *
+     * @return string the rendering result
+     */
+    private function renderBodyEnd(): string
+    {
+        return Html::endTag('div');
+    }
+
+    /**
+     * Renders the HTML markup for the footer of the modal.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderFooter(): ?string
+    {
+        if ($this->footer === null) {
+            return null;
+        }
+
+        Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
+
+        if ($this->encodeTags === false) {
+            $this->footerOptions = array_merge($this->footerOptions, ['encode' =>false]);
+        }
+
+        return Html::div($this->footer, $this->footerOptions);
+    }
+
+    /**
+     * Renders the toggle button.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderToggleButton(): ?string
+    {
+        if ($this->toggleButtonEnabled === false) {
+            return null;
+        }
+
+        $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
+
+        if ($this->encodeTags === false) {
+            $this->toggleButton = array_merge($this->toggleButton, ['encode' =>false]);
+        }
+
+        return Html::tag($tag, $label, $this->toggleButton);
+    }
+
+    /**
+     * Renders the close button.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderCloseButton(): ?string
+    {
+        if ($this->closeButtonEnabled === false) {
+            return null;
+        }
+
+        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->closeButton, 'label', Html::span('&times;', [
+            'aria-hidden' => 'true',
+        ]));
+
+        if ($this->encodeTags === false) {
+            $this->closeButton = array_merge($this->closeButton, ['encode' =>false]);
+        }
+
+        return Html::tag($tag, $label, $this->closeButton);
+    }
+
+    /**
+     * Initializes the widget options.
+     *
+     * This method sets the default values for various options.
+     */
+    private function initOptions(): void
+    {
+        $this->options = array_merge([
+            'class' => 'fade',
+            'role' => 'dialog',
+            'tabindex' => -1,
+            'aria-hidden' => 'true',
+        ], $this->options);
+
+        /** @psalm-suppress InvalidArgument */
+        Html::addCssClass($this->options, 'modal');
+
+        $this->titleOptions = array_merge([
+            'id' => $this->options['id'] . '-label',
+        ], $this->titleOptions);
+
+        if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== null) {
+            $this->options['aria-labelledby'] = $this->titleOptions['id'];
+        }
+
+        if ($this->closeButtonEnabled !== false) {
+            $this->closeButton = array_merge([
+                'data-bs-dismiss' => 'modal',
+                'type' => 'button',
+            ], $this->closeButton);
+
+            Html::addCssClass($this->closeButton, 'close');
+        }
+
+        if ($this->toggleButton !== []) {
+            $this->toggleButton = array_merge([
+                'data-bs-toggle' => 'modal',
+                'type' => 'button',
+            ], $this->toggleButton);
+            if (!isset($this->toggleButton['data-bs-target']) && !isset($this->toggleButton['href'])) {
+                $this->toggleButton['data-bs-target'] = '#' . $this->options['id'];
+            }
+        }
     }
 }
