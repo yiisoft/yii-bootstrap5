@@ -51,7 +51,7 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->withBody('Message1')->withCloseButtonDisabled()->render();
+        $html = Alert::widget()->withBody('Message1')->withoutCloseButton()->render();
         $expected = <<<HTML
 <div id="w0-alert" class="alert" role="alert">Message1
 
@@ -77,7 +77,7 @@ HTML;
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->withBody('Message1')->withEncodeTags(true)->render();
+        $html = Alert::widget()->withBody('Message1')->withEncodeTags()->render();
         $expected = <<<HTML
 <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
 &lt;button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"&gt;&lt;/button&gt;

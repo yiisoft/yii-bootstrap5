@@ -93,7 +93,7 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function withCloseButtonDisabled(bool $value = false): self
+    public function withoutCloseButton(bool $value = false): self
     {
         $new = clone $this;
         $new->closeButtonEnabled = $value;
@@ -125,7 +125,7 @@ final class Alert extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value): self
+    public function withEncodeTags(bool $value = true): self
     {
         $new = clone $this;
         $new->encodeTags = $value;
