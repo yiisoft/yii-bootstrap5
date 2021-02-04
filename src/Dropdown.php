@@ -94,7 +94,7 @@ final class Dropdown extends Widget
      *
      * @return $this
      */
-    public function withEncodeLabels(bool $value): self
+    public function withoutEncodeLabels(bool $value = false): self
     {
         $new = clone $this;
         $new->encodeLabels = $value;
@@ -129,6 +129,21 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
 
         return $new;
     }
@@ -220,7 +235,7 @@ final class Dropdown extends Widget
                         ->withItems($item['items'])
                         ->withOptions($submenuOptions)
                         ->withSubmenuOptions($submenuOptions)
-                        ->withEncodeLabels($this->encodeLabels)
+                        ->withoutEncodeLabels($this->encodeLabels)
                         ->render(),
                     array_merge(
                         ['aria-expanded' => 'false', 'class' => ['dropdown']],
