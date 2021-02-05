@@ -195,6 +195,7 @@ HTML;
     public function testEncodeTags(): void
     {
         Toast::counter(0);
+        Toast::autoIdPrefix('toast');
 
         $html = Toast::widget()
             ->withTitle('Toast title')
@@ -206,7 +207,7 @@ HTML;
             ->begin();
         $html .= Toast::end();
         $expected = <<<HTML
-<div id="w0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="toast0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
 <div class="toast-header">
 &lt;h5 class="me-auto" style="text-align: left;"&gt;Toast title&lt;/h5&gt;
 &lt;button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="toast"&gt;
