@@ -19,16 +19,15 @@ final class NavBarTest extends TestCase
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandLabel('My Company')
-            ->brandUrl('/')
-            ->options([
+            ->withBrandLabel('My Company')
+            ->withBrandUrl('/')
+            ->withOptions([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
             ->begin();
 
         $html .= NavBar::end();
-
-        $expected = <<<EXPECTED
+        $expected = <<< HTML
 <nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
@@ -37,8 +36,7 @@ final class NavBarTest extends TestCase
 </div>
 </div>
 </nav>
-EXPECTED;
-
+HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -47,12 +45,11 @@ EXPECTED;
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandImage('/images/test.jpg')
-            ->brandUrl('/')
+            ->withBrandImage('/images/test.jpg')
+            ->withBrandUrl('/')
             ->begin();
 
         $html .= NavBar::end();
-
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
             $html
@@ -64,12 +61,11 @@ EXPECTED;
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandLabel('Yii Framework')
-            ->brandUrl('/index.php')
+            ->withBrandLabel('Yii Framework')
+            ->withBrandUrl('/index.php')
             ->begin();
 
         $html .= NavBar::end();
-
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
             $html
@@ -81,12 +77,11 @@ EXPECTED;
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandLabel('Yii Framework')
-            ->brandUrl('')
+            ->withBrandLabel('Yii Framework')
+            ->withBrandUrl('')
             ->begin();
 
         $html .= NavBar::end();
-
         $this->assertStringContainsString(
             '<span class="navbar-brand">Yii Framework</span>',
             $html
@@ -98,12 +93,12 @@ EXPECTED;
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandLabel('My Company')
-            ->brandUrl('/')
+            ->withBrandLabel('My Company')
+            ->withBrandUrl('/')
             ->begin();
 
         $html .= Nav::widget()
-            ->items([
+            ->withItems([
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
                 ['label' => 'Dropdown', 'items' => [
@@ -114,10 +109,10 @@ EXPECTED;
                 ],
                 ],
             ])
-            ->options(['class' => ['mr-auto']])
+            ->withOptions(['class' => ['mr-auto']])
             ->render();
 
-        $html .= <<<HTML
+        $html .= <<< HTML
 <form class="form-inline my-2 my-lg-0">
 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -125,8 +120,7 @@ EXPECTED;
 HTML;
 
         $html .= NavBar::end();
-
-        $expected = <<<EXPECTED
+        $expected = <<< HTML
 <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
 <a class="navbar-brand" href="/">My Company</a>
@@ -145,8 +139,165 @@ HTML;
 </form></div>
 </div>
 </nav>
-EXPECTED;
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
 
+    public function testCollapseOptions(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withCollapseOptions(['class' => 'testMe'])->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="testMe collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testBrandOptions(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withBrandLabel('My App')->withBrandOptions(['class' => 'text-dark'])->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+<a class="text-dark navbar-brand" href="/">My App</a>
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testScreenReaderToggleText(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withScreenReaderToggleText('Toggler navigation')->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggler navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testTogglerContent(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withTogglerContent('<div class="navbar-toggler-icon"></div>')->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><div class="navbar-toggler-icon"></div></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testTogglerOptions(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withTogglerOptions(['class' => 'testMe'])->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<button type="button" class="testMe navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testRenderInnerContainer(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withoutRenderInnerContainer()->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testInnerContainerOptions(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withInnerContainerOptions(['class' => 'text-link'])->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="text-link">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testEncodeTags(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->withEncodeTags()->begin();
+
+        $html .= NavBar::end();
+        $expected = <<< HTML
+<nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+
+<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation">&lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;</button>
+<div id="w0-collapse" class="collapse navbar-collapse">
+</div>
+</div>
+</nav>
+HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }
