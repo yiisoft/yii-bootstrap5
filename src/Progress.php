@@ -22,29 +22,29 @@ use function trim;
  * ```php
  * // default with label
  * echo Progress::widget()
- *     ->percent('60')
- *     ->label('test');
+ *     ->withPercent('60')
+ *     ->withLabel('test');
  *
  * // styled
  * echo Progress::widget()
- *     ->bars([
+ *     ->withBars([
  *         ['percent' => '65', 'options' => ['class' => 'bg-danger']]
  *     ]);
  *
  * // striped
  * echo Progress::widget()
- *     ->'bars'([
+ *     ->withBars([
  *         ['percent' => '70', 'options' => ['class' => 'bg-warning progress-bar-striped']]
  *     ]);
  *
  * // striped animated
  * echo Progress::widget()
- *     ->percent('70')
- *     ->barOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
+ *     ->withPercent('70')
+ *     ->withBarOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
  *
  * // stacked bars
  * echo Progress::widget()
- *     'bars' => ([
+ *     withBars => ([
  *         ['percent' => '30', 'options' => ['class' => 'bg-danger']],
  *         ['percent' => '30', 'label' => 'test', 'options' => ['class' => 'bg-success']],
  *         ['percent' => '35', 'options' => ['class' => 'bg-warning']],
@@ -54,12 +54,13 @@ use function trim;
 final class Progress extends Widget
 {
     private string $label = '';
-    private ?string $percent = null;
+    private string $percent = '';
     private array $bars = [];
     private array $options = [];
     private array $barOptions = [];
+    private bool $encodeTags = false;
 
-    protected function run(): string
+    public function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";
@@ -68,7 +69,118 @@ final class Progress extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'progress']);
 
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['encode' => false]);
+        }
+
         return $this->renderProgress();
+    }
+
+    /**
+     * Set of bars that are stacked together to form a single progress bar.
+     *
+     * Each bar is an array of the following structure:
+     *
+     * ```php
+     * [
+     *     // required, the amount of progress as a percentage.
+     *     'percent' => '30',
+     *     // optional, the label to be displayed on the bar
+     *     'label' => '30%',
+     *     // optional, array, additional HTML attributes for the bar tag
+     *     'options' => [],
+     * ]
+     * ```
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function withBars(array $value): self
+    {
+        $new = clone $this;
+        $new->bars = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
+     *
+     * @param array $value
+     *
+     * @return $this
+     *
+     * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
+     */
+    public function withBarOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->barOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * The button label.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->label = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * @param array $value
+     *
+     * @return $this
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function withOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * The amount of progress as a percentage.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPercent(string $value): self
+    {
+        $new = clone $this;
+        $new->percent = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable or disable the encoding tags html.
+     *
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function withEncodeTags(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $value;
+
+        return $new;
     }
 
     /**
@@ -78,7 +190,7 @@ final class Progress extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderProgress(): string
+    private function renderProgress(): string
     {
         if (empty($this->bars)) {
             $this->bars = [
@@ -111,7 +223,7 @@ final class Progress extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderBar(string $percent, string $label = '', array $options = []): string
+    private function renderBar(string $percent, string $label = '', array $options = []): string
     {
         $valuePercent = (float) trim(rtrim($percent, '%'));
 
@@ -127,92 +239,5 @@ final class Progress extends Widget
         Html::addCssStyle($options, ['width' => $valuePercent . '%'], true);
 
         return Html::div($label, $options);
-    }
-
-    /**
-     * Set of bars that are stacked together to form a single progress bar.
-     *
-     * Each bar is an array of the following structure:
-     *
-     * ```php
-     * [
-     *     // required, the amount of progress as a percentage.
-     *     'percent' => '30',
-     *     // optional, the label to be displayed on the bar
-     *     'label' => '30%',
-     *     // optional, array, additional HTML attributes for the bar tag
-     *     'options' => [],
-     * ]
-     * ```
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function bars(array $value): self
-    {
-        $this->bars = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
-     *
-     * @param array $value
-     *
-     * @return $this
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are being rendered}
-     */
-    public function barOptions(array $value): self
-    {
-        $this->barOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * The button label.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     */
-    public function label(?string $value): self
-    {
-        $this->label = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * @param array $value
-     *
-     * @return $this
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
-    }
-
-    /**
-     * The amount of progress as a percentage.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     */
-    public function percent(?string $value): self
-    {
-        $this->percent = $value;
-
-        return $this;
     }
 }
