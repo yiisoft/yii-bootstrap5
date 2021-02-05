@@ -218,5 +218,7 @@ HTML;
 </div></div>
 HTML;
         $this->assertEqualsWithoutLE($expected, $html);
+
+        Toast::autoIdPrefix('w');
     }
 }
