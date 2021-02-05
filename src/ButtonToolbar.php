@@ -114,14 +114,12 @@ final class ButtonToolbar extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }

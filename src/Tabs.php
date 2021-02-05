@@ -87,13 +87,16 @@ final class Tabs extends Widget
 
         $this->prepareItems($this->items);
 
-        return Nav::widget()
-                ->withDropdownClass($this->dropdownClass)
-                ->withItems($this->items)
-                ->withOptions(ArrayHelper::merge(['role' => 'tablist'], $this->options))
-                ->withoutEncodeLabels($this->encodeLabels)
-                ->render()
-                . $this->renderPanes($this->panes);
+        $navWidget = Nav::widget()
+            ->withDropdownClass($this->dropdownClass)
+            ->withItems($this->items)
+            ->withOptions(ArrayHelper::merge(['role' => 'tablist'], $this->options));
+
+        if ($this->encodeLabels === false) {
+            $navWidget = $navWidget->withoutEncodeLabels();
+        }
+
+        return $navWidget->render() . $this->renderPanes($this->panes);
     }
 
     /**
@@ -114,14 +117,12 @@ final class Tabs extends Widget
     /**
      * Whether the labels for header items should be HTML-encoded.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -245,14 +246,12 @@ final class Tabs extends Widget
      * Whether to render the `tab-content` container and its content. You may set this property to be false so that you
      * can manually render `tab-content` yourself in case your tab contents are complex.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withRenderTabContent(bool $value): self
+    public function withoutRenderTabContent(): self
     {
         $new = clone $this;
-        $new->renderTabContent = $value;
+        $new->renderTabContent = false;
 
         return $new;
     }
@@ -281,10 +280,10 @@ final class Tabs extends Widget
      *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }

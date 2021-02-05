@@ -342,14 +342,12 @@ final class NavBar extends Widget
      * Whether the navbar content should be included in an inner div container which by default adds left and right
      * padding. Set this to false for a 100% width navbar.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutRenderInnerContainer(bool $value = false): self
+    public function withoutRenderInnerContainer(): self
     {
         $new = clone $this;
-        $new->renderInnerContainer = $value;
+        $new->renderInnerContainer = false;
 
         return $new;
     }
@@ -391,14 +389,12 @@ final class NavBar extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }

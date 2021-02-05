@@ -85,14 +85,12 @@ final class ButtonGroup extends Widget
     /**
      * Whether to HTML-encode the button labels.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -117,14 +115,12 @@ final class ButtonGroup extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
@@ -156,11 +152,13 @@ final class ButtonGroup extends Widget
                     ArrayHelper::setValueByPath($button, 'options.type', 'button');
                 }
 
-                $buttons[] = Button::widget()
-                    ->withoutEncodeLabels($button['encodeLabel'])
-                    ->withLabel($button['label'])
-                    ->withOptions($button['options'])
-                    ->render();
+                $buttonWidget = Button::widget()->withLabel($button['label'])->withOptions($button['options']);
+
+                if ($button['encodeLabel'] === false) {
+                    $buttonWidget = $buttonWidget->withoutEncodeLabels();
+                }
+
+                $buttons[] = $buttonWidget->render();
             } else {
                 $buttons[] = $button;
             }

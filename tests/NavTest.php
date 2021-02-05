@@ -143,7 +143,7 @@ HTML;
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withActivateItems(false)
+            ->withoutActivateItems()
             ->withItems([
                 [
                     'label' => 'Item1',
@@ -199,7 +199,7 @@ HTML;
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withActivateItems(false)
+            ->withoutActivateItems()
             ->withCurrentPath('/site/index')
             ->withItems([
                 [
@@ -264,7 +264,7 @@ HTML;
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withActivateParents(true)
+            ->withActivateParents()
             ->withItems([
                 [
                     'label' => 'Dropdown',

@@ -271,7 +271,7 @@ HTML;
 HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
-        $html = Accordion::widget()->withItems($items)->withoutEncodeLabels(false)->render();
+        $html = Accordion::widget()->withItems($items)->withoutEncodeLabels()->render();
         $expected = <<<HTML
 <div id="w1-accordion" class="accordion"><div class="accordion-item"><h2 id="w1-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w1-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
 <div id="w1-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w1-accordion-collapse0-heading" data-bs-parent="#w1-accordion">Content 1</div></div>

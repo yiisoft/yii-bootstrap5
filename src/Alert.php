@@ -23,7 +23,7 @@ use Yiisoft\Html\Html;
  */
 final class Alert extends Widget
 {
-    private ?string $body = null;
+    private string $body = '';
     private array $closeButton = [];
     private bool $closeButtonEnabled = true;
     private bool $encodeTags = false;
@@ -44,11 +44,11 @@ final class Alert extends Widget
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function withBody(?string $value): self
+    public function withBody(string $value): self
     {
         $new = clone $this;
         $new->body = $value;
@@ -87,14 +87,12 @@ final class Alert extends Widget
     /**
      * Disable close button.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutCloseButton(bool $value = false): self
+    public function withoutCloseButton(): self
     {
         $new = clone $this;
-        $new->closeButtonEnabled = $value;
+        $new->closeButtonEnabled = false;
 
         return $new;
     }
@@ -119,14 +117,12 @@ final class Alert extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }

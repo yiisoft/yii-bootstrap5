@@ -44,13 +44,13 @@ final class Modal extends Widget
      */
     public const SIZE_DEFAULT = '';
 
-    private ?string $title = null;
+    private string $title = '';
     private array $titleOptions = [];
     private array $headerOptions = [];
     private array $bodyOptions = [];
-    private ?string $footer = null;
+    private string $footer = '';
     private array $footerOptions = [];
-    private ?string $size = null;
+    private string $size = '';
     private array $closeButton = [];
     private bool $closeButtonEnabled = true;
     private array $toggleButton = [];
@@ -141,10 +141,10 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withoutCloseButton(bool $value = false): self
+    public function withoutCloseButton(): self
     {
         $new = clone $this;
-        $new->closeButtonEnabled = $value;
+        $new->closeButtonEnabled = false;
 
         return $new;
     }
@@ -152,11 +152,11 @@ final class Modal extends Widget
     /**
      * The footer content in the modal window.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function withFooter(?string $value): self
+    public function withFooter(string $value): self
     {
         $new = clone $this;
         $new->footer = $value;
@@ -217,11 +217,11 @@ final class Modal extends Widget
     /**
      * The title content in the modal window.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function withTitle(?string $value): self
+    public function withTitle(string $value): self
     {
         $new = clone $this;
         $new->title = $value;
@@ -275,14 +275,12 @@ final class Modal extends Widget
     /**
      * Disable toggle button.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutToggleButton(bool $value = false): self
+    public function withoutToggleButton(): self
     {
         $new = clone $this;
-        $new->toggleButtonEnabled = $value;
+        $new->toggleButtonEnabled = false;
 
         return $new;
     }
@@ -290,11 +288,11 @@ final class Modal extends Widget
     /**
      * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function withSize(?string $value): self
+    public function withSize(string $value): self
     {
         $new = clone $this;
         $new->size = $value;
@@ -305,14 +303,12 @@ final class Modal extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
@@ -328,11 +324,11 @@ final class Modal extends Widget
     {
         $button = $this->renderCloseButton();
 
-        if ($this->title !== null) {
+        if ($this->title !== '') {
             Html::addCssClass($this->titleOptions, ['titleOptions' => 'modal-title']);
         }
 
-        $header = ($this->title === null) ? '' : Html::tag('h5', $this->title, $this->titleOptions);
+        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions);
 
         if ($button !== null) {
             $header .= "\n" . $button;
@@ -384,10 +380,10 @@ final class Modal extends Widget
      *
      * @return string the rendering result
      */
-    private function renderFooter(): ?string
+    private function renderFooter(): string
     {
-        if ($this->footer === null) {
-            return null;
+        if ($this->footer === '') {
+            return '';
         }
 
         Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
@@ -468,7 +464,7 @@ final class Modal extends Widget
             'id' => $this->options['id'] . '-label',
         ], $this->titleOptions);
 
-        if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== null) {
+        if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== '') {
             $this->options['aria-labelledby'] = $this->titleOptions['id'];
         }
 

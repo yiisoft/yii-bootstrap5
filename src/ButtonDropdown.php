@@ -169,14 +169,12 @@ final class ButtonDropdown extends Widget
     /**
      * Whether the label should be HTML-encoded.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -217,14 +215,12 @@ final class ButtonDropdown extends Widget
      * Whether to render the container using the {@see options} as HTML attributes. If set to `false`, the container
      * element enclosing the button and dropdown will NOT be rendered.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutRenderContainer(bool $value = false): self
+    public function withoutRenderContainer(): self
     {
         $new = clone $this;
-        $new->renderContainer = $value;
+        $new->renderContainer = false;
 
         return $new;
     }
@@ -232,14 +228,12 @@ final class ButtonDropdown extends Widget
     /**
      * Whether to display a group of split-styled button group.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withSplit(bool $value = true): self
+    public function withSplit(): self
     {
         $new = clone $this;
-        $new->split = $value;
+        $new->split = true;
 
         return $new;
     }
@@ -262,14 +256,12 @@ final class ButtonDropdown extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
@@ -304,8 +296,8 @@ final class ButtonDropdown extends Widget
 
             $splitButton = Button::widget()
                 ->withLabel('<span class="sr-only">Toggle Dropdown</span>')
-                ->withoutEncodeLabels()
                 ->withOptions($this->buttonOptions)
+                ->withoutEncodeLabels()
                 ->render();
         } else {
             $buttonOptions = $this->buttonOptions;
@@ -323,13 +315,13 @@ final class ButtonDropdown extends Widget
             $buttonOptions['role'] = 'button';
         }
 
-        return Button::widget()
-            ->withTagName($this->tagName)
-            ->withLabel($label)
-            ->withOptions($buttonOptions)
-            ->withoutEncodeLabels()
-            ->render()
-            . "\n" . $splitButton;
+        $button = Button::widget()->withLabel($label)->withOptions($buttonOptions)->withTagName($this->tagName);
+
+        if ($this->encodeLabels === false) {
+            $button = $button->withoutEncodeLabels();
+        }
+
+        return $button->render() . "\n" . $splitButton;
     }
 
     /**
@@ -341,9 +333,12 @@ final class ButtonDropdown extends Widget
     {
         $dropdownClass = $this->dropdownClass;
 
-        return $dropdownClass::widget()
-            ->withItems($this->dropdown['items'])
-            ->withoutEncodeLabels($this->encodeLabels)
-            ->render();
+        $dropdown = $dropdownClass::widget()->withItems($this->dropdown['items']);
+
+        if ($this->encodeLabels === false) {
+            $dropdown = $dropdown->withoutEncodeLabels();
+        }
+
+        return $dropdown->render();
     }
 }

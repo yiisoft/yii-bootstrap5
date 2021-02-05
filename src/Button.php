@@ -48,14 +48,12 @@ final class Button extends Widget
     /**
      * Whether the label should be HTML-encoded.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -110,14 +108,12 @@ final class Button extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }

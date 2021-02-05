@@ -224,9 +224,9 @@ final class TabsTest extends TestCase
                 ],
             ])
             ->withItemOptions(['tag' => $checkTag])
-            ->withRenderTabContent(true)
+            ->withoutRenderTabContent()
             ->render();
-        $this->assertStringContainsString('<' . $checkTag, $html);
+        $this->assertStringNotContainsString('<' . $checkTag, $html);
     }
 
     public function testTabContentOptions(): void

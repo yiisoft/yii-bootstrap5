@@ -64,7 +64,7 @@ HTML;
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withCrossfade(true)
+            ->withCrossfade()
             ->withItems([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',

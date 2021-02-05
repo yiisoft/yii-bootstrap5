@@ -89,14 +89,12 @@ final class Dropdown extends Widget
     /**
      * Whether the labels for header items should be HTML-encoded.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -135,14 +133,12 @@ final class Dropdown extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
@@ -225,30 +221,26 @@ final class Dropdown extends Widget
 
                 $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
 
-                $lines[] = Html::a(
-                    $label,
-                    $url,
-                    array_merge(
+                $dropdown = self::widget()
+                    ->withItems($item['items'])
+                    ->withOptions($submenuOptions)
+                    ->withSubmenuOptions($submenuOptions);
+
+                if ($this->encodeLabels === false) {
+                    $dropdown = $dropdown->withoutEncodeLabels();
+                }
+
+                $linkOptions = array_merge(
                     [
                         'data-bs-toggle' => 'dropdown',
                         'aria-haspopup' => 'true',
                         'aria-expanded' => 'false',
                         'role' => 'button',
                     ],
-                    $linkOptions
-                )
-                )
-
-                . Html::tag(
-                    'ul',
-                    self::widget()
-                        ->withItems($item['items'])
-                        ->withOptions($submenuOptions)
-                        ->withSubmenuOptions($submenuOptions)
-                        ->withoutEncodeLabels($this->encodeLabels)
-                        ->render(),
-                    $itemOptions,
+                    $linkOptions,
                 );
+
+                $lines[] = Html::a($label, $url, $linkOptions) . Html::tag('ul', $dropdown->render(), $itemOptions);
             }
         }
 

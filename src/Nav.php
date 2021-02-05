@@ -111,7 +111,7 @@ final class Nav extends Widget
     private bool $encodeTags = false;
     private bool $activateItems = true;
     private bool $activateParents = false;
-    private ?string $currentPath = null;
+    private string $currentPath = '';
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
 
@@ -164,14 +164,12 @@ final class Nav extends Widget
     /**
      * Whether the nav items labels should be HTML-encoded.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutEncodeLabels(bool $value = false): self
+    public function withoutEncodeLabels(): self
     {
         $new = clone $this;
-        $new->encodeLabels = $value;
+        $new->encodeLabels = false;
 
         return $new;
     }
@@ -179,16 +177,14 @@ final class Nav extends Widget
     /**
      * Whether to automatically activate items according to whether their currentPath matches the currently requested.
      *
-     * @param bool $value
-     *
      * @return $this
      *
      * {@see isItemActive}
      */
-    public function withActivateItems(bool $value): self
+    public function withoutActivateItems(): self
     {
         $new = clone $this;
-        $new->activateItems = $value;
+        $new->activateItems = false;
 
         return $new;
     }
@@ -196,14 +192,12 @@ final class Nav extends Widget
     /**
      * Whether to activate parent menu items when one of the corresponding child menu items is active.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withActivateParents(bool $value): self
+    public function withActivateParents(): self
     {
         $new = clone $this;
-        $new->activateParents = $value;
+        $new->activateParents = true;
 
         return $new;
     }
@@ -211,11 +205,11 @@ final class Nav extends Widget
     /**
      * Allows you to assign the current path of the url from request controller.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function withCurrentPath(?string $value): self
+    public function withCurrentPath(string $value): self
     {
         $new = clone $this;
         $new->currentPath = $value;
@@ -258,14 +252,12 @@ final class Nav extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
@@ -368,11 +360,15 @@ final class Nav extends Widget
     {
         $dropdownClass = $this->dropdownClass;
 
-        return $dropdownClass::widget()
-            ->withoutEncodeLabels($this->encodeLabels)
+        $dropdown = $dropdownClass::widget()
             ->withItems($items)
-            ->withOptions(ArrayHelper::getValue($parentItem, 'dropdownOptions', []))
-            ->render();
+            ->withOptions(ArrayHelper::getValue($parentItem, 'dropdownOptions', []));
+
+        if ($this->encodeLabels === false) {
+            $dropdown->withoutEncodeLabels();
+        }
+
+        return $dropdown->render();
     }
 
     /**

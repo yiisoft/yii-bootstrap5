@@ -90,14 +90,12 @@ final class Carousel extends Widget
     /**
      * Animate slides with a fade transition instead of a slide. Defaults to `false`.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withCrossfade(bool $value): self
+    public function withCrossfade(): self
     {
         $new = clone $this;
-        $new->crossfade = $value;
+        $new->crossfade = true;
 
         return $new;
     }
@@ -148,14 +146,12 @@ final class Carousel extends Widget
     /**
      * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function withoutShowIndicators(bool $value = false): self
+    public function withoutShowIndicators(): self
     {
         $new = clone $this;
-        $new->showIndicators = $value;
+        $new->showIndicators = false;
 
         return $new;
     }
@@ -163,14 +159,12 @@ final class Carousel extends Widget
     /**
      * Allows you to enable or disable the encoding tags html.
      *
-     * @param bool $value
-     *
      * @return self
      */
-    public function withEncodeTags(bool $value = true): self
+    public function withEncodeTags(): self
     {
         $new = clone $this;
-        $new->encodeTags = $value;
+        $new->encodeTags = true;
 
         return $new;
     }
