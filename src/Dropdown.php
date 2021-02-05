@@ -46,7 +46,7 @@ final class Dropdown extends Widget
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, 'dropdown-menu');
+        Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
         if ($this->encodeTags === false) {
             $this->options = array_merge($this->options, ['itemOptions' => ['encode' =>false], 'encode' => false]);
@@ -181,7 +181,7 @@ final class Dropdown extends Widget
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
             $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
-            Html::addCssClass($linkOptions, 'dropdown-item');
+            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
 
             if ($this->encodeTags === false) {
                 $linkOptions = array_merge($linkOptions, ['encode' => false]);
@@ -191,9 +191,9 @@ final class Dropdown extends Widget
             if ($disabled) {
                 ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
                 ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-                Html::addCssClass($linkOptions, 'disabled');
+                Html::addCssClass($linkOptions, ['disable' => 'disabled']);
             } elseif ($active) {
-                Html::addCssClass($linkOptions, 'active');
+                Html::addCssClass($linkOptions, ['active' => 'active']);
             }
 
             $url = $item['url'] ?? null;
@@ -217,15 +217,20 @@ final class Dropdown extends Widget
                     $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
                 }
 
-                Html::addCssClass($submenuOptions, ['dropdown-menu']);
-                Html::addCssClass($linkOptions, ['dropdown-toggle']);
+                Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
+                Html::addCssClass($linkOptions, ['toggle' => 'dropdown-toggle']);
 
-                $lines[] = Html::a($label, $url, array_merge([
-                    'data-bs-toggle' => 'dropdown',
-                    'aria-haspopup' => 'true',
-                    'aria-expanded' => 'false',
-                    'role' => 'button',
-                ], $linkOptions))
+                $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
+
+                $lines[] = Html::a($label, $url, array_merge(
+                    [
+                        'data-bs-toggle' => 'dropdown',
+                        'aria-haspopup' => 'true',
+                        'aria-expanded' => 'false',
+                        'role' => 'button',
+                    ],
+                    $linkOptions)
+                )
 
                 . Html::tag(
                     'ul',
@@ -235,10 +240,7 @@ final class Dropdown extends Widget
                         ->withSubmenuOptions($submenuOptions)
                         ->withoutEncodeLabels($this->encodeLabels)
                         ->render(),
-                    array_merge(
-                        ['aria-expanded' => 'false', 'class' => ['dropdown']],
-                        $itemOptions
-                    )
+                    $itemOptions,
                 );
             }
         }
