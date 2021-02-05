@@ -122,7 +122,7 @@ HTML;
         $items = [
             [
                 'label' => 'item 1',
-            ]
+            ],
         ];
 
         $this->expectException(RuntimeException::class);
