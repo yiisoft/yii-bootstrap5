@@ -50,7 +50,7 @@ final class Dropdown extends Widget
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['itemOptions' => ['encode' =>false], 'encode' => false]);
+            $this->options = array_merge($this->options, ['itemOptions' => ['encode' => false], 'encode' => false]);
         }
 
         return $this->renderItems($this->items, $this->options);
@@ -153,7 +153,7 @@ final class Dropdown extends Widget
      * @param array $items the menu items to be rendered
      * @param array $options the container HTML attributes
      *
-     * @throws JsonException|RuntimeException|InvalidConfigException if the label option is not specified in one of the
+     * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
      * items.
      *
      * @return string the rendering result.
@@ -225,14 +225,18 @@ final class Dropdown extends Widget
 
                 $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
 
-                $lines[] = Html::a($label, $url, array_merge(
+                $lines[] = Html::a(
+                    $label,
+                    $url,
+                    array_merge(
                     [
                         'data-bs-toggle' => 'dropdown',
                         'aria-haspopup' => 'true',
                         'aria-expanded' => 'false',
                         'role' => 'button',
                     ],
-                    $linkOptions)
+                    $linkOptions
+                )
                 )
 
                 . Html::tag(

@@ -142,7 +142,6 @@ HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
-
     public function testEncodeTags(): void
     {
         ButtonToolbar::counter(0);

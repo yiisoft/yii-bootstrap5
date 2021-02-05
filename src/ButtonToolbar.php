@@ -155,5 +155,4 @@ final class ButtonToolbar extends Widget
 
         return implode("\n", $buttonGroups);
     }
-
 }
