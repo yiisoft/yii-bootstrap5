@@ -52,7 +52,7 @@ final class Toast extends Widget
     private array $options = [];
     private bool $encodeTags = false;
 
-    public function begin(): ?string
+    public function begin(): string
     {
         parent::begin();
 
@@ -279,7 +279,7 @@ final class Toast extends Widget
      *
      * @return string the rendering result
      */
-    private function renderCloseButton(): ?string
+    private function renderCloseButton(): string
     {
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
         $label = ArrayHelper::remove(

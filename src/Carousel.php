@@ -47,7 +47,7 @@ final class Carousel extends Widget
     private bool $crossfade = false;
     private array $options = ['data-bs-ride' => 'carousel'];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-carousel";
@@ -57,7 +57,7 @@ final class Carousel extends Widget
         Html::addCssClass($this->options, ['widget' => 'carousel', 'slide']);
 
         if ($this->crossfade) {
-            Html::addCssClass($this->options, 'carousel-fade');
+            Html::addCssClass($this->options, ['crossfade' => 'carousel-fade']);
         }
 
         if ($this->encodeTags === false) {
@@ -75,7 +75,7 @@ final class Carousel extends Widget
      *
      * If null, it means the previous and the next control buttons should not be displayed.
      *
-     * @param array|null $value
+     * @param array $value
      *
      * @return $this
      */
@@ -190,7 +190,7 @@ final class Carousel extends Widget
             $options = ['data-bs-target' => '#' . $this->options['id'], 'data-bs-slide-to' => $i];
             if ($i === 0) {
                 /** @psalm-suppress InvalidArgument */
-                Html::addCssClass($options, 'active');
+                Html::addCssClass($options, ['active' => 'active']);
             }
             $indicators[] = Html::tag('li', '', $options);
         }
@@ -246,7 +246,7 @@ final class Carousel extends Widget
 
             if ($caption !== null) {
                 $captionOptions = ArrayHelper::remove($item, 'captionOptions', []);
-                Html::addCssClass($captionOptions, ['widget' => 'carousel-caption']);
+                Html::addCssClass($captionOptions, ['captionOptions' => 'carousel-caption']);
 
                 if ($this->encodeTags === false) {
                     $captionOptions = array_merge($captionOptions, ['encode' => false]);
@@ -267,7 +267,7 @@ final class Carousel extends Widget
         }
 
         if ($index === 0) {
-            Html::addCssClass($options, 'active');
+            Html::addCssClass($options, ['active' => 'active']);
         }
 
         return Html::div($content . "\n" . $caption, $options);

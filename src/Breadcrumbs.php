@@ -36,7 +36,7 @@ final class Breadcrumbs extends Widget
     private array $navOptions = ['aria-label' => 'breadcrumb'];
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (empty($this->links)) {
             return '';

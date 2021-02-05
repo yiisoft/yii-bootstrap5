@@ -28,8 +28,7 @@ use function is_array;
  * // button group with an item as a string
  * echo ButtonGroup::widget()
  *     ->withButtons([
- *         Button::widget()
- *             ->label('A'),
+ *         Button::widget()->withLabel('A'),
  *         ['label' => 'B'],
  *     ]);
  * ```
@@ -43,7 +42,7 @@ final class ButtonGroup extends Widget
     private bool $encodeTags = false;
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-group";

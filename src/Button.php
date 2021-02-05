@@ -25,7 +25,7 @@ final class Button extends Widget
     private bool $encodeTags = false;
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button";

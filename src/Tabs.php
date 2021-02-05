@@ -69,7 +69,7 @@ final class Tabs extends Widget
     private array $panes = [];
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-tabs";
@@ -77,7 +77,7 @@ final class Tabs extends Widget
 
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'nav', $this->navType]);
-        Html::addCssClass($this->tabContentOptions, 'tab-content');
+        Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
         if ($this->encodeTags === false) {
             $this->itemOptions = array_merge($this->itemOptions, ['encode' => false]);
@@ -360,7 +360,7 @@ final class Tabs extends Widget
             Html::addCssClass($options, ['widget' => 'tab-pane']);
 
             if ($selected) {
-                Html::addCssClass($options, 'active');
+                Html::addCssClass($options, ['active' => 'active']);
             }
 
             /** @psalm-suppress ConflictingReferenceConstraint */

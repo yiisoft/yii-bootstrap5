@@ -58,7 +58,7 @@ final class Modal extends Widget
     private array $options = [];
     private bool $encodeTags = false;
 
-    public function begin(): ?string
+    public function begin(): string
     {
         parent::begin();
 
@@ -81,7 +81,7 @@ final class Modal extends Widget
             $this->renderBodyBegin() . "\n";
     }
 
-    public function run(): string
+    protected function run(): string
     {
         return
             "\n" . $this->renderBodyEnd() .
@@ -329,7 +329,7 @@ final class Modal extends Widget
         $button = $this->renderCloseButton();
 
         if ($this->title !== null) {
-            Html::addCssClass($this->titleOptions, 'modal-title');
+            Html::addCssClass($this->titleOptions, ['titleOptions' => 'modal-title']);
         }
 
         $header = ($this->title === null) ? '' : Html::tag('h5', $this->title, $this->titleOptions);
@@ -340,7 +340,7 @@ final class Modal extends Widget
             return '';
         }
 
-        Html::addCssClass($this->headerOptions, 'modal-header');
+        Html::addCssClass($this->headerOptions, ['headerOptions' => 'modal-header']);
 
         if ($this->encodeTags === false) {
             $this->headerOptions = array_merge($this->headerOptions, ['encode' =>false]);
@@ -462,7 +462,7 @@ final class Modal extends Widget
         ], $this->options);
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, 'modal');
+        Html::addCssClass($this->options, ['widget' => 'modal']);
 
         $this->titleOptions = array_merge([
             'id' => $this->options['id'] . '-label',
@@ -473,12 +473,12 @@ final class Modal extends Widget
         }
 
         if ($this->closeButtonEnabled !== false) {
+            Html::addCssClass($this->closeButton, ['closeButton' => 'close']);
+
             $this->closeButton = array_merge([
                 'data-bs-dismiss' => 'modal',
                 'type' => 'button',
             ], $this->closeButton);
-
-            Html::addCssClass($this->closeButton, 'close');
         }
 
         if ($this->toggleButton !== []) {

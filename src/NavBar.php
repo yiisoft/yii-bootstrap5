@@ -122,7 +122,7 @@ final class NavBar extends Widget
     private array $options = [];
     private bool $encodeTags = false;
 
-    public function begin(): ?string
+    public function begin(): string
     {
         parent::begin();
 
@@ -190,7 +190,7 @@ final class NavBar extends Widget
         return $htmlStart;
     }
 
-    public function run(): string
+    protected function run(): string
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 

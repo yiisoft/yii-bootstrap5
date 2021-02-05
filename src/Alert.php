@@ -29,7 +29,7 @@ final class Alert extends Widget
     private bool $encodeTags = false;
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-alert";
@@ -184,8 +184,8 @@ final class Alert extends Widget
                 ],
             );
 
-            Html::addCssclass($this->closeButton, 'btn-close');
-            Html::addCssClass($this->options, ['alert-dismissible']);
+            Html::addCssclass($this->closeButton, ['buttonOptions' => 'btn-close']);
+            Html::addCssClass($this->options, ['alert-dismissible' => 'alert-dismissible']);
         }
 
         if ($this->encodeTags === false) {

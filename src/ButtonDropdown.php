@@ -59,7 +59,7 @@ final class ButtonDropdown extends Widget
     private string $dropdownClass = Dropdown::class;
     private bool $renderContainer = true;
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->dropdown['items'])) {
             return '';
@@ -283,7 +283,7 @@ final class ButtonDropdown extends Widget
      */
     private function renderButton(): string
     {
-        Html::addCssClass($this->buttonOptions, 'btn');
+        Html::addCssClass($this->buttonOptions, ['buttonOptions' => 'btn']);
 
         $label = $this->label;
 

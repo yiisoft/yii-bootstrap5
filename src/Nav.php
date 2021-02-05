@@ -115,7 +115,7 @@ final class Nav extends Widget
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-nav";
@@ -334,13 +334,13 @@ final class Nav extends Widget
             }
         }
 
-        Html::addCssClass($options, 'nav-item');
-        Html::addCssClass($linkOptions, 'nav-link');
+        Html::addCssClass($options, ['nav' => 'nav-item']);
+        Html::addCssClass($linkOptions, ['linkOptions' => 'nav-link']);
 
         if ($disabled) {
             ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
             ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-            Html::addCssClass($linkOptions, 'disabled');
+            Html::addCssClass($linkOptions, ['disabled' => 'disabled']);
         } elseif ($this->activateItems && $active) {
             Html::addCssClass($linkOptions, ['active' => 'active']);
         }

@@ -15,7 +15,6 @@ use function array_merge;
 use function array_search;
 use function implode;
 use function is_array;
-use function is_int;
 use function is_numeric;
 use function is_object;
 use function is_string;
@@ -64,14 +63,14 @@ final class Accordion extends Widget
     private array $itemToggleOptions = [];
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-accordion";
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, 'accordion');
+        Html::addCssClass($this->options, ['widget' => 'accordion']);
 
         if ($this->encodeTags === false) {
             $this->options = array_merge($this->options, ['encode' => false]);
@@ -241,7 +240,7 @@ final class Accordion extends Widget
             $options = ArrayHelper::getValue($item, 'options', []);
 
             if ($this->encodeTags === false) {
-                $options = array_merge($options, ['encode' => false]);
+                ArrayHelper::setValue($options, 'encode', false);
             }
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
@@ -271,10 +270,10 @@ final class Accordion extends Widget
             $options = ArrayHelper::getValue($item, 'contentOptions', []);
             $options['id'] = $id;
 
-            Html::addCssClass($options, ['accordion-body', 'collapse']);
+            Html::addCssClass($options, ['widget' => 'accordion-body collapse']);
 
             if ($expand) {
-                Html::addCssClass($options, 'show');
+                Html::addCssClass($options, ['visibility' => 'show']);
             }
 
             if (!isset($options['aria-label'], $options['aria-labelledby'])) {
@@ -306,9 +305,9 @@ final class Accordion extends Widget
                 ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
             } else {
-                Html::addCssClass($itemToggleOptions, 'accordion-button');
+                Html::addCssClass($itemToggleOptions, ['widget' => 'accordion-button']);
                 if (!$expand) {
-                    Html::addCssClass($itemToggleOptions, 'collapsed');
+                    Html::addCssClass($itemToggleOptions, ['expand' => 'collapsed']);
                 }
                 $header = Html::button($header, $itemToggleOptions);
             }

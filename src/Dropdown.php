@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 use JsonException;
 use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Html\Html;
 
 use function array_key_exists;
@@ -39,7 +40,7 @@ final class Dropdown extends Widget
     private array $submenuOptions = [];
     private array $options = [];
 
-    public function run(): string
+    protected function run(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";
@@ -152,7 +153,8 @@ final class Dropdown extends Widget
      * @param array $items the menu items to be rendered
      * @param array $options the container HTML attributes
      *
-     * @throws JsonException|RuntimeException if the label option is not specified in one of the items.
+     * @throws JsonException|RuntimeException|InvalidConfigException if the label option is not specified in one of the
+     * items.
      *
      * @return string the rendering result.
      */
@@ -183,9 +185,10 @@ final class Dropdown extends Widget
 
             Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
 
+            /** @psalm-suppress ConflictingReferenceConstraint */
             if ($this->encodeTags === false) {
-                $linkOptions = array_merge($linkOptions, ['encode' => false]);
-                $itemOptions = array_merge($itemOptions, ['encode' => false]);
+                ArrayHelper::setValue($linkOptions, 'encode', false);
+                ArrayHelper::setValue($itemOptions, 'encode', false);
             }
 
             if ($disabled) {
