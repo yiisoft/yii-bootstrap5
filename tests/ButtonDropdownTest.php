@@ -150,7 +150,7 @@ HTML;
                     'items' => [
                         ['label' => 'ItemA', 'url' => '#'],
                         ['label' => '<span><i class=fas fas-tests>ItemB></i></span>', 'url' => '#'],
-                    ]
+                    ],
                 ]
             )
             ->render();
@@ -170,7 +170,7 @@ HTML;
                     'items' => [
                         ['label' => 'ItemA', 'url' => '#'],
                         ['label' => '<span><i class=fas fas-tests>ItemB></i></span>', 'url' => '#'],
-                    ]
+                    ],
                 ]
             )
             ->withoutEncodeLabels()
