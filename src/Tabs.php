@@ -19,7 +19,7 @@ use function array_merge;
  *
  * ```php
  * echo Tabs::widget()
- *     ->items([
+ *     ->withItems([
  *         [
  *             'label' => 'One',
  *             'content' => 'Anim pariatur cliche...',

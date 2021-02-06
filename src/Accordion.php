@@ -26,7 +26,7 @@ use function is_string;
  *
  * ```php
  * echo Accordion::widget()
- *     ->witItems([
+ *     ->withItems([
  *         [
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => 'Anim pariatur cliche...',

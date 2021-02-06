@@ -16,8 +16,8 @@ use Yiisoft\Html\Html;
  * ```php
  * // a button group using Dropdown widget
  * echo ButtonDropdown::widget()
- *     ->label('Action')
- *     ->dropdown'([
+ *     ->withLabel('Action')
+ *     ->withDropdown'([
  *         'items' => [
  *             ['label' => 'DropdownA', 'url' => '/'],
  *             ['label' => 'DropdownB', 'url' => '#'],
