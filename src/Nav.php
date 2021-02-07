@@ -125,7 +125,7 @@ final class Nav extends Widget
         Html::addCssClass($this->options, ['widget' => 'nav']);
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         return $this->renderItems();
@@ -330,16 +330,16 @@ final class Nav extends Widget
         Html::addCssClass($linkOptions, ['linkOptions' => 'nav-link']);
 
         if ($disabled) {
-            ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-            ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
+            $linkOptions['tabindex'] = '-1';
+            $linkOptions['aria-disabled'] = 'true';
             Html::addCssClass($linkOptions, ['disabled' => 'disabled']);
         } elseif ($this->activateItems && $active) {
             Html::addCssClass($linkOptions, ['active' => 'active']);
         }
 
         if ($this->encodeTags === false) {
-            $linkOptions = array_merge($linkOptions, ['encode' => false]);
-            $options = array_merge($options, ['encode' => false]);
+            $linkOptions['encode'] = false;
+            $options['encode'] = false;
         }
 
         return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);

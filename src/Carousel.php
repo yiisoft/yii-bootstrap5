@@ -61,7 +61,7 @@ final class Carousel extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         return Html::div(
@@ -192,7 +192,7 @@ final class Carousel extends Widget
         $indicatorOptions = ['class' => ['carousel-indicators']];
 
         if ($this->encodeTags === false) {
-            $indicatorOptions = array_merge($indicatorOptions, ['encode' => false]);
+            $indicatorOptions['encode'] = false;
         }
 
         return Html::tag('ol', implode("\n", $indicators), $indicatorOptions);
@@ -212,7 +212,7 @@ final class Carousel extends Widget
         $itemOptions = ['class' => 'carousel-inner'];
 
         if ($this->encodeTags === false) {
-            $itemOptions = array_merge($itemOptions, ['encode' => false]);
+            $itemOptions['encode'] = false;
         }
 
         return Html::div(implode("\n", $items), $itemOptions);
@@ -243,7 +243,7 @@ final class Carousel extends Widget
                 Html::addCssClass($captionOptions, ['captionOptions' => 'carousel-caption']);
 
                 if ($this->encodeTags === false) {
-                    $captionOptions = array_merge($captionOptions, ['encode' => false]);
+                    $captionOptions['encode'] = false;
                 }
 
                 $caption = Html::div($caption, $captionOptions);
@@ -257,7 +257,7 @@ final class Carousel extends Widget
         Html::addCssClass($options, ['widget' => 'carousel-item']);
 
         if ($this->encodeTags === false) {
-            $options = array_merge($options, ['encode' => false]);
+            $options['encode'] = false;
         }
 
         if ($index === 0) {
@@ -289,8 +289,8 @@ final class Carousel extends Widget
         ];
 
         if ($this->encodeTags === false) {
-            $controlsOptions0 = array_merge($controlsOptions0, ['encode' => false]);
-            $controlsOptions1 = array_merge($controlsOptions1, ['encode' => false]);
+            $controlsOptions0['encode'] = false;
+            $controlsOptions1['encode'] = false;
         }
 
         if (isset($this->controls[0], $this->controls[1])) {

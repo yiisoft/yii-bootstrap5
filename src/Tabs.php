@@ -80,9 +80,9 @@ final class Tabs extends Widget
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
         if ($this->encodeTags === false) {
-            $this->itemOptions = array_merge($this->itemOptions, ['encode' => false]);
-            $this->options = array_merge($this->options, ['encode' => false]);
-            $this->tabContentOptions = array_merge($this->tabContentOptions, ['encode' => false]);
+            $this->itemOptions['encode'] = false;
+            $this->options['encode'] = false;
+            $this->tabContentOptions['encode'] = false;
         }
 
         $this->prepareItems($this->items);

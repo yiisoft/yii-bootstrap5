@@ -174,6 +174,54 @@ HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
+    public function testEncodeLabels(): void
+    {
+        Dropdown::counter(0);
+
+        $html = Dropdown::widget()
+            ->withItems([
+                [
+                    'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page1', 'content' => 'Page2'],
+                        ['label' => 'Page2', 'content' => 'Page3'],
+                    ],
+                ],
+            ])
+            ->render();
+        $expected = <<<HTML
+<ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">&lt;span&gt;&lt;i class=fas fastest&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><h6 class="dropdown-header">Page1</h6></li>
+<li><h6 class="dropdown-header">Page2</h6></li>
+</ul></ul></li>
+</ul>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+
+        $html = Dropdown::widget()
+            ->withoutEncodeLabels()
+            ->withItems([
+                [
+                    'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page1', 'content' => 'Page2'],
+                        ['label' => 'Page2', 'content' => 'Page3'],
+                    ],
+                ],
+            ])
+            ->render();
+        $expected = <<<HTML
+<ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"><span><i class=fas fastest></i>Dropdown1</span></a><ul class="dropdown" aria-expanded="false"><ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
+<li><h6 class="dropdown-header">Page1</h6></li>
+<li><h6 class="dropdown-header">Page2</h6></li>
+</ul></ul></li>
+</ul>
+HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
     public function testEncodeTags(): void
     {
         Dropdown::counter(0);
@@ -190,7 +238,6 @@ HTML;
             ])
             ->withEncodeTags()
             ->render();
-
         $expected = <<<HTML
 <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
 <li>&lt;a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"&gt;Dropdown1&lt;/a&gt;&lt;ul class="dropdown" aria-expanded="false"&gt;&amp;lt;ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false"&amp;gt;

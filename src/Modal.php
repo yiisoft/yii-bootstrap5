@@ -67,7 +67,7 @@ final class Modal extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         $this->initOptions();
@@ -337,7 +337,7 @@ final class Modal extends Widget
         Html::addCssClass($this->headerOptions, ['headerOptions' => 'modal-header']);
 
         if ($this->encodeTags === false) {
-            $this->headerOptions = array_merge($this->headerOptions, ['encode' => false]);
+            $this->headerOptions['encode'] = false;
         }
 
         return Html::div($header, $this->headerOptions);
@@ -355,7 +355,7 @@ final class Modal extends Widget
         Html::addCssClass($this->bodyOptions, ['widget' => 'modal-body']);
 
         if ($this->encodeTags === false) {
-            $this->bodyOptions = array_merge($this->bodyOptions, ['encode' => false]);
+            $this->bodyOptions['encode'] = false;
         }
 
         return Html::beginTag('div', $this->bodyOptions);
@@ -387,7 +387,7 @@ final class Modal extends Widget
         Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
 
         if ($this->encodeTags === false) {
-            $this->footerOptions = array_merge($this->footerOptions, ['encode' => false]);
+            $this->footerOptions['encode'] = false;
         }
 
         return Html::div($this->footer, $this->footerOptions);
@@ -410,7 +410,7 @@ final class Modal extends Widget
         $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
 
         if ($this->encodeTags === false) {
-            $this->toggleButton = array_merge($this->toggleButton, ['encode' => false]);
+            $this->toggleButton['encode'] = false;
         }
 
         return Html::tag($tag, $label, $this->toggleButton);
@@ -435,7 +435,7 @@ final class Modal extends Widget
         ]));
 
         if ($this->encodeTags === false) {
-            $this->closeButton = array_merge($this->closeButton, ['encode' => false]);
+            $this->closeButton['encode'] = false;
         }
 
         return Html::tag($tag, $label, $this->closeButton);

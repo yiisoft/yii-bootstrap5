@@ -68,7 +68,7 @@ final class ButtonToolbar extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         return Html::div($this->renderButtonGroups(), $this->options);

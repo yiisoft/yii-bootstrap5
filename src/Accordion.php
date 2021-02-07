@@ -73,7 +73,7 @@ final class Accordion extends Widget
         Html::addCssClass($this->options, ['widget' => 'accordion']);
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         return Html::div($this->renderItems(), $this->options);
@@ -234,7 +234,7 @@ final class Accordion extends Widget
             $options = ArrayHelper::getValue($item, 'options', []);
 
             if ($this->encodeTags === false) {
-                ArrayHelper::setValue($options, 'encode', false);
+                $options['encode'] = false;
             }
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
@@ -289,7 +289,7 @@ final class Accordion extends Widget
             ], $this->itemToggleOptions);
 
             if ($this->encodeTags === false) {
-                $itemToggleOptions = array_merge($itemToggleOptions, ['encode' => false]);
+                $itemToggleOptions['encode'] = false;
             }
 
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
@@ -313,8 +313,8 @@ final class Accordion extends Widget
                 $ulItemOptions = ['itemOptions' => ['class' => 'list-group-item']];
 
                 if ($this->encodeTags === false) {
-                    $ulOptions = array_merge($ulOptions, ['encode' => false]);
-                    $ulItemOptions['itemOptions'] = array_merge($ulItemOptions['itemOptions'], ['encode' => false]);
+                    $ulOptions['encode'] = false;
+                    $ulItemOptions['itemOptions']['encode'] = false;
                 }
 
                 $content = Html::ul($item['content'], array_merge($ulOptions, $ulItemOptions)) . "\n";
@@ -334,8 +334,8 @@ final class Accordion extends Widget
         $groupOptions = ['class' => 'accordion-header', 'id' => $options['id'] . '-heading'];
 
         if ($this->encodeTags === false) {
-            $options = array_merge($options, ['encode' => false]);
-            $groupOptions = array_merge($groupOptions, ['encode' => false]);
+            $options['encode'] = false;
+            $groupOptions['encode'] = false;
         }
 
         $group[] = Html::tag('h2', $header, $groupOptions);

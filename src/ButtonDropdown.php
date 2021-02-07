@@ -74,7 +74,7 @@ final class ButtonDropdown extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options['encode'] = false;
         }
 
         $html = $this->renderButton() . "\n" . $this->renderDropdown();

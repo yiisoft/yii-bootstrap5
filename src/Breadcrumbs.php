@@ -69,8 +69,8 @@ final class Breadcrumbs extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->navOptions = array_merge($this->navOptions, ['encode' => false]);
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->navOptions['encode'] = false;
+            $this->options['encode'] = false;
         }
 
         return Html::tag('nav', Html::tag($this->tag, implode('', $links), $this->options), $this->navOptions);
@@ -253,7 +253,7 @@ final class Breadcrumbs extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $link = array_merge($link, ['encode' => false]);
+            $link['encode'] = false;
         }
 
         if (isset($link['url'])) {

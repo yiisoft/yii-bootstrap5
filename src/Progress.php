@@ -70,7 +70,7 @@ final class Progress extends Widget
         Html::addCssClass($this->options, ['widget' => 'progress']);
 
         if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->options ['encode'] = false;
         }
 
         return $this->renderProgress();

@@ -8,6 +8,8 @@ use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
+use function array_merge;
+
 /**
  * Alert renders an alert bootstrap component.
  *
@@ -185,8 +187,8 @@ final class Alert extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->closeButton = array_merge($this->closeButton, ['encode' => false]);
-            $this->options = array_merge($this->options, ['encode' => false]);
+            $this->closeButton['encode'] = false;
+            $this->options['encode'] = false;
         }
 
         if (!isset($this->options['role'])) {

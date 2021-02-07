@@ -141,10 +141,10 @@ final class NavBar extends Widget
         }
 
         if ($this->encodeTags === false) {
-            $this->collapseOptions = array_merge($this->collapseOptions, ['encode' => false]);
-            $this->brandOptions = array_merge($this->brandOptions, ['encode' => false]);
-            $this->options = array_merge($this->options, ['encode' => false]);
-            $this->togglerOptions = array_merge($this->togglerOptions, ['encode' => false]);
+            $this->collapseOptions['encode'] = false;
+            $this->brandOptions['encode'] = false;
+            $this->options['encode'] = false;
+            $this->togglerOptions['encode'] = false;
         }
 
         $navOptions = $this->options;

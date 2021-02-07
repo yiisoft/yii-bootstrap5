@@ -299,12 +299,12 @@ final class Toast extends Widget
     private function initOptions(): void
     {
         if ($this->encodeTags === false) {
-            $this->bodyOptions = array_merge($this->bodyOptions, ['encode' => false]);
-            $this->closeButton = array_merge($this->closeButton, ['encode' => false]);
-            $this->dateTimeOptions = array_merge($this->dateTimeOptions, ['encode' => false]);
-            $this->headerOptions = array_merge($this->headerOptions, ['encode' => false]);
-            $this->options = array_merge($this->options, ['encode' => false]);
-            $this->titleOptions = array_merge($this->titleOptions, ['encode' => false]);
+            $this->bodyOptions['encode'] = false;
+            $this->closeButton['encode'] = false;
+            $this->dateTimeOptions['encode'] =  false;
+            $this->headerOptions['encode'] = false;
+            $this->options['encode'] = false;
+            $this->titleOptions['encode'] = false;
         }
 
         Html::addCssClass($this->options, ['widget' => 'toast']);
