@@ -301,7 +301,7 @@ final class Toast extends Widget
         if ($this->encodeTags === false) {
             $this->bodyOptions['encode'] = false;
             $this->closeButton['encode'] = false;
-            $this->dateTimeOptions['encode'] =  false;
+            $this->dateTimeOptions['encode'] = false;
             $this->headerOptions['encode'] = false;
             $this->options['encode'] = false;
             $this->titleOptions['encode'] = false;
