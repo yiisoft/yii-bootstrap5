@@ -93,7 +93,7 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Whether to HTML-encode the link labels.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */

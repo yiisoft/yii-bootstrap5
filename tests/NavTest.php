@@ -60,7 +60,7 @@ HTML;
         Nav::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Nav::widget()->withItems([['content' => 'Page1']])->render();
+        Nav::widget()->withItems([['content' => 'Page1']])->render();
     }
 
     public function testRenderDropdownWithDropdownOptions(): void

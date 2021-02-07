@@ -121,7 +121,7 @@ HTML;
         Carousel::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Carousel::widget()
+        Carousel::widget()
             ->withControls(
                 [
                     '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
@@ -144,7 +144,7 @@ HTML;
         Carousel::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Carousel::widget()
+        Carousel::widget()
             ->withItems([
                 [
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -228,13 +228,13 @@ HTML;
         $html = Carousel::widget()
             ->withEncodeTags()
             ->withItems([
-                [
+                array(
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
+                    'captionOptions' => array(
+                        'class' => array('d-none', 'd-md-block'),
+                    ),
+                ),
             ])
             ->render();
         $expected = <<<HTML

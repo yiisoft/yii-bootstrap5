@@ -115,7 +115,7 @@ final class Tabs extends Widget
     }
 
     /**
-     * Whether the labels for header items should be HTML-encoded.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
@@ -243,8 +243,7 @@ final class Tabs extends Widget
     }
 
     /**
-     * Whether to render the `tab-content` container and its content. You may set this property to be false so that you
-     * can manually render `tab-content` yourself in case your tab contents are complex.
+     * Manually render `tab-content` yourself in case your tab contents are complex.
      *
      * @return $this
      */
@@ -274,9 +273,7 @@ final class Tabs extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
-     *
-     * @param bool $value
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */
@@ -396,7 +393,7 @@ final class Tabs extends Widget
             $visible = ArrayHelper::getValue($item, 'visible', true);
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
 
-            if ($visible && $active !== false && ($disabled !== true)) {
+            if ($visible && $active !== false && $disabled !== true) {
                 $this->items[$i]['active'] = true;
                 return;
             }

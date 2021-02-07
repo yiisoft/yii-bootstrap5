@@ -49,7 +49,7 @@ HTML;
         Breadcrumbs::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Breadcrumbs::widget()->withLinks([['url' => '#']])->render();
+        Breadcrumbs::widget()->withLinks([['url' => '#']])->render();
     }
 
     public function testActiveItemTemplate(): void

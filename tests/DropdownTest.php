@@ -66,7 +66,7 @@ HTML;
         Dropdown::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Dropdown::widget()->withItems([['url' => '#test']])->render();
+        Dropdown::widget()->withItems([['url' => '#test']])->render();
     }
 
     public function testSubMenuOptions(): void

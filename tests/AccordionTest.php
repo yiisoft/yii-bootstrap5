@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use RuntimeException;
+use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 
 /**
@@ -109,7 +110,7 @@ HTML;
      *
      * @param array $items
      *
-     * @throws \Yiisoft\Factory\Exceptions\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testMissingLabel(array $items): void
     {
@@ -151,7 +152,7 @@ HTML;
         $this->assertStringNotContainsString('data-bs-parent="', $html);
     }
 
-    public function testExpandOptions()
+    public function testExpandOptions(): void
     {
         Accordion::counter(0);
 

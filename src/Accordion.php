@@ -95,7 +95,7 @@ final class Accordion extends Widget
     }
 
     /**
-     * Whether the labels for header items should be HTML-encoded.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */

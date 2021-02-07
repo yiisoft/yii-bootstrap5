@@ -162,7 +162,7 @@ final class Nav extends Widget
     }
 
     /**
-     * Whether the nav items labels should be HTML-encoded.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
@@ -175,7 +175,7 @@ final class Nav extends Widget
     }
 
     /**
-     * Whether to automatically activate items according to whether their currentPath matches the currently requested.
+     * Disable activate items according to whether their currentPath.
      *
      * @return $this
      *
@@ -250,7 +250,7 @@ final class Nav extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */

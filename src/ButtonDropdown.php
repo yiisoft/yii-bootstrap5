@@ -167,7 +167,7 @@ final class ButtonDropdown extends Widget
     }
 
     /**
-     * Whether the label should be HTML-encoded.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */

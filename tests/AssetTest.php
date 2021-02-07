@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Assets\Exception\InvalidConfigException;
 use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
 
 final class AssetTest extends TestCase
@@ -27,6 +28,8 @@ final class AssetTest extends TestCase
      * @param string $type
      * @param string $asset
      * @param string|null $depend
+     *
+     * @throws InvalidConfigException
      */
     public function testAssetRegister(string $type, string $asset, ?string $depend = null): void
     {

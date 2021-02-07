@@ -77,6 +77,8 @@ final class Toast extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value Body options.
+     *
+     * @return self
      */
     public function withBodyOptions(array $value): self
     {
@@ -210,7 +212,7 @@ final class Toast extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */

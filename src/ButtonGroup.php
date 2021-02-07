@@ -83,7 +83,7 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Whether to HTML-encode the button labels.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */

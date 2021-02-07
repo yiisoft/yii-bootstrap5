@@ -339,8 +339,7 @@ final class NavBar extends Widget
     }
 
     /**
-     * Whether the navbar content should be included in an inner div container which by default adds left and right
-     * padding. Set this to false for a 100% width navbar.
+     * This for a 100% width navbar.
      *
      * @return $this
      */
@@ -387,7 +386,7 @@ final class NavBar extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */

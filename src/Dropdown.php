@@ -87,7 +87,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Whether the labels for header items should be HTML-encoded.
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
@@ -131,7 +131,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */
@@ -230,15 +230,10 @@ final class Dropdown extends Widget
                     $dropdown = $dropdown->withoutEncodeLabels();
                 }
 
-                $linkOptions = array_merge(
-                    [
-                        'data-bs-toggle' => 'dropdown',
-                        'aria-haspopup' => 'true',
-                        'aria-expanded' => 'false',
-                        'role' => 'button',
-                    ],
-                    $linkOptions,
-                );
+                ArrayHelper::setValue($linkOptions, 'data-bs-toggle', 'dropdown');
+                ArrayHelper::setValue($linkOptions, 'aria-haspopup', 'true');
+                ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
+                ArrayHelper::setValue($linkOptions, 'role', 'button');
 
                 $lines[] = Html::a($label, $url, $linkOptions) . Html::tag('ul', $dropdown->render(), $itemOptions);
             }

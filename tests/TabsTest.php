@@ -447,10 +447,9 @@ HTML;
         Tabs::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Tabs::widget()
+        Tabs::widget()
             ->withItems([['content' => '<div>Content 1</div>']])
             ->render();
-        $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testNavType(): void

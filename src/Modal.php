@@ -137,8 +137,6 @@ final class Modal extends Widget
     /**
      * Disable close button.
      *
-     * @param bool $value
-     *
      * @return $this
      */
     public function withoutCloseButton(): self
@@ -301,7 +299,7 @@ final class Modal extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to disable the encoding tags html.
      *
      * @return self
      */

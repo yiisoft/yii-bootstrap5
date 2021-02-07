@@ -81,7 +81,7 @@ HTML;
         Progress::counter(0);
 
         $this->expectException(RuntimeException::class);
-        $html = Progress::widget()
+        Progress::widget()
             ->withBars(['options' => ['class' => ['bg-info']]])
             ->render();
     }
