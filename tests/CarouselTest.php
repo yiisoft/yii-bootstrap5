@@ -228,13 +228,13 @@ HTML;
         $html = Carousel::widget()
             ->withEncodeTags()
             ->withItems([
-                array(
+                [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => array(
-                        'class' => array('d-none', 'd-md-block'),
-                    ),
-                ),
+                    'captionOptions' => [
+                        'class' => ['d-none', 'd-md-block'],
+                    ],
+                ],
             ])
             ->render();
         $expected = <<<HTML
