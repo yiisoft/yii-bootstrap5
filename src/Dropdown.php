@@ -179,13 +179,12 @@ final class Dropdown extends Widget
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
             $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
-            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
-
-            /** @psalm-suppress ConflictingReferenceConstraint */
             if ($this->encodeTags === false) {
                 ArrayHelper::setValue($linkOptions, 'encode', false);
                 ArrayHelper::setValue($itemOptions, 'encode', false);
             }
+
+            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
 
             if ($disabled) {
                 ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
@@ -197,6 +196,7 @@ final class Dropdown extends Widget
 
             $url = $item['url'] ?? null;
 
+            /** @psalm-suppress ConflictingReferenceConstraint */
             if (empty($item['items'])) {
                 if ($label === '-') {
                     $content = Html::div('', ['class' => 'dropdown-divider']);
