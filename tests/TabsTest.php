@@ -356,6 +356,8 @@ final class TabsTest extends TestCase
      */
     public function testIdRendering(): void
     {
+        Tabs::counter(0);
+
         $html = Tabs::widget()
             ->withItems([
                 [
