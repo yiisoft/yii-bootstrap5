@@ -157,7 +157,7 @@ final class Carousel extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to enable the encoding tags html.
      *
      * @return self
      */

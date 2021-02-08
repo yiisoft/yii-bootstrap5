@@ -34,10 +34,7 @@ final class ButtonDropdownTest extends TestCase
 
     public function testMissingDropdownItems(): void
     {
-        ButtonDropdown::counter(0);
-
-        $html = ButtonDropdown::widget()
-            ->render();
+        $html = ButtonDropdown::widget()->render();
         $this->assertEmpty($html);
     }
 

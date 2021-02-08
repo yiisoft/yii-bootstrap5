@@ -250,7 +250,7 @@ final class Nav extends Widget
     }
 
     /**
-     * Allows you to disable the encoding tags html.
+     * Allows you to enable the encoding tags html.
      *
      * @return self
      */

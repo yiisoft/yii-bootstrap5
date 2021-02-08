@@ -63,9 +63,7 @@ final class ButtonToolbarTest extends TestCase
     {
         ButtonToolbar::counter(0);
 
-        $html = ButtonToolbar::widget()
-            ->withButtonGroups([[]])
-            ->render();
+        $html = ButtonToolbar::widget()->withButtonGroups([[]])->render();
         $expected = <<<'HTML'
         <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"></div>
         HTML;

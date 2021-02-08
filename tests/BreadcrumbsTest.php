@@ -38,8 +38,6 @@ final class BreadcrumbsTest extends TestCase
 
     public function testMissingLinks(): void
     {
-        Breadcrumbs::counter(0);
-
         $html = Breadcrumbs::widget()->withLinks([])->render();
         $this->assertEmpty($html);
     }

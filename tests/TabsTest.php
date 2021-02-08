@@ -430,9 +430,7 @@ final class TabsTest extends TestCase
     {
         Tabs::counter(0);
 
-        $html = Tabs::widget()
-            ->withPanes(['content' => '<div>Content 1</div>'])
-            ->render();
+        $html = Tabs::widget()->withPanes(['content' => '<div>Content 1</div>'])->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"></ul>
         <div class="tab-content"><div>Content 1</div></div>
@@ -442,12 +440,8 @@ final class TabsTest extends TestCase
 
     public function testMissingLabel(): void
     {
-        Tabs::counter(0);
-
         $this->expectException(RuntimeException::class);
-        Tabs::widget()
-            ->withItems([['content' => '<div>Content 1</div>']])
-            ->render();
+        Tabs::widget()->withItems([['content' => '<div>Content 1</div>']])->render();
     }
 
     public function testNavType(): void

@@ -117,7 +117,7 @@ final class Alert extends Widget
     }
 
     /**
-     * Allows you to enable or disable the encoding tags html.
+     * Allows you to enable encoding tags html.
      *
      * @return self
      */
