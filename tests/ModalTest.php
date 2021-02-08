@@ -22,7 +22,7 @@ final class ModalTest extends TestCase
             ->WithBodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->begin();
         $html .= Modal::end();
-        $expected = <<<HTML
+        $expected = <<<'HTML'
 <button>Show</button>
 <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog ">
@@ -67,7 +67,7 @@ HTML;
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
+        $expected = <<<'HTML'
 <button>Show</button>
 <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog ">
@@ -117,7 +117,7 @@ HTML;
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
+        $expected = <<<'HTML'
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#w0-modal">Launch demo modal</button>
 <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog ">
@@ -143,21 +143,21 @@ HTML;
         $html = Modal::widget()->withCloseButton(['class' => 'btn-lg'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="btn-lg close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="btn-lg close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -168,20 +168,20 @@ HTML;
         $html = Modal::widget()->withoutCloseButton()->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
 
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -192,21 +192,21 @@ HTML;
         $html = Modal::widget()->withFooterOptions(['class' => 'text-dark'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -217,21 +217,21 @@ HTML;
         $html = Modal::widget()->withHeaderOptions(['class' => 'text-danger'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="text-danger modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="text-danger modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -242,21 +242,21 @@ HTML;
         $html = Modal::widget()->withOptions(['class' => 'testMe'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="testMe modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="testMe modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -267,21 +267,21 @@ HTML;
         $html = Modal::widget()->withTitle('My first modal.')->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header"><h5 id="w0-modal-label" class="modal-title">My first modal.</h5>
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header"><h5 id="w0-modal-label" class="modal-title">My first modal.</h5>
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -292,21 +292,21 @@ HTML;
         $html = Modal::widget()->withTitle('My first modal.')->withTitleOptions(['class' => 'text-center'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header"><h5 id="w0-modal-label" class="text-center modal-title">My first modal.</h5>
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header"><h5 id="w0-modal-label" class="text-center modal-title">My first modal.</h5>
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -317,21 +317,21 @@ HTML;
         $html = Modal::widget()->withoutToggleButton()->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
+        $expected = <<<'HTML'
 
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -342,43 +342,41 @@ HTML;
         $html = Modal::widget()->withSize(Modal::SIZE_LARGE)->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
-
-        Modal::counter(0);
 
         $html = Modal::widget()->withSize(Modal::SIZE_SMALL)->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog modal-sm">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w1-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&amp;times;</span></button></div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -389,21 +387,21 @@ HTML;
         $html = Modal::widget()->withEncodeTags()->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
-        $expected = <<<HTML
-<button>Show</button>
-<div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog ">
-<div class="modal-content">
-<div class="modal-header">
-&lt;button type="button" class="close" data-bs-dismiss="modal"&gt;&amp;lt;span aria-hidden="true"&amp;gt;&amp;amp;amp;times;&amp;lt;/span&amp;gt;&lt;/button&gt;</div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
+        $expected = <<<'HTML'
+        <button>Show</button>
+        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+        <div class="modal-content">
+        <div class="modal-header">
+        &lt;button type="button" class="close" data-bs-dismiss="modal"&gt;&amp;lt;span aria-hidden="true"&amp;gt;&amp;amp;amp;times;&amp;lt;/span&amp;gt;&lt;/button&gt;</div>
+        <div class="modal-body">
+        <p>Woohoo, you're reading this text in a modal!</p>
+        </div>
 
-</div>
-</div>
-</div>
-HTML;
+        </div>
+        </div>
+        </div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }

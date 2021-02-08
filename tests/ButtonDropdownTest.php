@@ -21,14 +21,14 @@ final class ButtonDropdownTest extends TestCase
         $html = ButtonDropdown::widget()
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -55,14 +55,14 @@ HTML;
                 ],
             ])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropleft btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -81,14 +81,14 @@ HTML;
                 ],
             ])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn">Split dropdown</button>
-<button id="w0-button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
-<ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn">Split dropdown</button>
+        <button id="w0-button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
+        <ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -105,14 +105,14 @@ HTML;
             ])
             ->withButtonOptions(['class' => 'btn-lg'])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -129,14 +129,14 @@ HTML;
             ])
             ->withDropdownClass(Dropdown::class)
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -154,14 +154,14 @@ HTML;
                 ]
             )
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">&lt;span&gt;&lt;i class=fas fas-tests&gt;ItemB&gt;&lt;/i&gt;&lt;/span&gt;</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">&lt;span&gt;&lt;i class=fas fas-tests&gt;ItemB&gt;&lt;/i&gt;&lt;/span&gt;</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonDropdown::widget()
@@ -175,14 +175,14 @@ HTML;
             )
             ->withoutEncodeLabels()
             ->render();
-        $expected = <<<HTML
-<div id="w2-button-dropdown" class="dropdown btn-group"><button id="w2-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w2-button-dropdown" class="dropdown btn-group"><button id="w2-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#"><span><i class=fas fas-tests>ItemB></i></span></a></li>
-</ul></div>
-HTML;
+        <ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#"><span><i class=fas fas-tests>ItemB></i></span></a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -194,14 +194,14 @@ HTML;
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->withOptions(['class' => 'testMe'])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="testMe dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="testMe dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -213,14 +213,14 @@ HTML;
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->withoutRenderContainer()
             ->render();
-        $expected = <<<HTML
-<button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        $expected = <<<'HTML'
+        <button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><a class="dropdown-item" href="#">ItemB</a></li>
-</ul>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><a class="dropdown-item" href="#">ItemB</a></li>
+        </ul>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -233,14 +233,14 @@ HTML;
             ->withTagName('a')
             ->render();
 
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group"><a id="w0-button" class="btn dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Button</a>
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group"><a id="w0-button" class="btn dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Button</a>
 
-<ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-<li><a class="dropdown-item" href="#">ItemA</a></li>
-<li><h6 class="dropdown-header">ItemB</h6></li>
-</ul></div>
-HTML;
+        <ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">ItemA</a></li>
+        <li><h6 class="dropdown-header">ItemB</h6></li>
+        </ul></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -253,14 +253,14 @@ HTML;
             ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
 
-        $expected = <<<HTML
-<div id="w0-button-dropdown" class="dropdown btn-group">&lt;button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;Button&lt;/button&gt;
+        $expected = <<<'HTML'
+        <div id="w0-button-dropdown" class="dropdown btn-group">&lt;button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;Button&lt;/button&gt;
 
-&lt;ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false"&gt;
-&lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemA&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemB&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</div>
-HTML;
+        &lt;ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false"&gt;
+        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemA&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemB&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;</div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }

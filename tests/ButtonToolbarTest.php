@@ -47,15 +47,15 @@ final class ButtonToolbarTest extends TestCase
                 ],
             ])
             ->render();
-        $expected = <<<HTML
-<div id="w5-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w0-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w1-button" class="btn">1</button>
-<button type="button" id="w2-button" class="btn">2</button>
-<button type="button" id="w3-button" class="btn">3</button>
-<button type="button" id="w4-button" class="btn">4</button></div>
-<div id="w6-button-group" class="btn-group" aria-label="Second group" role="group"><button type="button" id="w7-button" class="btn">5</button>
-<button type="button" id="w8-button" class="btn">6</button>
-<button type="button" id="w9-button" class="btn">7</button></div></div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w5-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w0-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w1-button" class="btn">1</button>
+        <button type="button" id="w2-button" class="btn">2</button>
+        <button type="button" id="w3-button" class="btn">3</button>
+        <button type="button" id="w4-button" class="btn">4</button></div>
+        <div id="w6-button-group" class="btn-group" aria-label="Second group" role="group"><button type="button" id="w7-button" class="btn">5</button>
+        <button type="button" id="w8-button" class="btn">6</button>
+        <button type="button" id="w9-button" class="btn">7</button></div></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -66,9 +66,9 @@ HTML;
         $html = ButtonToolbar::widget()
             ->withButtonGroups([[]])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"></div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -87,26 +87,25 @@ HTML;
                 ],
             ])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"><div id="w1-button-group" class="btn-group" role="group"><button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2">1</button>
-<button type="submit" id="w3-button" class="btn-primary btn" tabindex="1">2</button></div></div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"><div id="w1-button-group" class="btn-group" role="group"><button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2">1</button>
+        <button type="submit" id="w3-button" class="btn-primary btn" tabindex="1">2</button></div></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testAdditionalContent(): void
     {
-        $addHtml = <<<HTML
-<div class="input-group">
-<div class="input-group-prepend">
-<div class="input-group-text" id="btnGroupAddon">@</div>
-</div>
-<input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-</div>
-HTML;
-
         ButtonToolbar::counter(0);
 
+        $addHtml = <<<'HTML'
+        <div class="input-group">
+        <div class="input-group-prepend">
+        <div class="input-group-text" id="btnGroupAddon">@</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+        </div>
+        HTML;
         $html = ButtonToolbar::widget()
             ->withOptions([
                 'aria-label' => 'Toolbar with button groups',
@@ -127,18 +126,18 @@ HTML;
                 $addHtml,
             ])
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w1-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w2-button" class="btn">1</button>
-<button type="button" id="w3-button" class="btn">2</button>
-<button type="button" id="w4-button" class="btn">3</button>
-<button type="button" id="w5-button" class="btn">4</button></div>
-<div class="input-group">
-<div class="input-group-prepend">
-<div class="input-group-text" id="btnGroupAddon">@</div>
-</div>
-<input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-</div></div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w0-button-toolbar" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="w1-button-group" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="w2-button" class="btn">1</button>
+        <button type="button" id="w3-button" class="btn">2</button>
+        <button type="button" id="w4-button" class="btn">3</button>
+        <button type="button" id="w5-button" class="btn">4</button></div>
+        <div class="input-group">
+        <div class="input-group-prepend">
+        <div class="input-group-text" id="btnGroupAddon">@</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+        </div></div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
@@ -158,10 +157,10 @@ HTML;
             ])
             ->withEncodeTags()
             ->render();
-        $expected = <<<HTML
-<div id="w0-button-toolbar" class="btn-toolbar" role="toolbar">&lt;div id="w1-button-group" class="btn-group" role="group"&gt;&lt;button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2"&gt;1&lt;/button&gt;
-&lt;button type="submit" id="w3-button" class="btn-primary btn" tabindex="1"&gt;2&lt;/button&gt;&lt;/div&gt;</div>
-HTML;
+        $expected = <<<'HTML'
+        <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar">&lt;div id="w1-button-group" class="btn-group" role="group"&gt;&lt;button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2"&gt;1&lt;/button&gt;
+        &lt;button type="submit" id="w3-button" class="btn-primary btn" tabindex="1"&gt;2&lt;/button&gt;&lt;/div&gt;</div>
+        HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }
