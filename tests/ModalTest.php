@@ -19,7 +19,7 @@ final class ModalTest extends TestCase
         Modal::counter(0);
 
         $html = Modal::widget()
-            ->WithBodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
+            ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->begin();
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -45,7 +45,7 @@ HTML;
         Modal::counter(0);
 
         $html = Modal::widget()
-            ->withFooter(
+            ->footer(
                 Html::button(
                     'Close',
                     [
@@ -91,11 +91,11 @@ HTML;
         Modal::counter(0);
 
         $html = Modal::widget()
-            ->withToggleButton([
+            ->toggleButton([
                 'class' => ['btn', 'btn-primary'],
                 'label' => 'Launch demo modal',
             ])
-            ->withFooter(
+            ->footer(
                 Html::button(
                     'Close',
                     [
@@ -140,7 +140,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withCloseButton(['class' => 'btn-lg'])->begin();
+        $html = Modal::widget()->closeButton(['class' => 'btn-lg'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -189,7 +189,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withFooterOptions(['class' => 'text-dark'])->begin();
+        $html = Modal::widget()->footerOptions(['class' => 'text-dark'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -214,7 +214,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withHeaderOptions(['class' => 'text-danger'])->begin();
+        $html = Modal::widget()->headerOptions(['class' => 'text-danger'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -239,7 +239,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withOptions(['class' => 'testMe'])->begin();
+        $html = Modal::widget()->options(['class' => 'testMe'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -264,7 +264,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withTitle('My first modal.')->begin();
+        $html = Modal::widget()->title('My first modal.')->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -289,7 +289,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withTitle('My first modal.')->withTitleOptions(['class' => 'text-center'])->begin();
+        $html = Modal::widget()->title('My first modal.')->titleOptions(['class' => 'text-center'])->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -339,7 +339,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withSize(Modal::SIZE_LARGE)->begin();
+        $html = Modal::widget()->size(Modal::SIZE_LARGE)->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -359,7 +359,7 @@ HTML;
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
-        $html = Modal::widget()->withSize(Modal::SIZE_SMALL)->begin();
+        $html = Modal::widget()->size(Modal::SIZE_SMALL)->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'

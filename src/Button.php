@@ -13,8 +13,8 @@ use Yiisoft\Html\Html;
  *
  * ```php
  * echo Button::widget()
- *     ->withLabel('Action')
- *     ->withOptions(['class' => 'btn-lg']);
+ *     ->label('Action')
+ *     ->options(['class' => 'btn-lg']);
  * ```
  */
 final class Button extends Widget
@@ -65,7 +65,7 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function withLabel(string $value): self
+    public function label(string $value): self
     {
         $new = clone $this;
         $new->label = $value;
@@ -82,7 +82,7 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -97,7 +97,7 @@ final class Button extends Widget
      *
      * @return $this
      */
-    public function withTagName(string $value): self
+    public function tagName(string $value): self
     {
         $new = clone $this;
         $new->tagName = $value;

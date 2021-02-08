@@ -17,9 +17,9 @@ use function array_merge;
  *
  * ```php
   * echo Toast::widget()
- *     ->withTitle('Hello world!')
- *     ->withDateTime('a minute ago')
- *     ->withBody('Say hello...')
+ *     ->title('Hello world!')
+ *     ->dateTime('a minute ago')
+ *     ->body('Say hello...')
  *     ->begin();
  * ```
  *
@@ -28,8 +28,8 @@ use function array_merge;
  *
  * ```php
  * echo Toast::widget()
- *     ->withTitle('Hello world!')
- *     ->withDateTime('a minute ago')
+ *     ->title('Hello world!')
+ *     ->dateTime('a minute ago')
  *     ->begin();
  *
  * echo 'Say hello...';
@@ -80,7 +80,7 @@ final class Toast extends Widget
      *
      * @return self
      */
-    public function withBodyOptions(array $value): self
+    public function bodyOptions(array $value): self
     {
         $new = clone $this;
         $new->bodyOptions = $value;
@@ -106,7 +106,7 @@ final class Toast extends Widget
      *
      * @return $this
      */
-    public function withCloseButton(array $value): self
+    public function closeButton(array $value): self
     {
         $new = clone $this;
         $new->closeButton = $value;
@@ -121,7 +121,7 @@ final class Toast extends Widget
      *
      * @return $this
      */
-    public function withDateTime(string $value): self
+    public function dateTime(string $value): self
     {
         $new = clone $this;
         $new->dateTime = $value;
@@ -138,7 +138,7 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withDateTimeOptions(array $value): self
+    public function dateTimeOptions(array $value): self
     {
         $new = clone $this;
         $new->dateTimeOptions = $value;
@@ -155,7 +155,7 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withHeaderOptions(array $value): self
+    public function headerOptions(array $value): self
     {
         $new = clone $this;
         $new->headerOptions = $value;
@@ -171,7 +171,7 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -186,7 +186,7 @@ final class Toast extends Widget
      *
      * @return $this
      */
-    public function withTitle(string $value): self
+    public function title(string $value): self
     {
         $new = clone $this;
         $new->title = $value;
@@ -203,7 +203,7 @@ final class Toast extends Widget
      *
      * @return $this
      */
-    public function withTitleOptions(array $value): self
+    public function titleOptions(array $value): self
     {
         $new = clone $this;
         $new->titleOptions = $value;

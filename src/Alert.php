@@ -17,10 +17,10 @@ use function array_merge;
  *
  * ```php
  * echo Alert::widget()
- *     ->withOptions([
+ *     ->options([
  *         'class' => 'alert-info',
  *     ])
- *     ->withBody('Say hello...');
+ *     ->body('Say hello...');
  * ```
  */
 final class Alert extends Widget
@@ -50,7 +50,7 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function withBody(string $value): self
+    public function body(string $value): self
     {
         $new = clone $this;
         $new->body = $value;
@@ -78,7 +78,7 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function withCloseButton(array $value): self
+    public function closeButton(array $value): self
     {
         $new = clone $this;
         $new->closeButton = $value;
@@ -108,7 +108,7 @@ final class Alert extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;

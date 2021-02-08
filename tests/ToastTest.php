@@ -18,7 +18,7 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withBodyOptions(['class' => 'toast-body test', 'style' => ['text-align' => 'center']])
+            ->bodyOptions(['class' => 'toast-body test', 'style' => ['text-align' => 'center']])
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'
@@ -42,7 +42,7 @@ final class ToastTest extends TestCase
     {
         Toast::counter(0);
 
-        $html = Toast::widget()->withDateTime('a minute ago')->withTitle('Toast title')->begin();
+        $html = Toast::widget()->dateTime('a minute ago')->title('Toast title')->begin();
         $html .= 'Woohoo, you\'re reading this text in a toast!';
         $html .= Toast::end();
         $expected = <<<'HTML'
@@ -65,9 +65,9 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withTitle('Toast title')
-            ->withDateTime('a minute ago')
-            ->withDateTimeOptions([
+            ->title('Toast title')
+            ->dateTime('a minute ago')
+            ->dateTimeOptions([
                 'class' => ['toast-date-time'],
                 'style' => ['text-align' => 'right'],
             ])
@@ -93,8 +93,8 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withTitle('Toast title')
-            ->withTitleOptions([
+            ->title('Toast title')
+            ->titleOptions([
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])
@@ -119,9 +119,9 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withCloseButton(['class' => 'btn-lg'])
-            ->withTitle('Toast title')
-            ->withHeaderOptions(['class' => 'text-dark'])
+            ->closeButton(['class' => 'btn-lg'])
+            ->title('Toast title')
+            ->headerOptions(['class' => 'text-dark'])
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'
@@ -143,12 +143,12 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withTitle('Toast title')
-            ->withTitleOptions([
+            ->title('Toast title')
+            ->titleOptions([
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])
-            ->withHeaderOptions(['class' => 'text-dark'])
+            ->headerOptions(['class' => 'text-dark'])
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'
@@ -170,12 +170,12 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withTitle('Toast title')
-            ->withTitleOptions([
+            ->title('Toast title')
+            ->titleOptions([
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])
-            ->withOptions(['class' => 'text-danger'])
+            ->options(['class' => 'text-danger'])
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'
@@ -197,9 +197,9 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
-            ->withAutoIdPrefix('toast')
-            ->withTitle('Toast title')
-            ->withTitleOptions([
+            ->autoIdPrefix('toast')
+            ->title('Toast title')
+            ->titleOptions([
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])

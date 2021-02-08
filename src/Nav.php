@@ -51,9 +51,9 @@ use function is_string;
  *    }
  *
  *    echo Nav::widget()
- *        ->withCurrentPath($currentPath)
- *        ->withItems($menuItems)
- *        ->withOptions([
+ *        ->currentPath($currentPath)
+ *        ->items($menuItems)
+ *        ->options([
  *            'class' => 'navbar-nav float-right ml-auto'
  *        ]);
  *
@@ -153,7 +153,7 @@ final class Nav extends Widget
      *
      * @return $this
      */
-    public function withItems(array $value): self
+    public function items(array $value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -209,7 +209,7 @@ final class Nav extends Widget
      *
      * @return $this
      */
-    public function withCurrentPath(string $value): self
+    public function currentPath(string $value): self
     {
         $new = clone $this;
         $new->currentPath = $value;
@@ -224,7 +224,7 @@ final class Nav extends Widget
      *
      * @return $this
      */
-    public function withDropdownClass(string $value): self
+    public function dropdownClass(string $value): self
     {
         $new = clone $this;
         $new->dropdownClass = $value;
@@ -241,7 +241,7 @@ final class Nav extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -361,8 +361,8 @@ final class Nav extends Widget
         $dropdownClass = $this->dropdownClass;
 
         $dropdown = $dropdownClass::widget()
-            ->withItems($items)
-            ->withOptions(ArrayHelper::getValue($parentItem, 'dropdownOptions', []));
+            ->items($items)
+            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []));
 
         if ($this->encodeLabels === false) {
             $dropdown->withoutEncodeLabels();

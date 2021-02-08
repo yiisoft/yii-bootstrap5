@@ -16,8 +16,8 @@ use Yiisoft\Html\Html;
  * ```php
  * // a button group using Dropdown widget
  * echo ButtonDropdown::widget()
- *     ->withLabel('Action')
- *     ->withDropdown'([
+ *     ->label('Action')
+ *     ->dropdown'([
  *         'items' => [
  *             ['label' => 'DropdownA', 'url' => '/'],
  *             ['label' => 'DropdownB', 'url' => '#'],
@@ -100,7 +100,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withButtonOptions(array $value): self
+    public function buttonOptions(array $value): self
     {
         $new = clone $this;
         $new->buttonOptions = $value;
@@ -117,7 +117,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withDirection(string $value): self
+    public function direction(string $value): self
     {
         $new = clone $this;
         $new->direction = $value;
@@ -143,7 +143,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withDropdown(array $value): self
+    public function dropdown(array $value): self
     {
         $new = clone $this;
         $new->dropdown = $value;
@@ -158,7 +158,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withDropdownClass(string $value): self
+    public function dropdownClass(string $value): self
     {
         $new = clone $this;
         $new->dropdownClass = $value;
@@ -186,7 +186,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withLabel(string $value): self
+    public function label(string $value): self
     {
         $new = clone $this;
         $new->label = $value;
@@ -203,7 +203,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -230,7 +230,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withSplit(): self
+    public function split(): self
     {
         $new = clone $this;
         $new->split = true;
@@ -245,7 +245,7 @@ final class ButtonDropdown extends Widget
      *
      * @return $this
      */
-    public function withTagName(string $value): self
+    public function tagName(string $value): self
     {
         $new = clone $this;
         $new->tagName = $value;
@@ -295,8 +295,8 @@ final class ButtonDropdown extends Widget
             unset($buttonOptions['id']);
 
             $splitButton = Button::widget()
-                ->withLabel('<span class="sr-only">Toggle Dropdown</span>')
-                ->withOptions($this->buttonOptions)
+                ->label('<span class="sr-only">Toggle Dropdown</span>')
+                ->options($this->buttonOptions)
                 ->withoutEncodeLabels()
                 ->render();
         } else {
@@ -315,7 +315,7 @@ final class ButtonDropdown extends Widget
             $buttonOptions['role'] = 'button';
         }
 
-        $button = Button::widget()->withLabel($label)->withOptions($buttonOptions)->withTagName($this->tagName);
+        $button = Button::widget()->label($label)->options($buttonOptions)->tagName($this->tagName);
 
         if ($this->encodeLabels === false) {
             $button = $button->withoutEncodeLabels();
@@ -333,7 +333,7 @@ final class ButtonDropdown extends Widget
     {
         $dropdownClass = $this->dropdownClass;
 
-        $dropdown = $dropdownClass::widget()->withItems($this->dropdown['items']);
+        $dropdown = $dropdownClass::widget()->items($this->dropdown['items']);
 
         if ($this->encodeLabels === false) {
             $dropdown = $dropdown->withoutEncodeLabels();

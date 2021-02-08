@@ -22,29 +22,29 @@ use function trim;
  * ```php
  * // default with label
  * echo Progress::widget()
- *     ->withPercent('60')
- *     ->withLabel('test');
+ *     ->percent('60')
+ *     ->label('test');
  *
  * // styled
  * echo Progress::widget()
- *     ->withBars([
+ *     ->bars([
  *         ['percent' => '65', 'options' => ['class' => 'bg-danger']]
  *     ]);
  *
  * // striped
  * echo Progress::widget()
- *     ->withBars([
+ *     ->bars([
  *         ['percent' => '70', 'options' => ['class' => 'bg-warning progress-bar-striped']]
  *     ]);
  *
  * // striped animated
  * echo Progress::widget()
- *     ->withPercent('70')
- *     ->withBarOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
+ *     ->percent('70')
+ *     ->barOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
  *
  * // stacked bars
  * echo Progress::widget()
- *     withBars => ([
+ *     bars => ([
  *         ['percent' => '30', 'options' => ['class' => 'bg-danger']],
  *         ['percent' => '30', 'label' => 'test', 'options' => ['class' => 'bg-success']],
  *         ['percent' => '35', 'options' => ['class' => 'bg-warning']],
@@ -96,7 +96,7 @@ final class Progress extends Widget
      *
      * @return $this
      */
-    public function withBars(array $value): self
+    public function bars(array $value): self
     {
         $new = clone $this;
         $new->bars = $value;
@@ -113,7 +113,7 @@ final class Progress extends Widget
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
-    public function withBarOptions(array $value): self
+    public function barOptions(array $value): self
     {
         $new = clone $this;
         $new->barOptions = $value;
@@ -128,7 +128,7 @@ final class Progress extends Widget
      *
      * @return $this
      */
-    public function withLabel(string $value): self
+    public function label(string $value): self
     {
         $new = clone $this;
         $new->label = $value;
@@ -145,7 +145,7 @@ final class Progress extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -160,7 +160,7 @@ final class Progress extends Widget
      *
      * @return $this
      */
-    public function withPercent(string $value): self
+    public function percent(string $value): self
     {
         $new = clone $this;
         $new->percent = $value;

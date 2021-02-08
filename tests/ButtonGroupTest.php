@@ -19,12 +19,12 @@ final class ButtonGroupTest extends TestCase
         ButtonGroup::counter(0);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A'],
                 ['label' => 'button-B', 'visible' => true],
                 ['label' => 'button-C', 'visible' => false],
                 Button::widget()
-                    ->withLabel('button-D')
+                    ->label('button-D')
                     ->render(),
             ])
             ->render();
@@ -41,7 +41,7 @@ final class ButtonGroupTest extends TestCase
         ButtonGroup::counter(0);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => 'button-B'],
             ])
@@ -58,7 +58,7 @@ final class ButtonGroupTest extends TestCase
         ButtonGroup::counter(0);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => '<span><i class=fas fas-test></i>button-B</span>'],
             ])
@@ -70,7 +70,7 @@ final class ButtonGroupTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => '<span><i class=fas fas-test></i>button-B</span>'],
             ])
@@ -88,11 +88,11 @@ final class ButtonGroupTest extends TestCase
         ButtonGroup::counter(0);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => 'button-B'],
             ])
-            ->withOptions(['class' => 'btn-lg'])
+            ->options(['class' => 'btn-lg'])
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-group" class="btn-lg btn-group" role="group"><button type="submit" id="w1-button" class="btn-primary btn">button-A</button>
@@ -106,7 +106,7 @@ final class ButtonGroupTest extends TestCase
         ButtonGroup::counter(0);
 
         $html = ButtonGroup::widget()
-            ->withButtons([
+            ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => 'button-B'],
             ])

@@ -24,7 +24,7 @@ use function is_string;
  * <div class="dropdown">
  *     <?php
  *         echo Dropdown::widget()
- *             ->withItems([
+ *             ->items([
  *                 ['label' => 'DropdownA', 'url' => '/'],
  *                 ['label' => 'DropdownB', 'url' => '#'],
  *             ]);
@@ -78,7 +78,7 @@ final class Dropdown extends Widget
      *
      * @return $this
      */
-    public function withItems(array $value): self
+    public function items(array $value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -106,7 +106,7 @@ final class Dropdown extends Widget
      *
      * @return $this
      */
-    public function withSubmenuOptions(array $value): self
+    public function submenuOptions(array $value): self
     {
         $new = clone $this;
         $new->submenuOptions = $value;
@@ -122,7 +122,7 @@ final class Dropdown extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -222,9 +222,9 @@ final class Dropdown extends Widget
                 $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
 
                 $dropdown = self::widget()
-                    ->withItems($item['items'])
-                    ->withOptions($submenuOptions)
-                    ->withSubmenuOptions($submenuOptions);
+                    ->items($item['items'])
+                    ->options($submenuOptions)
+                    ->submenuOptions($submenuOptions);
 
                 if ($this->encodeLabels === false) {
                     $dropdown = $dropdown->withoutEncodeLabels();

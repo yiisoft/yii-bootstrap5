@@ -21,7 +21,7 @@ use function strtr;
  *
  * ```php
  * echo Breadcrumbs::widget()
- *     ->withLinks(['label' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]);
+ *     ->links(['label' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]);
  * ```
  */
 final class Breadcrumbs extends Widget
@@ -84,7 +84,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withActiveItemTemplate(string $value): self
+    public function activeItemTemplate(string $value): self
     {
         $new = clone $this;
         $new->activeItemTemplate = $value;
@@ -117,7 +117,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withHomeLink(array $value): self
+    public function homeLink(array $value): self
     {
         $new = clone $this;
         $new->homeLink = $value;
@@ -133,7 +133,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withItemTemplate(string $value): self
+    public function itemTemplate(string $value): self
     {
         $new = clone $this;
         $new->itemTemplate = $value;
@@ -157,7 +157,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withLinks(array $value): self
+    public function links(array $value): self
     {
         $new = clone $this;
         $new->links = $value;
@@ -174,7 +174,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withNavOptions(array $value): self
+    public function navOptions(array $value): self
     {
         $new = clone $this;
         $new->navOptions = $value;
@@ -191,7 +191,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -206,7 +206,7 @@ final class Breadcrumbs extends Widget
      *
      * @return $this
      */
-    public function withTag(string $value): self
+    public function tag(string $value): self
     {
         $new = clone $this;
         $new->tag = $value;

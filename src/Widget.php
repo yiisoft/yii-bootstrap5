@@ -32,7 +32,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * @return $this
      */
-    public function withId(string $value): self
+    public function id(string $value): self
     {
         $new = clone $this;
         $new->id = $value;
@@ -59,7 +59,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * {@see getId()}
      */
-    public function withAutoIdPrefix(string $value): self
+    public function autoIdPrefix(string $value): self
     {
         $new = clone $this;
         $new->autoIdPrefix = $value;

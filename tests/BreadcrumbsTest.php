@@ -19,8 +19,8 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withHomeLink(['label' => 'Home', 'url' => '#'])
-            ->withLinks([
+            ->homeLink(['label' => 'Home', 'url' => '#'])
+            ->links([
                 ['label' => 'Library', 'url' => '#', 'template' => "<span class=\"testMe\">{link}</span>\n"],
                 ['label' => 'Data'],
                 'Articles',
@@ -38,14 +38,14 @@ final class BreadcrumbsTest extends TestCase
 
     public function testMissingLinks(): void
     {
-        $html = Breadcrumbs::widget()->withLinks([])->render();
+        $html = Breadcrumbs::widget()->links([])->render();
         $this->assertEmpty($html);
     }
 
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Breadcrumbs::widget()->withLinks([['url' => '#']])->render();
+        Breadcrumbs::widget()->links([['url' => '#']])->render();
     }
 
     public function testActiveItemTemplate(): void
@@ -53,8 +53,8 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withActiveItemTemplate("<li class=\"breadcrumb-link active\" aria-current=\"page\">{link}</li>\n")
-            ->withLinks([
+            ->activeItemTemplate("<li class=\"breadcrumb-link active\" aria-current=\"page\">{link}</li>\n")
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])
@@ -73,7 +73,7 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withLinks([
+            ->links([
                 ['label' => '<span><i class=fas fa-home></i>Home</span>', 'url' => '#'],
                 ['label' => 'Data'],
             ])
@@ -88,7 +88,7 @@ final class BreadcrumbsTest extends TestCase
 
         $html = Breadcrumbs::widget()
             ->withoutEncodeLabels()
-            ->withLinks([
+            ->links([
                 ['label' => '<span><i class=fas fa-home></i>Home</span>', 'url' => '#'],
                 ['label' => 'Data'],
             ])
@@ -107,8 +107,8 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withItemTemplate("<li class=\"breadcrumb-links\">{link}</li>\n")
-            ->withLinks([
+            ->itemTemplate("<li class=\"breadcrumb-links\">{link}</li>\n")
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])
@@ -127,11 +127,11 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withLinks([
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])
-            ->withNavOptions(['class' => 'testMe'])
+            ->navOptions(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
         <nav class="testMe"><ol id="w0-breadcrumb" class="breadcrumb"><li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -147,11 +147,11 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withLinks([
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])
-            ->withOptions(['class' => 'testMe'])
+            ->options(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
         <nav aria-label="breadcrumb"><ol id="w0-breadcrumb" class="testMe breadcrumb"><li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -167,8 +167,8 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withTag('footer')
-            ->withLinks([
+            ->tag('footer')
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])
@@ -188,7 +188,7 @@ final class BreadcrumbsTest extends TestCase
 
         $html = Breadcrumbs::widget()
             ->withEncodeTags()
-            ->withLinks([
+            ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],
             ])

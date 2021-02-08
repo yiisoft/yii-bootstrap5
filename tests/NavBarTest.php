@@ -19,9 +19,9 @@ final class NavBarTest extends TestCase
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->withBrandLabel('My Company')
-            ->withBrandUrl('/')
-            ->withOptions([
+            ->brandLabel('My Company')
+            ->brandUrl('/')
+            ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
             ->begin();
@@ -43,7 +43,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withBrandImage('/images/test.jpg')->withBrandUrl('/')->begin();
+        $html = NavBar::widget()->brandImage('/images/test.jpg')->brandUrl('/')->begin();
         $html .= NavBar::end();
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
@@ -55,7 +55,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withBrandLabel('Yii Framework')->withBrandUrl('/index.php')->begin();
+        $html = NavBar::widget()->brandLabel('Yii Framework')->brandUrl('/index.php')->begin();
         $html .= NavBar::end();
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
@@ -67,7 +67,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withBrandLabel('Yii Framework')->withBrandUrl('')->begin();
+        $html = NavBar::widget()->brandLabel('Yii Framework')->brandUrl('')->begin();
         $html .= NavBar::end();
         $this->assertStringContainsString(
             '<span class="navbar-brand">Yii Framework</span>',
@@ -79,9 +79,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withBrandLabel('My Company')->withBrandUrl('/')->begin();
+        $html = NavBar::widget()->brandLabel('My Company')->brandUrl('/')->begin();
         $html .= Nav::widget()
-            ->withItems([
+            ->items([
                 ['label' => 'Home', 'url' => '#'],
                 ['label' => 'Link', 'url' => '#'],
                 ['label' => 'Dropdown', 'items' => [
@@ -92,7 +92,7 @@ final class NavBarTest extends TestCase
                 ],
                 ],
             ])
-            ->withOptions(['class' => ['mr-auto']])
+            ->options(['class' => ['mr-auto']])
             ->render();
 
         $html .= <<<'HTML'
@@ -130,7 +130,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withCollapseOptions(['class' => 'testMe'])->begin();
+        $html = NavBar::widget()->collapseOptions(['class' => 'testMe'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -149,7 +149,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withBrandLabel('My App')->withBrandOptions(['class' => 'text-dark'])->begin();
+        $html = NavBar::widget()->brandLabel('My App')->brandOptions(['class' => 'text-dark'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -168,7 +168,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withScreenReaderToggleText('Toggler navigation')->begin();
+        $html = NavBar::widget()->screenReaderToggleText('Toggler navigation')->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -187,7 +187,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withTogglerContent('<div class="navbar-toggler-icon"></div>')->begin();
+        $html = NavBar::widget()->togglerContent('<div class="navbar-toggler-icon"></div>')->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -206,7 +206,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withTogglerOptions(['class' => 'testMe'])->begin();
+        $html = NavBar::widget()->togglerOptions(['class' => 'testMe'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
@@ -242,7 +242,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withInnerContainerOptions(['class' => 'text-link'])->begin();
+        $html = NavBar::widget()->innerContainerOptions(['class' => 'text-link'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">

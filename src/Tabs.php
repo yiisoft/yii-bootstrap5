@@ -19,7 +19,7 @@ use function array_merge;
  *
  * ```php
  * echo Tabs::widget()
- *     ->withItems([
+ *     ->items([
  *         [
  *             'label' => 'One',
  *             'content' => 'Anim pariatur cliche...',
@@ -88,9 +88,9 @@ final class Tabs extends Widget
         $this->prepareItems($this->items);
 
         $navWidget = Nav::widget()
-            ->withDropdownClass($this->dropdownClass)
-            ->withItems($this->items)
-            ->withOptions(ArrayHelper::merge(['role' => 'tablist'], $this->options));
+            ->dropdownClass($this->dropdownClass)
+            ->items($this->items)
+            ->options(ArrayHelper::merge(['role' => 'tablist'], $this->options));
 
         if ($this->encodeLabels === false) {
             $navWidget = $navWidget->withoutEncodeLabels();
@@ -106,7 +106,7 @@ final class Tabs extends Widget
      *
      * @return $this
      */
-    public function withDropdownClass(string $value): self
+    public function dropdownClass(string $value): self
     {
         $new = clone $this;
         $new->dropdownClass = $value;
@@ -137,7 +137,7 @@ final class Tabs extends Widget
      *
      * @return $this
      */
-    public function withHeaderOptions(array $value): self
+    public function headerOptions(array $value): self
     {
         $new = clone $this;
         $new->headerOptions = $value;
@@ -169,7 +169,7 @@ final class Tabs extends Widget
      *
      * @return $this
      */
-    public function withItems(array $value): self
+    public function items(array $value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -187,7 +187,7 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withItemOptions(array $value): self
+    public function itemOptions(array $value): self
     {
         $new = clone $this;
         $new->itemOptions = $value;
@@ -202,7 +202,7 @@ final class Tabs extends Widget
      *
      * @return $this
      */
-    public function withNavType(string $value): self
+    public function navType(string $value): self
     {
         $new = clone $this;
         $new->navType = $value;
@@ -219,7 +219,7 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -234,7 +234,7 @@ final class Tabs extends Widget
      *
      * @return $this
      */
-    public function withPanes(array $value): self
+    public function panes(array $value): self
     {
         $new = clone $this;
         $new->panes = $value;
@@ -264,7 +264,7 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withTabContentOptions(array $value): self
+    public function tabContentOptions(array $value): self
     {
         $new = clone $this;
         $new->tabContentOptions = $value;

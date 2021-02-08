@@ -19,7 +19,7 @@ use function is_array;
  * ```php
  * // a button group with items configuration
  * echo ButtonGroup::widget()
- *     ->withButtons([
+ *     ->buttons([
  *         ['label' => 'A'],
  *         ['label' => 'B'],
  *         ['label' => 'C', 'visible' => false],
@@ -27,8 +27,8 @@ use function is_array;
  *
  * // button group with an item as a string
  * echo ButtonGroup::widget()
- *     ->withButtons([
- *         Button::widget()->withLabel('A'),
+ *     ->buttons([
+ *         Button::widget()->label('A'),
  *         ['label' => 'B'],
  *     ]);
  * ```
@@ -74,7 +74,7 @@ final class ButtonGroup extends Widget
      *
      * @return $this
      */
-    public function withButtons(array $value): self
+    public function buttons(array $value): self
     {
         $new = clone $this;
         $new->buttons = $value;
@@ -104,7 +104,7 @@ final class ButtonGroup extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -152,7 +152,7 @@ final class ButtonGroup extends Widget
                     ArrayHelper::setValueByPath($button, 'options.type', 'button');
                 }
 
-                $buttonWidget = Button::widget()->withLabel($button['label'])->withOptions($button['options']);
+                $buttonWidget = Button::widget()->label($button['label'])->options($button['options']);
 
                 if ($button['encodeLabel'] === false) {
                     $buttonWidget = $buttonWidget->withoutEncodeLabels();

@@ -19,7 +19,7 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -64,7 +64,7 @@ final class CarouselTest extends TestCase
 
         $html = Carousel::widget()
             ->withCrossfade()
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -96,8 +96,8 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withControls([])
-            ->withItems([
+            ->controls([])
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -118,12 +118,12 @@ final class CarouselTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         Carousel::widget()
-            ->withControls(
+            ->controls(
                 [
                     '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
                 ],
             )
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -139,7 +139,7 @@ final class CarouselTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         Carousel::widget()
-            ->withItems([
+            ->items([
                 [
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
                     'captionOptions' => [
@@ -155,7 +155,7 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withItems([
+            ->items([
                 '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
             ])
             ->render();
@@ -172,7 +172,7 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -181,7 +181,7 @@ final class CarouselTest extends TestCase
                     ],
                 ],
             ])
-            ->withOptions(['class' => 'testMe'])
+            ->options(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
         <div id="w0-carousel" class="testMe carousel slide"><ol class="carousel-indicators"><li class="active" data-bs-target="#w0-carousel" data-bs-slide-to="0"></li></ol><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
@@ -196,7 +196,7 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
@@ -221,7 +221,7 @@ final class CarouselTest extends TestCase
 
         $html = Carousel::widget()
             ->withEncodeTags()
-            ->withItems([
+            ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
                     'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',

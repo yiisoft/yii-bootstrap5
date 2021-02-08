@@ -19,7 +19,7 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
+            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -43,9 +43,9 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withDirection(ButtonDropdown::DIRECTION_LEFT)
-            ->withLabel('Action')
-            ->withdropdown([
+            ->direction(ButtonDropdown::DIRECTION_LEFT)
+            ->label('Action')
+            ->dropdown([
                 'items' => [
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#'],
@@ -68,10 +68,10 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withDirection(ButtonDropdown::DIRECTION_DOWN)
-            ->withLabel('Split dropdown')
-            ->withSplit()
-            ->withDropdown([
+            ->direction(ButtonDropdown::DIRECTION_DOWN)
+            ->label('Split dropdown')
+            ->split()
+            ->dropdown([
                 'items' => [
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#'],
@@ -94,13 +94,13 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown([
+            ->dropdown([
                 'items' => [
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#'],
                 ],
             ])
-            ->withButtonOptions(['class' => 'btn-lg'])
+            ->buttonOptions(['class' => 'btn-lg'])
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -118,13 +118,13 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown([
+            ->dropdown([
                 'items' => [
                     ['label' => 'ItemA', 'url' => '#'],
                     ['label' => 'ItemB', 'url' => '#'],
                 ],
             ])
-            ->withDropdownClass(Dropdown::class)
+            ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -142,7 +142,7 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(
+            ->dropdown(
                 [
                     'items' => [
                         ['label' => 'ItemA', 'url' => '#'],
@@ -162,7 +162,7 @@ final class ButtonDropdownTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(
+            ->dropdown(
                 [
                     'items' => [
                         ['label' => 'ItemA', 'url' => '#'],
@@ -188,8 +188,8 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
-            ->withOptions(['class' => 'testMe'])
+            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
+            ->options(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-dropdown" class="testMe dropdown btn-group"><button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
@@ -207,7 +207,7 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
+            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->withoutRenderContainer()
             ->render();
         $expected = <<<'HTML'
@@ -226,8 +226,8 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']]])
-            ->withTagName('a')
+            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']]])
+            ->tagName('a')
             ->render();
 
         $expected = <<<'HTML'
@@ -247,7 +247,7 @@ final class ButtonDropdownTest extends TestCase
 
         $html = ButtonDropdown::widget()
             ->withEncodeTags()
-            ->withdropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
+            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
 
         $expected = <<<'HTML'

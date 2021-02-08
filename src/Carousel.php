@@ -20,7 +20,7 @@ use function is_string;
  *
  * ```php
  * echo Carousel::widget()
- *     ->withItems([
+ *     ->items([
  *         // the item contains only the image
  *         '<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
  *         // equivalent to the above
@@ -79,7 +79,7 @@ final class Carousel extends Widget
      *
      * @return $this
      */
-    public function withControls(array $value): self
+    public function controls(array $value): self
     {
         $new = clone $this;
         $new->controls = $value;
@@ -118,7 +118,7 @@ final class Carousel extends Widget
      *
      * @return $this
      */
-    public function withItems(array $value): self
+    public function items(array $value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -135,7 +135,7 @@ final class Carousel extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;

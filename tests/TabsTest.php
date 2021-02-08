@@ -21,7 +21,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -45,7 +45,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -123,7 +123,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -157,7 +157,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -213,7 +213,7 @@ final class TabsTest extends TestCase
         $checkTag = 'article';
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -223,7 +223,7 @@ final class TabsTest extends TestCase
                     'content' => 'Page2',
                 ],
             ])
-            ->withItemOptions(['tag' => $checkTag])
+            ->itemOptions(['tag' => $checkTag])
             ->withoutRenderTabContent()
             ->render();
         $this->assertStringNotContainsString('<' . $checkTag, $html);
@@ -237,13 +237,13 @@ final class TabsTest extends TestCase
         $checkValue = 'check_attribute';
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
                 ],
             ])
-            ->withTabContentOptions([
+            ->tabContentOptions([
                 $checkAttribute => $checkValue,
             ])
             ->render();
@@ -254,7 +254,7 @@ final class TabsTest extends TestCase
     public function testActivateFirstVisibleTab(): void
     {
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
@@ -274,7 +274,7 @@ final class TabsTest extends TestCase
                     'content' => 'some content',
                 ],
             ])
-            ->withOptions(['id' => 'mytab'])
+            ->options(['id' => 'mytab'])
             ->render();
         $this-> assertStringNotContainsString(
             '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
@@ -295,7 +295,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Tab 1',
                     'content' => 'some content',
@@ -315,7 +315,7 @@ final class TabsTest extends TestCase
                     'content' => 'some content',
                 ],
             ])
-            ->withOptions(['id' => 'mytab'])
+            ->options(['id' => 'mytab'])
             ->render();
         $this->assertStringContainsString(
             '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
@@ -329,8 +329,8 @@ final class TabsTest extends TestCase
 
         $html = Tabs::widget()
             ->withoutEncodeLabels()
-            ->withId('mytab')
-            ->withItems([
+            ->id('mytab')
+            ->items([
                 [
                     'label' => 'Tab 1<span>encoded</span>',
                     'content' => 'some content',
@@ -359,7 +359,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([
+            ->items([
                 [
                     'options' => ['id' => 'pane1'],
                     'label' => 'Tab 1',
@@ -385,7 +385,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems(
+            ->items(
                 [
                     [
                         'options' => ['id' => 'pane1'],
@@ -394,7 +394,7 @@ final class TabsTest extends TestCase
                     ],
                 ],
             )
-            ->withDropdownClass(Dropdown::class)
+            ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -408,7 +408,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems(
+            ->items(
                 [
                     [
                         'options' => ['id' => 'pane1'],
@@ -417,7 +417,7 @@ final class TabsTest extends TestCase
                     ],
                 ],
             )
-            ->withHeaderOptions(['class' => 'text-center'])
+            ->headerOptions(['class' => 'text-center'])
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="text-center nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -430,7 +430,7 @@ final class TabsTest extends TestCase
     {
         Tabs::counter(0);
 
-        $html = Tabs::widget()->withPanes(['content' => '<div>Content 1</div>'])->render();
+        $html = Tabs::widget()->panes(['content' => '<div>Content 1</div>'])->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"></ul>
         <div class="tab-content"><div>Content 1</div></div>
@@ -441,7 +441,7 @@ final class TabsTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Tabs::widget()->withItems([['content' => '<div>Content 1</div>']])->render();
+        Tabs::widget()->items([['content' => '<div>Content 1</div>']])->render();
     }
 
     public function testNavType(): void
@@ -449,8 +449,8 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->withNavType('nav-lg')
+            ->items([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->navType('nav-lg')
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -464,7 +464,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->withItems([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->items([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->withEncodeTags()
             ->render();
         $expected = <<<'HTML'

@@ -19,16 +19,16 @@ final class ButtonToolbarTest extends TestCase
         ButtonToolbar::counter(0);
 
         $html = ButtonToolbar::widget()
-            ->withOptions([
+            ->options([
                 'aria-label' => 'Toolbar with button groups',
             ])
-            ->withButtonGroups([
+            ->buttonGroups([
                 ButtonGroup::widget()
-                    ->withOptions([
+                    ->options([
                         'aria-label' => 'First group',
                         'class' => ['mr-2'],
                     ])
-                    ->withButtons([
+                    ->buttons([
                         ['label' => '1'],
                         ['label' => '2'],
                         ['label' => '3'],
@@ -63,7 +63,7 @@ final class ButtonToolbarTest extends TestCase
     {
         ButtonToolbar::counter(0);
 
-        $html = ButtonToolbar::widget()->withButtonGroups([[]])->render();
+        $html = ButtonToolbar::widget()->buttonGroups([[]])->render();
         $expected = <<<'HTML'
         <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar"></div>
         HTML;
@@ -75,7 +75,7 @@ final class ButtonToolbarTest extends TestCase
         ButtonToolbar::counter(0);
 
         $html = ButtonToolbar::widget()
-            ->withButtonGroups([
+            ->buttonGroups([
                 [
                     'buttons' => [
                         ['label' => '1', 'options' => ['class' => 'btn-secondary', 'tabindex' => 2, 'type' => 'reset']],
@@ -105,10 +105,10 @@ final class ButtonToolbarTest extends TestCase
         </div>
         HTML;
         $html = ButtonToolbar::widget()
-            ->withOptions([
+            ->options([
                 'aria-label' => 'Toolbar with button groups',
             ])
-            ->withButtonGroups([
+            ->buttonGroups([
                 [
                     'options' => [
                         'aria-label' => 'First group',
@@ -144,7 +144,7 @@ final class ButtonToolbarTest extends TestCase
         ButtonToolbar::counter(0);
 
         $html = ButtonToolbar::widget()
-            ->withButtonGroups([
+            ->buttonGroups([
                 [
                     'buttons' => [
                         ['label' => '1', 'options' => ['class' => 'btn-secondary', 'tabindex' => 2, 'type' => 'reset']],

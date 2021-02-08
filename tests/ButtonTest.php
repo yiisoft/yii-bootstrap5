@@ -17,7 +17,7 @@ final class ButtonTest extends TestCase
     {
         Button::counter(0);
 
-        $html = Button::widget()->withLabel('Save')->render();
+        $html = Button::widget()->label('Save')->render();
         $expected = <<<'HTML'
         <button id="w0-button" class="btn">Save</button>
         HTML;
@@ -29,7 +29,7 @@ final class ButtonTest extends TestCase
         Button::counter(0);
 
         $html = Button::widget()
-            ->withLabel('<span><i class=fas fas-save></i>Save</span>')
+            ->label('<span><i class=fas fas-save></i>Save</span>')
             ->render();
         $expected = <<<'HTML'
         <button id="w0-button" class="btn">&lt;span&gt;&lt;i class=fas fas-save&gt;&lt;/i&gt;Save&lt;/span&gt;</button>
@@ -37,7 +37,7 @@ final class ButtonTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = Button::widget()
-            ->withLabel('<span><i class=fas fas-save></i>Save</span>')
+            ->label('<span><i class=fas fas-save></i>Save</span>')
             ->withoutEncodeLabels()
             ->render();
         $expected = <<<'HTML'
@@ -50,7 +50,7 @@ final class ButtonTest extends TestCase
     {
         Button::counter(0);
 
-        $html = Button::widget()->withLabel('Save')->withOptions(['class' => 'btn-lg'])->render();
+        $html = Button::widget()->label('Save')->options(['class' => 'btn-lg'])->render();
         $expected = <<<'HTML'
         <button id="w0-button" class="btn-lg btn">Save</button>
         HTML;
@@ -61,7 +61,7 @@ final class ButtonTest extends TestCase
     {
         Button::counter(0);
 
-        $html = Button::widget()->withLabel('Save')->withTagName('articles')->render();
+        $html = Button::widget()->label('Save')->tagName('articles')->render();
         $expected = <<<'HTML'
         <articles id="w0-button" class="btn">Save</articles>
         HTML;
@@ -72,7 +72,7 @@ final class ButtonTest extends TestCase
     {
         Button::counter(0);
 
-        $html = Button::widget()->withLabel('Save')->withEncodeTags()->render();
+        $html = Button::widget()->label('Save')->withEncodeTags()->render();
         $expected = <<<'HTML'
         <button id="w0-button" class="btn">Save</button>
         HTML;

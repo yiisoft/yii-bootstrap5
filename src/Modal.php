@@ -18,8 +18,8 @@ use function array_merge;
  *
  * ```php
  * Modal::widget()
- *     ->withTitle('<h2>Hello world</h2>')
- *     ->withToggleButton(['label' => 'click me'])
+ *     ->title('<h2>Hello world</h2>')
+ *     ->toggleButton(['label' => 'click me'])
  *     ->begin();
  *
  * echo 'Say hello...';
@@ -100,7 +100,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withBodyOptions(array $value): self
+    public function bodyOptions(array $value): self
     {
         $new = clone $this;
         $new->bodyOptions = $value;
@@ -126,7 +126,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withCloseButton(array $value): self
+    public function closeButton(array $value): self
     {
         $new = clone $this;
         $new->closeButton = $value;
@@ -154,7 +154,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withFooter(string $value): self
+    public function footer(string $value): self
     {
         $new = clone $this;
         $new->footer = $value;
@@ -171,7 +171,7 @@ final class Modal extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withFooterOptions(array $value): self
+    public function footerOptions(array $value): self
     {
         $new = clone $this;
         $new->footerOptions = $value;
@@ -188,7 +188,7 @@ final class Modal extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withHeaderOptions(array $value): self
+    public function headerOptions(array $value): self
     {
         $new = clone $this;
         $new->headerOptions = $value;
@@ -204,7 +204,7 @@ final class Modal extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -219,7 +219,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withTitle(string $value): self
+    public function title(string $value): self
     {
         $new = clone $this;
         $new->title = $value;
@@ -236,7 +236,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withTitleOptions(array $value): self
+    public function titleOptions(array $value): self
     {
         $new = clone $this;
         $new->titleOptions = $value;
@@ -262,7 +262,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withToggleButton(array $value): self
+    public function toggleButton(array $value): self
     {
         $new = clone $this;
         $new->toggleButton = $value;
@@ -290,7 +290,7 @@ final class Modal extends Widget
      *
      * @return $this
      */
-    public function withSize(string $value): self
+    public function size(string $value): self
     {
         $new = clone $this;
         $new->size = $value;

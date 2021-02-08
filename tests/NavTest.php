@@ -20,7 +20,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -58,7 +58,7 @@ final class NavTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Nav::widget()->withItems([['content' => 'Page1']])->render();
+        Nav::widget()->items([['content' => 'Page1']])->render();
     }
 
     public function testRenderDropdownWithDropdownOptions(): void
@@ -66,7 +66,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -104,7 +104,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'items' => null,
@@ -142,7 +142,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->withoutActivateItems()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Item1',
                     'active' => true,
@@ -170,8 +170,8 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withCurrentPath('/site/index')
-            ->withItems([
+            ->currentPath('/site/index')
+            ->items([
                 [
                     'label' => 'Item1',
                     'active' => true,
@@ -198,8 +198,8 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->withoutActivateItems()
-            ->withCurrentPath('/site/index')
-            ->withItems([
+            ->currentPath('/site/index')
+            ->items([
                 [
                     'label' => 'Item1',
                 ],
@@ -230,7 +230,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Item1',
                 ],
@@ -263,7 +263,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->withActivateParents()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Dropdown',
                     'items' => [
@@ -292,7 +292,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Page1</span>',
                     'content' => 'Page1',
@@ -305,7 +305,7 @@ final class NavTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Page1</span>',
                     'content' => 'Page1',
@@ -324,13 +324,13 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
                 ],
             ])
-            ->withDropdownClass(Dropdown::class)
+            ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
@@ -343,13 +343,13 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
                 ],
             ])
-            ->withOptions(['class' => 'text-link'])
+            ->options(['class' => 'text-link'])
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="text-link nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
@@ -363,7 +363,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->withEncodeTags()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'content' => 'Page1',
@@ -381,7 +381,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
                     'items' => [
@@ -403,7 +403,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->withoutEncodeLabels()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
                     'items' => [

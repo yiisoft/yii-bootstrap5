@@ -19,7 +19,7 @@ final class DropdownTest extends TestCase
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Page1',
                     'url' => '#',
@@ -64,7 +64,7 @@ final class DropdownTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Dropdown::widget()->withItems([['url' => '#test']])->render();
+        Dropdown::widget()->items([['url' => '#test']])->render();
     }
 
     public function testSubMenuOptions(): void
@@ -72,7 +72,7 @@ final class DropdownTest extends TestCase
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Dropdown1',
                     'items' => [
@@ -92,7 +92,7 @@ final class DropdownTest extends TestCase
                     ],
                 ],
             ])
-            ->withSubmenuOptions(['class' => 'submenu-list'])
+            ->submenuOptions(['class' => 'submenu-list'])
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
@@ -134,7 +134,7 @@ final class DropdownTest extends TestCase
         </form>
         HTML;
         $html = Dropdown::widget()
-            ->withItems([
+            ->items([
                 $form,
                 '-',
                 ['label' => 'New around here? Sign up', 'url' => '#'],
@@ -176,7 +176,7 @@ final class DropdownTest extends TestCase
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
                     'items' => [
@@ -198,7 +198,7 @@ final class DropdownTest extends TestCase
 
         $html = Dropdown::widget()
             ->withoutEncodeLabels()
-            ->withItems([
+            ->items([
                 [
                     'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
                     'items' => [
@@ -224,7 +224,7 @@ final class DropdownTest extends TestCase
         Dropdown::counter(0);
 
         $html = Dropdown::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Dropdown1',
                     'items' => [

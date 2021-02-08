@@ -48,17 +48,17 @@ use Yiisoft\Html\Html;
  *    }
  *
  *    <?php NavBar::widget()
- *        ->withBrandLabel('My Application Basic')
- *        ->withBrandUrl('/')
- *        ->withOptions([
+ *        ->brandLabel('My Application Basic')
+ *        ->brandUrl('/')
+ *        ->options([
  *            'class' => 'navbar navbar-dark bg-dark navbar-expand-lg text-white',
  *        ])
  *        ->begin();
  *
  *        echo Nav::widget()
- *            ->withCurrentPath($currentPath)
- *            ->withItems($menuItems)
- *            ->withOptions([
+ *            ->currentPath($currentPath)
+ *            ->items($menuItems)
+ *            ->options([
  *                'class' => 'navbar-nav float-right ml-auto'
  *            ]);
  *
@@ -216,7 +216,7 @@ final class NavBar extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withCollapseOptions(array $value): self
+    public function collapseOptions(array $value): self
     {
         $new = clone $this;
         $new->collapseOptions = $value;
@@ -233,7 +233,7 @@ final class NavBar extends Widget
      *
      * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    public function withBrandLabel(string $value): self
+    public function brandLabel(string $value): self
     {
         $new = clone $this;
         $new->brandLabel = $value;
@@ -250,7 +250,7 @@ final class NavBar extends Widget
      *
      * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
      */
-    public function withBrandImage(string $value): self
+    public function brandImage(string $value): self
     {
         $new = clone $this;
         $new->brandImage = $value;
@@ -266,7 +266,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withBrandUrl(string $value): self
+    public function brandUrl(string $value): self
     {
         $new = clone $this;
         $new->brandUrl = $value;
@@ -283,7 +283,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withBrandOptions(array $value): self
+    public function brandOptions(array $value): self
     {
         $new = clone $this;
         $new->brandOptions = $value;
@@ -298,7 +298,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withScreenReaderToggleText(string $value): self
+    public function screenReaderToggleText(string $value): self
     {
         $new = clone $this;
         $new->screenReaderToggleText = $value;
@@ -313,7 +313,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withTogglerContent(string $value): self
+    public function togglerContent(string $value): self
     {
         $new = clone $this;
         $new->togglerContent = $value;
@@ -330,7 +330,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withTogglerOptions(array $value): self
+    public function togglerOptions(array $value): self
     {
         $new = clone $this;
         $new->togglerOptions = $value;
@@ -360,7 +360,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withInnerContainerOptions(array $value): self
+    public function innerContainerOptions(array $value): self
     {
         $new = clone $this;
         $new->innerContainerOptions = $value;
@@ -377,7 +377,7 @@ final class NavBar extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;

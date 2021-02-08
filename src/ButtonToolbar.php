@@ -20,7 +20,7 @@ use function is_array;
  * ```php
  * // a button toolbar with items configuration
  * echo ButtonToolbar::widget()
- *     ->withButtonGroups([
+ *     ->buttonGroups([
  *         [
  *             'buttons' => [
  *                 ['label' => '1', 'class' => ['btn-secondary']],
@@ -86,7 +86,7 @@ final class ButtonToolbar extends Widget
      *
      * @return $this
      */
-    public function withButtonGroups(array $value): self
+    public function buttonGroups(array $value): self
     {
         $new = clone $this;
         $new->buttonGroups = $value;
@@ -103,7 +103,7 @@ final class ButtonToolbar extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -143,8 +143,8 @@ final class ButtonToolbar extends Widget
 
                 $options = ArrayHelper::getValue($group, 'options', []);
                 $buttonGroups[] = ButtonGroup::widget()
-                    ->withButtons($group['buttons'])
-                    ->withOptions($options)
+                    ->buttons($group['buttons'])
+                    ->options($options)
                     ->render();
             } else {
                 $buttonGroups[] = $group;

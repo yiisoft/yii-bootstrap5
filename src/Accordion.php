@@ -26,7 +26,7 @@ use function is_string;
  *
  * ```php
  * echo Accordion::widget()
- *     ->withItems([
+ *     ->items([
  *         [
  *             'label' => 'Collapsible Group Item #1',
  *             'content' => 'Anim pariatur cliche...',
@@ -124,25 +124,28 @@ final class Accordion extends Widget
      * For example:
      *
      * ```php
-     * echo Accordion::widget([
-     *     'withItems' => [
-     *       'Introduction' => 'This is the first collapsible menu',
-     *       'Second panel' => [
-     *           'content' => 'This is the second collapsible menu',
-     *       ],
-     *       [
-     *           'label' => 'Third panel',
-     *           'content' => 'This is the third collapsible menu',
-     *       ],
-     *   ]
-     * ])
+     * echo Accordion::widget()
+     *     ->items(
+     *         [
+     *             [
+     *                 'Introduction' => 'This is the first collapsible menu',
+     *                 'Second panel' => [
+     *                     'content' => 'This is the second collapsible menu',
+     *                 ],
+     *             ],
+     *             [
+     *                 'label' => 'Third panel',
+     *                 'content' => 'This is the third collapsible menu',
+     *             ],
+     *         ],
+     *     );
      * ```
      *
      * @param array $value
      *
      * @return $this
      */
-    public function withItems(array $value): self
+    public function items(array $value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -166,7 +169,7 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function withItemToggleOptions(array $value): self
+    public function itemToggleOptions(array $value): self
     {
         $new = clone $this;
         $new->itemToggleOptions = $value;
@@ -183,7 +186,7 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;

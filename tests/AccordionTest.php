@@ -20,7 +20,7 @@ final class AccordionTest extends TestCase
         Accordion::counter(0);
 
         $html = Accordion::widget()
-            ->withItems([
+            ->items([
                 [
                     'label' => 'Collapsible Group Item #1',
                     'content' => [
@@ -115,7 +115,7 @@ final class AccordionTest extends TestCase
     public function testMissingLabel(array $items): void
     {
         $this->expectException(RuntimeException::class);
-        Accordion::widget()->withItems($items)->render();
+        Accordion::widget()->items($items)->render();
     }
 
     public function testMissingContent(): void
@@ -127,7 +127,7 @@ final class AccordionTest extends TestCase
         ];
 
         $this->expectException(RuntimeException::class);
-        Accordion::widget()->withItems($items)->render();
+        Accordion::widget()->items($items)->render();
     }
 
     public function testAutoCloseItems(): void
@@ -144,10 +144,10 @@ final class AccordionTest extends TestCase
                 'content' => 'Content 2',
             ],
         ];
-        $html = Accordion::widget()->withItems($items)->render();
+        $html = Accordion::widget()->items($items)->render();
         $this->assertStringContainsString('data-bs-parent="', $html);
 
-        $html = Accordion::widget()->withoutAutoCloseItems()->withItems($items)->render();
+        $html = Accordion::widget()->withoutAutoCloseItems()->items($items)->render();
         $this->assertStringNotContainsString('data-bs-parent="', $html);
     }
 
@@ -167,7 +167,7 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->withItems($items)->render();
+        $html = Accordion::widget()->items($items)->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="false">Item 1</button></h2>
         <div id="w0-accordion-collapse0" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
@@ -197,8 +197,8 @@ final class AccordionTest extends TestCase
 
         $html = Accordion::widget()
 
-            ->withItems($items)
-            ->withItemToggleOptions([
+            ->items($items)
+            ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => 'custom-toggle',
             ])
@@ -210,8 +210,8 @@ final class AccordionTest extends TestCase
         $this->assertStringNotContainsString('<button', $html);
 
         $html = Accordion::widget()
-            ->withItems($items)
-            ->withItemToggleOptions([
+            ->items($items)
+            ->itemToggleOptions([
                 'tag' => 'a',
                 'class' => ['widget' => 'custom-toggle'],
             ])
@@ -238,7 +238,7 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->withItems($items)->withOptions(['class' => 'testMe'])->render();
+        $html = Accordion::widget()->items($items)->options(['class' => 'testMe'])->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="testMe accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
         <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
@@ -263,7 +263,7 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->withItems($items)->render();
+        $html = Accordion::widget()->items($items)->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
         <div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
@@ -272,7 +272,7 @@ final class AccordionTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
-        $html = Accordion::widget()->withItems($items)->withoutEncodeLabels()->render();
+        $html = Accordion::widget()->items($items)->withoutEncodeLabels()->render();
         $expected = <<<'HTML'
         <div id="w1-accordion" class="accordion"><div class="accordion-item"><h2 id="w1-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w1-accordion-collapse0" aria-expanded="true">Item 1</button></h2>
         <div id="w1-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w1-accordion-collapse0-heading" data-bs-parent="#w1-accordion">Content 1</div></div>
@@ -297,7 +297,7 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->withItems($items)->withEncodeTags()->render();
+        $html = Accordion::widget()->items($items)->withEncodeTags()->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">&lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse0-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true"&amp;amp;gt;Item 1&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
         &amp;lt;div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 1&amp;lt;/div&amp;gt;&lt;/div&gt;
