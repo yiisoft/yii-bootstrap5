@@ -194,7 +194,7 @@ final class Nav extends Widget
      *
      * @return $this
      */
-    public function withActivateParents(): self
+    public function activateParents(): self
     {
         $new = clone $this;
         $new->activateParents = true;

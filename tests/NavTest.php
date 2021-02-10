@@ -262,7 +262,7 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->withActivateParents()
+            ->activateParents()
             ->items([
                 [
                     'label' => 'Dropdown',
