@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 use JsonException;
 use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Factory\Exceptions\InvalidConfigException;
 use Yiisoft\Html\Html;
 
 use function array_key_exists;
@@ -35,6 +36,7 @@ final class Dropdown extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $submenuOptions = [];
     private array $options = [];
 
@@ -47,107 +49,11 @@ final class Dropdown extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
-        $this->registerClientEvents($this->options['id']);
-
-        return $this->renderItems($this->items, $this->options);
-    }
-
-    /**
-     * Renders menu items.
-     *
-     * @param array $items the menu items to be rendered
-     * @param array $options the container HTML attributes
-     *
-     * @throws JsonException|RuntimeException if the label option is not specified in one of the items.
-     *
-     * @return string the rendering result.
-     */
-    protected function renderItems(array $items, array $options = []): string
-    {
-        $lines = [];
-
-        foreach ($items as $item) {
-            if (is_string($item)) {
-                $item = ['label' => $item, 'encode' => false, 'enclose' => false];
-            }
-
-            if (isset($item['visible']) && !$item['visible']) {
-                continue;
-            }
-
-            if (!array_key_exists('label', $item)) {
-                throw new RuntimeException("The 'label' option is required.");
-            }
-
-            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
-            $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
-            $itemOptions = ArrayHelper::getValue($item, 'options', []);
-            $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
-            $active = ArrayHelper::getValue($item, 'active', false);
-            $disabled = ArrayHelper::getValue($item, 'disabled', false);
-            $enclose = ArrayHelper::getValue($item, 'enclose', true);
-
-            Html::addCssClass($linkOptions, 'dropdown-item');
-
-            if ($disabled) {
-                ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-                ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-                Html::addCssClass($linkOptions, 'disabled');
-            } elseif ($active) {
-                Html::addCssClass($linkOptions, 'active');
-            }
-
-            $url = $item['url'] ?? null;
-
-            if (empty($item['items'])) {
-                if ($label === '-') {
-                    $content = Html::div('', ['class' => 'dropdown-divider']);
-                } elseif ($enclose === false) {
-                    $content = $label;
-                } elseif ($url === null) {
-                    $content = Html::tag('h6', $label, ['class' => 'dropdown-header']);
-                } else {
-                    $content = Html::a($label, $url, $linkOptions);
-                }
-
-                $lines[] = $content;
-            } else {
-                $submenuOptions = $this->submenuOptions;
-
-                if (isset($item['submenuOptions'])) {
-                    $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
-                }
-
-                Html::addCssClass($submenuOptions, ['dropdown-menu']);
-                Html::addCssClass($linkOptions, ['dropdown-toggle']);
-
-                $lines[] = Html::a($label, $url, array_merge([
-                    'data-bs-toggle' => 'dropdown',
-                    'aria-haspopup' => 'true',
-                    'aria-expanded' => 'false',
-                    'role' => 'button',
-                ], $linkOptions))
-
-                . Html::tag(
-                    'ul',
-                    self::widget()
-                        ->items($item['items'])
-                        ->options($submenuOptions)
-                        ->submenuOptions($submenuOptions)
-                        ->encodeLabels($this->encodeLabels)
-                        ->render(),
-                    array_merge_recursive(
-                        ['aria-expanded' => 'false', 'class' => ['dropdown'], 'encode' => false],
-                        $itemOptions
-                    )
-                );
-            }
+        if ($this->encodeTags === false) {
+            $this->options = array_merge($this->options, ['itemOptions' => ['encode' => false], 'encode' => false]);
         }
 
-        return Html::ul(
-            $lines,
-            array_merge_recursive(['aria-expanded' => 'false', 'encode' => false], $options)
-        );
+        return $this->renderItems($this->items, $this->options);
     }
 
     /**
@@ -174,23 +80,23 @@ final class Dropdown extends Widget
      */
     public function items(array $value): self
     {
-        $this->items = $value;
+        $new = clone $this;
+        $new->items = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Whether the labels for header items should be HTML-encoded.
-     *
-     * @param bool $value
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withoutEncodeLabels(): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = false;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -202,9 +108,10 @@ final class Dropdown extends Widget
      */
     public function submenuOptions(array $value): self
     {
-        $this->submenuOptions = $value;
+        $new = clone $this;
+        $new->submenuOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -213,12 +120,127 @@ final class Dropdown extends Widget
      *
      * @return $this
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
+    }
+
+    /**
+     * Renders menu items.
+     *
+     * @param array $items the menu items to be rendered
+     * @param array $options the container HTML attributes
+     *
+     * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
+     * items.
+     *
+     * @return string the rendering result.
+     */
+    private function renderItems(array $items, array $options = []): string
+    {
+        $lines = [];
+
+        foreach ($items as $item) {
+            if (is_string($item)) {
+                $item = ['label' => $item, 'encode' => false, 'enclose' => false];
+            }
+
+            if (isset($item['visible']) && !$item['visible']) {
+                continue;
+            }
+
+            if (!array_key_exists('label', $item)) {
+                throw new RuntimeException("The 'label' option is required.");
+            }
+
+            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
+            $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
+            $itemOptions = ArrayHelper::getValue($item, 'options', []);
+            $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
+            $active = ArrayHelper::getValue($item, 'active', false);
+            $disabled = ArrayHelper::getValue($item, 'disabled', false);
+            $enclose = ArrayHelper::getValue($item, 'enclose', true);
+
+            if ($this->encodeTags === false) {
+                ArrayHelper::setValue($linkOptions, 'encode', false);
+                ArrayHelper::setValue($itemOptions, 'encode', false);
+            }
+
+            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
+
+            if ($disabled) {
+                ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
+                ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
+                Html::addCssClass($linkOptions, ['disable' => 'disabled']);
+            } elseif ($active) {
+                Html::addCssClass($linkOptions, ['active' => 'active']);
+            }
+
+            $url = $item['url'] ?? null;
+
+            /** @psalm-suppress ConflictingReferenceConstraint */
+            if (empty($item['items'])) {
+                if ($label === '-') {
+                    $content = Html::div('', ['class' => 'dropdown-divider']);
+                } elseif ($enclose === false) {
+                    $content = $label;
+                } elseif ($url === null) {
+                    $content = Html::tag('h6', $label, ['class' => 'dropdown-header']);
+                } else {
+                    $content = Html::a($label, $url, $linkOptions);
+                }
+
+                $lines[] = $content;
+            } else {
+                $submenuOptions = $this->submenuOptions;
+
+                if (isset($item['submenuOptions'])) {
+                    $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
+                }
+
+                Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
+                Html::addCssClass($linkOptions, ['toggle' => 'dropdown-toggle']);
+
+                $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
+
+                $dropdown = self::widget()
+                    ->items($item['items'])
+                    ->options($submenuOptions)
+                    ->submenuOptions($submenuOptions);
+
+                if ($this->encodeLabels === false) {
+                    $dropdown = $dropdown->withoutEncodeLabels();
+                }
+
+                ArrayHelper::setValue($linkOptions, 'data-bs-toggle', 'dropdown');
+                ArrayHelper::setValue($linkOptions, 'aria-haspopup', 'true');
+                ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
+                ArrayHelper::setValue($linkOptions, 'role', 'button');
+
+                $lines[] = Html::a($label, $url, $linkOptions) . Html::tag('ul', $dropdown->render(), $itemOptions);
+            }
+        }
+
+        $options = array_merge(['aria-expanded' => 'false'], $options);
+
+        return Html::ul($lines, $options);
     }
 }

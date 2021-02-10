@@ -28,6 +28,7 @@ final class Breadcrumbs extends Widget
 {
     private string $tag = 'ol';
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $homeLink = [];
     private array $links = [];
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
@@ -37,18 +38,16 @@ final class Breadcrumbs extends Widget
 
     protected function run(): string
     {
+        if (empty($this->links)) {
+            return '';
+        }
+
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-breadcrumb";
         }
 
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'breadcrumb']);
-
-        $this->registerPlugin('breadcrumb', $this->options);
-
-        if (empty($this->links)) {
-            return '';
-        }
 
         $links = [];
 
@@ -69,43 +68,12 @@ final class Breadcrumbs extends Widget
             $links[] = $this->renderItem($link, isset($link['url']) ? $this->itemTemplate : $this->activeItemTemplate);
         }
 
+        if ($this->encodeTags === false) {
+            $this->navOptions['encode'] = false;
+            $this->options['encode'] = false;
+        }
+
         return Html::tag('nav', Html::tag($this->tag, implode('', $links), $this->options), $this->navOptions);
-    }
-
-    /**
-     * Renders a single breadcrumb item.
-     *
-     * @param array $link the link to be rendered. It must contain the "label" element. The "url" element is optional.
-     * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
-     * link.
-     *
-     * @throws JsonException|RuntimeException if `$link` does not have "label" element.
-     *
-     * @return string the rendering result
-     */
-    protected function renderItem(array $link, string $template): string
-    {
-        $encodeLabel = ArrayHelper::remove($link, 'encode', $this->encodeLabels);
-
-        if (array_key_exists('label', $link)) {
-            $label = $encodeLabel ? Html::encode($link['label']) : $link['label'];
-        } else {
-            throw new RuntimeException('The "label" element is required for each link.');
-        }
-
-        if (isset($link['template'])) {
-            $template = $link['template'];
-        }
-
-        if (isset($link['url'])) {
-            $options = $link;
-            unset($options['template'], $options['label'], $options['url']);
-            $linkHtml = Html::a($label, $link['url'], $options);
-        } else {
-            $linkHtml = $label;
-        }
-
-        return strtr($template, ['{link}' => $linkHtml]);
     }
 
     /**
@@ -118,23 +86,23 @@ final class Breadcrumbs extends Widget
      */
     public function activeItemTemplate(string $value): self
     {
-        $this->activeItemTemplate = $value;
+        $new = clone $this;
+        $new->activeItemTemplate = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Whether to HTML-encode the link labels.
-     *
-     * @param bool $value
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withoutEncodeLabels(): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = false;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -151,9 +119,10 @@ final class Breadcrumbs extends Widget
      */
     public function homeLink(array $value): self
     {
-        $this->homeLink = $value;
+        $new = clone $this;
+        $new->homeLink = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -166,9 +135,10 @@ final class Breadcrumbs extends Widget
      */
     public function itemTemplate(string $value): self
     {
-        $this->itemTemplate = $value;
+        $new = clone $this;
+        $new->itemTemplate = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -189,15 +159,16 @@ final class Breadcrumbs extends Widget
      */
     public function links(array $value): self
     {
-        $this->links = $value;
+        $new = clone $this;
+        $new->links = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widgets nav container tag.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -205,15 +176,16 @@ final class Breadcrumbs extends Widget
      */
     public function navOptions(array $value): self
     {
-        $this->navOptions = $value;
+        $new = clone $this;
+        $new->navOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -221,9 +193,10 @@ final class Breadcrumbs extends Widget
      */
     public function options(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -235,8 +208,62 @@ final class Breadcrumbs extends Widget
      */
     public function tag(string $value): self
     {
-        $this->tag = $value;
+        $new = clone $this;
+        $new->tag = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
+    }
+
+    /**
+     * Renders a single breadcrumb item.
+     *
+     * @param array $link the link to be rendered. It must contain the "label" element. The "url" element is optional.
+     * @param string $template the template to be used to rendered the link. The token "{link}" will be replaced by the
+     * link.
+     *
+     * @throws JsonException|RuntimeException if `$link` does not have "label" element.
+     *
+     * @return string the rendering result
+     */
+    private function renderItem(array $link, string $template): string
+    {
+        $encodeLabel = ArrayHelper::remove($link, 'encode', $this->encodeLabels);
+
+        if (array_key_exists('label', $link)) {
+            $label = $encodeLabel ? Html::encode($link['label']) : $link['label'];
+        } else {
+            throw new RuntimeException('The "label" element is required for each link.');
+        }
+
+        if (isset($link['template'])) {
+            $template = $link['template'];
+        }
+
+        if ($this->encodeTags === false) {
+            $link['encode'] = false;
+        }
+
+        if (isset($link['url'])) {
+            $options = $link;
+            unset($options['template'], $options['label'], $options['url']);
+            $linkHtml = Html::a($label, $link['url'], $options);
+        } else {
+            $linkHtml = $label;
+        }
+
+        return strtr($template, ['{link}' => $linkHtml]);
     }
 }

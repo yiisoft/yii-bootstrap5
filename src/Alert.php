@@ -8,6 +8,8 @@ use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
+use function array_merge;
+
 /**
  * Alert renders an alert bootstrap component.
  *
@@ -23,9 +25,10 @@ use Yiisoft\Html\Html;
  */
 final class Alert extends Widget
 {
-    private ?string $body = null;
+    private string $body = '';
     private array $closeButton = [];
     private bool $closeButtonEnabled = true;
+    private bool $encodeTags = false;
     private array $options = [];
 
     protected function run(): string
@@ -36,83 +39,23 @@ final class Alert extends Widget
 
         $this->initOptions();
 
-        $this->registerPlugin('alert', $this->options);
-
         return Html::div($this->renderBodyEnd(), $this->options);
-    }
-
-    /**
-     * Renders the alert body and the close button (if any).
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderBodyEnd(): string
-    {
-        return $this->body . "\n" . $this->renderCloseButton() . "\n";
-    }
-
-    /**
-     * Renders the close button.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    protected function renderCloseButton(): ?string
-    {
-        if ($this->closeButtonEnabled === false) {
-            return null;
-        }
-
-        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', '');
-
-        if ($tag === 'button' && !isset($this->closeButton['type'])) {
-            $this->closeButton['type'] = 'button';
-        }
-
-        return Html::tag($tag, $label, $this->closeButton);
-    }
-
-    /**
-     * Initializes the widget options.
-     *
-     * This method sets the default values for various options.
-     */
-    protected function initOptions(): void
-    {
-        Html::addCssClass($this->options, ['widget' => 'alert']);
-
-        if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = [
-                'aria-label' => 'Close',
-                'class' => ['widget' => 'btn-close'],
-                'data-bs-dismiss' => 'alert',
-            ];
-
-            Html::addCssClass($this->options, ['alert-dismissible']);
-        }
-
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'alert';
-        }
     }
 
     /**
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
      *
-     * @param string|null $value
+     * @param string $value
      *
      * @return $this
      */
-    public function body(?string $value): self
+    public function body(string $value): self
     {
-        $this->body = $value;
+        $new = clone $this;
+        $new->body = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -137,29 +80,29 @@ final class Alert extends Widget
      */
     public function closeButton(array $value): self
     {
-        $this->closeButton = $value;
+        $new = clone $this;
+        $new->closeButton = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Enable/Disable close button.
-     *
-     * @param bool $value
+     * Disable close button.
      *
      * @return $this
      */
-    public function closeButtonEnabled(bool $value): self
+    public function withoutCloseButton(): self
     {
-        $this->closeButtonEnabled = $value;
+        $new = clone $this;
+        $new->closeButtonEnabled = false;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -167,8 +110,89 @@ final class Alert extends Widget
      */
     public function options(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
+    }
+
+    /**
+     * Renders the alert body and the close button (if any).
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderBodyEnd(): string
+    {
+        return $this->body . "\n" . $this->renderCloseButton() . "\n";
+    }
+
+    /**
+     * Renders the close button.
+     *
+     * @throws JsonException
+     *
+     * @return string the rendering result
+     */
+    private function renderCloseButton(): ?string
+    {
+        if ($this->closeButtonEnabled === false) {
+            return null;
+        }
+
+        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
+        $label = ArrayHelper::remove($this->closeButton, 'label', '');
+
+        if ($tag === 'button' && !isset($this->closeButton['type'])) {
+            $this->closeButton['type'] = 'button';
+        }
+
+        return Html::tag($tag, $label, $this->closeButton);
+    }
+
+    /**
+     * Initializes the widget options.
+     *
+     * This method sets the default values for various options.
+     */
+    private function initOptions(): void
+    {
+        Html::addCssClass($this->options, ['widget' => 'alert']);
+
+        if ($this->closeButtonEnabled !== false) {
+            $this->closeButton = array_merge(
+                $this->closeButton,
+                [
+                    'aria-label' => 'Close',
+                    'data-bs-dismiss' => 'alert',
+                ],
+            );
+
+            Html::addCssclass($this->closeButton, ['buttonOptions' => 'btn-close']);
+            Html::addCssClass($this->options, ['alert-dismissible' => 'alert-dismissible']);
+        }
+
+        if ($this->encodeTags === false) {
+            $this->closeButton['encode'] = false;
+            $this->options['encode'] = false;
+        }
+
+        if (!isset($this->options['role'])) {
+            $this->options['role'] = 'alert';
+        }
     }
 }

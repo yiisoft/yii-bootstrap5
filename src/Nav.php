@@ -108,13 +108,12 @@ final class Nav extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private bool $activateItems = true;
     private bool $activateParents = false;
-    private ?string $currentPath = null;
-    private array $params = [];
+    private string $currentPath = '';
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
-    private string $label = '';
 
     protected function run(): string
     {
@@ -125,7 +124,142 @@ final class Nav extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'nav']);
 
+        if ($this->encodeTags === false) {
+            $this->options['encode'] = false;
+        }
+
         return $this->renderItems();
+    }
+
+    /**
+     * List of items in the nav widget. Each array element represents a single  menu item which can be either a string
+     * or an array with the following structure:
+     *
+     * - label: string, required, the nav item label.
+     * - url: optional, the item's URL. Defaults to "#".
+     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
+     * - linkOptions: array, optional, the HTML attributes of the item's link.
+     * - options: array, optional, the HTML attributes of the item container (LI).
+     * - active: bool, optional, whether the item should be on active state or not.
+     * - dropdownOptions: array, optional, the HTML options that will passed to the {@see Dropdown} widget.
+     * - items: array|string, optional, the configuration array for creating a {@see Dropdown} widget, or a string
+     *   representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
+     * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for
+     *   only this item.
+     *
+     * If a menu item is a string, it will be rendered directly without HTML encoding.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function items(array $value): self
+    {
+        $new = clone $this;
+        $new->items = $value;
+
+        return $new;
+    }
+
+    /**
+     * When tags Labels HTML should not be encoded.
+     *
+     * @return $this
+     */
+    public function withoutEncodeLabels(): self
+    {
+        $new = clone $this;
+        $new->encodeLabels = false;
+
+        return $new;
+    }
+
+    /**
+     * Disable activate items according to whether their currentPath.
+     *
+     * @return $this
+     *
+     * {@see isItemActive}
+     */
+    public function withoutActivateItems(): self
+    {
+        $new = clone $this;
+        $new->activateItems = false;
+
+        return $new;
+    }
+
+    /**
+     * Whether to activate parent menu items when one of the corresponding child menu items is active.
+     *
+     * @return $this
+     */
+    public function activateParents(): self
+    {
+        $new = clone $this;
+        $new->activateParents = true;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to assign the current path of the url from request controller.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function currentPath(string $value): self
+    {
+        $new = clone $this;
+        $new->currentPath = $value;
+
+        return $new;
+    }
+
+    /**
+     * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function dropdownClass(string $value): self
+    {
+        $new = clone $this;
+        $new->dropdownClass = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function options(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
     }
 
     /**
@@ -135,7 +269,7 @@ final class Nav extends Widget
      *
      * @return string
      */
-    public function renderItems(): string
+    private function renderItems(): string
     {
         $items = [];
 
@@ -159,7 +293,7 @@ final class Nav extends Widget
      *
      * @return string the rendering result.
      */
-    public function renderItem($item): string
+    private function renderItem($item): string
     {
         if (is_string($item)) {
             return $item;
@@ -192,15 +326,20 @@ final class Nav extends Widget
             }
         }
 
-        Html::addCssClass($options, 'nav-item');
-        Html::addCssClass($linkOptions, 'nav-link');
+        Html::addCssClass($options, ['nav' => 'nav-item']);
+        Html::addCssClass($linkOptions, ['linkOptions' => 'nav-link']);
 
         if ($disabled) {
-            ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-            ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-            Html::addCssClass($linkOptions, 'disabled');
+            $linkOptions['tabindex'] = '-1';
+            $linkOptions['aria-disabled'] = 'true';
+            Html::addCssClass($linkOptions, ['disabled' => 'disabled']);
         } elseif ($this->activateItems && $active) {
-            Html::addCssClass($linkOptions, 'active');
+            Html::addCssClass($linkOptions, ['active' => 'active']);
+        }
+
+        if ($this->encodeTags === false) {
+            $linkOptions['encode'] = false;
+            $options['encode'] = false;
         }
 
         return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
@@ -217,16 +356,19 @@ final class Nav extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderDropdown(array $items, array $parentItem): string
+    private function renderDropdown(array $items, array $parentItem): string
     {
         $dropdownClass = $this->dropdownClass;
 
-        return $dropdownClass::widget()
-            ->enableClientOptions(false)
-            ->encodeLabels($this->encodeLabels)
+        $dropdown = $dropdownClass::widget()
             ->items($items)
-            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []))
-            ->render();
+            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []));
+
+        if ($this->encodeLabels === false) {
+            $dropdown->withoutEncodeLabels();
+        }
+
+        return $dropdown->render();
     }
 
     /**
@@ -239,13 +381,9 @@ final class Nav extends Widget
      *
      * {@see items}
      */
-    protected function isChildActive(array $items, bool &$active): array
+    private function isChildActive(array $items, bool &$active): array
     {
         foreach ($items as $i => $child) {
-            if (is_array($child) && !ArrayHelper::getValue($child, 'visible', true)) {
-                continue;
-            }
-
             if ($this->isItemActive($child)) {
                 ArrayHelper::setValue($items[$i], 'active', true);
                 if ($this->activateParents) {
@@ -259,7 +397,7 @@ final class Nav extends Widget
 
                 if ($activeParent) {
                     $items[$i]['options'] ??= [];
-                    Html::addCssClass($items[$i]['options'], 'active');
+                    Html::addCssClass($items[$i]['options'], ['active' => 'active']);
                     $active = true;
                 }
             }
@@ -280,153 +418,12 @@ final class Nav extends Widget
      *
      * @return bool whether the menu item is active
      */
-    protected function isItemActive($item): bool
+    private function isItemActive($item): bool
     {
         if (isset($item['active'])) {
             return ArrayHelper::getValue($item, 'active', false);
         }
 
         return isset($item['url']) && $this->currentPath !== '/' && $item['url'] === $this->currentPath && $this->activateItems;
-    }
-
-    /**
-     * List of items in the nav widget. Each array element represents a single  menu item which can be either a string
-     * or an array with the following structure:
-     *
-     * - label: string, required, the nav item label.
-     * - url: optional, the item's URL. Defaults to "#".
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item's link.
-     * - options: array, optional, the HTML attributes of the item container (LI).
-     * - active: bool, optional, whether the item should be on active state or not.
-     * - dropdownOptions: array, optional, the HTML options that will passed to the {@see Dropdown} widget.
-     * - items: array|string, optional, the configuration array for creating a {@see Dropdown} widget, or a string
-     *   representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
-     * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for
-     *   only this item.
-     *
-     * If a menu item is a string, it will be rendered directly without HTML encoding.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function items(array $value): self
-    {
-        $this->items = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether the nav items labels should be HTML-encoded.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function encodeLabels(bool $value): self
-    {
-        $this->encodeLabels = $value;
-
-        return $this;
-    }
-
-    public function label(string $value): self
-    {
-        $this->label = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether to automatically activate items according to whether their currentPath matches the currently requested.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     *
-     * {@see isItemActive}
-     */
-    public function activateItems(bool $value): self
-    {
-        $this->activateItems = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether to activate parent menu items when one of the corresponding child menu items is active.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function activateParents(bool $value): self
-    {
-        $this->activateParents = $value;
-
-        return $this;
-    }
-
-    /**
-     * Allows you to assign the current path of the url from request controller.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     */
-    public function currentPath(?string $value): self
-    {
-        $this->currentPath = $value;
-
-        return $this;
-    }
-
-    /**
-     * The parameters used to determine if a menu item is active or not. If not set, it will use `$_GET`.
-     *
-     * @param array $value
-     *
-     * @return $this
-     *
-     * {@see currentPath}
-     * {@see isItemActive}
-     */
-    public function params(array $value): self
-    {
-        $this->params = $value;
-
-        return $this;
-    }
-
-    /**
-     * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function dropdownClass(string $value): self
-    {
-        $this->dropdownClass = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
     }
 }

@@ -15,7 +15,6 @@ use function array_merge;
 use function array_search;
 use function implode;
 use function is_array;
-use function is_int;
 use function is_numeric;
 use function is_object;
 use function is_string;
@@ -59,6 +58,7 @@ final class Accordion extends Widget
 {
     private array $items = [];
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private bool $autoCloseItems = true;
     private array $itemToggleOptions = [];
     private array $options = [];
@@ -69,139 +69,14 @@ final class Accordion extends Widget
             $this->options['id'] = "{$this->getId()}-accordion";
         }
 
-        $this->registerPlugin('collapse', $this->options);
-
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, 'accordion');
+        Html::addCssClass($this->options, ['widget' => 'accordion']);
+
+        if ($this->encodeTags === false) {
+            $this->options['encode'] = false;
+        }
 
         return Html::div($this->renderItems(), $this->options);
-    }
-
-    /**
-     * Renders collapsible items as specified on {@see items}.
-     *
-     * @throws JsonException|RuntimeException
-     *
-     * @return string the rendering result
-     */
-    public function renderItems(): string
-    {
-        $items = [];
-        $index = 0;
-        $expanded = array_search(true, array_column($this->items, 'expand'), true);
-
-        foreach ($this->items as $key => $item) {
-            if (!is_array($item)) {
-                $item = ['content' => $item];
-            }
-
-            if ($expanded === false && $index === 0) {
-                $item['expand'] = true;
-            }
-
-            if (!array_key_exists('label', $item)) {
-                if (is_int($key)) {
-                    throw new RuntimeException('The "label" option is required.');
-                }
-
-                $item['label'] = $key;
-            }
-
-            $header = ArrayHelper::remove($item, 'label');
-            $options = ArrayHelper::getValue($item, 'options', []);
-
-            Html::addCssClass($options, ['panel' => 'accordion-item']);
-
-            $items[] = Html::div($this->renderItem($header, $item, $index++), $options);
-        }
-
-        return implode("\n", $items);
-    }
-
-    /**
-     * Renders a single collapsible item group.
-     *
-     * @param string $header a label of the item group {@see items}
-     * @param array $item a single item from {@see items}
-     * @param int $index the item index as each item group content must have an id
-     *
-     * @throws JsonException|RuntimeException
-     *
-     * @return string the rendering result
-     */
-    public function renderItem(string $header, array $item, int $index): string
-    {
-        if (array_key_exists('content', $item)) {
-            $id = $this->options['id'] . '-collapse' . $index;
-            $expand = ArrayHelper::remove($item, 'expand', false);
-            $options = ArrayHelper::getValue($item, 'contentOptions', []);
-            $options['id'] = $id;
-
-            Html::addCssClass($options, ['accordion-body', 'collapse']);
-
-            if ($expand) {
-                Html::addCssClass($options, 'show');
-            }
-
-            if (!isset($options['aria-label'], $options['aria-labelledby'])) {
-                $options['aria-labelledby'] = $options['id'] . '-heading';
-            }
-
-            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
-
-            if ($encodeLabel) {
-                $header = Html::encode($header);
-            }
-
-            $itemToggleOptions = array_merge([
-                'tag' => 'button',
-                'type' => 'button',
-                'data-bs-toggle' => 'collapse',
-                'data-bs-target' => '#' . $options['id'],
-                'aria-expanded' => $expand ? 'true' : 'false',
-            ], $this->itemToggleOptions);
-            $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
-
-            /** @psalm-suppress ConflictingReferenceConstraint */
-            if ($itemToggleTag === 'a') {
-                ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
-                $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
-            } else {
-                Html::addCssClass($itemToggleOptions, 'accordion-button');
-                if (!$expand) {
-                    Html::addCssClass($itemToggleOptions, 'collapsed');
-                }
-                $header = Html::button($header, $itemToggleOptions);
-            }
-
-            if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
-                $content = $item['content'];
-            } elseif (is_array($item['content'])) {
-                $content = Html::ul($item['content'], [
-                    'class' => 'list-group',
-                    'itemOptions' => [
-                        'class' => 'list-group-item',
-                    ],
-                    'encode' => false,
-                ]) . "\n";
-            } else {
-                throw new RuntimeException('The "content" option should be a string, array or object.');
-            }
-        } else {
-            throw new RuntimeException('The "content" option is required.');
-        }
-
-        $group = [];
-
-        if ($this->autoCloseItems) {
-            $options['data-bs-parent'] = '#' . $this->options['id'];
-        }
-
-
-        $group[] = Html::tag('h2', $header, ['class' => 'accordion-header', 'id' => $options['id'] . '-heading']);
-        $group[] = Html::div($content, $options);
-
-        return implode("\n", $group);
     }
 
     /**
@@ -209,29 +84,27 @@ final class Accordion extends Widget
      *
      * Set this to `false` to allow keeping multiple items open at once.
      *
-     * @param bool $value
-     *
      * @return $this
      */
-    public function autoCloseItems(bool $value): self
+    public function allowMultipleOpenedItems(): self
     {
-        $this->autoCloseItems = $value;
+        $new = clone $this;
+        $new->autoCloseItems = false;
 
-        return $this;
+        return $new;
     }
 
     /**
-     * Whether the labels for header items should be HTML-encoded.
-     *
-     * @param bool $value
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withoutEncodeLabels(): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = false;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -251,18 +124,21 @@ final class Accordion extends Widget
      * For example:
      *
      * ```php
-     * echo Accordion::widget([
-     *     'items' => [
-     *       'Introduction' => 'This is the first collapsible menu',
-     *       'Second panel' => [
-     *           'content' => 'This is the second collapsible menu',
-     *       ],
-     *       [
-     *           'label' => 'Third panel',
-     *           'content' => 'This is the third collapsible menu',
-     *       ],
-     *   ]
-     * ])
+     * echo Accordion::widget()
+     *     ->items(
+     *         [
+     *             [
+     *                 'Introduction' => 'This is the first collapsible menu',
+     *                 'Second panel' => [
+     *                     'content' => 'This is the second collapsible menu',
+     *                 ],
+     *             ],
+     *             [
+     *                 'label' => 'Third panel',
+     *                 'content' => 'This is the third collapsible menu',
+     *             ],
+     *         ],
+     *     );
      * ```
      *
      * @param array $value
@@ -271,9 +147,10 @@ final class Accordion extends Widget
      */
     public function items(array $value): self
     {
-        $this->items = $value;
+        $new = clone $this;
+        $new->items = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -294,15 +171,16 @@ final class Accordion extends Widget
      */
     public function itemToggleOptions(array $value): self
     {
-        $this->itemToggleOptions = $value;
+        $new = clone $this;
+        $new->itemToggleOptions = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -310,8 +188,162 @@ final class Accordion extends Widget
      */
     public function options(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
+    }
+
+    /**
+     * Renders collapsible items as specified on {@see items}.
+     *
+     * @throws JsonException|RuntimeException
+     *
+     * @return string the rendering result
+     */
+    private function renderItems(): string
+    {
+        $items = [];
+        $index = 0;
+        $expanded = array_search(true, array_column($this->items, 'expand'), true);
+
+        foreach ($this->items as $key => $item) {
+            if (!is_array($item)) {
+                $item = ['content' => $item];
+            }
+
+            if ($expanded === false && $index === 0) {
+                $item['expand'] = true;
+            }
+
+            if (!array_key_exists('label', $item)) {
+                throw new RuntimeException('The "label" option is required.');
+            }
+
+            $header = ArrayHelper::remove($item, 'label');
+            $options = ArrayHelper::getValue($item, 'options', []);
+
+            if ($this->encodeTags === false) {
+                $options['encode'] = false;
+            }
+
+            Html::addCssClass($options, ['panel' => 'accordion-item']);
+
+            $items[] = Html::div($this->renderItem($header, $item, $index++), $options);
+        }
+
+        return implode("\n", $items);
+    }
+
+    /**
+     * Renders a single collapsible item group.
+     *
+     * @param string $header a label of the item group {@see items}
+     * @param array $item a single item from {@see items}
+     * @param int $index the item index as each item group content must have an id
+     *
+     * @throws JsonException|RuntimeException
+     *
+     * @return string the rendering result
+     */
+    private function renderItem(string $header, array $item, int $index): string
+    {
+        if (array_key_exists('content', $item)) {
+            $id = $this->options['id'] . '-collapse' . $index;
+            $expand = ArrayHelper::remove($item, 'expand', false);
+            $options = ArrayHelper::getValue($item, 'contentOptions', []);
+            $options['id'] = $id;
+
+            Html::addCssClass($options, ['widget' => 'accordion-body collapse']);
+
+            if ($expand) {
+                Html::addCssClass($options, ['visibility' => 'show']);
+            }
+
+            if (!isset($options['aria-label'], $options['aria-labelledby'])) {
+                $options['aria-labelledby'] = $options['id'] . '-heading';
+            }
+
+            $encodeLabel = $item['encode'] ?? $this->encodeLabels;
+
+            if ($encodeLabel) {
+                $header = Html::encode($header);
+            }
+
+            $itemToggleOptions = array_merge([
+                'tag' => 'button',
+                'type' => 'button',
+                'data-bs-toggle' => 'collapse',
+                'data-bs-target' => '#' . $options['id'],
+                'aria-expanded' => $expand ? 'true' : 'false',
+            ], $this->itemToggleOptions);
+
+            if ($this->encodeTags === false) {
+                $itemToggleOptions['encode'] = false;
+            }
+
+            $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
+
+            /** @psalm-suppress ConflictingReferenceConstraint */
+            if ($itemToggleTag === 'a') {
+                ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
+                $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
+            } else {
+                Html::addCssClass($itemToggleOptions, ['widget' => 'accordion-button']);
+                if (!$expand) {
+                    Html::addCssClass($itemToggleOptions, ['expand' => 'collapsed']);
+                }
+                $header = Html::button($header, $itemToggleOptions);
+            }
+
+            if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
+                $content = $item['content'];
+            } elseif (is_array($item['content'])) {
+                $ulOptions = ['class' => 'list-group'];
+                $ulItemOptions = ['itemOptions' => ['class' => 'list-group-item']];
+
+                if ($this->encodeTags === false) {
+                    $ulOptions['encode'] = false;
+                    $ulItemOptions['itemOptions']['encode'] = false;
+                }
+
+                $content = Html::ul($item['content'], array_merge($ulOptions, $ulItemOptions)) . "\n";
+            } else {
+                throw new RuntimeException('The "content" option should be a string, array or object.');
+            }
+        } else {
+            throw new RuntimeException('The "content" option is required.');
+        }
+
+        $group = [];
+
+        if ($this->autoCloseItems) {
+            $options['data-bs-parent'] = '#' . $this->options['id'];
+        }
+
+        $groupOptions = ['class' => 'accordion-header', 'id' => $options['id'] . '-heading'];
+
+        if ($this->encodeTags === false) {
+            $options['encode'] = false;
+            $groupOptions['encode'] = false;
+        }
+
+        $group[] = Html::tag('h2', $header, $groupOptions);
+        $group[] = Html::div($content, $options);
+
+        return implode("\n", $group);
     }
 }

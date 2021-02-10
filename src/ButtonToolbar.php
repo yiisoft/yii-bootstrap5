@@ -50,6 +50,7 @@ use function is_array;
  */
 final class ButtonToolbar extends Widget
 {
+    private bool $encodeTags = false;
     private array $buttonGroups = [];
     private array $options = [];
 
@@ -66,7 +67,61 @@ final class ButtonToolbar extends Widget
             $this->options['role'] = 'toolbar';
         }
 
+        if ($this->encodeTags === false) {
+            $this->options['encode'] = false;
+        }
+
         return Html::div($this->renderButtonGroups(), $this->options);
+    }
+
+    /**
+     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
+     * array of the following structure:
+     *
+     * - buttons: array list of buttons. Either as array or string representation
+     * - options: array optional, the HTML attributes of the button group.
+     * - encodeLabels: bool whether to HTML-encode the button labels.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function buttonGroups(array $value): self
+    {
+        $new = clone $this;
+        $new->buttonGroups = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function options(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
     }
 
     /**
@@ -76,7 +131,7 @@ final class ButtonToolbar extends Widget
      *
      * @return string the rendering result.
      */
-    protected function renderButtonGroups(): string
+    private function renderButtonGroups(): string
     {
         $buttonGroups = [];
 
@@ -97,40 +152,5 @@ final class ButtonToolbar extends Widget
         }
 
         return implode("\n", $buttonGroups);
-    }
-
-    /**
-     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
-     * array of the following structure:
-     *
-     * - buttons: array list of buttons. Either as array or string representation
-     * - options: array optional, the HTML attributes of the button group.
-     * - encodeLabels: bool whether to HTML-encode the button labels.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function buttonGroups(array $value): self
-    {
-        $this->buttonGroups = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for the container tag. The following special options are recognized.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
     }
 }

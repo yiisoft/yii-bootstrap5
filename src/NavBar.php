@@ -110,9 +110,9 @@ use Yiisoft\Html\Html;
 final class NavBar extends Widget
 {
     private array $collapseOptions = [];
-    private ?string $brandLabel = null;
-    private ?string $brandImage = null;
-    private ?string $brandUrl = '/';
+    private string $brandLabel = '';
+    private string $brandImage = '';
+    private string $brandUrl = '/';
     private array $brandOptions = [];
     private string $screenReaderToggleText = 'Toggle navigation';
     private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
@@ -120,8 +120,9 @@ final class NavBar extends Widget
     private bool $renderInnerContainer = true;
     private array $innerContainerOptions = [];
     private array $options = [];
+    private bool $encodeTags = false;
 
-    public function begin(): ?string
+    public function begin(): string
     {
         parent::begin();
 
@@ -139,19 +140,26 @@ final class NavBar extends Widget
             Html::addCssClass($this->options, ['widget' => 'navbar']);
         }
 
+        if ($this->encodeTags === false) {
+            $this->collapseOptions['encode'] = false;
+            $this->brandOptions['encode'] = false;
+            $this->options['encode'] = false;
+            $this->togglerOptions['encode'] = false;
+        }
+
         $navOptions = $this->options;
         $navTag = ArrayHelper::remove($navOptions, 'tag', 'nav');
         $brand = '';
 
         if (!isset($this->innerContainerOptions['class'])) {
-            Html::addCssClass($this->innerContainerOptions, 'container');
+            Html::addCssClass($this->innerContainerOptions, ['innerContainerOptions' => 'container']);
         }
 
-        if ($this->brandImage !== null) {
+        if ($this->brandImage !== '') {
             $this->brandLabel = Html::img($this->brandImage);
         }
 
-        if ($this->brandLabel !== null) {
+        if ($this->brandLabel !== '') {
             Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
             if (empty($this->brandUrl)) {
                 $brand = Html::span($this->brandLabel, $this->brandOptions);
@@ -200,13 +208,204 @@ final class NavBar extends Widget
     }
 
     /**
+     * The HTML attributes for the container tag. The following special options are recognized.
+     *
+     * @param array $value
+     *
+     * @return $this
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function collapseOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->collapseOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * The text of the brand or empty if it's not used. Note that this is not HTML-encoded.
+     *
+     * @param string $value
+     *
+     * @return $this
+     *
+     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
+     */
+    public function brandLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->brandLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Src of the brand image or empty if it's not used. Note that this param will override `$this->brandLabel` param.
+     *
+     * @param string $value
+     *
+     * @return $this
+     *
+     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
+     */
+    public function brandImage(string $value): self
+    {
+        $new = clone $this;
+        $new->brandImage = $value;
+
+        return $new;
+    }
+
+    /**
+     * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
+     * is '/' will be used. You may set it to `null` if you want to have no link at all.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function brandUrl(string $value): self
+    {
+        $new = clone $this;
+        $new->brandUrl = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes of the brand link.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function brandOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->brandOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * Text to show for screen readers for the button to toggle the navbar.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function screenReaderToggleText(string $value): self
+    {
+        $new = clone $this;
+        $new->screenReaderToggleText = $value;
+
+        return $new;
+    }
+
+    /**
+     * The toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function togglerContent(string $value): self
+    {
+        $new = clone $this;
+        $new->togglerContent = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes of the navbar toggler button.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function togglerOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->togglerOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * This for a 100% width navbar.
+     *
+     * @return $this
+     */
+    public function withoutRenderInnerContainer(): self
+    {
+        $new = clone $this;
+        $new->renderInnerContainer = false;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes of the inner container.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function innerContainerOptions(array $value): self
+    {
+        $new = clone $this;
+        $new->innerContainerOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the widget container tag. The following special options are recognized.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function options(array $value): self
+    {
+        $new = clone $this;
+        $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
+    }
+
+    /**
      * Renders collapsible toggle button.
      *
      * @throws JsonException
      *
      * @return string the rendering toggle button.
      */
-    protected function renderToggleButton(): string
+    private function renderToggleButton(): string
     {
         $options = $this->togglerOptions;
 
@@ -225,175 +424,5 @@ final class NavBar extends Widget
                 'aria-label' => $this->screenReaderToggleText,
             ])
         );
-    }
-
-    /**
-     * The HTML attributes for the container tag. The following special options are recognized.
-     *
-     * @param array $value
-     *
-     * @return $this
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function collapseOptions(array $value): self
-    {
-        $this->collapseOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * The text of the brand or empty if it's not used. Note that this is not HTML-encoded.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     *
-     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
-     */
-    public function brandLabel(?string $value): self
-    {
-        $this->brandLabel = $value;
-
-        return $this;
-    }
-
-    /**
-     * Src of the brand image or empty if it's not used. Note that this param will override `$this->brandLabel` param.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     *
-     * {@see https://getbootstrap.com/docs/4.2/components/navbar/}
-     */
-    public function brandImage(?string $value): self
-    {
-        $this->brandImage = $value;
-
-        return $this;
-    }
-
-    /**
-     * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
-     * is '/' will be used. You may set it to `null` if you want to have no link at all.
-     *
-     * @param string|null $value
-     *
-     * @return $this
-     */
-    public function brandUrl(?string $value): self
-    {
-        $this->brandUrl = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes of the brand link.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function brandOptions(array $value): self
-    {
-        $this->brandOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * Text to show for screen readers for the button to toggle the navbar.
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function screenReaderToggleText(string $value): self
-    {
-        $this->screenReaderToggleText = $value;
-
-        return $this;
-    }
-
-    /**
-     * The toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`.
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function togglerContent(string $value): self
-    {
-        $this->togglerContent = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes of the navbar toggler button.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function togglerOptions(array $value): self
-    {
-        $this->togglerOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether the navbar content should be included in an inner div container which by default adds left and right
-     * padding. Set this to false for a 100% width navbar.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function renderInnerContainer(bool $value): self
-    {
-        $this->renderInnerContainer = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes of the inner container.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function innerContainerOptions(array $value): self
-    {
-        $this->innerContainerOptions = $value;
-
-        return $this;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return $this
-     */
-    public function options(array $value): self
-    {
-        $this->options = $value;
-
-        return $this;
     }
 }

@@ -22,6 +22,7 @@ final class Button extends Widget
     private string $tagName = 'button';
     private string $label = 'Button';
     private bool $encodeLabels = true;
+    private bool $encodeTags = false;
     private array $options = [];
 
     protected function run(): string
@@ -33,7 +34,9 @@ final class Button extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn']);
 
-        $this->registerPlugin('button', $this->options);
+        if ($this->encodeTags === false) {
+            $this->options['encode'] = false;
+        }
 
         return Html::tag(
             $this->tagName,
@@ -43,17 +46,16 @@ final class Button extends Widget
     }
 
     /**
-     * Whether the label should be HTML-encoded.
-     *
-     * @param bool $value
+     * When tags Labels HTML should not be encoded.
      *
      * @return $this
      */
-    public function encodeLabels(bool $value): self
+    public function withoutEncodeLabels(): self
     {
-        $this->encodeLabels = $value;
+        $new = clone $this;
+        $new->encodeLabels = false;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -65,15 +67,16 @@ final class Button extends Widget
      */
     public function label(string $value): self
     {
-        $this->label = $value;
+        $new = clone $this;
+        $new->label = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
-     * {@see \Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
      *
@@ -81,9 +84,10 @@ final class Button extends Widget
      */
     public function options(array $value): self
     {
-        $this->options = $value;
+        $new = clone $this;
+        $new->options = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -95,8 +99,22 @@ final class Button extends Widget
      */
     public function tagName(string $value): self
     {
-        $this->tagName = $value;
+        $new = clone $this;
+        $new->tagName = $value;
 
-        return $this;
+        return $new;
+    }
+
+    /**
+     * Allows you to enable the encoding tags html.
+     *
+     * @return self
+     */
+    public function encodeTags(): self
+    {
+        $new = clone $this;
+        $new->encodeTags = true;
+
+        return $new;
     }
 }

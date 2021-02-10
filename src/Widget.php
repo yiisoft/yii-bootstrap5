@@ -6,22 +6,20 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 abstract class Widget extends \Yiisoft\Widget\Widget
 {
-    use BootstrapWidgetTrait;
-
-    private string $id;
+    private ?string $id = null;
     private bool $autoGenerate = true;
+    private string $autoIdPrefix = 'w';
     private static int $counter = 0;
-    private static string $autoIdPrefix = 'w';
 
     /**
      * Returns the Id of the widget.
      *
-     * @return string Id of the widget.
+     * @return string|null Id of the widget.
      */
-    public function getId(): string
+    protected function getId(): ?string
     {
-        if ($this->autoGenerate) {
-            $this->id = self::$autoIdPrefix . static::$counter++;
+        if ($this->autoGenerate && $this->id === null) {
+            $this->id = $this->autoIdPrefix . static::$counter++;
         }
 
         return $this->id;
@@ -34,11 +32,12 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * @return $this
      */
-    public function setId(string $value): self
+    public function id(string $value): self
     {
-        $this->id = $value;
+        $new = clone $this;
+        $new->id = $value;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -56,10 +55,15 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * @param string $value
      *
+     * @return $this
+     *
      * {@see getId()}
      */
-    public static function autoIdPrefix(string $value): void
+    public function autoIdPrefix(string $value): self
     {
-        self::$autoIdPrefix = $value;
+        $new = clone $this;
+        $new->autoIdPrefix = $value;
+
+        return $new;
     }
 }
