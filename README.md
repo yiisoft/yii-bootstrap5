@@ -44,7 +44,7 @@ For example, the following
 single line of code in a view file would render a Bootstrap Progress plugin:
 
 ```php
-<?= Yiisoft\Yii\Bootstrap5\Progress::widget()->withPercent('60')->withLabel('test') ?>
+<?= Yiisoft\Yii\Bootstrap5\Progress::widget()->percent('60')->label('test') ?>
 ```
 
 ### Unit testing
