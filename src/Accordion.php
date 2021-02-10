@@ -86,7 +86,7 @@ final class Accordion extends Widget
      *
      * @return $this
      */
-    public function withoutAutoCloseItems(): self
+    public function allowMultipleOpenedItems(): self
     {
         $new = clone $this;
         $new->autoCloseItems = false;

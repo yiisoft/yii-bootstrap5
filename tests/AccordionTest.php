@@ -147,7 +147,7 @@ final class AccordionTest extends TestCase
         $html = Accordion::widget()->items($items)->render();
         $this->assertStringContainsString('data-bs-parent="', $html);
 
-        $html = Accordion::widget()->withoutAutoCloseItems()->items($items)->render();
+        $html = Accordion::widget()->allowMultipleOpenedItems()->items($items)->render();
         $this->assertStringNotContainsString('data-bs-parent="', $html);
     }
 
