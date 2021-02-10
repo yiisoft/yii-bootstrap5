@@ -153,7 +153,7 @@ final class ButtonToolbarTest extends TestCase
                     'class' => ['mr-2'],
                 ],
             ])
-            ->withEncodeTags()
+            ->encodeTags()
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar">&lt;div id="w1-button-group" class="btn-group" role="group"&gt;&lt;button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2"&gt;1&lt;/button&gt;

@@ -72,7 +72,7 @@ final class ButtonTest extends TestCase
     {
         Button::counter(0);
 
-        $html = Button::widget()->label('Save')->withEncodeTags()->render();
+        $html = Button::widget()->label('Save')->encodeTags()->render();
         $expected = <<<'HTML'
         <button id="w0-button" class="btn">Save</button>
         HTML;

@@ -246,7 +246,7 @@ final class ButtonDropdownTest extends TestCase
         ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
-            ->withEncodeTags()
+            ->encodeTags()
             ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
             ->render();
 

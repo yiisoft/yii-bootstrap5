@@ -261,7 +261,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withEncodeTags()->begin();
+        $html = NavBar::widget()->encodeTags()->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">

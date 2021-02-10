@@ -110,7 +110,7 @@ final class ButtonGroupTest extends TestCase
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
                 ['label' => 'button-B'],
             ])
-            ->withEncodeTags()
+            ->encodeTags()
             ->render();
         $expected = <<<'HTML'
         <div id="w0-button-group" class="btn-group" role="group">&lt;button type="submit" id="w1-button" class="btn-primary btn"&gt;button-A&lt;/button&gt;

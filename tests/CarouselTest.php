@@ -220,7 +220,7 @@ final class CarouselTest extends TestCase
         Carousel::counter(0);
 
         $html = Carousel::widget()
-            ->withEncodeTags()
+            ->encodeTags()
             ->items([
                 [
                     'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',

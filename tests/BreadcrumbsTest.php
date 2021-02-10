@@ -187,7 +187,7 @@ final class BreadcrumbsTest extends TestCase
         Breadcrumbs::counter(0);
 
         $html = Breadcrumbs::widget()
-            ->withEncodeTags()
+            ->encodeTags()
             ->links([
                 ['label' => 'Library', 'url' => '#'],
                 ['label' => 'Data'],

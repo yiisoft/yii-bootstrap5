@@ -465,7 +465,7 @@ final class TabsTest extends TestCase
 
         $html = Tabs::widget()
             ->items([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->withEncodeTags()
+            ->encodeTags()
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>

@@ -297,7 +297,7 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->withEncodeTags()->render();
+        $html = Accordion::widget()->items($items)->encodeTags()->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">&lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse0-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true"&amp;amp;gt;Item 1&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
         &amp;lt;div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 1&amp;lt;/div&amp;gt;&lt;/div&gt;

@@ -384,7 +384,7 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withEncodeTags()->begin();
+        $html = Modal::widget()->encodeTags()->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'

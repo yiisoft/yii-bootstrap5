@@ -203,7 +203,7 @@ final class ToastTest extends TestCase
                 'tag' => 'h5',
                 'style' => ['text-align' => 'left'],
             ])
-            ->withEncodeTags()
+            ->encodeTags()
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'

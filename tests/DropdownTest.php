@@ -233,7 +233,7 @@ final class DropdownTest extends TestCase
                     ],
                 ],
             ])
-            ->withEncodeTags()
+            ->encodeTags()
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
