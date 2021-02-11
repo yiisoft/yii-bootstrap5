@@ -36,10 +36,10 @@ final class BootstrapAsset extends AssetBundle
 
         $this->publishOptions = [
             'filter' => $pathMatcher->only(
-                'css/bootstrap.css',
-                'css/bootstrap.css.map',
-                'js/bootstrap.bundle.js',
-                'js/bootstrap.bundle.js.map',
+                '**css/bootstrap.css',
+                '**css/bootstrap.css.map',
+                '**js/bootstrap.bundle.js',
+                '**js/bootstrap.bundle.js.map',
             ),
         ];
     }
