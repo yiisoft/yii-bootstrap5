@@ -256,23 +256,4 @@ final class NavBarTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        NavBar::counter(0);
-
-        $html = NavBar::widget()->encodeTags()->begin();
-        $html .= NavBar::end();
-        $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation">&lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;</button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
-        </div>
-        </div>
-        </nav>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

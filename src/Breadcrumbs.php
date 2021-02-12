@@ -215,19 +215,6 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders a single breadcrumb item.
      *
      * @param array $link the link to be rendered. It must contain the "label" element. The "url" element is optional.

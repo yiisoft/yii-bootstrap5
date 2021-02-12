@@ -170,6 +170,7 @@ final class ToastTest extends TestCase
         Toast::counter(0);
 
         $html = Toast::widget()
+            ->autoIdPrefix('t')
             ->title('Toast title')
             ->titleOptions([
                 'tag' => 'h5',
@@ -179,40 +180,12 @@ final class ToastTest extends TestCase
             ->begin();
         $html .= Toast::end();
         $expected = <<<'HTML'
-        <div id="w0-toast" class="text-danger toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="t0-toast" class="text-danger toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
         <h5 class="me-auto" style="text-align: left;">Toast title</h5>
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="toast">
         <span aria-hidden="true">&times;</span>
         </button>
-        </div>
-        <div class="toast-body">
-        </div></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testEncodeTags(): void
-    {
-        Toast::counter(0);
-
-        $html = Toast::widget()
-            ->autoIdPrefix('toast')
-            ->title('Toast title')
-            ->titleOptions([
-                'tag' => 'h5',
-                'style' => ['text-align' => 'left'],
-            ])
-            ->encodeTags()
-            ->begin();
-        $html .= Toast::end();
-        $expected = <<<'HTML'
-        <div id="toast0-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-        &lt;h5 class="me-auto" style="text-align: left;"&gt;Toast title&lt;/h5&gt;
-        &lt;button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="toast"&gt;
-        &amp;lt;span aria-hidden="true"&amp;gt;&amp;amp;times;&amp;lt;/span&amp;gt;
-        &lt;/button&gt;
         </div>
         <div class="toast-body">
         </div></div>

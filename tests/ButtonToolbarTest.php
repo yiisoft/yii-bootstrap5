@@ -138,27 +138,4 @@ final class ButtonToolbarTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        ButtonToolbar::counter(0);
-
-        $html = ButtonToolbar::widget()
-            ->buttonGroups([
-                [
-                    'buttons' => [
-                        ['label' => '1', 'options' => ['class' => 'btn-secondary', 'tabindex' => 2, 'type' => 'reset']],
-                        ['label' => '2', 'options' => ['class' => 'btn-primary', 'tabindex' => 1, 'type' => 'submit']],
-                    ],
-                    'class' => ['mr-2'],
-                ],
-            ])
-            ->encodeTags()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="w0-button-toolbar" class="btn-toolbar" role="toolbar">&lt;div id="w1-button-group" class="btn-group" role="group"&gt;&lt;button type="reset" id="w2-button" class="btn-secondary btn" tabindex="2"&gt;1&lt;/button&gt;
-        &lt;button type="submit" id="w3-button" class="btn-primary btn" tabindex="1"&gt;2&lt;/button&gt;&lt;/div&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

@@ -299,19 +299,6 @@ final class Modal extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders the header HTML markup of the modal.
      *
      * @throws JsonException

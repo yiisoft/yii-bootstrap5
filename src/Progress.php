@@ -169,19 +169,6 @@ final class Progress extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders the progress.
      *
      * @throws JsonException|RuntimeException if the "percent" option is not set in a stacked progress bar.

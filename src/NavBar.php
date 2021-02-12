@@ -386,19 +386,6 @@ final class NavBar extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders collapsible toggle button.
      *
      * @throws JsonException
