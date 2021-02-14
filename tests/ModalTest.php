@@ -379,29 +379,4 @@ HTML;
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Modal::counter(0);
-
-        $html = Modal::widget()->encodeTags()->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button>Show</button>
-        <div id="w0-modal" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog ">
-        <div class="modal-content">
-        <div class="modal-header">
-        &lt;button type="button" class="close" data-bs-dismiss="modal"&gt;&amp;lt;span aria-hidden="true"&amp;gt;&amp;amp;amp;times;&amp;lt;/span&amp;gt;&lt;/button&gt;</div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

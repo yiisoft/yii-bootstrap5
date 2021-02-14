@@ -117,19 +117,6 @@ final class Alert extends Widget
     }
 
     /**
-     * Allows you to enable encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders the alert body and the close button (if any).
      *
      * @throws JsonException

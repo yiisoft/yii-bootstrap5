@@ -240,24 +240,4 @@ final class ButtonDropdownTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testWithEncodeTags(): void
-    {
-        ButtonDropdown::counter(0);
-
-        $html = ButtonDropdown::widget()
-            ->encodeTags()
-            ->dropdown(['items' => [['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']]])
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group">&lt;button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;Button&lt;/button&gt;
-
-        &lt;ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false"&gt;
-        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemA&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a class="dropdown-item" href="#"&gt;ItemB&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

@@ -281,29 +281,4 @@ final class AccordionTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Accordion::counter(0);
-
-        $items = [
-            [
-                'label' => 'Item 1',
-                'content' => 'Content 1',
-            ],
-            [
-                'label' => '<span><i class="fas fa-eye">Item 2</i></span>',
-                'content' => 'Content 2',
-            ],
-        ];
-
-        $html = Accordion::widget()->items($items)->encodeTags()->render();
-        $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">&lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse0-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="true"&amp;amp;gt;Item 1&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
-        &amp;lt;div id="w0-accordion-collapse0" class="accordion-body collapse show" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 1&amp;lt;/div&amp;gt;&lt;/div&gt;
-        &lt;div class="accordion-item"&gt;&amp;lt;h2 id="w0-accordion-collapse1-heading" class="accordion-header"&amp;gt;&amp;amp;lt;button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false"&amp;amp;gt;&amp;amp;amp;amp;lt;span&amp;amp;amp;amp;gt;&amp;amp;amp;amp;lt;i class="fas fa-eye"&amp;amp;amp;amp;gt;Item 2&amp;amp;amp;amp;lt;/i&amp;amp;amp;amp;gt;&amp;amp;amp;amp;lt;/span&amp;amp;amp;amp;gt;&amp;amp;lt;/button&amp;amp;gt;&amp;lt;/h2&amp;gt;
-        &amp;lt;div id="w0-accordion-collapse1" class="accordion-body collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion"&amp;gt;Content 2&amp;lt;/div&amp;gt;&lt;/div&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

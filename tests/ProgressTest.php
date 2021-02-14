@@ -91,15 +91,4 @@ final class ProgressTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Progress::counter(0);
-
-        $html = Progress::widget()->bars([['label' => 'Progress', 'percent' => '25']])->encodeTags()->render();
-        $expected = <<<'HTML'
-        <div id="w0-progress" class="progress">&lt;div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"&gt;Progress&lt;/div&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

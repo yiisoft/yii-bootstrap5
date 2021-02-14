@@ -214,28 +214,4 @@ final class CarouselTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Carousel::counter(0);
-
-        $html = Carousel::widget()
-            ->encodeTags()
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="w0-carousel" class="carousel slide" data-bs-ride="carousel">&lt;ol class="carousel-indicators"&gt;&amp;lt;li class="active" data-bs-target="#w0-carousel" data-bs-slide-to="0"&amp;gt;&amp;lt;/li&amp;gt;&lt;/ol&gt;&lt;div class="carousel-inner"&gt;&amp;lt;div class="carousel-item active"&amp;gt;&amp;amp;lt;img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100"&amp;amp;gt;
-        &amp;amp;lt;div class="d-none d-md-block carousel-caption"&amp;amp;gt;&amp;amp;amp;lt;h5&amp;amp;amp;gt;First slide label&amp;amp;amp;lt;/h5&amp;amp;amp;gt;&amp;amp;amp;lt;p&amp;amp;amp;gt;Nulla vitae elit libero, a pharetra augue mollis interdum.&amp;amp;amp;lt;/p&amp;amp;amp;gt;&amp;amp;lt;/div&amp;amp;gt;&amp;lt;/div&amp;gt;&lt;/div&gt;&lt;a class="carousel-control-prev" href="#w0-carousel" data-bs-slide="prev" role="button"&gt;&amp;lt;span class="carousel-control-prev-icon" aria-hidden="true"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class="visually-hidden"&amp;gt;Previous&amp;lt;/span&amp;gt;&lt;/a&gt;
-        &lt;a class="carousel-control-next" href="#w0-carousel" data-bs-slide="next" role="button"&gt;&amp;lt;span class="carousel-control-next-icon" aria-hidden="true"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class="visually-hidden"&amp;gt;Next&amp;lt;/span&amp;gt;&lt;/a&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

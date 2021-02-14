@@ -458,19 +458,4 @@ final class TabsTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Tabs::counter(0);
-
-        $html = Tabs::widget()
-            ->items([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->encodeTags()
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content">&lt;div id="pane1" class="tab-pane active"&gt;&amp;lt;div&amp;gt;Content 1&amp;lt;/div&amp;gt;&lt;/div&gt;</div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

@@ -67,15 +67,4 @@ final class ButtonTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Button::counter(0);
-
-        $html = Button::widget()->label('Save')->encodeTags()->render();
-        $expected = <<<'HTML'
-        <button id="w0-button" class="btn">Save</button>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

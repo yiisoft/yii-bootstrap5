@@ -131,19 +131,6 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Renders menu items.
      *
      * @param array $items the menu items to be rendered

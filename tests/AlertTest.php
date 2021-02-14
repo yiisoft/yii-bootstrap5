@@ -72,17 +72,4 @@ final class AlertTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
-
-    public function testEncodeTags(): void
-    {
-        Alert::counter(0);
-
-        $html = Alert::widget()->body('Message1')->encodeTags()->render();
-        $expected = <<<'HTML'
-        <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
-        &lt;button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"&gt;&lt;/button&gt;
-        </div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
 }

@@ -357,25 +357,6 @@ final class NavTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
-    public function testEncodeTags(): void
-    {
-        Nav::counter(0);
-
-        $html = Nav::widget()
-            ->encodeTags()
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav">&lt;li class="nav-item"&gt;&amp;lt;a class="nav-link" href="#"&amp;gt;Page1&amp;lt;/a&amp;gt;&lt;/li&gt;</ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
     public function testDropdownEncodeLabels(): void
     {
         Nav::counter(0);

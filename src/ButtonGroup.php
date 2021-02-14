@@ -113,19 +113,6 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Allows you to enable the encoding tags html.
-     *
-     * @return self
-     */
-    public function encodeTags(): self
-    {
-        $new = clone $this;
-        $new->encodeTags = true;
-
-        return $new;
-    }
-
-    /**
      * Generates the buttons that compound the group as specified on {@see buttons}.
      *
      * @throws InvalidConfigException
