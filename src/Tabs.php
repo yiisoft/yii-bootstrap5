@@ -79,12 +79,6 @@ final class Tabs extends Widget
         Html::addCssClass($this->options, ['widget' => 'nav', $this->navType]);
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
-        if ($this->encodeTags === false) {
-            $this->itemOptions['encode'] = false;
-            $this->options['encode'] = false;
-            $this->tabContentOptions['encode'] = false;
-        }
-
         $this->prepareItems($this->items);
 
         $navWidget = Nav::widget()
@@ -283,7 +277,9 @@ final class Tabs extends Widget
      */
     private function renderPanes(array $panes): string
     {
-        return $this->renderTabContent ? ("\n" . Html::div(implode("\n", $panes), $this->tabContentOptions)) : '';
+        return $this->renderTabContent
+            ? ("\n" . Html::div(implode("\n", $panes), $this->tabContentOptions)->encode($this->encodeTags))
+            : '';
     }
 
     /**
@@ -349,7 +345,7 @@ final class Tabs extends Widget
             /** @psalm-suppress ConflictingReferenceConstraint */
             if ($this->renderTabContent) {
                 $tag = ArrayHelper::remove($options, 'tag', 'div');
-                $this->panes[] = Html::tag($tag, $item['content'] ?? '', $options);
+                $this->panes[] = Html::tag($tag, $item['content'] ?? '', $options)->encode($this->encodeTags)->render();
             }
         }
     }

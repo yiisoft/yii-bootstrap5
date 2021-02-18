@@ -39,7 +39,9 @@ final class Alert extends Widget
 
         $this->initOptions();
 
-        return Html::div($this->renderBodyEnd(), $this->options);
+        return Html::div($this->renderBodyEnd(), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -148,7 +150,9 @@ final class Alert extends Widget
             $this->closeButton['type'] = 'button';
         }
 
-        return Html::tag($tag, $label, $this->closeButton);
+        return Html::tag($tag, $label, $this->closeButton)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -171,11 +175,6 @@ final class Alert extends Widget
 
             Html::addCssclass($this->closeButton, ['buttonOptions' => 'btn-close']);
             Html::addCssClass($this->options, ['alert-dismissible' => 'alert-dismissible']);
-        }
-
-        if ($this->encodeTags === false) {
-            $this->closeButton['encode'] = false;
-            $this->options['encode'] = false;
         }
 
         if (!isset($this->options['role'])) {

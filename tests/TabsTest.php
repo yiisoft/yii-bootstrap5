@@ -66,14 +66,14 @@ final class TabsTest extends TestCase
                 ],
                 [
                     'label' => $extAnchor1 = 'External link',
-                    'url' => $extUrl1 = ['//other/route'],
+                    'url' => $extUrl1 = '//other/route',
                 ],
                 [
                     'label' => 'Dropdown3',
                     'items' => [
                         [
                             'label' => $extAnchor2 = 'External Dropdown Link',
-                            'url' => $extUrl2 = ['//other/dropdown/route'],
+                            'url' => $extUrl2 = '//other/dropdown/route',
                         ],
                     ],
                 ],
@@ -107,10 +107,10 @@ final class TabsTest extends TestCase
             "id=\"$page3\"",
             "id=\"$page4\"",
             "id=\"$page5\"",
-            Html::a($extAnchor1, $extUrl1, ['class' => 'nav-link']),
+            Html::a($extAnchor1, $extUrl1, ['class' => 'nav-link'])->render(),
             Html::a($extAnchor2, $extUrl2, [/*'tabindex' => -1, */
                 'class' => 'dropdown-item',
-            ]),
+            ])->render(),
         ];
 
         foreach ($shouldContain as $string) {
@@ -139,8 +139,8 @@ final class TabsTest extends TestCase
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'InvisibleItem', 'content' => 'Invisible Item Content', 'visible' => false],
                         ['label' => 'Page3', 'content' => 'Page3'],
-                        ['label' => 'External Link', 'url' => ['//other/dropdown/route']],
-                        ['label' => 'Invisible External Link', 'url' => ['//other/dropdown/route'], 'visible' => false],
+                        ['label' => 'External Link', 'url' => '//other/dropdown/route'],
+                        ['label' => 'Invisible External Link', 'url' => '//other/dropdown/route', 'visible' => false],
                     ],
                 ],
             ])

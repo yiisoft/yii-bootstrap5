@@ -49,10 +49,6 @@ final class Dropdown extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
 
-        if ($this->encodeTags === false) {
-            $this->options = array_merge($this->options, ['itemOptions' => ['encode' => false], 'encode' => false]);
-        }
-
         return $this->renderItems($this->items, $this->options);
     }
 
@@ -166,11 +162,6 @@ final class Dropdown extends Widget
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
             $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
-            if ($this->encodeTags === false) {
-                ArrayHelper::setValue($linkOptions, 'encode', false);
-                ArrayHelper::setValue($itemOptions, 'encode', false);
-            }
-
             Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
 
             if ($disabled) {
@@ -192,7 +183,7 @@ final class Dropdown extends Widget
                 } elseif ($url === null) {
                     $content = Html::tag('h6', $label, ['class' => 'dropdown-header']);
                 } else {
-                    $content = Html::a($label, $url, $linkOptions);
+                    $content = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
                 }
 
                 $lines[] = $content;
@@ -222,12 +213,16 @@ final class Dropdown extends Widget
                 ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
                 ArrayHelper::setValue($linkOptions, 'role', 'button');
 
-                $lines[] = Html::a($label, $url, $linkOptions) . Html::tag('ul', $dropdown->render(), $itemOptions);
+                $lines[] = Html::a($label, $url, $linkOptions)->encode($this->encodeTags) .
+                    Html::tag('ul', $dropdown->render(), $itemOptions)->encode($this->encodeTags);
             }
         }
 
         $options = array_merge(['aria-expanded' => 'false'], $options);
 
-        return Html::ul($lines, $options);
+        return Html::ul()
+            ->strings($lines, $this->encodeTags)
+            ->attributes($options)
+            ->render();
     }
 }

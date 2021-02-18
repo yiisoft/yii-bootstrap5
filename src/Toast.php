@@ -16,7 +16,7 @@ use function array_merge;
  * For example,
  *
  * ```php
-  * echo Toast::widget()
+ * echo Toast::widget()
  *     ->title('Hello world!')
  *     ->dateTime('a minute ago')
  *     ->body('Say hello...')
@@ -63,14 +63,14 @@ final class Toast extends Widget
         $this->initOptions();
 
         return
-            Html::beginTag('div', $this->options) . "\n" .
+            Html::openTag('div', $this->options) . "\n" .
             $this->renderHeader() . "\n" .
             $this->renderBodyBegin();
     }
 
     protected function run(): string
     {
-        return $this->renderBodyEnd() . Html::endTag('div');
+        return $this->renderBodyEnd() . Html::closeTag('div');
     }
 
     /**
@@ -223,17 +223,19 @@ final class Toast extends Widget
         $button = $this->renderCloseButton();
         $tag = ArrayHelper::remove($this->titleOptions, 'tag', 'strong');
         Html::addCssClass($this->titleOptions, ['widget' => 'me-auto']);
-        $title = Html::tag($tag, $this->title, $this->titleOptions);
+        $title = Html::tag($tag, $this->title, $this->titleOptions)->encode($this->encodeTags)->render();
 
         if ($this->dateTime !== '') {
             $tag = ArrayHelper::remove($this->dateTimeOptions, 'tag', 'small');
-            $title .= "\n" . Html::tag($tag, $this->dateTime, $this->dateTimeOptions);
+            $title .= "\n" . Html::tag($tag, $this->dateTime, $this->dateTimeOptions)->encode($this->encodeTags);
         }
 
         $title .= "\n" . $button;
 
         Html::addCssClass($this->headerOptions, ['widget' => 'toast-header']);
-        return Html::div("\n" . $title . "\n", $this->headerOptions);
+        return Html::div("\n" . $title . "\n", $this->headerOptions)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -246,7 +248,7 @@ final class Toast extends Widget
     private function renderBodyBegin(): string
     {
         Html::addCssClass($this->bodyOptions, ['widget' => 'toast-body']);
-        return Html::beginTag('div', $this->bodyOptions);
+        return Html::openTag('div', $this->bodyOptions);
     }
 
     /**
@@ -256,7 +258,7 @@ final class Toast extends Widget
      */
     private function renderBodyEnd(): string
     {
-        return $this->body . "\n" . Html::endTag('div');
+        return $this->body . "\n" . Html::closeTag('div');
     }
 
     /**
@@ -272,10 +274,12 @@ final class Toast extends Widget
         $label = ArrayHelper::remove(
             $this->closeButton,
             'label',
-            Html::tag('span', '&times;', ['aria-hidden' => 'true', 'encode' => false])
+            Html::tag('span', '&times;', ['aria-hidden' => 'true'])->encode(false)->render()
         );
 
-        return Html::tag($tag, "\n" . $label . "\n", $this->closeButton);
+        return Html::tag($tag, "\n" . $label . "\n", $this->closeButton)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -285,15 +289,6 @@ final class Toast extends Widget
      */
     private function initOptions(): void
     {
-        if ($this->encodeTags === false) {
-            $this->bodyOptions['encode'] = false;
-            $this->closeButton['encode'] = false;
-            $this->dateTimeOptions['encode'] = false;
-            $this->headerOptions['encode'] = false;
-            $this->options['encode'] = false;
-            $this->titleOptions['encode'] = false;
-        }
-
         Html::addCssClass($this->options, ['widget' => 'toast']);
 
         $this->closeButton = array_merge([

@@ -60,14 +60,10 @@ final class Carousel extends Widget
             Html::addCssClass($this->options, ['crossfade' => 'carousel-fade']);
         }
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
         return Html::div(
             $this->renderIndicators() . $this->renderItems() . $this->renderControls(),
             $this->options
-        );
+        )->encode($this->encodeTags)->render();
     }
 
     /**
@@ -178,11 +174,9 @@ final class Carousel extends Widget
 
         $indicatorOptions = ['class' => ['carousel-indicators']];
 
-        if ($this->encodeTags === false) {
-            $indicatorOptions['encode'] = false;
-        }
-
-        return Html::tag('ol', implode("\n", $indicators), $indicatorOptions);
+        return Html::tag('ol', implode("\n", $indicators), $indicatorOptions)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -198,11 +192,9 @@ final class Carousel extends Widget
 
         $itemOptions = ['class' => 'carousel-inner'];
 
-        if ($this->encodeTags === false) {
-            $itemOptions['encode'] = false;
-        }
-
-        return Html::div(implode("\n", $items), $itemOptions);
+        return Html::div(implode("\n", $items), $itemOptions)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -229,11 +221,7 @@ final class Carousel extends Widget
                 $captionOptions = ArrayHelper::remove($item, 'captionOptions', []);
                 Html::addCssClass($captionOptions, ['captionOptions' => 'carousel-caption']);
 
-                if ($this->encodeTags === false) {
-                    $captionOptions['encode'] = false;
-                }
-
-                $caption = Html::div($caption, $captionOptions);
+                $caption = Html::div($caption, $captionOptions)->encode($this->encodeTags)->render();
             }
 
             $options = ArrayHelper::getValue($item, 'options', []);
@@ -243,15 +231,13 @@ final class Carousel extends Widget
 
         Html::addCssClass($options, ['widget' => 'carousel-item']);
 
-        if ($this->encodeTags === false) {
-            $options['encode'] = false;
-        }
-
         if ($index === 0) {
             Html::addCssClass($options, ['active' => 'active']);
         }
 
-        return Html::div($content . "\n" . $caption, $options);
+        return Html::div($content . "\n" . $caption, $options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -275,14 +261,9 @@ final class Carousel extends Widget
             'role' => 'button',
         ];
 
-        if ($this->encodeTags === false) {
-            $controlsOptions0['encode'] = false;
-            $controlsOptions1['encode'] = false;
-        }
-
         if (isset($this->controls[0], $this->controls[1])) {
-            return Html::a($this->controls[0], '#' . $this->options['id'], $controlsOptions0) . "\n" .
-                Html::a($this->controls[1], '#' . $this->options['id'], $controlsOptions1);
+            return Html::a($this->controls[0], '#' . $this->options['id'], $controlsOptions0)->encode($this->encodeTags) . "\n" .
+                Html::a($this->controls[1], '#' . $this->options['id'], $controlsOptions1)->encode($this->encodeTags);
         }
 
         if ($this->controls === []) {

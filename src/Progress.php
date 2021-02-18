@@ -69,10 +69,6 @@ final class Progress extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'progress']);
 
-        if ($this->encodeTags === false) {
-            $this->options ['encode'] = false;
-        }
-
         return $this->renderProgress();
     }
 
@@ -194,7 +190,9 @@ final class Progress extends Widget
             $bars[] = $this->renderBar($bar['percent'], $label, $options);
         }
 
-        return Html::div(implode("\n", $bars), $this->options);
+        return Html::div(implode("\n", $bars), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -210,7 +208,7 @@ final class Progress extends Widget
      */
     private function renderBar(string $percent, string $label = '', array $options = []): string
     {
-        $valuePercent = (float) trim(rtrim($percent, '%'));
+        $valuePercent = (float)trim(rtrim($percent, '%'));
 
         $options = array_merge($options, [
             'role' => 'progressbar',
@@ -223,6 +221,6 @@ final class Progress extends Widget
         Html::addCssClass($options, ['widget' => 'progress-bar']);
         Html::addCssStyle($options, ['width' => $valuePercent . '%'], true);
 
-        return Html::div($label, $options);
+        return Html::div($label, $options)->render();
     }
 }
