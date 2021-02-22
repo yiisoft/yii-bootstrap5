@@ -73,10 +73,6 @@ final class ButtonDropdown extends Widget
             $this->buttonOptions['id'] = "{$id}-button";
         }
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
         $html = $this->renderButton() . "\n" . $this->renderDropdown();
 
         if ($this->renderContainer) {
@@ -85,7 +81,9 @@ final class ButtonDropdown extends Widget
 
             $options = $this->options;
             $tag = ArrayHelper::remove($options, 'tag', 'div');
-            $html = Html::tag($tag, $html, $options);
+            $html = Html::tag($tag, $html, $options)
+                ->encode($this->encodeTags)
+                ->render();
         }
 
         return $html;

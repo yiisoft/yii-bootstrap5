@@ -140,13 +140,6 @@ final class NavBar extends Widget
             Html::addCssClass($this->options, ['widget' => 'navbar']);
         }
 
-        if ($this->encodeTags === false) {
-            $this->collapseOptions['encode'] = false;
-            $this->brandOptions['encode'] = false;
-            $this->options['encode'] = false;
-            $this->togglerOptions['encode'] = false;
-        }
-
         $navOptions = $this->options;
         $navTag = ArrayHelper::remove($navOptions, 'tag', 'nav');
         $brand = '';
@@ -156,7 +149,7 @@ final class NavBar extends Widget
         }
 
         if ($this->brandImage !== '') {
-            $this->brandLabel = Html::img($this->brandImage);
+            $this->brandLabel = Html::img($this->brandImage)->render();
         }
 
         if ($this->brandLabel !== '') {
@@ -168,7 +161,7 @@ final class NavBar extends Widget
                     $this->brandLabel,
                     $this->brandUrl,
                     $this->brandOptions
-                );
+                )->encode($this->encodeTags)->render();
             }
         }
 
@@ -176,16 +169,16 @@ final class NavBar extends Widget
         $collapseOptions = $this->collapseOptions;
         $collapseTag = ArrayHelper::remove($collapseOptions, 'tag', 'div');
 
-        $htmlStart = Html::beginTag($navTag, $navOptions) . "\n";
+        $htmlStart = Html::openTag($navTag, $navOptions) . "\n";
 
         if ($this->renderInnerContainer) {
-            $htmlStart .= Html::beginTag('div', $this->innerContainerOptions) . "\n";
+            $htmlStart .= Html::openTag('div', $this->innerContainerOptions) . "\n";
         }
 
         $htmlStart .= $brand . "\n";
         $htmlStart .= $this->renderToggleButton() . "\n";
 
-        $htmlStart .= Html::beginTag($collapseTag, $collapseOptions) . "\n";
+        $htmlStart .= Html::openTag($collapseTag, $collapseOptions) . "\n";
 
         return $htmlStart;
     }
@@ -194,15 +187,15 @@ final class NavBar extends Widget
     {
         $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
 
-        $htmlRun = Html::endTag($tag) . "\n";
+        $htmlRun = Html::closeTag($tag) . "\n";
 
         if ($this->renderInnerContainer) {
-            $htmlRun .= Html::endTag('div') . "\n";
+            $htmlRun .= Html::closeTag('div') . "\n";
         }
 
         $tag = ArrayHelper::remove($this->options, 'tag', 'nav');
 
-        $htmlRun .= Html::endTag($tag);
+        $htmlRun .= Html::closeTag($tag);
 
         return $htmlRun;
     }
@@ -410,6 +403,6 @@ final class NavBar extends Widget
                 'aria-expanded' => 'false',
                 'aria-label' => $this->screenReaderToggleText,
             ])
-        );
+        )->encode($this->encodeTags)->render();
     }
 }

@@ -124,10 +124,6 @@ final class Nav extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'nav']);
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
         return $this->renderItems();
     }
 
@@ -268,7 +264,9 @@ final class Nav extends Widget
             $items[] = $this->renderItem($item);
         }
 
-        return Html::tag('ul', implode("\n", $items), $this->options);
+        return Html::tag('ul', implode("\n", $items), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -324,12 +322,11 @@ final class Nav extends Widget
             Html::addCssClass($linkOptions, ['active' => 'active']);
         }
 
-        if ($this->encodeTags === false) {
-            $linkOptions['encode'] = false;
-            $options['encode'] = false;
-        }
-
-        return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
+        return Html::tag(
+            'li',
+            Html::a($label, $url, $linkOptions)->encode($this->encodeTags) . $items,
+            $options
+        )->encode($this->encodeTags)->render();
     }
 
     /**

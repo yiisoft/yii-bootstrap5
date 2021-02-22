@@ -72,11 +72,9 @@ final class Accordion extends Widget
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'accordion']);
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
-        return Html::div($this->renderItems(), $this->options);
+        return Html::div($this->renderItems(), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -223,13 +221,11 @@ final class Accordion extends Widget
             $header = ArrayHelper::remove($item, 'label');
             $options = ArrayHelper::getValue($item, 'options', []);
 
-            if ($this->encodeTags === false) {
-                $options['encode'] = false;
-            }
-
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
-            $items[] = Html::div($this->renderItem($header, $item, $index++), $options);
+            $items[] = Html::div($this->renderItem($header, $item, $index++), $options)
+                ->encode($this->encodeTags)
+                ->render();
         }
 
         return implode("\n", $items);
@@ -278,36 +274,36 @@ final class Accordion extends Widget
                 'aria-expanded' => $expand ? 'true' : 'false',
             ], $this->itemToggleOptions);
 
-            if ($this->encodeTags === false) {
-                $itemToggleOptions['encode'] = false;
-            }
-
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
             /** @psalm-suppress ConflictingReferenceConstraint */
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
-                $header = Html::a($header, '#' . $id, $itemToggleOptions) . "\n";
+                $header = Html::a($header, '#' . $id, $itemToggleOptions)->encode($this->encodeTags) . "\n";
             } else {
                 Html::addCssClass($itemToggleOptions, ['widget' => 'accordion-button']);
                 if (!$expand) {
                     Html::addCssClass($itemToggleOptions, ['expand' => 'collapsed']);
                 }
-                $header = Html::button($header, $itemToggleOptions);
+                $header = Html::button($header, $itemToggleOptions)->encode($this->encodeTags)->render();
             }
 
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
                 $content = $item['content'];
             } elseif (is_array($item['content'])) {
                 $ulOptions = ['class' => 'list-group'];
-                $ulItemOptions = ['itemOptions' => ['class' => 'list-group-item']];
+                $ulItemOptions = ['class' => 'list-group-item'];
 
-                if ($this->encodeTags === false) {
-                    $ulOptions['encode'] = false;
-                    $ulItemOptions['itemOptions']['encode'] = false;
+                $items = [];
+                foreach ($item['content'] as $content) {
+                    $items[] = Html::li($content)
+                        ->attributes($ulItemOptions)
+                        ->encode($this->encodeTags);
                 }
 
-                $content = Html::ul($item['content'], array_merge($ulOptions, $ulItemOptions)) . "\n";
+                $content = Html::ul()
+                        ->items(...$items)
+                        ->attributes($ulOptions) . "\n";
             } else {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
@@ -323,13 +319,8 @@ final class Accordion extends Widget
 
         $groupOptions = ['class' => 'accordion-header', 'id' => $options['id'] . '-heading'];
 
-        if ($this->encodeTags === false) {
-            $options['encode'] = false;
-            $groupOptions['encode'] = false;
-        }
-
-        $group[] = Html::tag('h2', $header, $groupOptions);
-        $group[] = Html::div($content, $options);
+        $group[] = Html::tag('h2', $header, $groupOptions)->encode($this->encodeTags);
+        $group[] = Html::div($content, $options)->encode($this->encodeTags);
 
         return implode("\n", $group);
     }

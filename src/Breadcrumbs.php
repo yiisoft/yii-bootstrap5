@@ -68,12 +68,11 @@ final class Breadcrumbs extends Widget
             $links[] = $this->renderItem($link, isset($link['url']) ? $this->itemTemplate : $this->activeItemTemplate);
         }
 
-        if ($this->encodeTags === false) {
-            $this->navOptions['encode'] = false;
-            $this->options['encode'] = false;
-        }
-
-        return Html::tag('nav', Html::tag($this->tag, implode('', $links), $this->options), $this->navOptions);
+        return Html::tag(
+            'nav',
+            Html::tag($this->tag, implode('', $links), $this->options)->encode($this->encodeTags)->render(),
+            $this->navOptions
+        )->encode($this->encodeTags)->render();
     }
 
     /**
@@ -239,14 +238,10 @@ final class Breadcrumbs extends Widget
             $template = $link['template'];
         }
 
-        if ($this->encodeTags === false) {
-            $link['encode'] = false;
-        }
-
         if (isset($link['url'])) {
             $options = $link;
             unset($options['template'], $options['label'], $options['url']);
-            $linkHtml = Html::a($label, $link['url'], $options);
+            $linkHtml = Html::a($label, $link['url'], $options)->encode($this->encodeTags);
         } else {
             $linkHtml = $label;
         }

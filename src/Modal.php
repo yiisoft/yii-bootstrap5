@@ -74,9 +74,9 @@ final class Modal extends Widget
 
         return
             $this->renderToggleButton() . "\n" .
-            Html::beginTag('div', $this->options) . "\n" .
-            Html::beginTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n" .
-            Html::beginTag('div', ['class' => 'modal-content']) . "\n" .
+            Html::openTag('div', $this->options) . "\n" .
+            Html::openTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n" .
+            Html::openTag('div', ['class' => 'modal-content']) . "\n" .
             $this->renderHeader() . "\n" .
             $this->renderBodyBegin() . "\n";
     }
@@ -86,9 +86,9 @@ final class Modal extends Widget
         return
             "\n" . $this->renderBodyEnd() .
             "\n" . $this->renderFooter() .
-            "\n" . Html::endTag('div') . // modal-content
-            "\n" . Html::endTag('div') . // modal-dialog
-            "\n" . Html::endTag('div');
+            "\n" . Html::closeTag('div') . // modal-content
+            "\n" . Html::closeTag('div') . // modal-dialog
+            "\n" . Html::closeTag('div');
     }
 
     /**
@@ -323,11 +323,9 @@ final class Modal extends Widget
 
         Html::addCssClass($this->headerOptions, ['headerOptions' => 'modal-header']);
 
-        if ($this->encodeTags === false) {
-            $this->headerOptions['encode'] = false;
-        }
-
-        return Html::div($header, $this->headerOptions);
+        return Html::div($header, $this->headerOptions)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -345,7 +343,7 @@ final class Modal extends Widget
             $this->bodyOptions['encode'] = false;
         }
 
-        return Html::beginTag('div', $this->bodyOptions);
+        return Html::openTag('div', $this->bodyOptions);
     }
 
     /**
@@ -355,7 +353,7 @@ final class Modal extends Widget
      */
     private function renderBodyEnd(): string
     {
-        return Html::endTag('div');
+        return Html::closeTag('div');
     }
 
     /**
@@ -373,11 +371,9 @@ final class Modal extends Widget
 
         Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
 
-        if ($this->encodeTags === false) {
-            $this->footerOptions['encode'] = false;
-        }
-
-        return Html::div($this->footer, $this->footerOptions);
+        return Html::div($this->footer, $this->footerOptions)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -396,11 +392,9 @@ final class Modal extends Widget
         $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
         $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
 
-        if ($this->encodeTags === false) {
-            $this->toggleButton['encode'] = false;
-        }
-
-        return Html::tag($tag, $label, $this->toggleButton);
+        return Html::tag($tag, $label, $this->toggleButton)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -419,13 +413,11 @@ final class Modal extends Widget
         $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
         $label = ArrayHelper::remove($this->closeButton, 'label', Html::span('&times;', [
             'aria-hidden' => 'true',
-        ]));
+        ])->render());
 
-        if ($this->encodeTags === false) {
-            $this->closeButton['encode'] = false;
-        }
-
-        return Html::tag($tag, $label, $this->closeButton);
+        return Html::tag($tag, $label, $this->closeButton)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**

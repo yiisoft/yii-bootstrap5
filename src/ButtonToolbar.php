@@ -67,11 +67,9 @@ final class ButtonToolbar extends Widget
             $this->options['role'] = 'toolbar';
         }
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
-        return Html::div($this->renderButtonGroups(), $this->options);
+        return Html::div($this->renderButtonGroups(), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**

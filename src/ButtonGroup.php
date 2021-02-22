@@ -55,11 +55,9 @@ final class ButtonGroup extends Widget
             $this->options['role'] = 'group';
         }
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
-        return Html::div($this->renderButtons(), $this->options);
+        return Html::div($this->renderButtons(), $this->options)
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
