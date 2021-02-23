@@ -221,7 +221,7 @@ final class Dropdown extends Widget
         $options = array_merge(['aria-expanded' => 'false'], $options);
 
         return Html::ul()
-            ->strings($lines, $this->encodeTags)
+            ->strings($lines, [], $this->encodeTags)
             ->attributes($options)
             ->render();
     }
