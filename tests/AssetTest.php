@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Assets\Exception\InvalidConfigException;
 use Yiisoft\Yii\Bootstrap5\Assets\BootstrapAsset;
+use Yiisoft\Yii\Bootstrap5\Tests\Support\StubAssetExporter;
 
 final class AssetTest extends TestCase
 {
@@ -41,7 +43,13 @@ final class AssetTest extends TestCase
             $depend = new $depend();
         }
 
-        self::assertEmpty($this->assetManager->getAssetBundles());
+        $exporter = new StubAssetExporter();
+        try {
+            $this->assetManager->export($exporter);
+            throw new RuntimeException('Not empty.');
+        } catch (RuntimeException $e) {
+            self::assertSame('Not a single asset bundle was registered.', $e->getMessage());
+        }
 
         $this->assetManager->register([$asset]);
 
