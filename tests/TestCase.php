@@ -110,7 +110,7 @@ abstract class TestCase extends BaseTestCase
         return [
             Aliases::class => [
                 'class' => Aliases::class,
-                'constructor' => [
+                '__construct()' => [
                     [
                         '@root' => dirname(__DIR__),
                         '@public' => '@root/tests/public',
@@ -133,10 +133,8 @@ abstract class TestCase extends BaseTestCase
 
             AssetManager::class => [
                 'class' => AssetManager::class,
-                'callMethods' => [
-                    'setConverter' => [Reference::to(AssetConverterInterface::class)],
-                    'setPublisher' => [Reference::to(AssetPublisherInterface::class)],
-                ],
+                'setConverter()' => [Reference::to(AssetConverterInterface::class)],
+                'setPublisher()' => [Reference::to(AssetPublisherInterface::class)],
             ],
         ];
     }
