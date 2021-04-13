@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Assets\AssetLoader;
+use Yiisoft\Assets\AssetLoaderInterface;
 use function closedir;
 use function is_dir;
 use function opendir;
@@ -22,7 +24,7 @@ use Yiisoft\Assets\AssetPublisher;
 
 use Yiisoft\Assets\AssetPublisherInterface;
 use Yiisoft\Di\Container;
-use Yiisoft\Factory\Definitions\Reference;
+use Yiisoft\Factory\Definition\Reference;
 use Yiisoft\Files\FileHelper;
 use Yiisoft\Widget\WidgetFactory;
 
@@ -107,10 +109,10 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             Aliases::class => [
-                '__class' => Aliases::class,
+                'class' => Aliases::class,
                 '__construct()' => [
                     [
-                        '@root' => dirname(__DIR__, 1),
+                        '@root' => dirname(__DIR__),
                         '@public' => '@root/tests/public',
                         '@assets' => '@public/assets',
                         '@assetsUrl' => '/',
@@ -127,8 +129,10 @@ abstract class TestCase extends BaseTestCase
 
             AssetPublisherInterface::class => AssetPublisher::class,
 
+            AssetLoaderInterface::class => AssetLoader::class,
+
             AssetManager::class => [
-                '__class' => AssetManager::class,
+                'class' => AssetManager::class,
                 'setConverter()' => [Reference::to(AssetConverterInterface::class)],
                 'setPublisher()' => [Reference::to(AssetPublisherInterface::class)],
             ],
