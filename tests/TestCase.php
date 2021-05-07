@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Assets\AssetLoader;
-use Yiisoft\Assets\AssetLoaderInterface;
-use function closedir;
-use function is_dir;
-use function opendir;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use function readdir;
 use RuntimeException;
-use function str_replace;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Assets\AssetConverter;
 use Yiisoft\Assets\AssetConverterInterface;
+use Yiisoft\Assets\AssetLoader;
+use Yiisoft\Assets\AssetLoaderInterface;
 use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetPublisher;
-
 use Yiisoft\Assets\AssetPublisherInterface;
 use Yiisoft\Di\Container;
 use Yiisoft\Factory\Definition\Reference;
 use Yiisoft\Files\FileHelper;
 use Yiisoft\Widget\WidgetFactory;
+
+use function closedir;
+use function is_dir;
+use function opendir;
+use function readdir;
+use function str_replace;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -40,6 +40,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->aliases = $this->container->get(Aliases::class);
         $this->assetManager = $this->container->get(AssetManager::class);
+        $this->assetPublisher = $this->container->get(AssetPublisher::class);
 
         WidgetFactory::initialize($this->container, []);
     }
@@ -48,7 +49,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->removeAssets('@assets');
 
-        unset($this->aliases, $this->assetManager, $this->container);
+        unset($this->aliases, $this->assetManager, $this->assetPublisher, $this->container);
 
         parent::tearDown();
     }
@@ -133,8 +134,8 @@ abstract class TestCase extends BaseTestCase
 
             AssetManager::class => [
                 'class' => AssetManager::class,
-                'setConverter()' => [Reference::to(AssetConverterInterface::class)],
-                'setPublisher()' => [Reference::to(AssetPublisherInterface::class)],
+                'withConverter()' => [Reference::to(AssetConverterInterface::class)],
+                'withPublisher()' => [Reference::to(AssetPublisherInterface::class)],
             ],
         ];
     }
