@@ -236,7 +236,7 @@ final class NavBar extends Widget
      * @param string $value
      *
      * @return $this
-     * 
+     *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
     public function brandLink(string $value): self
@@ -372,7 +372,7 @@ final class NavBar extends Widget
                 ->render();
         }
 
-        if ($this->brandText !== '') {            
+        if ($this->brandText !== '') {
             $brandText = $this->brandText;
 
             if ($brandImage !== '') {
@@ -397,7 +397,7 @@ final class NavBar extends Widget
      * @throws JsonException
      *
      * @return string the rendering toggle button.
-     * 
+     *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#toggler
      */
     private function renderToggleButton(): string

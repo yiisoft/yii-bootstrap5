@@ -45,7 +45,7 @@ final class NavBarTest extends TestCase
 
         $html = NavBar::widget()->brandImage('/images/test.jpg')->brandLink('/')->begin();
         $html .= NavBar::end();
-        
+
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
             $html
@@ -87,7 +87,7 @@ final class NavBarTest extends TestCase
             ->brandImage('/images/test.jpg')
             ->begin();
         $html .= NavBar::end();
-        
+
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt="">Yii Framework</a>',
             $html
