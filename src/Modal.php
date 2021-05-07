@@ -313,7 +313,7 @@ final class Modal extends Widget
             Html::addCssClass($this->titleOptions, ['titleOptions' => 'modal-title']);
         }
 
-        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions);
+        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions)->render();
 
         if ($button !== null) {
             $header .= "\n" . $button;
