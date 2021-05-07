@@ -138,7 +138,6 @@ final class NavBar extends Widget
         }
 
         $navTag = ArrayHelper::remove($this->options, 'tag', 'nav');
-        $brand = '';
 
         if (!isset($this->innerContainerOptions['class'])) {
             Html::addCssClass($this->innerContainerOptions, ['innerContainerOptions' => 'container']);
