@@ -6,6 +6,6 @@ use Yiisoft\Form\Widget\Field;
 
 if ($params['yiisoft/form']['bootstrap5']['enabled'] === true) {
     return [
-        Field::class => fn () => Field::widget($params['yiisoft/form']['bootstrap5']['fieldConfig']),
+        Field::class => static fn () => Field::widget($params['yiisoft/form']['bootstrap5']['fieldConfig']),
     ];
 }
