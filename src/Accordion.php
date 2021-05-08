@@ -272,11 +272,11 @@ final class Accordion extends Widget
                 'data-bs-toggle' => 'collapse',
                 'data-bs-target' => '#' . $options['id'],
                 'aria-expanded' => $expand ? 'true' : 'false',
+                'aria-controls' => $options['id'],
             ], $this->itemToggleOptions);
 
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
-            /** @psalm-suppress ConflictingReferenceConstraint */
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions)->encode($this->encodeTags) . "\n";
@@ -291,19 +291,15 @@ final class Accordion extends Widget
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
                 $content = $item['content'];
             } elseif (is_array($item['content'])) {
-                $ulOptions = ['class' => 'list-group'];
-                $ulItemOptions = ['class' => 'list-group-item'];
-
                 $items = [];
                 foreach ($item['content'] as $content) {
-                    $items[] = Html::li($content)
-                        ->attributes($ulItemOptions)
-                        ->encode($this->encodeTags);
+                    $items[] = Html::div($content)
+                        ->attributes(['class' => 'accordion-body'])
+                        ->encode($this->encodeTags)
+                        ->render();
                 }
 
-                $content = Html::ul()
-                        ->items(...$items)
-                        ->attributes($ulOptions) . "\n";
+                $content = implode("\n", $items);
             } else {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
