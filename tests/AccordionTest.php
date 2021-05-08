@@ -24,21 +24,21 @@ final class AccordionTest extends TestCase
                 [
                     'label' => 'Accordion Item #1',
                     'content' => [
-                        'This is the first items accordion body. It is shown by default, until the collapse plugin ' . 
+                        'This is the first items accordion body. It is shown by default, until the collapse plugin ' .
                         'the appropriate classes that we use to style each element. These classes control the ' .
-                        'overall appearance, as well as the showing and hiding via CSS transitions. You can  ' . 
-                        'modify any of this with custom CSS or overriding our default variables. Its also worth ' . 
-                        'noting that just about any HTML can go within the .accordion-body, though the transition ' . 
+                        'overall appearance, as well as the showing and hiding via CSS transitions. You can  ' .
+                        'modify any of this with custom CSS or overriding our default variables. Its also worth ' .
+                        'noting that just about any HTML can go within the .accordion-body, though the transition ' .
                         'does limit overflow.',
                     ],
                 ],
                 [
                     'label' => 'Accordion Item #2',
                     'content' => '<strong>This is the second items accordion body.</strong> It is hidden by default, ' .
-                        'until the collapse plugin adds the appropriate classes that we use to style each element. ' . 
-                        'These classes control the overall appearance, as well as the showing and hiding via CSS ' . 
-                        'transitions. You can modify any of this with custom CSS or overriding our default ' . 
-                        'variables. Its also worth noting that just about any HTML can go within the ' . 
+                        'until the collapse plugin adds the appropriate classes that we use to style each element. ' .
+                        'These classes control the overall appearance, as well as the showing and hiding via CSS ' .
+                        'transitions. You can modify any of this with custom CSS or overriding our default ' .
+                        'variables. Its also worth noting that just about any HTML can go within the ' .
                         '<code>.accordion-body</code>, though the transition does limit overflow.',
                     'contentOptions' => [
                         'class' => 'testContentOptions',
@@ -53,11 +53,11 @@ final class AccordionTest extends TestCase
                     'content' => [
                         '<b>test content1</b>',
                         '<strong>This is the third items accordion body.</strong> It is hidden by default, until the ' .
-                        'collapse plugin adds the appropriate classes that we use to style each element. These ' . 
-                        'classes control the overall appearance, as well as the showing and hiding via CSS ' . 
+                        'collapse plugin adds the appropriate classes that we use to style each element. These ' .
+                        'classes control the overall appearance, as well as the showing and hiding via CSS ' .
                         'transitions. You can modify any of this with custom CSS or overriding our default ' .
-                        'variables. Its also worth noting that just about any HTML can go within the ' . 
-                        '<code>.accordion-body</code>, though the transition does limit overflow.'
+                        'variables. Its also worth noting that just about any HTML can go within the ' .
+                        '<code>.accordion-body</code>, though the transition does limit overflow.',
                     ],
                     'contentOptions' => [
                         'class' => 'testContentOptions2',
