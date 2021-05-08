@@ -22,7 +22,7 @@ use function array_merge;
  *     ])
  *     ->body('Say hello...');
  * ```
- * 
+ *
  * @link https://getbootstrap.com/docs/5.0/components/alerts/
  */
 final class Alert extends Widget
