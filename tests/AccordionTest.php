@@ -87,7 +87,7 @@ final class AccordionTest extends TestCase
 
     /**
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
-     */    
+     */
     public function testFlush(): void
     {
         Accordion::counter(0);
@@ -198,7 +198,7 @@ final class AccordionTest extends TestCase
             [
                 'label' => 'item 1',
                 'content' => true,
-            ], 
+            ],
         ];
 
         $this->expectException(RuntimeException::class);

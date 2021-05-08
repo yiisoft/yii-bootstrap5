@@ -76,7 +76,7 @@ use function is_string;
  *         ],
  *     ]);
  * ```
- * 
+ *
  * @link https://getbootstrap.com/docs/5.0/components/accordion/
  */
 final class Accordion extends Widget
@@ -224,12 +224,12 @@ final class Accordion extends Widget
     /**
      * Add to remove the default, some borders, and some rounded corners to render accordions edge-to-edge with their
      * parent container.
-     * 
+     *
      * @return $this
-     * 
+     *
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
      */
-    public function flush(): self 
+    public function flush(): self
     {
         $new = clone $this;
         $new->flush = true;
