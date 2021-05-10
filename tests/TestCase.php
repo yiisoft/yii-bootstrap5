@@ -19,7 +19,6 @@ use Yiisoft\Assets\AssetPublisher;
 use Yiisoft\Assets\AssetPublisherInterface;
 use Yiisoft\Di\Container;
 use Yiisoft\Factory\Definition\Reference;
-use Yiisoft\Files\FileHelper;
 use Yiisoft\Widget\WidgetFactory;
 
 use function closedir;
@@ -30,26 +29,19 @@ use function str_replace;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected Aliases $aliases;
-    protected AssetManager $assetManager;
     private ContainerInterface $container;
 
     protected function setUp(): void
     {
-        $this->container = new Container($this->config());
-
+        $this->container = new Container([]);
         $this->aliases = $this->container->get(Aliases::class);
-        $this->assetManager = $this->container->get(AssetManager::class);
-        $this->assetPublisher = $this->container->get(AssetPublisher::class);
 
         WidgetFactory::initialize($this->container, []);
     }
 
     protected function tearDown(): void
     {
-        $this->removeAssets('@assets');
-
-        unset($this->aliases, $this->assetManager, $this->assetPublisher, $this->container);
+        unset($this->container);
 
         parent::tearDown();
     }
@@ -81,62 +73,5 @@ abstract class TestCase extends BaseTestCase
         $actual = str_replace(['/', '\\'], '/', $actual);
 
         $this->assertSame($expected, $actual);
-    }
-
-    protected function removeAssets(string $basePath): void
-    {
-        $handle = opendir($dir = $this->aliases->get($basePath));
-        if ($handle === false) {
-            throw new RuntimeException("Unable to open directory: $dir");
-        }
-        while (($file = readdir($handle)) !== false) {
-            if ($file === '.' || $file === '..' || $file === '.gitignore') {
-                continue;
-            }
-
-            $path = $dir . DIRECTORY_SEPARATOR . $file;
-
-            if (is_dir($path)) {
-                FileHelper::removeDirectory($path);
-            } else {
-                FileHelper::unlink($path);
-            }
-        }
-
-        closedir($handle);
-    }
-
-    private function config(): array
-    {
-        return [
-            Aliases::class => [
-                'class' => Aliases::class,
-                '__construct()' => [
-                    [
-                        '@root' => dirname(__DIR__),
-                        '@public' => '@root/tests/public',
-                        '@assets' => '@public/assets',
-                        '@assetsUrl' => '/',
-                        '@vendor' => '@root/vendor',
-                        '@npm' => '@vendor/npm-asset',
-                        '@view' => '@public/view',
-                    ],
-                ],
-            ],
-
-            LoggerInterface::class => NullLogger::class,
-
-            AssetConverterInterface::class => AssetConverter::class,
-
-            AssetPublisherInterface::class => AssetPublisher::class,
-
-            AssetLoaderInterface::class => AssetLoader::class,
-
-            AssetManager::class => [
-                'class' => AssetManager::class,
-                'withConverter()' => [Reference::to(AssetConverterInterface::class)],
-                'withPublisher()' => [Reference::to(AssetPublisherInterface::class)],
-            ],
-        ];
     }
 }
