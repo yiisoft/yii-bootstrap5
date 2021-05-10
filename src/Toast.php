@@ -104,7 +104,7 @@ final class Toast extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function closeButton(array $value): self
     {
@@ -119,7 +119,7 @@ final class Toast extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function dateTime(string $value): self
     {
@@ -134,7 +134,7 @@ final class Toast extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -151,7 +151,7 @@ final class Toast extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -167,7 +167,7 @@ final class Toast extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -184,7 +184,7 @@ final class Toast extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function title(string $value): self
     {
@@ -201,7 +201,7 @@ final class Toast extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function titleOptions(array $value): self
     {

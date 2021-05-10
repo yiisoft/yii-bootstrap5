@@ -72,7 +72,7 @@ final class Dropdown extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -85,7 +85,7 @@ final class Dropdown extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -100,7 +100,7 @@ final class Dropdown extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function submenuOptions(array $value): self
     {
@@ -114,7 +114,7 @@ final class Dropdown extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

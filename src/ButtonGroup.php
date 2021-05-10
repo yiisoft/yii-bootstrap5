@@ -70,7 +70,7 @@ final class ButtonGroup extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function buttons(array $value): self
     {
@@ -83,7 +83,7 @@ final class ButtonGroup extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -100,7 +100,7 @@ final class ButtonGroup extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {

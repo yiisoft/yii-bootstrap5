@@ -30,7 +30,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function id(string $value): self
     {
@@ -55,7 +55,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      *
      * {@see getId()}
      */

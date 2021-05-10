@@ -146,7 +146,7 @@ final class Nav extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -159,7 +159,7 @@ final class Nav extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -172,7 +172,7 @@ final class Nav extends Widget
     /**
      * Disable activate items according to whether their currentPath.
      *
-     * @return $this
+     * @return self
      *
      * {@see isItemActive}
      */
@@ -187,7 +187,7 @@ final class Nav extends Widget
     /**
      * Whether to activate parent menu items when one of the corresponding child menu items is active.
      *
-     * @return $this
+     * @return self
      */
     public function activateParents(): self
     {
@@ -202,7 +202,7 @@ final class Nav extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function currentPath(string $value): self
     {
@@ -217,7 +217,7 @@ final class Nav extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -234,7 +234,7 @@ final class Nav extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {

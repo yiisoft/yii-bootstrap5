@@ -111,7 +111,7 @@ final class Accordion extends Widget
      *
      * Set this to `false` to allow keeping multiple items open at once.
      *
-     * @return $this
+     * @return self
      */
     public function allowMultipleOpenedItems(): self
     {
@@ -124,7 +124,7 @@ final class Accordion extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -170,7 +170,7 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -194,7 +194,7 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function itemToggleOptions(array $value): self
     {
@@ -211,7 +211,7 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
@@ -222,10 +222,10 @@ final class Accordion extends Widget
     }
 
     /**
-     * Add to remove the default, some borders, and some rounded corners to render accordions edge-to-edge with their
-     * parent container.
+     * Add to remove the default background-color, some borders, and some rounded corners to render accordions
+     * edge-to-edge with their parent container.
      *
-     * @return $this
+     * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
      */

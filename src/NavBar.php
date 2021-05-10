@@ -49,7 +49,7 @@ use Yiisoft\Html\Html;
  *
  *    <?php NavBar::widget()
  *        ->brandText('My Application Basic')
- *        ->brandLink('/')
+ *        ->brandUrl('/')
  *        ->options([
  *            'class' => 'navbar navbar-dark bg-dark navbar-expand-lg text-white',
  *        ])
@@ -112,7 +112,7 @@ final class NavBar extends Widget
     private array $collapseOptions = [];
     private string $brandText = '';
     private string $brandImage = '';
-    private string $brandLink = '/';
+    private string $brandUrl = '/';
     private array $brandOptions = [];
     private string $screenReaderToggleText = 'Toggle navigation';
     private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
@@ -182,7 +182,7 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -199,7 +199,7 @@ final class NavBar extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
@@ -216,7 +216,7 @@ final class NavBar extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#image
      */
@@ -229,19 +229,19 @@ final class NavBar extends Widget
     }
 
     /**
-     * The Link for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
-     * is '/' will be used. You may set it to `` if you want to have no link at all.
+     * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
+     * is "/". You may set it to empty string if you want no link at all.
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
-    public function brandLink(string $value): self
+    public function brandUrl(string $value): self
     {
         $new = clone $this;
-        $new->brandLink = $value;
+        $new->brandUrl = $value;
 
         return $new;
     }
@@ -253,7 +253,7 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function brandOptions(array $value): self
     {
@@ -268,7 +268,7 @@ final class NavBar extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function screenReaderToggleText(string $value): self
     {
@@ -283,7 +283,7 @@ final class NavBar extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function togglerContent(string $value): self
     {
@@ -300,7 +300,7 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function togglerOptions(array $value): self
     {
@@ -313,7 +313,7 @@ final class NavBar extends Widget
     /**
      * This for a 100% width navbar.
      *
-     * @return $this
+     * @return self
      */
     public function withoutRenderInnerContainer(): self
     {
@@ -330,7 +330,7 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function innerContainerOptions(array $value): self
     {
@@ -347,7 +347,7 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
@@ -366,7 +366,7 @@ final class NavBar extends Widget
 
         if ($this->brandImage !== '') {
             $brandImage = Html::img($this->brandImage)->render();
-            $brand = Html::a($brandImage, $this->brandLink, $this->brandOptions)
+            $brand = Html::a($brandImage, $this->brandUrl, $this->brandOptions)
                 ->encode($this->encodeTags)
                 ->render();
         }
@@ -378,10 +378,10 @@ final class NavBar extends Widget
                 $brandText = $brandImage . $this->brandText;
             }
 
-            if (empty($this->brandLink)) {
+            if (empty($this->brandUrl)) {
                 $brand = Html::span($brandText, $this->brandOptions)->render();
             } else {
-                $brand = Html::a($brandText, $this->brandLink, $this->brandOptions)
+                $brand = Html::a($brandText, $this->brandUrl, $this->brandOptions)
                     ->encode($this->encodeTags)
                     ->render();
             }

@@ -98,7 +98,7 @@ final class Tabs extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -111,7 +111,7 @@ final class Tabs extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -129,7 +129,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function headerOptions(array $value): self
     {
@@ -161,7 +161,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -177,7 +177,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -194,7 +194,7 @@ final class Tabs extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function navType(string $value): self
     {
@@ -209,7 +209,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -226,7 +226,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function panes(array $value): self
     {
@@ -239,7 +239,7 @@ final class Tabs extends Widget
     /**
      * Manually render `tab-content` yourself in case your tab contents are complex.
      *
-     * @return $this
+     * @return self
      */
     public function withoutRenderTabContent(): self
     {
@@ -254,7 +254,7 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

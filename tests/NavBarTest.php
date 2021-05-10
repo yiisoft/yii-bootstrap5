@@ -20,7 +20,7 @@ final class NavBarTest extends TestCase
 
         $html = NavBar::widget()
             ->brandText('My Company')
-            ->brandLink('/')
+            ->brandUrl('/')
             ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
@@ -43,7 +43,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandImage('/images/test.jpg')->brandLink('/')->begin();
+        $html = NavBar::widget()->brandImage('/images/test.jpg')->brandUrl('/')->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -52,11 +52,11 @@ final class NavBarTest extends TestCase
         );
     }
 
-    public function testBrandLink(): void
+    public function testbrandUrl(): void
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('Yii Framework')->brandLink('/index.php')->begin();
+        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('/index.php')->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -69,7 +69,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('Yii Framework')->brandLink('')->begin();
+        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('')->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -98,7 +98,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('My Company')->brandLink('/')->begin();
+        $html = NavBar::widget()->brandText('My Company')->brandUrl('/')->begin();
         $html .= Nav::widget()
             ->items([
                 ['label' => 'Home', 'url' => '#'],

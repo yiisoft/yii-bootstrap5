@@ -73,7 +73,7 @@ final class Carousel extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function controls(array $value): self
     {
@@ -86,7 +86,7 @@ final class Carousel extends Widget
     /**
      * Animate slides with a fade transition instead of a slide. Defaults to `false`.
      *
-     * @return $this
+     * @return self
      */
     public function withCrossfade(): self
     {
@@ -112,7 +112,7 @@ final class Carousel extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -129,7 +129,7 @@ final class Carousel extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
@@ -142,7 +142,7 @@ final class Carousel extends Widget
     /**
      * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
      *
-     * @return $this
+     * @return self
      */
     public function withoutShowIndicators(): self
     {
