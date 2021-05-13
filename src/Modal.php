@@ -98,7 +98,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function bodyOptions(array $value): self
     {
@@ -124,7 +124,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function closeButton(array $value): self
     {
@@ -137,7 +137,7 @@ final class Modal extends Widget
     /**
      * Disable close button.
      *
-     * @return $this
+     * @return self
      */
     public function withoutCloseButton(): self
     {
@@ -152,7 +152,7 @@ final class Modal extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function footer(string $value): self
     {
@@ -167,7 +167,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -184,7 +184,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -200,7 +200,7 @@ final class Modal extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     * @return $this
+     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -217,7 +217,7 @@ final class Modal extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function title(string $value): self
     {
@@ -234,7 +234,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function titleOptions(array $value): self
     {
@@ -260,7 +260,7 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function toggleButton(array $value): self
     {
@@ -273,7 +273,7 @@ final class Modal extends Widget
     /**
      * Disable toggle button.
      *
-     * @return $this
+     * @return self
      */
     public function withoutToggleButton(): self
     {
@@ -288,7 +288,7 @@ final class Modal extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function size(string $value): self
     {
@@ -313,7 +313,7 @@ final class Modal extends Widget
             Html::addCssClass($this->titleOptions, ['titleOptions' => 'modal-title']);
         }
 
-        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions);
+        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions)->render();
 
         if ($button !== null) {
             $header .= "\n" . $button;

@@ -82,7 +82,7 @@ final class ButtonToolbar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function buttonGroups(array $value): self
     {
@@ -99,7 +99,7 @@ final class ButtonToolbar extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {

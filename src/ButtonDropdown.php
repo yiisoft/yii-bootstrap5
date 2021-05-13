@@ -96,7 +96,7 @@ final class ButtonDropdown extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function buttonOptions(array $value): self
     {
@@ -113,7 +113,7 @@ final class ButtonDropdown extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function direction(string $value): self
     {
@@ -139,7 +139,7 @@ final class ButtonDropdown extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function dropdown(array $value): self
     {
@@ -154,7 +154,7 @@ final class ButtonDropdown extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -167,7 +167,7 @@ final class ButtonDropdown extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -182,7 +182,7 @@ final class ButtonDropdown extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function label(string $value): self
     {
@@ -199,7 +199,7 @@ final class ButtonDropdown extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
@@ -213,7 +213,7 @@ final class ButtonDropdown extends Widget
      * Whether to render the container using the {@see options} as HTML attributes. If set to `false`, the container
      * element enclosing the button and dropdown will NOT be rendered.
      *
-     * @return $this
+     * @return self
      */
     public function withoutRenderContainer(): self
     {
@@ -226,7 +226,7 @@ final class ButtonDropdown extends Widget
     /**
      * Whether to display a group of split-styled button group.
      *
-     * @return $this
+     * @return self
      */
     public function split(): self
     {
@@ -241,7 +241,7 @@ final class ButtonDropdown extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function tagName(string $value): self
     {

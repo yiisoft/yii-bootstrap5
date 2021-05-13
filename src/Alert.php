@@ -22,6 +22,8 @@ use function array_merge;
  *     ])
  *     ->body('Say hello...');
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.0/components/alerts/
  */
 final class Alert extends Widget
 {
@@ -50,7 +52,7 @@ final class Alert extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function body(string $value): self
     {
@@ -78,7 +80,7 @@ final class Alert extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function closeButton(array $value): self
     {
@@ -91,7 +93,7 @@ final class Alert extends Widget
     /**
      * Disable close button.
      *
-     * @return $this
+     * @return self
      */
     public function withoutCloseButton(): self
     {
@@ -108,7 +110,7 @@ final class Alert extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {

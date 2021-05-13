@@ -20,7 +20,7 @@ use function is_object;
 use function is_string;
 
 /**
- * Accordion renders an accordion bootstrap javascript component.
+ * Accordion renders an accordion bootstrap JavaScript component.
  *
  * For example:
  *
@@ -28,31 +28,56 @@ use function is_string;
  * echo Accordion::widget()
  *     ->items([
  *         [
- *             'label' => 'Collapsible Group Item #1',
- *             'content' => 'Anim pariatur cliche...',
- *             // open its content by default
- *             'contentOptions' => ['class' => 'show'],
- *         ],
- *         // another group item
- *         [
- *             'label' => 'Collapsible Group Item #2',
- *             'content' => 'Anim pariatur cliche...',
- *             'contentOptions' => [...],
- *             'options' => [...],
- *             'expand' => true,
- *         ],
- *         // if you want to swap out .accordion-body with .list-group, you may provide an array
- *         [
- *             'label' => 'Collapsible Group Item #3',
+ *             'label' => 'Accordion Item #1',
  *             'content' => [
- *                 'Anim pariatur cliche...',
- *                 'Anim pariatur cliche...',
+ *                 'This is the first items accordion body. It is shown by default, until the collapse plugin ' .
+ *                 'the appropriate classes that we use to style each element. These classes control the ' .
+ *                 'overall appearance, as well as the showing and hiding via CSS transitions. You can  ' .
+ *                 'modify any of this with custom CSS or overriding our default variables. Its also worth ' .
+ *                 'noting that just about any HTML can go within the .accordion-body, though the transition ' .
+ *                 'does limit overflow.',
  *             ],
- *             'contentOptions' => [...],
- *             'options' => [...],
+ *         ],
+ *         [
+ *             'label' => 'Accordion Item #2',
+ *             'content' => '<strong>This is the second items accordion body.</strong> It is hidden by default, ' .
+ *                 'until the collapse plugin adds the appropriate classes that we use to style each element. ' .
+ *                 'These classes control the overall appearance, as well as the showing and hiding via CSS ' .
+ *                 'transitions. You can modify any of this with custom CSS or overriding our default ' .
+ *                 'variables. Its also worth noting that just about any HTML can go within the ' .
+ *                 '<code>.accordion-body</code>, though the transition does limit overflow.',
+ *             'contentOptions' => [
+ *                 'class' => 'testContentOptions',
+ *             ],
+ *             'options' => [
+ *                 'class' => 'testClass',
+ *                 'id' => 'testId',
+ *             ],
+ *         ],
+ *         [
+ *             'label' => '<b>Accordion Item #3</b>',
+ *             'content' => [
+ *                 '<b>test content1</b>',
+ *                 '<strong>This is the third items accordion body.</strong> It is hidden by default, until the ' .
+ *                 'collapse plugin adds the appropriate classes that we use to style each element. These ' .
+ *                 'classes control the overall appearance, as well as the showing and hiding via CSS ' .
+ *                 'transitions. You can modify any of this with custom CSS or overriding our default ' .
+ *                 'variables. Its also worth noting that just about any HTML can go within the ' .
+ *                 '<code>.accordion-body</code>, though the transition does limit overflow.',
+ *             ],
+ *             'contentOptions' => [
+ *                 'class' => 'testContentOptions2',
+ *             ],
+ *             'options' => [
+ *                 'class' => 'testClass2',
+ *                 'id' => 'testId2',
+ *             ],
+ *             'encode' => false,
  *         ],
  *     ]);
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.0/components/accordion/
  */
 final class Accordion extends Widget
 {
@@ -62,6 +87,7 @@ final class Accordion extends Widget
     private bool $autoCloseItems = true;
     private array $itemToggleOptions = [];
     private array $options = [];
+    private bool $flush = false;
 
     protected function run(): string
     {
@@ -69,8 +95,11 @@ final class Accordion extends Widget
             $this->options['id'] = "{$this->getId()}-accordion";
         }
 
-        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'accordion']);
+
+        if ($this->flush) {
+            Html::addCssClass($this->options, ['flush' => 'accordion-flush']);
+        }
 
         return Html::div($this->renderItems(), $this->options)
             ->encode($this->encodeTags)
@@ -82,7 +111,7 @@ final class Accordion extends Widget
      *
      * Set this to `false` to allow keeping multiple items open at once.
      *
-     * @return $this
+     * @return self
      */
     public function allowMultipleOpenedItems(): self
     {
@@ -95,7 +124,7 @@ final class Accordion extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -141,7 +170,7 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function items(array $value): self
     {
@@ -165,7 +194,7 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function itemToggleOptions(array $value): self
     {
@@ -182,12 +211,28 @@ final class Accordion extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
+
+        return $new;
+    }
+
+    /**
+     * Remove the default background-color, some borders, and some rounded corners to render accordions
+     * edge-to-edge with their parent container.
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
+     */
+    public function flush(): self
+    {
+        $new = clone $this;
+        $new->flush = true;
 
         return $new;
     }
@@ -205,7 +250,7 @@ final class Accordion extends Widget
         $index = 0;
         $expanded = array_search(true, array_column($this->items, 'expand'), true);
 
-        foreach ($this->items as $key => $item) {
+        foreach ($this->items as $item) {
             if (!is_array($item)) {
                 $item = ['content' => $item];
             }
@@ -272,11 +317,11 @@ final class Accordion extends Widget
                 'data-bs-toggle' => 'collapse',
                 'data-bs-target' => '#' . $options['id'],
                 'aria-expanded' => $expand ? 'true' : 'false',
+                'aria-controls' => $options['id'],
             ], $this->itemToggleOptions);
 
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
-            /** @psalm-suppress ConflictingReferenceConstraint */
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
                 $header = Html::a($header, '#' . $id, $itemToggleOptions)->encode($this->encodeTags) . "\n";
@@ -291,19 +336,15 @@ final class Accordion extends Widget
             if (is_string($item['content']) || is_numeric($item['content']) || is_object($item['content'])) {
                 $content = $item['content'];
             } elseif (is_array($item['content'])) {
-                $ulOptions = ['class' => 'list-group'];
-                $ulItemOptions = ['class' => 'list-group-item'];
-
                 $items = [];
                 foreach ($item['content'] as $content) {
-                    $items[] = Html::li($content)
-                        ->attributes($ulItemOptions)
-                        ->encode($this->encodeTags);
+                    $items[] = Html::div($content)
+                        ->attributes(['class' => 'accordion-body'])
+                        ->encode($this->encodeTags)
+                        ->render();
                 }
 
-                $content = Html::ul()
-                        ->items(...$items)
-                        ->attributes($ulOptions) . "\n";
+                $content = implode("\n", $items);
             } else {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }

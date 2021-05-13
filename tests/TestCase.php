@@ -6,21 +6,21 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
-use function str_replace;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Di\Container;
 use Yiisoft\Widget\WidgetFactory;
 
+use function str_replace;
+
 abstract class TestCase extends BaseTestCase
 {
-    protected Aliases $aliases;
     private ContainerInterface $container;
 
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->container = new Container([]);
+        $this->aliases = $this->container->get(Aliases::class);
 
-        $this->container = new Container();
         WidgetFactory::initialize($this->container, []);
     }
 

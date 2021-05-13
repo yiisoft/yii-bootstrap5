@@ -19,7 +19,7 @@ final class NavBarTest extends TestCase
         NavBar::counter(0);
 
         $html = NavBar::widget()
-            ->brandLabel('My Company')
+            ->brandText('My Company')
             ->brandUrl('/')
             ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
@@ -45,32 +45,51 @@ final class NavBarTest extends TestCase
 
         $html = NavBar::widget()->brandImage('/images/test.jpg')->brandUrl('/')->begin();
         $html .= NavBar::end();
+
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
             $html
         );
     }
 
-    public function testBrandLink(): void
+    public function testbrandUrl(): void
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandLabel('Yii Framework')->brandUrl('/index.php')->begin();
+        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('/index.php')->begin();
         $html .= NavBar::end();
+
         $this->assertStringContainsString(
             '<a class="navbar-brand" href="/index.php">Yii Framework</a>',
             $html
         );
     }
 
-    public function testBrandSpan(): void
+    public function testBrandText(): void
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandLabel('Yii Framework')->brandUrl('')->begin();
+        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('')->begin();
         $html .= NavBar::end();
+
         $this->assertStringContainsString(
             '<span class="navbar-brand">Yii Framework</span>',
+            $html
+        );
+    }
+
+    public function testBrandImageText(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()
+            ->brandText('Yii Framework')
+            ->brandImage('/images/test.jpg')
+            ->begin();
+        $html .= NavBar::end();
+
+        $this->assertStringContainsString(
+            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt="">Yii Framework</a>',
             $html
         );
     }
@@ -79,7 +98,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandLabel('My Company')->brandUrl('/')->begin();
+        $html = NavBar::widget()->brandText('My Company')->brandUrl('/')->begin();
         $html .= Nav::widget()
             ->items([
                 ['label' => 'Home', 'url' => '#'],
@@ -149,7 +168,7 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandLabel('My App')->brandOptions(['class' => 'text-dark'])->begin();
+        $html = NavBar::widget()->brandText('My App')->brandOptions(['class' => 'text-dark'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">

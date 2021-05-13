@@ -81,7 +81,7 @@ final class Breadcrumbs extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function activeItemTemplate(string $value): self
     {
@@ -94,7 +94,7 @@ final class Breadcrumbs extends Widget
     /**
      * When tags Labels HTML should not be encoded.
      *
-     * @return $this
+     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -114,7 +114,7 @@ final class Breadcrumbs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function homeLink(array $value): self
     {
@@ -130,7 +130,7 @@ final class Breadcrumbs extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function itemTemplate(string $value): self
     {
@@ -154,7 +154,7 @@ final class Breadcrumbs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function links(array $value): self
     {
@@ -171,7 +171,7 @@ final class Breadcrumbs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function navOptions(array $value): self
     {
@@ -188,7 +188,7 @@ final class Breadcrumbs extends Widget
      *
      * @param array $value
      *
-     * @return $this
+     * @return self
      */
     public function options(array $value): self
     {
@@ -203,7 +203,7 @@ final class Breadcrumbs extends Widget
      *
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
     public function tag(string $value): self
     {
