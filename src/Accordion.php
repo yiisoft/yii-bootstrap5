@@ -20,7 +20,7 @@ use function is_object;
 use function is_string;
 
 /**
- * Accordion renders an accordion bootstrap javascript component.
+ * Accordion renders an accordion bootstrap JavaScript component.
  *
  * For example:
  *
@@ -222,7 +222,7 @@ final class Accordion extends Widget
     }
 
     /**
-     * Add to remove the default background-color, some borders, and some rounded corners to render accordions
+     * Remove the default background-color, some borders, and some rounded corners to render accordions
      * edge-to-edge with their parent container.
      *
      * @return self
@@ -250,7 +250,7 @@ final class Accordion extends Widget
         $index = 0;
         $expanded = array_search(true, array_column($this->items, 'expand'), true);
 
-        foreach ($this->items as $key => $item) {
+        foreach ($this->items as $item) {
             if (!is_array($item)) {
                 $item = ['content' => $item];
             }
