@@ -24,7 +24,7 @@
         "npm-asset/bootstrap": "^5.0.0",
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^1.0",
-        "yiisoft/assets": "^1.0@dev",
+        "yiisoft/assets": "^1.0",
         "yiisoft/html": "^1.0",
         "yiisoft/json": "^1.0",
         "yiisoft/widget": "^3.0@dev"
