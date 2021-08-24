@@ -47,7 +47,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
-            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt=""></a>',
+            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt></a>',
             $html
         );
     }
@@ -89,7 +89,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
-            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt="">Yii Framework</a>',
+            '<a class="navbar-brand" href="/"><img src="/images/test.jpg" alt>Yii Framework</a>',
             $html
         );
     }
