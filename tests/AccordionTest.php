@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use RuntimeException;
-use Yiisoft\Factory\Exception\InvalidConfigException;
+use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 
 /**
