@@ -181,4 +181,25 @@ final class BreadcrumbsTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
+
+    public function testHomeLinkDisabled(): void
+    {
+        Breadcrumbs::counter(0);
+
+        $html = Breadcrumbs::widget()
+            ->homeLink([])
+            ->links([
+                ['label' => 'Library', 'url' => '#', 'template' => "<span class=\"testMe\">{link}</span>\n"],
+                ['label' => 'Data'],
+                'Articles',
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <nav aria-label="breadcrumb"><ol id="w0-breadcrumb" class="breadcrumb"><span class="testMe"><a href="#">Library</a></span>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+        <li class="breadcrumb-item active" aria-current="page">Articles</li>
+        </ol></nav>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
 }
