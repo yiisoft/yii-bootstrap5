@@ -29,7 +29,7 @@ final class Breadcrumbs extends Widget
     private string $tag = 'ol';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
-    private array $homeLink = [];
+    private array $homeLink = ['label' => 'Home', 'url' => '/'];
     private array $links = [];
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
     private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
@@ -51,12 +51,7 @@ final class Breadcrumbs extends Widget
 
         $links = [];
 
-        if ($this->homeLink === []) {
-            $links[] = $this->renderItem([
-                'label' => 'Home',
-                'url' => '/',
-            ], $this->itemTemplate);
-        } else {
+        if ($this->homeLink !== []) {
             $links[] = $this->renderItem($this->homeLink, $this->itemTemplate);
         }
 
