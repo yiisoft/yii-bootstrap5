@@ -23,7 +23,7 @@
         "php": "^7.4|^8.0",
         "npm-asset/bootstrap": "^5.0.0",
         "oomphinc/composer-installers-extender": "^2.0.0",
-        "yiisoft/arrays": "^1.0",
+        "yiisoft/arrays": "^1.0|^2.0",
         "yiisoft/assets": "^1.0",
         "yiisoft/html": "^2.0",
         "yiisoft/json": "^1.0",
