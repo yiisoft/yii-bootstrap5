@@ -10,7 +10,7 @@ use Yiisoft\Form\Widget\Field;
 if ($params['yiisoft/form']['bootstrap5']['enabled'] === true) {
     return [
         Field::class => DynamicReference::to(
-            static function (array $params): Field {
+            static function () use ($params): Field {
                 return Field::widget($params['yiisoft/form']['bootstrap5']['fieldConfig']);
             }
         ),
