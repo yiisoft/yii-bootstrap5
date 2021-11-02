@@ -114,6 +114,9 @@ final class Nav extends Widget
     private string $currentPath = '';
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
+    private array $itemOptions = [];
+    private array $linkOptions = [];
+    private array $dropdownOptions = [];
 
     protected function run(): string
     {
@@ -155,6 +158,7 @@ final class Nav extends Widget
 
         return $new;
     }
+
 
     /**
      * When tags Labels HTML should not be encoded.
@@ -227,6 +231,15 @@ final class Nav extends Widget
         return $new;
     }
 
+
+    public function dropdownOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->dropdownOptions = $options;
+
+        return $new;
+    }
+
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
@@ -240,6 +253,23 @@ final class Nav extends Widget
     {
         $new = clone $this;
         $new->options = $value;
+
+        return $new;
+    }
+
+
+    public function itemOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->itemOptions = $options;
+
+        return $new;
+    }
+
+    public function linkOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->linkOptions = $options;
 
         return $new;
     }
@@ -289,10 +319,10 @@ final class Nav extends Widget
 
         $encodeLabel = $item['encode'] ?? $this->encodeLabels;
         $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
-        $options = ArrayHelper::getValue($item, 'options', []);
+        $options = ArrayHelper::getValue($item, 'options', $this->itemOptions);
         $items = ArrayHelper::getValue($item, 'items');
         $url = ArrayHelper::getValue($item, 'url', '#');
-        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
+        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', $this->linkOptions);
         $disabled = ArrayHelper::getValue($item, 'disabled', false);
         $active = $this->isItemActive($item);
 
@@ -345,7 +375,7 @@ final class Nav extends Widget
 
         $dropdown = $dropdownClass::widget()
             ->items($items)
-            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', []));
+            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', $this->dropdownOptions));
 
         if ($this->encodeLabels === false) {
             $dropdown->withoutEncodeLabels();
