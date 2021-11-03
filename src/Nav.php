@@ -111,6 +111,7 @@ final class Nav extends Widget
     private bool $encodeTags = false;
     private bool $activateItems = true;
     private bool $activateParents = false;
+    private ?string $activeClass = null;
     private string $currentPath = '';
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
@@ -202,6 +203,25 @@ final class Nav extends Widget
     }
 
     /**
+     * Additional CSS class for active item. Like "bg-success", "bg-primary" etc
+     *
+     * @param string|null $className
+     *
+     * @return self
+     */
+    public function activeClass(?string $className): self
+    {
+        if ($this->activeClass === $className) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->activeClass = $className;
+
+        return $new;
+    }
+
+    /**
      * Allows you to assign the current path of the url from request controller.
      *
      * @param string $value
@@ -231,7 +251,15 @@ final class Nav extends Widget
         return $new;
     }
 
-
+    /**
+     * Options for dropdownClass if not present in current item
+     *
+     * {@see Nav::renderDropdown()} for details on how this options will be used
+     *
+     * @param array $options
+     *
+     * @return self
+     */
     public function dropdownOptions(array $options): self
     {
         $new = clone $this;
@@ -257,7 +285,13 @@ final class Nav extends Widget
         return $new;
     }
 
-
+    /**
+     * Options for each item if not present in self
+     *
+     * @param array $options
+     *
+     * @return self
+     */
     public function itemOptions(array $options): self
     {
         $new = clone $this;
@@ -266,6 +300,13 @@ final class Nav extends Widget
         return $new;
     }
 
+    /**
+     * Options for each item link if not present in current item
+     *
+     * @param array $options
+     *
+     * @return self
+     */
     public function linkOptions(array $options): self
     {
         $new = clone $this;
@@ -348,7 +389,7 @@ final class Nav extends Widget
             $linkOptions['aria-disabled'] = 'true';
             Html::addCssClass($linkOptions, ['disabled' => 'disabled']);
         } elseif ($this->activateItems && $active) {
-            Html::addCssClass($linkOptions, ['active' => 'active']);
+            Html::addCssClass($linkOptions, ['active' => rtrim('active ' . $this->activeClass)]);
         }
 
         return Html::tag(

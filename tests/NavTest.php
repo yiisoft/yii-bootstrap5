@@ -404,4 +404,111 @@ final class NavTest extends TestCase
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
+
+    public function testMainOptions(): void
+    {
+        Nav::counter(0);
+
+        $html = Nav::widget()
+            ->itemOptions([
+                'class' => 'custom-item-class'
+            ])->items([
+                [
+                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2'],
+                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
+                    ],
+                ]
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <ul id="w0-nav" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><h6 class="dropdown-header">Page2</h6></li>
+        <li><h6 class="dropdown-header">Page3</h6></li>
+        </ul></li></ul>
+        HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testMainLinkOptions(): void
+    {
+        Nav::counter(0);
+
+        $html = Nav::widget()
+            ->linkOptions([
+                'class' => 'custom-link-class'
+            ])->items([
+                [
+                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2'],
+                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
+                    ],
+                ]
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><h6 class="dropdown-header">Page2</h6></li>
+        <li><h6 class="dropdown-header">Page3</h6></li>
+        </ul></li></ul>
+        HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testMainDropdownOptions(): void
+    {
+        Nav::counter(0);
+
+        $html = Nav::widget()
+            ->dropdownOptions([
+                'class' => 'dropdown-menu-dark'
+            ])->items([
+                [
+                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2'],
+                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
+                    ],
+                ]
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu-dark dropdown-menu" aria-expanded="false">
+        <li><h6 class="dropdown-header">Page2</h6></li>
+        <li><h6 class="dropdown-header">Page3</h6></li>
+        </ul></li></ul>
+        HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testAdditionalActiveClass(): void
+    {
+        Nav::counter(0);
+
+        $html = Nav::widget()
+            ->activeClass('custom-active-class')->items([
+                [
+                    'active' => true,
+                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
+                    'items' => [
+                        ['label' => 'Page2', 'content' => 'Page2'],
+                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
+                    ],
+                ]
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><h6 class="dropdown-header">Page2</h6></li>
+        <li><h6 class="dropdown-header">Page3</h6></li>
+        </ul></li></ul>
+        HTML;
+
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
 }
