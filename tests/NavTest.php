@@ -411,7 +411,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->itemOptions([
-                'class' => 'custom-item-class'
+                'class' => 'custom-item-class',
             ])->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
@@ -419,7 +419,7 @@ final class NavTest extends TestCase
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
                     ],
-                ]
+                ],
             ])
             ->render();
         $expected = <<<'HTML'
@@ -438,7 +438,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->linkOptions([
-                'class' => 'custom-link-class'
+                'class' => 'custom-link-class',
             ])->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
@@ -446,7 +446,7 @@ final class NavTest extends TestCase
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
                     ],
-                ]
+                ],
             ])
             ->render();
         $expected = <<<'HTML'
@@ -465,7 +465,7 @@ final class NavTest extends TestCase
 
         $html = Nav::widget()
             ->dropdownOptions([
-                'class' => 'dropdown-menu-dark'
+                'class' => 'dropdown-menu-dark',
             ])->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
@@ -473,7 +473,7 @@ final class NavTest extends TestCase
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
                     ],
-                ]
+                ],
             ])
             ->render();
         $expected = <<<'HTML'
@@ -499,7 +499,7 @@ final class NavTest extends TestCase
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
                     ],
-                ]
+                ],
             ])
             ->render();
         $expected = <<<'HTML'

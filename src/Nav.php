@@ -160,7 +160,6 @@ final class Nav extends Widget
         return $new;
     }
 
-
     /**
      * When tags Labels HTML should not be encoded.
      *
