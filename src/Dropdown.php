@@ -234,7 +234,7 @@ final class Dropdown extends Widget
                 $content = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
             } elseif ($label === '-') {
                 Html::addCssClass($linkOptions, ['widget' => 'dropdown-divider']);
-                $content = Html::tag('hr', null, $linkOptions);
+                $content = Html::tag('hr', '', $linkOptions);
             } elseif ($enclose === false) {
                 $content = $label;
             } else {
@@ -255,7 +255,7 @@ final class Dropdown extends Widget
         Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
         Html::addCssClass($linkOptions, [
             'widget' => 'dropdown-item',
-            'toggle' => 'dropdown-toggle'
+            'toggle' => 'dropdown-toggle',
         ]);
 
         $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
