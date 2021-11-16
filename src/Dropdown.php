@@ -216,16 +216,16 @@ final class Dropdown extends Widget
         $disabled = ArrayHelper::getValue($item, 'disabled', false);
         $enclose = ArrayHelper::getValue($item, 'enclose', true);
 
-        if ($url !== null || !empty($item['items'])) {
+        if ($url !== null) {
             Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
-        }
 
-        if ($disabled) {
-            ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-            ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-            Html::addCssClass($linkOptions, ['disable' => 'disabled']);
-        } elseif ($active) {
-            Html::addCssClass($linkOptions, ['active' => 'active']);
+            if ($disabled) {
+                ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
+                ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
+                Html::addCssClass($linkOptions, ['disable' => 'disabled']);
+            } elseif ($active) {
+                Html::addCssClass($linkOptions, ['active' => 'active']);
+            }
         }
 
         /** @psalm-suppress ConflictingReferenceConstraint */
@@ -238,8 +238,8 @@ final class Dropdown extends Widget
             } elseif ($enclose === false) {
                 $content = $label;
             } else {
-                $tag = ArrayHelper::remove($linkOptions, 'tag', 'h6');
                 Html::addCssClass($linkOptions, ['widget' => 'dropdown-header']);
+                $tag = ArrayHelper::remove($linkOptions, 'tag', 'h6');
                 $content = Html::tag($tag, $label, $linkOptions);
             }
 
@@ -253,7 +253,10 @@ final class Dropdown extends Widget
         }
 
         Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
-        Html::addCssClass($linkOptions, ['toggle' => 'dropdown-toggle']);
+        Html::addCssClass($linkOptions, [
+            'widget' => 'dropdown-item',
+            'toggle' => 'dropdown-toggle'
+        ]);
 
         $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
 
@@ -267,13 +270,13 @@ final class Dropdown extends Widget
         }
 
         ArrayHelper::setValue($linkOptions, 'data-bs-toggle', 'dropdown');
+        ArrayHelper::setValue($linkOptions, 'data-bs-auto-close', 'outside');
         ArrayHelper::setValue($linkOptions, 'aria-haspopup', 'true');
         ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
         ArrayHelper::setValue($linkOptions, 'role', 'button');
 
         $toggle = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
-        $list = Html::tag('ul', $dropdown->render(), $itemOptions)->encode($this->encodeTags);
 
-        return Li::tag()->content($toggle . $list)->attributes($itemOptions)->encode(false);
+        return Li::tag()->content($toggle . $dropdown->render())->attributes($itemOptions)->encode(false);
     }
 }

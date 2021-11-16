@@ -133,7 +133,7 @@ final class NavBarTest extends TestCase
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><a class="dropdown-item" href="#">Action</a></li>
         <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><div class="dropdown-divider"></div></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul></li></ul><form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
