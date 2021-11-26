@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Di\Container;
+use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Widget\WidgetFactory;
 
 use function str_replace;
@@ -18,7 +19,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function setUp(): void
     {
-        $this->container = new Container([]);
+        $this->container = new Container(ContainerConfig::create());
         $this->aliases = $this->container->get(Aliases::class);
 
         WidgetFactory::initialize($this->container, []);
