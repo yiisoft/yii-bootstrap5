@@ -52,10 +52,10 @@ final class DropdownTest extends TestCase
         <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
         <li><a class="dropdown-item active" href="#">Page2</a></li>
-        <li><a class="dropdown-item dropdown-toggle" href="#test" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" href="#test" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></ul></li>
+        </ul></li>
         </ul>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
@@ -96,15 +96,15 @@ final class DropdownTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
-        <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="submenu-list dropdown-menu" aria-expanded="false">
+        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul id="w1-dropdown" class="submenu-list dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page1</h6></li>
         <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></ul></li>
-        <li><div class="dropdown-divider"></div></li>
-        <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Dropdown2</a><ul class="dropdown" aria-expanded="false"><ul id="w2-dropdown" class="submenu-override dropdown-menu" aria-expanded="false">
+        </ul></li>
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown2</a><ul id="w2-dropdown" class="submenu-override dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page3</h6></li>
         <li><h6 class="dropdown-header">Page4</h6></li>
-        </ul></ul></li>
+        </ul></li>
         </ul>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
@@ -162,9 +162,9 @@ final class DropdownTest extends TestCase
         </div>
         <button type="submit" class="btn btn-primary">Sign in</button>
         </form></li>
-        <li><div class="dropdown-divider"></div></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">New around here? Sign up</a></li>
-        <li><div class="dropdown-divider"></div></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">Forgot password?</a></li>
         </ul>
         HTML;
@@ -188,10 +188,10 @@ final class DropdownTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
-        <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">&lt;span&gt;&lt;i class=fas fastest&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul class="dropdown" aria-expanded="false"><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">&lt;span&gt;&lt;i class=fas fastest&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page1</h6></li>
         <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></ul></li>
+        </ul></li>
         </ul>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
@@ -210,12 +210,53 @@ final class DropdownTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
-        <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"><span><i class=fas fastest></i>Dropdown1</span></a><ul class="dropdown" aria-expanded="false"><ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button"><span><i class=fas fastest></i>Dropdown1</span></a><ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page1</h6></li>
         <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></ul></li>
+        </ul></li>
         </ul>
         HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testMainOptions(): void
+    {
+        Dropdown::counter(0);
+
+        $html = Dropdown::widget()
+            ->withoutEncodeLabels()
+            ->itemOptions([
+                'class' => 'main-item-class',
+            ])
+            ->linkOptions([
+                'class' => 'main-link-class',
+            ])
+            ->items([
+                [
+                    'label' => 'Label 1',
+                    'url' => '#',
+                ],
+                [
+                    'label' => 'Label 2',
+                    'url' => '#',
+                    'options' => [
+                        'id' => 'custom-item-id',
+                        'class' => 'custom-item-class',
+                    ],
+                    'linkOptions' => [
+                        'class' => 'custom-link-class',
+                    ],
+                ],
+            ])
+            ->render();
+
+        $expected = <<<'HTML'
+        <ul id="w0-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="main-item-class"><a class="main-link-class dropdown-item" href="#">Label 1</a></li>
+        <li id="custom-item-id" class="custom-item-class"><a class="custom-link-class dropdown-item" href="#">Label 2</a></li>
+        </ul>
+        HTML;
+
         $this->assertEqualsWithoutLE($expected, $html);
     }
 }

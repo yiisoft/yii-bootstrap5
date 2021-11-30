@@ -279,9 +279,9 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-        <li><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul class="dropdown active" aria-expanded="false"><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
         <li><h6 class="dropdown-header">Page</h6></li>
-        </ul></ul></li>
+        </ul></li>
         </ul></li></ul>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
