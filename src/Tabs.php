@@ -58,39 +58,70 @@ use function array_merge;
 final class Tabs extends Widget
 {
     private array $items = [];
-    private array $itemOptions = [];
-    private array $headerOptions = [];
-    private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private string $navType = 'nav-tabs';
     private bool $renderTabContent = true;
     private array $tabContentOptions = [];
-    private string $dropdownClass = Dropdown::class;
+    private array $paneOptions = [];
     private array $panes = [];
-    private array $options = [];
+    private array $navOptions = [];
 
     protected function run(): string
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-tabs";
+        $navOptions = $this->navOptions;
+
+        if (!isset($navOptions['options()'][0]['id'])) {
+            $navOptions['options()'][0]['id'] = "{$this->getId()}-tabs";
+        }
+
+        if (!isset($navOptions['options()'][0]['role'])) {
+            $navOptions['options()'][0]['role'] = 'tablist';
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'nav', $this->navType]);
+        Html::addCssClass($navOptions['options()'][0], ['widget' => 'nav', $this->navType]);
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
-        $this->prepareItems($this->items);
-
-        $navWidget = Nav::widget()
-            ->dropdownClass($this->dropdownClass)
-            ->items($this->items)
-            ->options(ArrayHelper::merge(['role' => 'tablist'], $this->options));
-
-        if ($this->encodeLabels === false) {
-            $navWidget = $navWidget->withoutEncodeLabels();
-        }
+        $this->prepareItems($this->items, $navOptions['options()'][0]['id']);
+        $navWidget = Nav::widget($navOptions)->items($this->items);
 
         return $navWidget->render() . $this->renderPanes($this->panes);
+    }
+
+    /**
+     * Set all options for nav widget
+     *
+     * @param array $options
+     * @param bool $replace
+     *
+     * @return self
+     */
+    public function navOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->navOptions = [];
+
+        foreach ($options as $name => $value) {
+            $new = $new->navOption($name, $value);
+        }
+
+        return $new;
+    }
+
+    /**
+     * Set allowed Nav::widget option
+     *
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function navOption(string $name, $value): self
+    {
+        $new = clone $this;
+        $new->navOptions[$name . '()'] = [$value];
+
+        return $new;
     }
 
     /**
@@ -102,10 +133,19 @@ final class Tabs extends Widget
      */
     public function dropdownClass(string $value): self
     {
-        $new = clone $this;
-        $new->dropdownClass = $value;
+        return $this->navOption('dropdownClass', $value);
+    }
 
-        return $new;
+    /**
+     * Base options for nav
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function dropdownOptions(array $options): self
+    {
+        return $this->navOption('dropdownOptions', $options);
     }
 
     /**
@@ -115,28 +155,7 @@ final class Tabs extends Widget
      */
     public function withoutEncodeLabels(): self
     {
-        $new = clone $this;
-        $new->encodeLabels = false;
-
-        return $new;
-    }
-
-    /**
-     * List of HTML attributes for the header container tags. This will be overwritten by the "headerOptions" set in
-     * individual {@see items}.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
-     *
-     * @return self
-     */
-    public function headerOptions(array $value): self
-    {
-        $new = clone $this;
-        $new->headerOptions = $value;
-
-        return $new;
+        return $this->navOption('withoutEncodeLabels', false);
     }
 
     /**
@@ -172,6 +191,37 @@ final class Tabs extends Widget
     }
 
     /**
+     * List of HTML attributes for the header container tags. This will be overwritten by the "options" set in
+     * individual {@see items}.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Nav::itemOptions()}
+     *
+     * @param array $value
+     *
+     * @return self
+     */
+    public function itemOptions(array $value): self
+    {
+        return $this->navOption('itemOptions', $value);
+    }
+
+    /**
+     * Options for each item link if not present in current item
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * {@see Nav::linkOptions()}
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function linkOptions(array $value): self
+    {
+        return $this->navOption('linkOptions', $value);
+    }
+
+    /**
      * List of HTML attributes for the item container tags. This will be overwritten by the "options" set in individual
      * {@see items}. The following special options are recognized.
      *
@@ -181,13 +231,14 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function itemOptions(array $value): self
+    public function paneOptions(array $options): self
     {
         $new = clone $this;
-        $new->itemOptions = $value;
+        $new->paneOptions = $options;
 
         return $new;
     }
+
 
     /**
      * Specifies the Bootstrap tab styling.
@@ -215,10 +266,7 @@ final class Tabs extends Widget
      */
     public function options(array $value): self
     {
-        $new = clone $this;
-        $new->options = $value;
-
-        return $new;
+        return $this->navOption('options', $value);
     }
 
     /**
@@ -290,15 +338,15 @@ final class Tabs extends Widget
      *
      * @throws JsonException|RuntimeException
      */
-    private function prepareItems(array &$items, string $prefix = ''): void
+    private function prepareItems(array &$items, string $navId, string $prefix = ''): void
     {
         if (!$this->hasActiveTab()) {
             $this->activateFirstVisibleTab();
         }
 
         foreach ($items as $n => $item) {
-            $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
-            $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . $prefix . '-tab' . $n);
+            $options = array_merge($this->paneOptions, ArrayHelper::remove($item, 'paneOptions', []));
+            $options['id'] = ArrayHelper::getValue($options, 'id', $navId . $prefix . '-tab' . $n);
 
             /** {@see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339} */
             unset($items[$n]['options']['id']);
@@ -313,18 +361,17 @@ final class Tabs extends Widget
 
             $selected = ArrayHelper::getValue($item, 'active', false);
             $disabled = ArrayHelper::getValue($item, 'disabled', false);
-            $headerOptions = ArrayHelper::getValue($item, 'headerOptions', $this->headerOptions);
 
             if (isset($item['items'])) {
-                $this->prepareItems($items[$n]['items'], '-dd' . $n);
+                $this->prepareItems($items[$n]['items'], $navId, '-dd' . $n);
                 continue;
             }
-
-            ArrayHelper::setValue($items[$n], 'options', $headerOptions);
 
             if (isset($item['url'])) {
                 continue;
             }
+
+            $items[$n]['linkOptions'] = $this->navOptions['linkOptions()'][0] ?? [];
 
             ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
             ArrayHelper::setValueByPath($items[$n], 'linkOptions.data.bs-toggle', 'tab');
