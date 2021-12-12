@@ -468,7 +468,7 @@ final class TabsTest extends TestCase
             ->navType('nav-lg')
             ->paneOptions([
                 'tag' => 'article',
-                'class' => 'custom-class'
+                'class' => 'custom-class',
             ])->render();
 
         $expected = <<<'HTML'
@@ -486,7 +486,7 @@ final class TabsTest extends TestCase
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->linkOptions([
-                'class' => 'custom-link-class'
+                'class' => 'custom-link-class',
             ])->render();
 
         $expected = <<<'HTML'
@@ -517,10 +517,10 @@ final class TabsTest extends TestCase
             ->navType('nav-lg')
             ->navOptions([
                 'linkOptions' => [
-                    'class' => 'custom-link-class'
+                    'class' => 'custom-link-class',
                 ],
                 'itemOptions' => [
-                    'class' => 'custom-item-class'
+                    'class' => 'custom-item-class',
                 ]
             ]);
 
