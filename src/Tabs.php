@@ -69,6 +69,11 @@ final class Tabs extends Widget
     private Nav $nav;
     private array $navOptions = [];
 
+    public function getId(?string $suffix = '-tabs'): ?string
+    {
+        return $this->navOptions['options']['id'] ?? parent::getId('-tabs');
+    }
+
     protected function beforeRun(): bool
     {
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
@@ -354,10 +359,7 @@ final class Tabs extends Widget
     private function prepareNavOptions(): array
     {
         $navOptions = $this->navOptions;
-
-        if (!isset($navOptions['options']['id'])) {
-            $navOptions['options']['id'] = "{$this->getId()}-tabs";
-        }
+        $navOptions['options']['id'] = $this->getId();
 
         if (!isset($navOptions['options']['role'])) {
             $navOptions['options']['role'] = 'tablist';
@@ -378,7 +380,7 @@ final class Tabs extends Widget
      *
      * @throws JsonException|RuntimeException
      */
-    private function prepareItems(array &$items, string $navId, string $prefix = ''): void
+    private function prepareItems(array &$items, ?string $navId, string $prefix = ''): void
     {
         if (!$this->hasActiveTab()) {
             $this->activateFirstVisibleTab();

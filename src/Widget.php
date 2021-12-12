@@ -14,12 +14,14 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * Returns the Id of the widget.
      *
+     * $param string|null $suffix
+     *
      * @return string|null Id of the widget.
      */
-    protected function getId(): ?string
+    public function getId(?string $suffix = null): ?string
     {
         if ($this->autoGenerate && $this->id === null) {
-            $this->id = $this->autoIdPrefix . static::$counter++;
+            $this->id = $this->autoIdPrefix . static::$counter++ . $suffix;
         }
 
         return $this->id;

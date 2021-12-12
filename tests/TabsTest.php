@@ -521,7 +521,7 @@ final class TabsTest extends TestCase
                 ],
                 'itemOptions' => [
                     'class' => 'custom-item-class',
-                ]
+                ],
             ]);
 
         $expected = <<<'HTML'
