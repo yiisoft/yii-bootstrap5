@@ -383,5 +383,28 @@ final class AccordionTest extends TestCase
         <div id="w0-accordion-collapse1" class="accordion-collapse collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
+
+
+        Accordion::counter(0);
+
+        $items = [
+            [
+                'label' => 'Item 1',
+                'content' => 'Content 1',
+            ],
+            [
+                'label' => 'Item 2',
+                'content' => 'Content 2',
+            ],
+        ];
+
+        $html = Accordion::widget()->items($items)->defaultExpand(false)->render();
+        $expected = <<<'HTML'
+        <div id="w0-accordion" class="accordion"><div class="accordion-item"><h2 id="w0-accordion-collapse0-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse0" aria-expanded="false" aria-controls="w0-accordion-collapse0">Item 1</button></h2>
+        <div id="w0-accordion-collapse0" class="accordion-collapse collapse" aria-labelledby="w0-accordion-collapse0-heading" data-bs-parent="#w0-accordion">Content 1</div></div>
+        <div class="accordion-item"><h2 id="w0-accordion-collapse1-heading" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#w0-accordion-collapse1" aria-expanded="false" aria-controls="w0-accordion-collapse1">Item 2</button></h2>
+        <div id="w0-accordion-collapse1" class="accordion-collapse collapse" aria-labelledby="w0-accordion-collapse1-heading" data-bs-parent="#w0-accordion">Content 2</div></div></div>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
     }
 }

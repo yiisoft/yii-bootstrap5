@@ -81,6 +81,7 @@ final class Accordion extends Widget
 {
     private array $items = [];
     private array $expands = [];
+    private ?bool $defaultExpand = null;
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private bool $autoCloseItems = true;
@@ -187,7 +188,27 @@ final class Accordion extends Widget
     {
         $new = clone $this;
         $new->items = $value;
-        $new->expands = array_map(fn ($item) => isset($item['expand']) ? boolval($item['expand']) : null, $new->items);
+        $new->expands = array_map(fn ($item) => isset($item['expand']) ? (bool) $item['expand'] : $this->defaultExpand, $new->items);
+
+        return $new;
+    }
+
+    /**
+     * Set expand property for items without it
+     *
+     * @param bool|null $default
+     *
+     * @return self
+     */
+    public function defaultExpand(?bool $default): self
+    {
+        if ($default === $this->defaultExpand) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->defaultExpand = $default;
+        $new->expands = array_map(fn ($item) => isset($item['expand']) ? (bool) $item['expand'] : $new->defaultExpand, $new->items);
 
         return $new;
     }
