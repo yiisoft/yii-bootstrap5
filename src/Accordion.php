@@ -9,10 +9,8 @@ use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-use function array_column;
 use function array_key_exists;
 use function array_merge;
-use function array_search;
 use function implode;
 use function is_array;
 use function is_numeric;
@@ -82,6 +80,7 @@ use function is_string;
 final class Accordion extends Widget
 {
     private array $items = [];
+    private array $expands = [];
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private bool $autoCloseItems = true;
@@ -188,6 +187,7 @@ final class Accordion extends Widget
     {
         $new = clone $this;
         $new->items = $value;
+        $new->expands = array_map(fn ($item) => isset($item['expand']) ? boolval($item['expand']) : null, $new->items);
 
         return $new;
     }
@@ -279,30 +279,6 @@ final class Accordion extends Widget
         return $new;
     }
 
-
-    private function expands(): array
-    {
-        return array_map(static fn ($item) => $item['expand'] ?? null, $this->items);
-    }
-
-    private function hasExpanded(): bool
-    {
-        return in_array(true, $this->expands(), true);
-    }
-
-    private function allClose(): bool
-    {
-        $expands = $this->expands();
-
-        foreach ($expands as $value) {
-            if ($value !== false) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Renders collapsible items as specified on {@see items}.
      *
@@ -314,15 +290,15 @@ final class Accordion extends Widget
     {
         $items = [];
         $index = 0;
-        $expanded = $this->hasExpanded();
-        $allCLose = $this->allClose();
+        $expanded = in_array(true, $this->expands, true);
+        $allClose = !$expanded && count($this->items) === count(array_filter($this->expands, fn ($expand) => $expand === false));
 
         foreach ($this->items as $item) {
             if (!is_array($item)) {
                 $item = ['content' => $item];
             }
 
-            if ($allCLose === false && $expanded === false && $index === 0) {
+            if ($allClose === false && $expanded === false && $index === 0) {
                 $item['expand'] = true;
             }
 
