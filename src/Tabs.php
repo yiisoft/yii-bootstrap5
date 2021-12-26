@@ -91,7 +91,7 @@ final class Tabs extends Widget
     }
 
     /**
-     * Set all options for nav widget
+     * Set all definitions for nav widget.
      *
      * @param array $definitions
      * @param bool $replace
@@ -112,7 +112,7 @@ final class Tabs extends Widget
     }
 
     /**
-     * Set allowed option for Nav::widget
+     * Set allowed definition for nav widget.
      *
      * @param string $name
      * @param mixed $value
