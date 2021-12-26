@@ -515,7 +515,7 @@ final class TabsTest extends TestCase
         $widget = Tabs::widget()
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
-            ->navOptions([
+            ->navDefinitions([
                 'linkOptions' => [
                     'class' => 'custom-link-class',
                 ],

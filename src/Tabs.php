@@ -67,20 +67,20 @@ final class Tabs extends Widget
     private array $paneOptions = [];
     private array $panes = [];
     private Nav $nav;
-    private array $navOptions = [];
+    private array $navDefinitions = [];
 
     public function getId(?string $suffix = '-tabs'): ?string
     {
-        return $this->navOptions['options']['id'] ?? parent::getId('-tabs');
+        return $this->navDefinitions['options']['id'] ?? parent::getId('-tabs');
     }
 
     protected function beforeRun(): bool
     {
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
-        $navOptions = $this->prepareNavOptions();
-        $this->prepareItems($this->items, $navOptions['options']['id']);
-        $this->nav = $this->prepareNav($navOptions, $this->items);
+        $navDefinitions = $this->prepareNavDefinitions();
+        $this->prepareItems($this->items, $navDefinitions['options']['id']);
+        $this->nav = $this->prepareNav($navDefinitions, $this->items);
 
         return parent::beforeRun();
     }
@@ -93,19 +93,19 @@ final class Tabs extends Widget
     /**
      * Set all options for nav widget
      *
-     * @param array $options
+     * @param array $definitions
      * @param bool $replace
      *
      * @return self
      */
-    public function navOptions(array $options, bool $replace = true): self
+    public function navDefinitions(array $definitions, bool $replace = true): self
     {
         $new = clone $this;
 
         if ($replace) {
-            $new->navOptions = $options;
+            $new->navDefinitions = $definitions;
         } else {
-            $new->navOptions = array_merge($new->navOptions, $options);
+            $new->navDefinitions = array_merge($new->navDefinitions, $definitions);
         }
 
         return $new;
@@ -119,12 +119,9 @@ final class Tabs extends Widget
      *
      * @return self
      */
-    public function navOption(string $name, $value): self
+    public function navDefinition(string $name, $value): self
     {
-        $new = clone $this;
-        $new->navOptions[$name] = $value;
-
-        return $new;
+        return $this->navDefinitions([$name => $value], false);
     }
 
     /**
@@ -136,7 +133,7 @@ final class Tabs extends Widget
      */
     public function dropdownClass(string $value): self
     {
-        return $this->navOption('dropdownClass', $value);
+        return $this->navDefinition('dropdownClass', $value);
     }
 
     /**
@@ -148,7 +145,7 @@ final class Tabs extends Widget
      */
     public function dropdownOptions(array $options): self
     {
-        return $this->navOption('dropdownOptions', $options);
+        return $this->navDefinition('dropdownOptions', $options);
     }
 
     /**
@@ -158,7 +155,7 @@ final class Tabs extends Widget
      */
     public function withoutEncodeLabels(): self
     {
-        return $this->navOption('withoutEncodeLabels', false);
+        return $this->navDefinition('withoutEncodeLabels', false);
     }
 
     /**
@@ -206,7 +203,7 @@ final class Tabs extends Widget
      */
     public function itemOptions(array $value): self
     {
-        return $this->navOption('itemOptions', $value);
+        return $this->navDefinition('itemOptions', $value);
     }
 
     /**
@@ -221,7 +218,7 @@ final class Tabs extends Widget
      */
     public function linkOptions(array $value): self
     {
-        return $this->navOption('linkOptions', $value);
+        return $this->navDefinition('linkOptions', $value);
     }
 
     /**
@@ -268,7 +265,7 @@ final class Tabs extends Widget
      */
     public function options(array $value): self
     {
-        return $this->navOption('options', $value);
+        return $this->navDefinition('options', $value);
     }
 
     /**
@@ -340,15 +337,15 @@ final class Tabs extends Widget
      *
      * @return Nav
      */
-    private function prepareNav(array $options, array $items): Nav
+    private function prepareNav(array $definitions, array $items): Nav
     {
-        $definitions = [];
+        $widgetDefinitions = [];
 
-        foreach ($options as $name => $value) {
-            $definitions[$name . '()'] = [$value];
+        foreach ($definitions as $name => $value) {
+            $widgetDefinitions[$name . '()'] = [$value];
         }
 
-        return Nav::widget($definitions)->items($items);
+        return Nav::widget($widgetDefinitions)->items($items);
     }
 
     /**
@@ -356,19 +353,19 @@ final class Tabs extends Widget
      *
      * @return array
      */
-    private function prepareNavOptions(): array
+    private function prepareNavDefinitions(): array
     {
-        $navOptions = $this->navOptions;
-        $navOptions['options']['id'] = $this->getId();
+        $definitions = $this->navDefinitions;
+        $definitions['options']['id'] = $this->getId();
 
-        if (!isset($navOptions['options']['role'])) {
-            $navOptions['options']['role'] = 'tablist';
+        if (!isset($definitions['options']['role'])) {
+            $definitions['options']['role'] = 'tablist';
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($navOptions['options'], ['widget' => 'nav', $this->navType]);
+        Html::addCssClass($definitions['options'], ['widget' => 'nav', $this->navType]);
 
-        return $navOptions;
+        return $definitions;
     }
 
     /**
@@ -414,7 +411,7 @@ final class Tabs extends Widget
             }
 
             if (!isset($item['linkOptions'])) {
-                $items[$n]['linkOptions'] = $this->navOptions['linkOptions'] ?? [];
+                $items[$n]['linkOptions'] = $this->navDefinitions['linkOptions'] ?? [];
             }
 
             ArrayHelper::setValue($items[$n], 'url', '#' . $options['id']);
