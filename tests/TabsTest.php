@@ -361,7 +361,7 @@ final class TabsTest extends TestCase
         $html = Tabs::widget()
             ->items([
                 [
-                    'options' => ['id' => 'pane1'],
+                    'paneOptions' => ['id' => 'pane1'],
                     'label' => 'Tab 1',
                     'content' => '<div>Content 1</div>',
                 ],
@@ -388,7 +388,7 @@ final class TabsTest extends TestCase
             ->items(
                 [
                     [
-                        'options' => ['id' => 'pane1'],
+                        'paneOptions' => ['id' => 'pane1'],
                         'label' => 'Tab 1',
                         'content' => '<div>Content 1</div>',
                     ],
@@ -411,13 +411,13 @@ final class TabsTest extends TestCase
             ->items(
                 [
                     [
-                        'options' => ['id' => 'pane1'],
+                        'paneOptions' => ['id' => 'pane1'],
                         'label' => 'Tab 1',
                         'content' => '<div>Content 1</div>',
                     ],
                 ],
             )
-            ->headerOptions(['class' => 'text-center'])
+            ->itemOptions(['class' => 'text-center'])
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="text-center nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -449,7 +449,7 @@ final class TabsTest extends TestCase
         Tabs::counter(0);
 
         $html = Tabs::widget()
-            ->items([['options' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->render();
         $expected = <<<'HTML'
@@ -457,5 +457,77 @@ final class TabsTest extends TestCase
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testPaneOptions(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->navType('nav-lg')
+            ->paneOptions([
+                'tag' => 'article',
+                'class' => 'custom-class',
+            ])->render();
+
+        $expected = <<<'HTML'
+        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <div class="tab-content"><article id="pane1" class="custom-class tab-pane active"><div>Content 1</div></article></div>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testNavOption(): void
+    {
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->navType('nav-lg')
+            ->linkOptions([
+                'class' => 'custom-link-class',
+            ])->render();
+
+        $expected = <<<'HTML'
+        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+
+        Tabs::counter(0);
+
+        $html = Tabs::widget()
+            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->navType('nav-lg')
+            ->withoutEncodeLabels()->render();
+        $expected = <<<'HTML'
+        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testNavOptions(): void
+    {
+        Tabs::counter(0);
+
+        $widget = Tabs::widget()
+            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
+            ->navType('nav-lg')
+            ->navDefinitions([
+                'linkOptions' => [
+                    'class' => 'custom-link-class',
+                ],
+                'itemOptions' => [
+                    'class' => 'custom-item-class',
+                ],
+            ]);
+
+        $expected = <<<'HTML'
+        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="custom-item-class nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $widget->render());
     }
 }

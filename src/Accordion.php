@@ -9,10 +9,8 @@ use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-use function array_column;
 use function array_key_exists;
 use function array_merge;
-use function array_search;
 use function implode;
 use function is_array;
 use function is_numeric;
@@ -82,25 +80,39 @@ use function is_string;
 final class Accordion extends Widget
 {
     private array $items = [];
+    private array $expands = [];
+    private ?bool $defaultExpand = null;
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private bool $autoCloseItems = true;
+    private array $headerOptions = [];
     private array $itemToggleOptions = [];
+    private array $contentOptions = [];
     private array $options = [];
     private bool $flush = false;
 
-    protected function run(): string
+    public function getId(?string $suffix = '-accordion'): ?string
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-accordion";
-        }
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
 
+    public function beforeRun(): bool
+    {
         Html::addCssClass($this->options, ['widget' => 'accordion']);
 
         if ($this->flush) {
             Html::addCssClass($this->options, ['flush' => 'accordion-flush']);
         }
 
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = $this->getId();
+        }
+
+        return parent::beforeRun();
+    }
+
+    protected function run(): string
+    {
         return Html::div($this->renderItems(), $this->options)
             ->encode($this->encodeTags)
             ->render();
@@ -176,6 +188,42 @@ final class Accordion extends Widget
     {
         $new = clone $this;
         $new->items = $value;
+        $new->expands = array_map(fn ($item) => isset($item['expand']) ? (bool) $item['expand'] : $this->defaultExpand, $new->items);
+
+        return $new;
+    }
+
+    /**
+     * Set expand property for items without it
+     *
+     * @param bool|null $default
+     *
+     * @return self
+     */
+    public function defaultExpand(?bool $default): self
+    {
+        if ($default === $this->defaultExpand) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->defaultExpand = $default;
+        $new->expands = array_map(fn ($item) => isset($item['expand']) ? (bool) $item['expand'] : $new->defaultExpand, $new->items);
+
+        return $new;
+    }
+
+    /**
+     * Options for each header if not present in item
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function headerOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->headerOptions = $options;
 
         return $new;
     }
@@ -200,6 +248,21 @@ final class Accordion extends Widget
     {
         $new = clone $this;
         $new->itemToggleOptions = $value;
+
+        return $new;
+    }
+
+    /**
+     * Content options for items if not present in current
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function contentOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->contentOptions = $options;
 
         return $new;
     }
@@ -248,14 +311,15 @@ final class Accordion extends Widget
     {
         $items = [];
         $index = 0;
-        $expanded = array_search(true, array_column($this->items, 'expand'), true);
+        $expanded = in_array(true, $this->expands, true);
+        $allClose = !$expanded && count($this->items) === count(array_filter($this->expands, fn ($expand) => $expand === false));
 
         foreach ($this->items as $item) {
             if (!is_array($item)) {
                 $item = ['content' => $item];
             }
 
-            if ($expanded === false && $index === 0) {
+            if ($allClose === false && $expanded === false && $index === 0) {
                 $item['expand'] = true;
             }
 
@@ -290,19 +354,27 @@ final class Accordion extends Widget
     private function renderItem(string $header, array $item, int $index): string
     {
         if (array_key_exists('content', $item)) {
-            $id = $this->options['id'] . '-collapse' . $index;
             $expand = ArrayHelper::remove($item, 'expand', false);
-            $options = ArrayHelper::getValue($item, 'contentOptions', []);
-            $options['id'] = $id;
+            $options = ArrayHelper::getValue($item, 'contentOptions', $this->contentOptions);
+            $headerOptions = ArrayHelper::remove($item, 'headerOptions', $this->headerOptions);
 
-            Html::addCssClass($options, ['widget' => 'accordion-body collapse']);
+            if (!isset($options['id'])) {
+                $options['id'] = $this->getId() . '-collapse' . $index;
+            }
+
+            if (!isset($headerOptions['id'])) {
+                $headerOptions['id'] = $options['id'] . '-heading';
+            }
+
+            Html::addCssClass($headerOptions, ['widget' => 'accordion-header']);
+            Html::addCssClass($options, ['widget' => 'accordion-collapse collapse']);
 
             if ($expand) {
                 Html::addCssClass($options, ['visibility' => 'show']);
             }
 
             if (!isset($options['aria-label'], $options['aria-labelledby'])) {
-                $options['aria-labelledby'] = $options['id'] . '-heading';
+                $options['aria-labelledby'] = $headerOptions['id'];
             }
 
             $encodeLabel = $item['encode'] ?? $this->encodeLabels;
@@ -318,13 +390,13 @@ final class Accordion extends Widget
                 'data-bs-target' => '#' . $options['id'],
                 'aria-expanded' => $expand ? 'true' : 'false',
                 'aria-controls' => $options['id'],
-            ], $this->itemToggleOptions);
+            ], ArrayHelper::remove($item, 'toggleOptions', $this->itemToggleOptions));
 
             $itemToggleTag = ArrayHelper::remove($itemToggleOptions, 'tag', 'button');
 
             if ($itemToggleTag === 'a') {
                 ArrayHelper::remove($itemToggleOptions, 'data-bs-target');
-                $header = Html::a($header, '#' . $id, $itemToggleOptions)->encode($this->encodeTags) . "\n";
+                $header = Html::a($header, '#' . $options['id'], $itemToggleOptions)->encode($this->encodeTags) . "\n";
             } else {
                 Html::addCssClass($itemToggleOptions, ['widget' => 'accordion-button']);
                 if (!$expand) {
@@ -352,17 +424,14 @@ final class Accordion extends Widget
             throw new RuntimeException('The "content" option is required.');
         }
 
-        $group = [];
-
         if ($this->autoCloseItems) {
-            $options['data-bs-parent'] = '#' . $this->options['id'];
+            $options['data-bs-parent'] = '#' . $this->getId();
         }
 
-        $groupOptions = ['class' => 'accordion-header', 'id' => $options['id'] . '-heading'];
+        $headerTag = ArrayHelper::remove($headerOptions, 'tag', 'h2');
+        $group = Html::tag($headerTag, $header, $headerOptions)->encode($this->encodeTags) . "\n";
+        $group .= Html::div($content, $options)->encode($this->encodeTags);
 
-        $group[] = Html::tag('h2', $header, $groupOptions)->encode($this->encodeTags);
-        $group[] = Html::div($content, $options)->encode($this->encodeTags);
-
-        return implode("\n", $group);
+        return $group;
     }
 }
