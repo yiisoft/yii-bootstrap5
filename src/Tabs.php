@@ -71,7 +71,7 @@ final class Tabs extends Widget
 
     public function getId(?string $suffix = '-tabs'): ?string
     {
-        return $this->navDefinitions['options']['id'] ?? parent::getId('-tabs');
+        return $this->navDefinitions['options']['id'] ?? parent::getId($suffix);
     }
 
     protected function beforeRun(): bool

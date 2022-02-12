@@ -27,11 +27,11 @@ final class NavBarTest extends TestCase
             ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar">
+        <nav id="w0-navbar" class="navbar-inverse navbar-static-top navbar-frontend navbar navbar-expand-lg">
         <div class="container">
         <a class="navbar-brand" href="/">My Company</a>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -126,8 +126,8 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
         <a class="navbar-brand" href="/">My Company</a>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         <ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
@@ -155,8 +155,8 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="testMe collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="testMe collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -174,8 +174,27 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
         <a class="text-dark navbar-brand" href="/">My App</a>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
+        </div>
+        </div>
+        </nav>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testBrandImageAttributes(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->brandImage('empty.gif')->brandImageAttributes(['width' => 100, 'height' => 100])->begin();
+        $html .= NavBar::end();
+        $expected = <<<'HTML'
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+        <a class="navbar-brand" href="/"><img src="empty.gif" width="100" height="100" alt></a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -193,8 +212,8 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggler navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggler navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -212,8 +231,8 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><div class="navbar-toggler-icon"></div></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><div class="navbar-toggler-icon"></div></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -231,8 +250,8 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
 
-        <button type="button" class="testMe navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="testMe navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
@@ -249,8 +268,8 @@ final class NavBarTest extends TestCase
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </nav>
         HTML;
@@ -267,12 +286,81 @@ final class NavBarTest extends TestCase
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="text-link">
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-collapse" aria-controls="w0-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div id="w0-collapse" class="collapse navbar-collapse">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div id="w0-navbar-collapse" class="collapse navbar-collapse">
         </div>
         </div>
         </nav>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testWithoutCollapse(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->brandText('My Company')->expandSize(null)->brandUrl('/')->begin();
+        $html .= Nav::widget()
+            ->items([
+                ['label' => 'Home', 'url' => '#'],
+                ['label' => 'Link', 'url' => '#'],
+                ['label' => 'Dropdown', 'items' => [
+                    ['label' => 'Action', 'url' => '#'],
+                    ['label' => 'Another action', 'url' => '#'],
+                    '-',
+                    ['label' => 'Something else here', 'url' => '#'],
+                ],
+                ],
+            ])
+            ->options(['class' => ['mr-auto']])
+            ->render();
+        $html .= NavBar::end();
+
+        $expected = <<<'HTML'
+        <nav id="w0-navbar" class="navbar navbar-light bg-light">
+        <div class="container">
+        <a class="navbar-brand" href="/">My Company</a>
+        <ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul></li></ul></div>
+        </nav>
+        HTML;
+        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testExpandSize(): void
+    {
+        $sizes = [
+            NavBar::EXPAND_SM,
+            NavBar::EXPAND_MD,
+            NavBar::EXPAND_LG,
+            NavBar::EXPAND_XL,
+            NavBar::EXPAND_XXL,
+        ];
+
+        $NavBar = NavBar::widget()->options([
+            'id' => 'expanded-navbar'
+        ]);
+
+        foreach ($sizes as $size) {
+            $html = $NavBar->expandSize($size)->begin() . NavBar::end();
+            $expected = <<<HTML
+            <nav id="expanded-navbar" class="navbar {$size} navbar-light bg-light">
+            <div class="container">
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#expanded-navbar-collapse" aria-controls="expanded-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div id="expanded-navbar-collapse" class="collapse navbar-collapse">
+            </div>
+            </div>
+            </nav>
+            HTML;
+
+            $this->assertEqualsWithoutLE($expected, $html);
+        }
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Stringable;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
@@ -109,10 +110,17 @@ use Yiisoft\Html\Html;
  */
 final class NavBar extends Widget
 {
+    public const EXPAND_SM = 'navbar-expand-sm';
+    public const EXPAND_MD = 'navbar-expand-md';
+    public const EXPAND_LG = 'navbar-expand-lg';
+    public const EXPAND_XL = 'navbar-expand-xl';
+    public const EXPAND_XXL = 'navbar-expand-xxl';
+
     private array $collapseOptions = [];
-    private string $brandText = '';
-    private string $brandImage = '';
-    private string $brandUrl = '/';
+    private ?string $brandText = null;
+    private ?string $brandImage = null;
+    private array $brandImageAttributes = [];
+    private ?string $brandUrl = '/';
     private array $brandOptions = [];
     private string $screenReaderToggleText = 'Toggle navigation';
     private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
@@ -121,60 +129,94 @@ final class NavBar extends Widget
     private array $innerContainerOptions = [];
     private array $options = [];
     private bool $encodeTags = false;
+    private ?string $expandSize = self::EXPAND_LG;
+
+    public function getId(?string $suffix = '-navbar'): ?string
+    {
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
 
     public function begin(): string
     {
         parent::begin();
 
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-navbar";
-            $this->collapseOptions['id'] = "{$this->getId()}-collapse";
+        $options = $this->options;
+        $options['id'] = $this->getId();
+        $navTag = ArrayHelper::remove($options, 'tag', 'nav');
+        $classNames = ['widget' => 'navbar'];
+
+        if ($this->expandSize) {
+            $classNames['size'] = $this->expandSize;
         }
 
-        if (empty($this->options['class'])) {
-            Html::addCssClass($this->options, ['widget' => 'navbar', 'navbar-expand-lg', 'navbar-light', 'bg-light']);
-        } else {
-            Html::addCssClass($this->options, ['widget' => 'navbar']);
+        if (empty($options['class'])) {
+            $classNames = array_merge($classNames, ['navbar-light', 'bg-light']);
         }
 
-        $navTag = ArrayHelper::remove($this->options, 'tag', 'nav');
+        Html::addCssClass($options, $classNames);
 
         if (!isset($this->innerContainerOptions['class'])) {
             Html::addCssClass($this->innerContainerOptions, ['innerContainerOptions' => 'container']);
         }
 
-        Html::addCssClass($this->collapseOptions, ['collapse' => 'collapse', 'widget' => 'navbar-collapse']);
-
-        $collapseTag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
-
-        $htmlStart = Html::openTag($navTag, $this->options) . "\n";
+        $htmlStart = Html::openTag($navTag, $options) . "\n";
 
         if ($this->renderInnerContainer) {
             $htmlStart .= Html::openTag('div', $this->innerContainerOptions) . "\n";
         }
 
         $htmlStart .= $this->renderBrand() . "\n";
-        $htmlStart .= $this->renderToggleButton() . "\n";
-        $htmlStart .= Html::openTag($collapseTag, $this->collapseOptions) . "\n";
+
+        if ($this->expandSize) {
+            $collapseOptions = $this->collapseOptions;
+            $collapseTag = ArrayHelper::remove($collapseOptions, 'tag', 'div');
+
+            if (!isset($collapseOptions['id'])) {
+                $collapseOptions['id'] = $options['id'] . '-collapse';
+            }
+
+            Html::addCssClass($collapseOptions, ['collapse' => 'collapse', 'widget' => 'navbar-collapse']);
+
+            $htmlStart .= $this->renderToggleButton($collapseOptions) . "\n";
+            $htmlStart .= Html::openTag($collapseTag, $collapseOptions) . "\n";
+        }
 
         return $htmlStart;
     }
 
     protected function run(): string
     {
-        $tag = ArrayHelper::remove($this->collapseOptions, 'tag', 'div');
+        $htmlRun = '';
 
-        $htmlRun = Html::closeTag($tag) . "\n";
+        if ($this->expandSize) {
+            $tag = ArrayHelper::getValue($this->collapseOptions, 'tag', 'div');
+            $htmlRun .= Html::closeTag($tag) . "\n";
+        }
 
         if ($this->renderInnerContainer) {
             $htmlRun .= Html::closeTag('div') . "\n";
         }
 
-        $tag = ArrayHelper::remove($this->options, 'tag', 'nav');
+        $tag = ArrayHelper::getValue($this->options, 'tag', 'nav');
 
         $htmlRun .= Html::closeTag($tag);
 
         return $htmlRun;
+    }
+
+    /**
+     * Set size before then content will be expanded
+     *
+     * @param string|null $size
+     *
+     * @return self
+     */
+    public function expandSize(?string $size): self
+    {
+        $new = clone $this;
+        $new->expandSize = $size;
+
+        return $new;
     }
 
     /**
@@ -197,13 +239,13 @@ final class NavBar extends Widget
     /**
      * The text of the brand or empty if it's not used. Note that this is not HTML-encoded.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
-    public function brandText(string $value): self
+    public function brandText(?string $value): self
     {
         $new = clone $this;
         $new->brandText = $value;
@@ -214,13 +256,13 @@ final class NavBar extends Widget
     /**
      * Src of the brand image or empty if it's not used. Note that this param will override `$this->brandText` param.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#image
      */
-    public function brandImage(string $value): self
+    public function brandImage(?string $value): self
     {
         $new = clone $this;
         $new->brandImage = $value;
@@ -229,16 +271,33 @@ final class NavBar extends Widget
     }
 
     /**
+     * Set attributes for brandImage
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $attributes
+     *
+     * @return self
+     */
+    public function brandImageAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->brandImageAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
      * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
      * is "/". You may set it to empty string if you want no link at all.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
-    public function brandUrl(string $value): self
+    public function brandUrl(?string $value): self
     {
         $new = clone $this;
         $new->brandUrl = $value;
@@ -359,35 +418,32 @@ final class NavBar extends Widget
 
     private function renderBrand(): string
     {
-        $brand = '';
-        $brandImage = '';
-
-        Html::addCssClass($this->brandOptions, ['widget' => 'navbar-brand']);
-
-        if ($this->brandImage !== '') {
-            $brandImage = Html::img($this->brandImage)->render();
-            $brand = Html::a($brandImage, $this->brandUrl, $this->brandOptions)
-                ->encode($this->encodeTags)
-                ->render();
+        if (empty($this->brandImage) && empty($this->brandText)) {
+            return '';
         }
 
-        if ($this->brandText !== '') {
-            $brandText = $this->brandText;
+        $content = '';
+        $options = $this->brandOptions;
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
 
-            if ($brandImage !== '') {
-                $brandText = $brandImage . $this->brandText;
-            }
+        Html::addCssClass($options, ['widget' => 'navbar-brand']);
 
-            if (empty($this->brandUrl)) {
-                $brand = Html::span($brandText, $this->brandOptions)->render();
-            } else {
-                $brand = Html::a($brandText, $this->brandUrl, $this->brandOptions)
-                    ->encode($this->encodeTags)
-                    ->render();
-            }
+        if (!empty($this->brandImage)) {
+            $encode = false;
+            $content = Html::img($this->brandImage)->attributes($this->brandImageAttributes);
         }
 
-        return $brand;
+        if (!empty($this->brandText)) {
+            $content .= $this->brandText;
+        }
+        /** @var Stringable|string $content */
+        if (empty($this->brandUrl)) {
+            $brand = Html::span($content, $options);
+        } else {
+            $brand = Html::a($content, $this->brandUrl, $options);
+        }
+
+        return $brand->encode($encode)->render();
     }
 
     /**
@@ -399,25 +455,27 @@ final class NavBar extends Widget
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#toggler
      */
-    private function renderToggleButton(): string
+    private function renderToggleButton(array $collapseOptions): string
     {
-        Html::addCssClass($this->togglerOptions, ['widget' => 'navbar-toggler']);
+        $options = $this->togglerOptions;
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
+        Html::addCssClass($options, ['widget' => 'navbar-toggler']);
 
         return Html::button(
             $this->togglerContent,
             array_merge(
-                $this->togglerOptions,
+                $options,
                 [
                     'type' => 'button',
                     'data' => [
                         'bs-toggle' => 'collapse',
-                        'bs-target' => '#' . $this->collapseOptions['id'],
+                        'bs-target' => '#' . $collapseOptions['id'],
                     ],
-                    'aria-controls' => $this->collapseOptions['id'],
+                    'aria-controls' => $collapseOptions['id'],
                     'aria-expanded' => 'false',
                     'aria-label' => $this->screenReaderToggleText,
                 ]
             )
-        )->encode($this->encodeTags)->render();
+        )->encode($encode)->render();
     }
 }
