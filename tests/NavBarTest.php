@@ -438,7 +438,7 @@ final class NavBarTest extends TestCase
             ],
             'aria' => [
                 'controls' => 'navbarToggleExternalContent',
-            ]
+            ],
         ])->expandSize(null)->begin();
         $html .= NavBar::end();
 

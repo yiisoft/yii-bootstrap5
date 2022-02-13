@@ -498,7 +498,7 @@ final class NavBar extends Widget
                 'controls' => $targetId,
                 'expanded' => 'false',
                 'label' => $this->screenReaderToggleText,
-            ]
+            ],
         ];
 
         if ($targetId) {
