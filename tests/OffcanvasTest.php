@@ -37,7 +37,7 @@ final class OffcanvasTest extends TestCase
 
         $html = Offcanvas::widget()->options([
             'class' => 'custom-class',
-            'data-custom' => 'custom-data'
+            'data-custom' => 'custom-data',
         ])->title('Offcanvas title')->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
@@ -64,7 +64,7 @@ final class OffcanvasTest extends TestCase
         $html = Offcanvas::widget()->headerOptions([
             'tag' => 'div',
             'class' => 'custom-class',
-            'data-custom' => 'custom-data'
+            'data-custom' => 'custom-data',
         ])->title('Offcanvas title')->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
@@ -90,7 +90,7 @@ final class OffcanvasTest extends TestCase
 
         $html = Offcanvas::widget()->title('Offcanvas title')->titleOptions([
             'tag' => 'h2',
-            'class' => 'h4'
+            'class' => 'h4',
         ])->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
@@ -116,7 +116,7 @@ final class OffcanvasTest extends TestCase
 
         $html = Offcanvas::widget()->title('Offcanvas title')->bodyOptions([
             'class' => 'custom-body-class',
-            'data-custom' => 'custom-body-data'
+            'data-custom' => 'custom-body-data',
         ])->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
@@ -188,7 +188,7 @@ final class OffcanvasTest extends TestCase
         ];
 
         $Offcanvas = Offcanvas::widget()->options([
-            'id' => 'offcanvas-placement'
+            'id' => 'offcanvas-placement',
         ]);
 
         foreach ($placements as $placement) {

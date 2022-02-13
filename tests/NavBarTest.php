@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavBar;
+use Yiisoft\Yii\Bootstrap5\Offcanvas;
 
 /**
  * Tests for NavBar widget.
@@ -36,7 +37,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testBrandImage(): void
@@ -142,7 +143,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testCollapseOptions(): void
@@ -161,7 +162,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testBrandOptions(): void
@@ -180,7 +181,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testBrandImageAttributes(): void
@@ -199,7 +200,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testScreenReaderToggleText(): void
@@ -218,7 +219,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testTogglerContent(): void
@@ -237,7 +238,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testTogglerOptions(): void
@@ -256,7 +257,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testRenderInnerContainer(): void
@@ -273,7 +274,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testInnerContainerOptions(): void
@@ -292,7 +293,7 @@ final class NavBarTest extends TestCase
         </div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testWithoutCollapse(): void
@@ -330,7 +331,7 @@ final class NavBarTest extends TestCase
         </ul></li></ul></div>
         </nav>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testExpandSize(): void
@@ -344,7 +345,7 @@ final class NavBarTest extends TestCase
         ];
 
         $NavBar = NavBar::widget()->options([
-            'id' => 'expanded-navbar'
+            'id' => 'expanded-navbar',
         ]);
 
         foreach ($sizes as $size) {
@@ -352,7 +353,6 @@ final class NavBarTest extends TestCase
             $expected = <<<HTML
             <nav id="expanded-navbar" class="navbar {$size} navbar-light bg-light">
             <div class="container">
-
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#expanded-navbar-collapse" aria-controls="expanded-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div id="expanded-navbar-collapse" class="collapse navbar-collapse">
             </div>
@@ -360,7 +360,98 @@ final class NavBarTest extends TestCase
             </nav>
             HTML;
 
-            $this->assertEqualsWithoutLE($expected, $html);
+            $this->assertEqualsHTML($expected, $html);
         }
+    }
+
+    public function testOffcanvas(): void
+    {
+        NavBar::counter(0);
+
+        $offcanvas = Offcanvas::widget()->title('Navbar offcanvas title');
+        $html = NavBar::widget()->offcanvas($offcanvas)->expandSize(null)->begin();
+        $html .= '<p>Some content in navbar offcanvas</p>';
+        $html .= NavBar::end();
+
+        $expected = <<<'HTML'
+        <nav id="w1-navbar" class="navbar navbar-light bg-light">
+        <div class="container">
+        <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#w0-offcanvas" aria-controls="w0-offcanvas" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="w0-offcanvas-title">
+        <header class="offcanvas-header">
+        <h5 id="w0-offcanvas-title" class="offcanvas-title">Navbar offcanvas title</h5>
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="offcanvas"></button>
+        </header>
+        <div class="offcanvas-body">
+        <p>Some content in navbar offcanvas</p>
+        </div>
+        </div>
+        </div>
+        </nav>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testExpandedOffcanvas(): void
+    {
+        NavBar::counter(0);
+
+        $offcanvas = Offcanvas::widget()->title('Navbar offcanvas title');
+        $html = NavBar::widget()->offcanvas($offcanvas)->expandSize(NavBar::EXPAND_XL)->begin();
+        $html .= '<p>Some content in navbar offcanvas</p>';
+        $html .= NavBar::end();
+
+        $expected = <<<'HTML'
+        <nav id="w1-navbar" class="navbar navbar-expand-xl navbar-light bg-light">
+        <div class="container">
+        <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#w0-offcanvas" aria-controls="w0-offcanvas" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="w0-offcanvas-title">
+        <header class="offcanvas-header">
+        <h5 id="w0-offcanvas-title" class="offcanvas-title">Navbar offcanvas title</h5>
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="offcanvas"></button>
+        </header>
+        <div class="offcanvas-body">
+        <p>Some content in navbar offcanvas</p>
+        </div>
+        </div>
+        </div>
+        </nav>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testCollapseExternalContent(): void
+    {
+        NavBar::counter(0);
+
+        $html = NavBar::widget()->innerContainerOptions([
+            'class' => 'container-fluid',
+        ])->togglerOptions([
+            'data' => [
+                'bs-target' => '#navbarToggleExternalContent',
+            ],
+            'aria' => [
+                'controls' => 'navbarToggleExternalContent'
+            ]
+        ])->expandSize(null)->begin();
+        $html .= NavBar::end();
+
+        $expected = <<<'HTML'
+        <nav id="w0-navbar" class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+        <button  type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        </div>
+        </nav>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
     }
 }

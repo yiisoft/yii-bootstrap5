@@ -56,8 +56,6 @@ abstract class TestCase extends BaseTestCase
      * @param string $expected
      * @param string $actual
      * @param string $message
-     *
-     * @return void
      */
     protected function assertEqualsHTML(string $expected, string $actual, string $message = ''): void
     {
