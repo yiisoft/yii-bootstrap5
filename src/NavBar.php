@@ -497,7 +497,7 @@ final class NavBar extends Widget
             'aria' => [
                 'controls' => $targetId,
                 'expanded' => 'false',
-                'label' => $this->screenReaderToggleText
+                'label' => $this->screenReaderToggleText,
             ]
         ];
 

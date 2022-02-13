@@ -437,7 +437,7 @@ final class NavBarTest extends TestCase
                 'bs-target' => '#navbarToggleExternalContent',
             ],
             'aria' => [
-                'controls' => 'navbarToggleExternalContent'
+                'controls' => 'navbarToggleExternalContent',
             ]
         ])->expandSize(null)->begin();
         $html .= NavBar::end();
