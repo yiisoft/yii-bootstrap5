@@ -22,6 +22,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()
             ->brandText('My Company')
             ->brandUrl('/')
+            ->theme(null)
             ->options([
                 'class' => 'navbar-inverse navbar-static-top navbar-frontend',
             ])
@@ -124,7 +125,7 @@ final class NavBarTest extends TestCase
 
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
         <a class="navbar-brand" href="/">My Company</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -153,7 +154,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->collapseOptions(['class' => 'testMe'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
 
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -172,7 +173,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->brandText('My App')->brandOptions(['class' => 'text-dark'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
         <a class="text-dark navbar-brand" href="/">My App</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -191,7 +192,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->brandImage('empty.gif')->brandImageAttributes(['width' => 100, 'height' => 100])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
         <a class="navbar-brand" href="/"><img src="empty.gif" width="100" height="100" alt></a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -210,7 +211,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->screenReaderToggleText('Toggler navigation')->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
 
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggler navigation"><span class="navbar-toggler-icon"></span></button>
@@ -229,7 +230,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->togglerContent('<div class="navbar-toggler-icon"></div>')->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
 
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><div class="navbar-toggler-icon"></div></button>
@@ -248,7 +249,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->togglerOptions(['class' => 'testMe'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
 
         <button type="button" class="testMe navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -267,7 +268,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->withoutRenderInnerContainer()->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
 
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div id="w0-navbar-collapse" class="collapse navbar-collapse">
@@ -284,7 +285,7 @@ final class NavBarTest extends TestCase
         $html = NavBar::widget()->innerContainerOptions(['class' => 'text-link'])->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="text-link">
 
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#w0-navbar-collapse" aria-controls="w0-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -318,7 +319,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-light">
         <div class="container">
         <a class="navbar-brand" href="/">My Company</a>
         <ul id="w1-nav" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
@@ -351,7 +352,7 @@ final class NavBarTest extends TestCase
         foreach ($sizes as $size) {
             $html = $NavBar->expandSize($size)->begin() . NavBar::end();
             $expected = <<<HTML
-            <nav id="expanded-navbar" class="navbar {$size} navbar-light bg-light">
+            <nav id="expanded-navbar" class="navbar {$size} navbar-light">
             <div class="container">
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#expanded-navbar-collapse" aria-controls="expanded-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div id="expanded-navbar-collapse" class="collapse navbar-collapse">
@@ -374,7 +375,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $expected = <<<'HTML'
-        <nav id="w1-navbar" class="navbar navbar-light bg-light">
+        <nav id="w1-navbar" class="navbar navbar-light">
         <div class="container">
         <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#w0-offcanvas" aria-controls="w0-offcanvas" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -405,7 +406,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $expected = <<<'HTML'
-        <nav id="w1-navbar" class="navbar navbar-expand-xl navbar-light bg-light">
+        <nav id="w1-navbar" class="navbar navbar-expand-xl navbar-light">
         <div class="container">
         <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#w0-offcanvas" aria-controls="w0-offcanvas" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -443,7 +444,7 @@ final class NavBarTest extends TestCase
         $html .= NavBar::end();
 
         $expected = <<<'HTML'
-        <nav id="w0-navbar" class="navbar navbar-light bg-light">
+        <nav id="w0-navbar" class="navbar navbar-light">
         <div class="container-fluid">
         <button  type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -453,5 +454,40 @@ final class NavBarTest extends TestCase
         HTML;
 
         $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testColorTheme(): void
+    {
+        $themes = [
+            NavBar::THEME_LIGHT => [
+                'bg-light',
+                'bg-white',
+            ],
+            NavBar::THEME_DARK => [
+                'bg-dark',
+                'bg-primary',
+            ],
+        ];
+
+        foreach ($themes as $theme => $classNames) {
+            foreach ($classNames as $class) {
+                $html = NavBar::widget()->theme($theme)->options([
+                        'class' => $class,
+                        'id' => 'expanded-navbar',
+                    ])->begin();
+                $html .= NavBar::end();
+                $expected = <<<HTML
+                <nav id="expanded-navbar" class="{$class} navbar navbar-expand-lg {$theme}">
+                <div class="container">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#expanded-navbar-collapse" aria-controls="expanded-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div id="expanded-navbar-collapse" class="collapse navbar-collapse">
+                </div>
+                </div>
+                </nav>
+                HTML;
+
+                $this->assertEqualsHTML($expected, $html);
+            }
+        }
     }
 }

@@ -116,6 +116,9 @@ final class NavBar extends Widget
     public const EXPAND_XL = 'navbar-expand-xl';
     public const EXPAND_XXL = 'navbar-expand-xxl';
 
+    public const THEME_LIGHT = 'navbar-light';
+    public const THEME_DARK = 'navbar-dark';
+
     private array $collapseOptions = [];
     private ?string $brandText = null;
     private ?string $brandImage = null;
@@ -130,6 +133,7 @@ final class NavBar extends Widget
     private array $options = [];
     private bool $encodeTags = false;
     private ?string $expandSize = self::EXPAND_LG;
+    private ?string $theme = self::THEME_LIGHT;
     private ?Offcanvas $offcanvas = null;
 
     public function getId(?string $suffix = '-navbar'): ?string
@@ -153,8 +157,8 @@ final class NavBar extends Widget
             $classNames['size'] = $this->expandSize;
         }
 
-        if (empty($options['class'])) {
-            $classNames = array_merge($classNames, ['navbar-light', 'bg-light']);
+        if ($this->theme) {
+            $classNames['theme'] = $this->theme;
         }
 
         Html::addCssClass($options, $classNames);
@@ -226,6 +230,21 @@ final class NavBar extends Widget
     {
         $new = clone $this;
         $new->expandSize = $size;
+
+        return $new;
+    }
+
+    /**
+     * Set color theme for NavBar
+     *
+     * @param string|null $theme
+     *
+     * @return self
+     */
+    public function theme(?string $theme): self
+    {
+        $new = clone $this;
+        $new->theme = $theme;
 
         return $new;
     }
