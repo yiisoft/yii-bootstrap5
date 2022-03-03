@@ -84,13 +84,14 @@ final class Modal extends Widget
         $dialogOptions = $this->prepareDialogOptions();
         $contentOptions = $this->contentOptions;
         $contentTag = ArrayHelper::remove($contentOptions, 'tag', 'div');
+        $dialogTag = ArrayHelper::remove($dialogOptions, 'tag', 'div');
 
         Html::addCssClass($contentOptions, ['modal-content']);
 
         return
             $this->renderToggleButton() .
             Html::openTag('div', $options) .
-            Html::openTag('div', $dialogOptions) .
+            Html::openTag($dialogTag, $dialogOptions) .
             Html::openTag($contentTag, $contentOptions) .
             $this->renderHeader() .
             $this->renderBodyBegin();
@@ -99,12 +100,13 @@ final class Modal extends Widget
     protected function run(): string
     {
         $contentTag = ArrayHelper::getValue($this->contentOptions, 'tag', 'div');
+        $dialogTag = ArrayHelper::getValue($this->dialogOptions, 'tag', 'div');
 
         return
             $this->renderBodyEnd() .
             $this->renderFooter() .
             Html::closeTag($contentTag) . // modal-content
-            Html::closeTag('div') . // modal-dialog
+            Html::closeTag($dialogTag) . // modal-dialog
             Html::closeTag('div');
     }
 
