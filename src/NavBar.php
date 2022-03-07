@@ -250,6 +250,26 @@ final class NavBar extends Widget
     }
 
     /**
+     * Short method for light navbar theme
+     *
+     * @return self
+     */
+    public function light(): self
+    {
+        return $this->theme(self::THEME_LIGHT);
+    }
+
+    /**
+     * Short method for dark navbar theme
+     *
+     * @return self
+     */
+    public function dark(): self
+    {
+        return $this->theme(self::THEME_DARK);
+    }
+
+    /**
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * @param array $value

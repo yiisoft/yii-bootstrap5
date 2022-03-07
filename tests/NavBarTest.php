@@ -446,7 +446,7 @@ final class NavBarTest extends TestCase
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-light">
         <div class="container-fluid">
-        <button  type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         </div>
