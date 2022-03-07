@@ -165,7 +165,7 @@ final class OffcanvasTest extends TestCase
         $html .= Offcanvas::end();
 
         $expected = <<<'HTML'
-        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1"">
+        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1">
         <header class="offcanvas-header">
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="offcanvas"></button>
         </header>
