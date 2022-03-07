@@ -60,7 +60,7 @@ final class Alert extends Widget
         $content = Html::openTag($tag, $options);
         $content .= $this->renderHeader();
         $content .= $this->encode ? Html::encode($this->body) : $this->body;
-        $content .= $this->renderCloseButton();
+        $content .= $this->renderCloseButton(false);
         $content .= Html::closeTag($tag);
 
         return $content;
@@ -301,7 +301,7 @@ final class Alert extends Widget
      *
      * @return string the rendering result
      */
-    public function renderCloseButton(bool $outside = false): ?string
+    public function renderCloseButton(bool $outside = true): ?string
     {
         if ($this->closeButton === null) {
             return null;
