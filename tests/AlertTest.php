@@ -13,40 +13,44 @@ use Yiisoft\Yii\Bootstrap5\Alert;
  */
 final class AlertTest extends TestCase
 {
-    private function typeDataProvider(): array
+    public function typeDataProvider(): array
     {
         return [
-            Alert::TYPE_PRIMARY => [
-                'method' => 'primary',
-                'expected' => '<div id="w0-alert" class="alert alert-primary" role="alert">primary</div>',
+            [
+                'primary',
+                '<div id="w0-alert" class="alert alert-primary" role="alert">primary</div>',
             ],
-            Alert::TYPE_SECONDARY => [
-                'method' => 'secondary',
-                'expected' => '<div id="w0-alert" class="alert alert-secondary" role="alert">secondary</div>',
+            [
+                'secondary',
+                '<div id="w0-alert" class="alert alert-secondary" role="alert">secondary</div>',
             ],
-            Alert::TYPE_SUCCESS => [
-                'method' => 'success',
-                'expected' => '<div id="w0-alert" class="alert alert-success" role="alert">success</div>',
+            [
+                'success',
+                '<div id="w0-alert" class="alert alert-success" role="alert">success</div>',
             ],
-            Alert::TYPE_DANGER => [
-                'method' => 'danger',
-                'expected' => '<div id="w0-alert" class="alert alert-danger" role="alert">danger</div>',
+            [
+                'danger',
+                '<div id="w0-alert" class="alert alert-danger" role="alert">danger</div>',
             ],
-            Alert::TYPE_WARNING => [
-                'method' => 'warning',
-                'expected' => '<div id="w0-alert" class="alert alert-warning" role="alert">warning</div>',
+            [
+                'warning',
+                '<div id="w0-alert" class="alert alert-warning" role="alert">warning</div>',
             ],
-            Alert::TYPE_INFO => [
-                'method' => 'info',
-                'expected' => '<div id="w0-alert" class="alert alert-info" role="alert">info</div>',
+            [
+                'info',
+                '<div id="w0-alert" class="alert alert-info" role="alert">info</div>',
             ],
-            Alert::TYPE_LIGHT => [
-                'method' => 'light',
-                'expected' => '<div id="w0-alert" class="alert alert-light" role="alert">light</div>',
+            [
+                'light',
+                '<div id="w0-alert" class="alert alert-light" role="alert">light</div>',
             ],
-            Alert::TYPE_DARK => [
-                'method' => 'dark',
-                'expected' => '<div id="w0-alert" class="alert alert-dark" role="alert">dark</div>',
+            [
+                'dark',
+                '<div id="w0-alert" class="alert alert-dark" role="alert">dark</div>',
+            ],
+            [
+                'custom',
+                '<div id="w0-alert" class="alert custom" role="alert">custom</div>',
             ],
         ];
     }
@@ -163,9 +167,9 @@ final class AlertTest extends TestCase
         Alert::counter(0);
 
         $html = Alert::widget()->body('Message1')
+            ->buttonTag('a')
             ->closeButton([
                 'class' => 'btn-close',
-                'tag' => 'a',
                 'href' => '/',
             ])->render();
         $expected = <<<'HTML'
@@ -189,31 +193,35 @@ final class AlertTest extends TestCase
         $this->assertEqualsHTML($expected, $html);
     }
 
-    public function testTypes(): void
+    /**
+     * @dataProvider typeDataProvider
+     */
+    public function testTypes(string $type, string $expected): void
     {
-        $types = $this->typeDataProvider();
+        Alert::counter(0);
 
-        foreach ($types as $type => $data) {
-            Alert::counter(0);
-            $html = Alert::widget()->type($type)->body($data['method'])->withoutCloseButton()->render();
-
-            $this->assertEqualsHTML($data['expected'], $html);
-
-            Alert::counter(0);
-            $html = Alert::widget()->{$data['method']}()->body($data['method'])->withoutCloseButton()->render();
-
-            $this->assertEqualsHTML($data['expected'], $html);
+        if ($type === 'custom') {
+            $alert = Alert::widget()->type($type);
+        } else {
+            $alert = Alert::widget()->{$type}();
         }
+
+        $html = $alert->body($type)->withoutCloseButton()->render();
+
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testHeader(): void
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')->header('Alert header')->headerOptions([
-            'tag' => 'h5',
-            'class' => 'header-class',
-        ])->fade()->render();
+        $html = Alert::widget()
+            ->body('Message1')
+            ->header('Alert header')
+            ->headerTag('h5')
+            ->headerOptions([
+                'class' => 'header-class',
+            ])->fade()->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible fade show" role="alert">
         <h5 class="header-class alert-heading">Alert header</h5>

@@ -27,21 +27,23 @@ use function array_merge;
  */
 final class Alert extends Widget
 {
-    public const TYPE_PRIMARY = 'alert-primary';
-    public const TYPE_SECONDARY = 'alert-secondary';
-    public const TYPE_SUCCESS = 'alert-success';
-    public const TYPE_DANGER = 'alert-danger';
-    public const TYPE_WARNING = 'alert-warning';
-    public const TYPE_INFO = 'alert-info';
-    public const TYPE_LIGHT = 'alert-light';
-    public const TYPE_DARK = 'alert-dark';
+    private const TYPE_PRIMARY = 'alert-primary';
+    private const TYPE_SECONDARY = 'alert-secondary';
+    private const TYPE_SUCCESS = 'alert-success';
+    private const TYPE_DANGER = 'alert-danger';
+    private const TYPE_WARNING = 'alert-warning';
+    private const TYPE_INFO = 'alert-info';
+    private const TYPE_LIGHT = 'alert-light';
+    private const TYPE_DARK = 'alert-dark';
 
     private string $body = '';
     private ?string $header = null;
     private array $headerOptions = [];
+    private string $headerTag = 'h4';
     private ?array $closeButton = [
         'class' => 'btn-close',
     ];
+    private string $buttonTag = 'button';
     private bool $encode = false;
     private array $options = [];
     private ?string $type = null;
@@ -115,6 +117,21 @@ final class Alert extends Widget
     }
 
     /**
+     * Set tag name for header
+     *
+     * @param string $tag
+     *
+     * @return self
+     */
+    public function headerTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->headerTag = $tag;
+
+        return $new;
+    }
+
+    /**
      * The options for rendering the close button tag.
      *
      * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
@@ -134,7 +151,7 @@ final class Alert extends Widget
      *
      * @return self
      */
-    public function closeButton(?array $value): self
+    public function closeButton(array $value): self
     {
         $new = clone $this;
         $new->closeButton = $value;
@@ -149,7 +166,25 @@ final class Alert extends Widget
      */
     public function withoutCloseButton(): self
     {
-        return $this->closeButton(null);
+        $new = clone $this;
+        $new->closeButton = null;
+
+        return $new;
+    }
+
+    /**
+     * Set close button tag
+     *
+     * @param string $tag
+     *
+     * @return self
+     */
+    public function buttonTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->buttonTag = $tag;
+
+        return $new;
     }
 
     /**
@@ -200,7 +235,7 @@ final class Alert extends Widget
     }
 
     /**
-     * Set type of alert, 'alert-success', 'alert-danger' etc
+     * Set type of alert, 'alert-success', 'alert-danger', 'custom-alert' etc
      *
      * @param string $type
      *
@@ -314,11 +349,10 @@ final class Alert extends Widget
                 'data-bs-dismiss' => 'alert',
             ],
         );
-        $tag = ArrayHelper::remove($options, 'tag', 'button');
         $label = ArrayHelper::remove($options, 'label', '');
         $encode = ArrayHelper::remove($options, 'encode', $this->encode);
 
-        if ($tag === 'button' && !isset($options['type'])) {
+        if ($this->buttonTag === 'button' && !isset($options['type'])) {
             $options['type'] = 'button';
         }
 
@@ -326,7 +360,7 @@ final class Alert extends Widget
             $options['data-bs-target'] = '#' . $this->getId();
         }
 
-        return Html::tag($tag, $label, $options)->encode($encode)->render();
+        return Html::tag($this->buttonTag, $label, $options)->encode($encode)->render();
     }
 
     /**
@@ -341,12 +375,11 @@ final class Alert extends Widget
         }
 
         $options = $this->headerOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'h4');
         $encode = ArrayHelper::remove($options, 'encode', true);
 
         Html::addCssClass($options, ['alert-heading']);
 
-        return Html::tag($tag, $this->header, $options)->encode($encode)->render();
+        return Html::tag($this->headerTag, $this->header, $options)->encode($encode)->render();
     }
 
     /**
