@@ -46,7 +46,7 @@ final class Alert extends Widget
     private string $buttonTag = 'button';
     private bool $encode = false;
     private array $options = [];
-    private ?string $type = null;
+    private array $classNames = [];
     private bool $fade = false;
 
     public function getId(?string $suffix = '-alert'): ?string
@@ -241,10 +241,10 @@ final class Alert extends Widget
      *
      * @return self
      */
-    public function type(string $type): self
+    public function addClassNames(string ...$classNames): self
     {
         $new = clone $this;
-        $new->type = $type;
+        $new->classNames = array_filter($classNames, static fn ($name) => $name !== '');
 
         return $new;
     }
@@ -256,7 +256,7 @@ final class Alert extends Widget
      */
     public function primary(): self
     {
-        return $this->type(self::TYPE_PRIMARY);
+        return $this->addClassNames(self::TYPE_PRIMARY);
     }
 
     /**
@@ -266,7 +266,7 @@ final class Alert extends Widget
      */
     public function secondary(): self
     {
-        return $this->type(self::TYPE_SECONDARY);
+        return $this->addClassNames(self::TYPE_SECONDARY);
     }
 
     /**
@@ -276,7 +276,7 @@ final class Alert extends Widget
      */
     public function success(): self
     {
-        return $this->type(self::TYPE_SUCCESS);
+        return $this->addClassNames(self::TYPE_SUCCESS);
     }
 
     /**
@@ -286,7 +286,7 @@ final class Alert extends Widget
      */
     public function danger(): self
     {
-        return $this->type(self::TYPE_DANGER);
+        return $this->addClassNames(self::TYPE_DANGER);
     }
 
     /**
@@ -296,7 +296,7 @@ final class Alert extends Widget
      */
     public function warning(): self
     {
-        return $this->type(self::TYPE_WARNING);
+        return $this->addClassNames(self::TYPE_WARNING);
     }
 
     /**
@@ -306,7 +306,7 @@ final class Alert extends Widget
      */
     public function info(): self
     {
-        return $this->type(self::TYPE_INFO);
+        return $this->addClassNames(self::TYPE_INFO);
     }
 
     /**
@@ -316,7 +316,7 @@ final class Alert extends Widget
      */
     public function light(): self
     {
-        return $this->type(self::TYPE_LIGHT);
+        return $this->addClassNames(self::TYPE_LIGHT);
     }
 
     /**
@@ -326,7 +326,7 @@ final class Alert extends Widget
      */
     public function dark(): self
     {
-        return $this->type(self::TYPE_DARK);
+        return $this->addClassNames(self::TYPE_DARK);
     }
 
     /**
@@ -393,11 +393,7 @@ final class Alert extends Widget
     {
         $options = $this->options;
         $options['id'] = $this->getId();
-        $classNames = ['widget' => 'alert'];
-
-        if ($this->type) {
-            $classNames[] = $this->type;
-        }
+        $classNames = array_merge(['widget' => 'alert'], $this->classNames);
 
         if ($this->closeButton !== null) {
             $classNames[] = 'alert-dismissible';

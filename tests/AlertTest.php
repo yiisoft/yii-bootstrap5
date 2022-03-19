@@ -201,7 +201,7 @@ final class AlertTest extends TestCase
         Alert::counter(0);
 
         if ($type === 'custom') {
-            $alert = Alert::widget()->type($type);
+            $alert = Alert::widget()->addClassNames($type);
         } else {
             $alert = Alert::widget()->{$type}();
         }
