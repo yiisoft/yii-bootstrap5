@@ -18,37 +18,26 @@ use function is_string;
  * For example:
  *
  * ```php
- *    if ($user->getId() !== null) {
- *        $menuItems = [
- *            [
- *                'label' => 'About',
- *                'url' => '/about',
- *            ],
- *            [
- *                'label' => 'Contact',
- *                'url' => '/contact',
- *            ],
- *            [
- *                'label' => 'Logout' . ' ' . '(' . $user->getUsername() . ')',
- *                'url' => '/logout'
- *            ],
- *        ];
- *    } else {
- *        $menuItems = [
- *            [
- *                'label' => 'About',
- *                'url' => '/about',
- *            ],
- *            [
- *                'label' => 'Contact',
- *                'url' => '/contact',
- *            ],
- *            [
- *                'label' => 'Login',
- *                'url' => '/login',
- *            ],
- *        ];
- *    }
+ *    $menuItems = [
+ *        [
+ *            'label' => 'About',
+ *            'url' => '/about',
+ *        ],
+ *        [
+ *            'label' => 'Contact',
+ *            'url' => '/contact',
+ *        ],
+ *        [
+ *            'label' => 'Login',
+ *            'url' => '/login',
+ *            'visible' => $user->getId() === null,
+ *        ],
+ *        [
+ *            'label' => 'Logout' . ' ' . '(' . $user->getUsername() . ')',
+ *            'url' => '/logout',
+ *            'visible' => $user->getId() !== null,
+ *        ],
+ *    ];
  *
  *    echo Nav::widget()
  *        ->currentPath($currentPath)
