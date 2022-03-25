@@ -519,14 +519,13 @@ final class NavTest extends TestCase
     {
         Nav::counter(0);
         $expected = <<<HTML
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
         HTML;
         $this->assertEqualsWithoutLE(
             $expected,
             Nav::widget()
                 ->currentPath('/home')
-                ->homeLink('/home')
                 ->items([
                     [
                         'label' => 'Home',
@@ -548,7 +547,6 @@ final class NavTest extends TestCase
             $expected,
             Nav::widget()
                 ->currentPath('/item1')
-                ->homeLink('/home')
                 ->items([
                     [
                         'label' => 'Home',
