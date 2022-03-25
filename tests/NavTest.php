@@ -511,4 +511,55 @@ final class NavTest extends TestCase
 
         $this->assertEqualsWithoutLE($expected, $html);
     }
+
+    /**
+     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
+     */
+    public function testHomeLink(): void
+    {
+        Nav::counter(0);
+        $expected = <<<HTML
+        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
+        HTML;
+        $this->assertEqualsWithoutLE(
+            $expected,
+            Nav::widget()
+                ->currentPath('/home')
+                ->homeLink('/home')
+                ->items([
+                    [
+                        'label' => 'Home',
+                        'url' => '/home',
+                    ],
+                    [
+                        'label' => 'Item1',
+                        'url' => '/item1',
+                    ],
+                ])
+                ->render()
+        );
+
+        $expected = <<<HTML
+        <ul id="w1-nav" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
+        HTML;
+        $this->assertEqualsWithoutLE(
+            $expected,
+            Nav::widget()
+                ->currentPath('/item1')
+                ->homeLink('/home')
+                ->items([
+                    [
+                        'label' => 'Home',
+                        'url' => '/home',
+                    ],
+                    [
+                        'label' => 'Item1',
+                        'url' => '/item1',
+                    ],
+                ])
+                ->render()
+        );
+    }
 }

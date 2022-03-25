@@ -118,6 +118,7 @@ final class Nav extends Widget
     private array $itemOptions = [];
     private array $linkOptions = [];
     private array $dropdownOptions = [];
+    private string $homeLink = '/';
 
     protected function run(): string
     {
@@ -315,6 +316,21 @@ final class Nav extends Widget
     }
 
     /**
+     * Return new instance of {@see Nav} with home link.
+     *
+     * @param string $value The home link
+     *
+     * @return self
+     */
+    public function homeLink(string $value): self
+    {
+        $new = clone $this;
+        $new->homeLink = $value;
+
+        return $new;
+    }
+
+    /**
      * Renders widget items.
      *
      * @throws JsonException|RuntimeException
@@ -478,7 +494,7 @@ final class Nav extends Widget
         }
 
         return isset($item['url'])
-            && $this->currentPath !== '/'
+            && $this->currentPath !== $this->homeLink
             && $item['url'] === $this->currentPath
             && $this->activateItems;
     }
