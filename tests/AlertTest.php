@@ -167,7 +167,7 @@ final class AlertTest extends TestCase
         Alert::counter(0);
 
         $html = Alert::widget()->body('Message1')
-            ->buttonTag('a')
+            ->closeButtonTag('a')
             ->closeButton([
                 'class' => 'btn-close',
                 'href' => '/',

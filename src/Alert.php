@@ -27,15 +27,6 @@ use function array_merge;
  */
 final class Alert extends Widget
 {
-    private const TYPE_PRIMARY = 'alert-primary';
-    private const TYPE_SECONDARY = 'alert-secondary';
-    private const TYPE_SUCCESS = 'alert-success';
-    private const TYPE_DANGER = 'alert-danger';
-    private const TYPE_WARNING = 'alert-warning';
-    private const TYPE_INFO = 'alert-info';
-    private const TYPE_LIGHT = 'alert-light';
-    private const TYPE_DARK = 'alert-dark';
-
     private string $body = '';
     private ?string $header = null;
     private array $headerOptions = [];
@@ -43,7 +34,7 @@ final class Alert extends Widget
     private ?array $closeButton = [
         'class' => 'btn-close',
     ];
-    private string $buttonTag = 'button';
+    private string $closeButtonTag = 'button';
     private bool $encode = false;
     private array $options = [];
     private array $classNames = [];
@@ -58,11 +49,16 @@ final class Alert extends Widget
     {
         $options = $this->prepareOptions();
         $tag = ArrayHelper::remove($options, 'tag', 'div');
+        $closeButtonOutside = $this->closeButton['outside'] ?? false;
 
         $content = Html::openTag($tag, $options);
         $content .= $this->renderHeader();
         $content .= $this->encode ? Html::encode($this->body) : $this->body;
-        $content .= $this->renderCloseButton(false);
+
+        if (!$closeButtonOutside) {
+            $content .= $this->renderCloseButton(false);
+        }
+
         $content .= Html::closeTag($tag);
 
         return $content;
@@ -179,10 +175,10 @@ final class Alert extends Widget
      *
      * @return self
      */
-    public function buttonTag(string $tag): self
+    public function closeButtonTag(string $tag): self
     {
         $new = clone $this;
-        $new->buttonTag = $tag;
+        $new->closeButtonTag = $tag;
 
         return $new;
     }
@@ -256,7 +252,7 @@ final class Alert extends Widget
      */
     public function primary(): self
     {
-        return $this->addClassNames(self::TYPE_PRIMARY);
+        return $this->addClassNames('alert-primary');
     }
 
     /**
@@ -266,7 +262,7 @@ final class Alert extends Widget
      */
     public function secondary(): self
     {
-        return $this->addClassNames(self::TYPE_SECONDARY);
+        return $this->addClassNames('alert-secondary');
     }
 
     /**
@@ -276,7 +272,7 @@ final class Alert extends Widget
      */
     public function success(): self
     {
-        return $this->addClassNames(self::TYPE_SUCCESS);
+        return $this->addClassNames('alert-success');
     }
 
     /**
@@ -286,7 +282,7 @@ final class Alert extends Widget
      */
     public function danger(): self
     {
-        return $this->addClassNames(self::TYPE_DANGER);
+        return $this->addClassNames('alert-danger');
     }
 
     /**
@@ -296,7 +292,7 @@ final class Alert extends Widget
      */
     public function warning(): self
     {
-        return $this->addClassNames(self::TYPE_WARNING);
+        return $this->addClassNames('alert-warning');
     }
 
     /**
@@ -306,7 +302,7 @@ final class Alert extends Widget
      */
     public function info(): self
     {
-        return $this->addClassNames(self::TYPE_INFO);
+        return $this->addClassNames('alert-info');
     }
 
     /**
@@ -316,7 +312,7 @@ final class Alert extends Widget
      */
     public function light(): self
     {
-        return $this->addClassNames(self::TYPE_LIGHT);
+        return $this->addClassNames('alert-light');
     }
 
     /**
@@ -326,7 +322,7 @@ final class Alert extends Widget
      */
     public function dark(): self
     {
-        return $this->addClassNames(self::TYPE_DARK);
+        return $this->addClassNames('alert-dark');
     }
 
     /**
@@ -352,7 +348,9 @@ final class Alert extends Widget
         $label = ArrayHelper::remove($options, 'label', '');
         $encode = ArrayHelper::remove($options, 'encode', $this->encode);
 
-        if ($this->buttonTag === 'button' && !isset($options['type'])) {
+        unset($options['outside']);
+
+        if ($this->closeButtonTag === 'button' && !isset($options['type'])) {
             $options['type'] = 'button';
         }
 
@@ -360,7 +358,7 @@ final class Alert extends Widget
             $options['data-bs-target'] = '#' . $this->getId();
         }
 
-        return Html::tag($this->buttonTag, $label, $options)->encode($encode)->render();
+        return Html::tag($this->closeButtonTag, $label, $options)->encode($encode)->render();
     }
 
     /**
@@ -393,7 +391,7 @@ final class Alert extends Widget
     {
         $options = $this->options;
         $options['id'] = $this->getId();
-        $classNames = array_merge(['widget' => 'alert'], $this->classNames);
+        $classNames = array_merge(['alert'], $this->classNames);
 
         if ($this->closeButton !== null) {
             $classNames[] = 'alert-dismissible';
