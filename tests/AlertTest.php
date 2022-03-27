@@ -13,6 +13,48 @@ use Yiisoft\Yii\Bootstrap5\Alert;
  */
 final class AlertTest extends TestCase
 {
+    public function typeDataProvider(): array
+    {
+        return [
+            [
+                'primary',
+                '<div id="w0-alert" class="alert alert-primary" role="alert">primary</div>',
+            ],
+            [
+                'secondary',
+                '<div id="w0-alert" class="alert alert-secondary" role="alert">secondary</div>',
+            ],
+            [
+                'success',
+                '<div id="w0-alert" class="alert alert-success" role="alert">success</div>',
+            ],
+            [
+                'danger',
+                '<div id="w0-alert" class="alert alert-danger" role="alert">danger</div>',
+            ],
+            [
+                'warning',
+                '<div id="w0-alert" class="alert alert-warning" role="alert">warning</div>',
+            ],
+            [
+                'info',
+                '<div id="w0-alert" class="alert alert-info" role="alert">info</div>',
+            ],
+            [
+                'light',
+                '<div id="w0-alert" class="alert alert-light" role="alert">light</div>',
+            ],
+            [
+                'dark',
+                '<div id="w0-alert" class="alert alert-dark" role="alert">dark</div>',
+            ],
+            [
+                'custom',
+                '<div id="w0-alert" class="alert custom" role="alert">custom</div>',
+            ],
+        ];
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.0/components/alerts/#examples
      */
@@ -31,7 +73,7 @@ final class AlertTest extends TestCase
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     /**
@@ -52,7 +94,7 @@ final class AlertTest extends TestCase
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     /**
@@ -78,7 +120,7 @@ final class AlertTest extends TestCase
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     /**
@@ -94,7 +136,7 @@ final class AlertTest extends TestCase
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testDismissingDisable(): void
@@ -107,7 +149,7 @@ final class AlertTest extends TestCase
 
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testCloseButtonOptions(): void
@@ -117,9 +159,77 @@ final class AlertTest extends TestCase
         $html = Alert::widget()->body('Message1')->closeButton(['class' => 'btn-lg'])->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
-        <button type="button" class="btn-lg btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-lg" aria-label="Close" data-bs-dismiss="alert"></button>
         </div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsHTML($expected, $html);
+
+        Alert::counter(0);
+
+        $html = Alert::widget()->body('Message1')
+            ->closeButtonTag('a')
+            ->closeButton([
+                'class' => 'btn-close',
+                'href' => '/',
+            ])->render();
+        $expected = <<<'HTML'
+        <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
+        <a class="btn-close" href="/" aria-label="Close" data-bs-dismiss="alert"></a>
+        </div>
+        HTML;
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testFade(): void
+    {
+        Alert::counter(0);
+
+        $html = Alert::widget()->body('Message1')->fade()->render();
+        $expected = <<<'HTML'
+        <div id="w0-alert" class="alert alert-dismissible fade show" role="alert">Message1
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+        </div>
+        HTML;
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    /**
+     * @dataProvider typeDataProvider
+     */
+    public function testTypes(string $type, string $expected): void
+    {
+        Alert::counter(0);
+
+        if ($type === 'custom') {
+            $alert = Alert::widget()->addClassNames($type);
+        } else {
+            $alert = Alert::widget()->{$type}();
+        }
+
+        $html = $alert->body($type)->withoutCloseButton()->render();
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testHeader(): void
+    {
+        Alert::counter(0);
+
+        $html = Alert::widget()
+            ->body('Message1')
+            ->header('Alert header')
+            ->headerTag('h5')
+            ->headerOptions([
+                'class' => 'header-class',
+            ])->fade()->render();
+        $expected = <<<'HTML'
+        <div id="w0-alert" class="alert alert-dismissible fade show" role="alert">
+        <h5 class="header-class alert-heading">Alert header</h5>
+        Message1
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+        </div>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
     }
 }

@@ -28,22 +28,40 @@ use function array_merge;
 final class Alert extends Widget
 {
     private string $body = '';
-    private array $closeButton = [];
-    private bool $closeButtonEnabled = true;
-    private bool $encodeTags = false;
+    private ?string $header = null;
+    private array $headerOptions = [];
+    private string $headerTag = 'h4';
+    private ?array $closeButton = [
+        'class' => 'btn-close',
+    ];
+    private string $closeButtonTag = 'button';
+    private bool $encode = false;
     private array $options = [];
+    private array $classNames = [];
+    private bool $fade = false;
+
+    public function getId(?string $suffix = '-alert'): ?string
+    {
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
 
     protected function run(): string
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-alert";
+        $options = $this->prepareOptions();
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
+        $closeButtonOutside = $this->closeButton['outside'] ?? false;
+
+        $content = Html::openTag($tag, $options);
+        $content .= $this->renderHeader();
+        $content .= $this->encode ? Html::encode($this->body) : $this->body;
+
+        if (!$closeButtonOutside) {
+            $content .= $this->renderCloseButton(false);
         }
 
-        $this->initOptions();
+        $content .= Html::closeTag($tag);
 
-        return Html::div($this->renderBodyEnd(), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
+        return $content;
     }
 
     /**
@@ -58,6 +76,53 @@ final class Alert extends Widget
     {
         $new = clone $this;
         $new->body = $value;
+
+        return $new;
+    }
+
+    /**
+     * The header content in alert component
+     *
+     * @param string|null $header
+     *
+     * @return self
+     */
+    public function header(?string $header): self
+    {
+        $new = clone $this;
+        $new->header = $header;
+
+        return $new;
+    }
+
+    /**
+     * The HTML attributes for the widget header tag. The following special options are recognized.
+     *
+     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function headerOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->headerOptions = $options;
+
+        return $new;
+    }
+
+    /**
+     * Set tag name for header
+     *
+     * @param string $tag
+     *
+     * @return self
+     */
+    public function headerTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->headerTag = $tag;
 
         return $new;
     }
@@ -98,7 +163,22 @@ final class Alert extends Widget
     public function withoutCloseButton(): self
     {
         $new = clone $this;
-        $new->closeButtonEnabled = false;
+        $new->closeButton = null;
+
+        return $new;
+    }
+
+    /**
+     * Set close button tag
+     *
+     * @param string $tag
+     *
+     * @return self
+     */
+    public function closeButtonTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->closeButtonTag = $tag;
 
         return $new;
     }
@@ -121,15 +201,128 @@ final class Alert extends Widget
     }
 
     /**
-     * Renders the alert body and the close button (if any).
+     * Enable/Disable encode body
      *
-     * @throws JsonException
+     * @param bool $encode
      *
-     * @return string the rendering result
+     * @return self
      */
-    private function renderBodyEnd(): string
+    public function encode(bool $encode = true): self
     {
-        return $this->body . "\n" . $this->renderCloseButton() . "\n";
+        $new = clone $this;
+        $new->encode = $encode;
+
+        return $new;
+    }
+
+    /**
+     * Enable/Disable dissmiss animation
+     *
+     * @param bool $fade
+     *
+     * @return self
+     */
+    public function fade(bool $fade = true): self
+    {
+        $new = clone $this;
+        $new->fade = $fade;
+
+        return $new;
+    }
+
+    /**
+     * Set type of alert, 'alert-success', 'alert-danger', 'custom-alert' etc
+     *
+     * @param string $type
+     *
+     * @return self
+     */
+    public function addClassNames(string ...$classNames): self
+    {
+        $new = clone $this;
+        $new->classNames = array_filter($classNames, static fn ($name) => $name !== '');
+
+        return $new;
+    }
+
+    /**
+     * Short method for primary alert type
+     *
+     * @return self
+     */
+    public function primary(): self
+    {
+        return $this->addClassNames('alert-primary');
+    }
+
+    /**
+     * Short method for secondary alert type
+     *
+     * @return self
+     */
+    public function secondary(): self
+    {
+        return $this->addClassNames('alert-secondary');
+    }
+
+    /**
+     * Short method for success alert type
+     *
+     * @return self
+     */
+    public function success(): self
+    {
+        return $this->addClassNames('alert-success');
+    }
+
+    /**
+     * Short method for danger alert type
+     *
+     * @return self
+     */
+    public function danger(): self
+    {
+        return $this->addClassNames('alert-danger');
+    }
+
+    /**
+     * Short method for warning alert type
+     *
+     * @return self
+     */
+    public function warning(): self
+    {
+        return $this->addClassNames('alert-warning');
+    }
+
+    /**
+     * Short method for info alert type
+     *
+     * @return self
+     */
+    public function info(): self
+    {
+        return $this->addClassNames('alert-info');
+    }
+
+    /**
+     * Short method for light alert type
+     *
+     * @return self
+     */
+    public function light(): self
+    {
+        return $this->addClassNames('alert-light');
+    }
+
+    /**
+     * Short method for dark alert type
+     *
+     * @return self
+     */
+    public function dark(): self
+    {
+        return $this->addClassNames('alert-dark');
     }
 
     /**
@@ -139,48 +332,81 @@ final class Alert extends Widget
      *
      * @return string the rendering result
      */
-    private function renderCloseButton(): ?string
+    public function renderCloseButton(bool $outside = true): ?string
     {
-        if ($this->closeButtonEnabled === false) {
+        if ($this->closeButton === null) {
             return null;
         }
 
-        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', '');
+        $options = array_merge(
+            $this->closeButton,
+            [
+                'aria-label' => 'Close',
+                'data-bs-dismiss' => 'alert',
+            ],
+        );
+        $label = ArrayHelper::remove($options, 'label', '');
+        $encode = ArrayHelper::remove($options, 'encode', $this->encode);
 
-        if ($tag === 'button' && !isset($this->closeButton['type'])) {
-            $this->closeButton['type'] = 'button';
+        unset($options['outside']);
+
+        if ($this->closeButtonTag === 'button' && !isset($options['type'])) {
+            $options['type'] = 'button';
         }
 
-        return Html::tag($tag, $label, $this->closeButton)
-            ->encode($this->encodeTags)
-            ->render();
+        if ($outside) {
+            $options['data-bs-target'] = '#' . $this->getId();
+        }
+
+        return Html::tag($this->closeButtonTag, $label, $options)->encode($encode)->render();
     }
 
     /**
-     * Initializes the widget options.
+     * Render header tag
      *
-     * This method sets the default values for various options.
+     * @return string|null
      */
-    private function initOptions(): void
+    private function renderHeader(): ?string
     {
-        Html::addCssClass($this->options, ['widget' => 'alert']);
-
-        if ($this->closeButtonEnabled !== false) {
-            $this->closeButton = array_merge(
-                $this->closeButton,
-                [
-                    'aria-label' => 'Close',
-                    'data-bs-dismiss' => 'alert',
-                ],
-            );
-
-            Html::addCssclass($this->closeButton, ['buttonOptions' => 'btn-close']);
-            Html::addCssClass($this->options, ['alert-dismissible' => 'alert-dismissible']);
+        if ($this->header === null) {
+            return null;
         }
 
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'alert';
+        $options = $this->headerOptions;
+        $encode = ArrayHelper::remove($options, 'encode', true);
+
+        Html::addCssClass($options, ['alert-heading']);
+
+        return Html::tag($this->headerTag, $this->header, $options)->encode($encode)->render();
+    }
+
+    /**
+     * Prepare the widget options.
+     *
+     * This method returns the default values for various options.
+     *
+     * @return array
+     */
+    private function prepareOptions(): array
+    {
+        $options = $this->options;
+        $options['id'] = $this->getId();
+        $classNames = array_merge(['alert'], $this->classNames);
+
+        if ($this->closeButton !== null) {
+            $classNames[] = 'alert-dismissible';
         }
+
+        if ($this->fade) {
+            $classNames[] = 'fade show';
+        }
+
+        Html::addCssClass($options, $classNames);
+
+        if (!isset($options['role'])) {
+            $options['role'] = 'alert';
+        }
+
+        return $options;
     }
 }

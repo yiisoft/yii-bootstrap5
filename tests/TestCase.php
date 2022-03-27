@@ -32,6 +32,30 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
+    private static function loadHtml(string $html): string
+    {
+        $output = str_replace(["\r", "\n"], '', $html);
+        $output = str_replace(['>', '</'], [">\n", "\n</"], $output);
+        $output = str_replace("\n\n", "\n", $output);
+
+        return trim($output);
+    }
+
+    /**
+     * Test two strings as HTML content
+     *
+     * @param string $expected
+     * @param string $actual
+     * @param string $message
+     */
+    protected function assertEqualsHTML(string $expected, string $actual, string $message = ''): void
+    {
+        $expected = self::loadHtml($expected);
+        $actual = self::loadHtml($actual);
+
+        $this->assertEquals($expected, $actual, $message);
+    }
+
     /**
      * Asserting two strings equality ignoring line endings.
      *

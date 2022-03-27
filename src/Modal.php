@@ -18,7 +18,7 @@ use function array_merge;
  *
  * ```php
  * Modal::widget()
- *     ->title('<h2>Hello world</h2>')
+ *     ->title('Hello world')
  *     ->toggleButton(['label' => 'click me'])
  *     ->begin();
  *
@@ -30,65 +30,178 @@ use function array_merge;
 final class Modal extends Widget
 {
     /**
-     * The additional css class of large modal
-     */
-    public const SIZE_LARGE = 'modal-lg';
-
-    /**
-     * The additional css class of small modal
+     * Size classes
      */
     public const SIZE_SMALL = 'modal-sm';
+    public const SIZE_DEFAULT = null;
+    public const SIZE_LARGE = 'modal-lg';
+    public const SIZE_EXTRA_LARGE = 'modal-xl';
 
     /**
-     * The additional css class of default modal
+     * Fullsceen classes
      */
-    public const SIZE_DEFAULT = '';
+    public const FULLSCREEN_ALWAYS = 'modal-fullscreen';
+    public const FULLSCREEN_BELOW_SM = 'modal-fullscreen-sm-down';
+    public const FULLSCREEN_BELOW_MD = 'modal-fullscreen-md-down';
+    public const FULLSCREEN_BELOW_LG = 'modal-fullscreen-lg-down';
+    public const FULLSCREEN_BELOW_XL = 'modal-fullscreen-xl-down';
+    public const FULLSCREEN_BELOW_XXL = 'modal-fullscreen-xxl-down';
 
-    private string $title = '';
+    private ?string $title = null;
     private array $titleOptions = [];
     private array $headerOptions = [];
+    private array $dialogOptions = [];
+    private array $contentOptions = [];
     private array $bodyOptions = [];
-    private string $footer = '';
+    private ?string $footer = null;
     private array $footerOptions = [];
-    private string $size = '';
-    private array $closeButton = [];
-    private bool $closeButtonEnabled = true;
-    private array $toggleButton = [];
-    private bool $toggleButtonEnabled = true;
+    private ?string $size = self::SIZE_DEFAULT;
+    private ?array $closeButton = ['class' => 'btn-close'];
+    private ?array $toggleButton = [];
     private array $options = [];
     private bool $encodeTags = false;
+    private bool $fade = true;
+    private bool $staticBackdrop = false;
+    private bool $scrollable = false;
+    private bool $centered = false;
+    private ?string $fullscreen = null;
+
+    public function getId(?string $suffix = '-modal'): ?string
+    {
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
+
+    public function getTitleId(): string
+    {
+        return $this->titleOptions['id'] ?? $this->getId() . '-label';
+    }
 
     public function begin(): string
     {
         parent::begin();
 
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-modal";
-        }
+        $options = $this->prepareOptions();
+        $dialogOptions = $this->prepareDialogOptions();
+        $contentOptions = $this->contentOptions;
+        $contentTag = ArrayHelper::remove($contentOptions, 'tag', 'div');
+        $dialogTag = ArrayHelper::remove($dialogOptions, 'tag', 'div');
 
-        if ($this->encodeTags === false) {
-            $this->options['encode'] = false;
-        }
-
-        $this->initOptions();
+        Html::addCssClass($contentOptions, ['modal-content']);
 
         return
-            $this->renderToggleButton() . "\n" .
-            Html::openTag('div', $this->options) . "\n" .
-            Html::openTag('div', ['class' => 'modal-dialog ' . $this->size]) . "\n" .
-            Html::openTag('div', ['class' => 'modal-content']) . "\n" .
-            $this->renderHeader() . "\n" .
-            $this->renderBodyBegin() . "\n";
+            $this->renderToggleButton() .
+            Html::openTag('div', $options) .
+            Html::openTag($dialogTag, $dialogOptions) .
+            Html::openTag($contentTag, $contentOptions) .
+            $this->renderHeader() .
+            $this->renderBodyBegin();
     }
 
     protected function run(): string
     {
+        $contentTag = ArrayHelper::getValue($this->contentOptions, 'tag', 'div');
+        $dialogTag = ArrayHelper::getValue($this->dialogOptions, 'tag', 'div');
+
         return
-            "\n" . $this->renderBodyEnd() .
-            "\n" . $this->renderFooter() .
-            "\n" . Html::closeTag('div') . // modal-content
-            "\n" . Html::closeTag('div') . // modal-dialog
-            "\n" . Html::closeTag('div');
+            $this->renderBodyEnd() .
+            $this->renderFooter() .
+            Html::closeTag($contentTag) . // modal-content
+            Html::closeTag($dialogTag) . // modal-dialog
+            Html::closeTag('div');
+    }
+
+    /**
+     * Prepare options for modal layer
+     *
+     * @return array
+     */
+    private function prepareOptions(): array
+    {
+        $options = array_merge([
+            'role' => 'dialog',
+            'tabindex' => -1,
+            'aria-hidden' => 'true',
+        ], $this->options);
+
+        $options['id'] = $this->getId();
+
+        /** @psalm-suppress InvalidArgument */
+        Html::addCssClass($options, ['widget' => 'modal']);
+
+        if ($this->fade) {
+            Html::addCssClass($options, ['animation' => 'fade']);
+        }
+
+        if (!isset($options['aria-label'], $options['aria-labelledby']) && !empty($this->title)) {
+            $options['aria-labelledby'] = $this->getTitleId();
+        }
+
+        if ($this->staticBackdrop) {
+            $options['data-bs-backdrop'] = 'static';
+        }
+
+        return $options;
+    }
+
+    /**
+     * Prepare options for dialog layer
+     *
+     * @return array
+     */
+    private function prepareDialogOptions(): array
+    {
+        $options = $this->dialogOptions;
+        $classNames = ['modal-dialog'];
+
+        if ($this->size) {
+            $classNames[] = $this->size;
+        }
+
+        if ($this->fullscreen) {
+            $classNames[] = $this->fullscreen;
+        }
+
+        if ($this->scrollable) {
+            $classNames[] = 'modal-dialog-scrollable';
+        }
+
+        if ($this->centered) {
+            $classNames[] = 'modal-dialog-centered';
+        }
+
+        Html::addCssClass($options, $classNames);
+
+        return $options;
+    }
+
+    /**
+     * Dialog layer options
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function dialogOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->dialogOptions = $options;
+
+        return $new;
+    }
+
+    /**
+     * Set options for content layer
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function contentOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->contentOptions = $options;
+
+        return $new;
     }
 
     /**
@@ -126,7 +239,7 @@ final class Modal extends Widget
      *
      * @return self
      */
-    public function closeButton(array $value): self
+    public function closeButton(?array $value): self
     {
         $new = clone $this;
         $new->closeButton = $value;
@@ -141,10 +254,7 @@ final class Modal extends Widget
      */
     public function withoutCloseButton(): self
     {
-        $new = clone $this;
-        $new->closeButtonEnabled = false;
-
-        return $new;
+        return $this->closeButton(null);
     }
 
     /**
@@ -154,7 +264,7 @@ final class Modal extends Widget
      *
      * @return self
      */
-    public function footer(string $value): self
+    public function footer(?string $value): self
     {
         $new = clone $this;
         $new->footer = $value;
@@ -219,7 +329,7 @@ final class Modal extends Widget
      *
      * @return self
      */
-    public function title(string $value): self
+    public function title(?string $value): self
     {
         $new = clone $this;
         $new->title = $value;
@@ -262,7 +372,7 @@ final class Modal extends Widget
      *
      * @return self
      */
-    public function toggleButton(array $value): self
+    public function toggleButton(?array $value): self
     {
         $new = clone $this;
         $new->toggleButton = $value;
@@ -277,10 +387,7 @@ final class Modal extends Widget
      */
     public function withoutToggleButton(): self
     {
-        $new = clone $this;
-        $new->toggleButtonEnabled = false;
-
-        return $new;
+        return $this->toggleButton(null);
     }
 
     /**
@@ -289,11 +396,110 @@ final class Modal extends Widget
      * @param string $value
      *
      * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#optional-sizes
      */
-    public function size(string $value): self
+    public function size(?string $value): self
     {
         $new = clone $this;
         $new->size = $value;
+
+        return $new;
+    }
+
+    /**
+     * Enable/disable static backdrop
+     *
+     * @param bool $value
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#static-backdrop
+     */
+    public function staticBackdrop(bool $value = true): self
+    {
+        if ($value === $this->staticBackdrop) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->staticBackdrop = $value;
+
+        return $new;
+    }
+
+    /**
+     * Enable/Disable scrolling long content
+     *
+     * @param bool $scrollable
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#scrolling-long-content
+     */
+    public function scrollable(bool $scrollable = true): self
+    {
+        if ($scrollable === $this->scrollable) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->scrollable = $scrollable;
+
+        return $new;
+    }
+
+    /**
+     * Enable/Disable vertically centered
+     *
+     * @param bool $centered
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#vertically-centered
+     */
+    public function centered(bool $centered = true): self
+    {
+        if ($centered === $this->centered) {
+            return $this;
+        }
+
+        $new = clone $this;
+        $new->centered = $centered;
+
+        return $new;
+    }
+
+    /**
+     * Set/remove fade animation
+     *
+     * @param bool $fade
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#remove-animation
+     */
+    public function fade(bool $fade = true): self
+    {
+        $new = clone $this;
+        $new->fade = $fade;
+
+        return $new;
+    }
+
+    /**
+     * Enable/disable fullscreen mode
+     *
+     * @param string|null $fullscreen
+     *
+     * @return self
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/modal/#fullscreen-modal
+     */
+    public function fullscreen(?string $fullscreen): self
+    {
+        $new = clone $this;
+        $new->fullscreen = $fullscreen;
 
         return $new;
     }
@@ -307,25 +513,41 @@ final class Modal extends Widget
      */
     private function renderHeader(): string
     {
-        $button = $this->renderCloseButton();
+        $title = (string) $this->renderTitle();
+        $button = (string) $this->renderCloseButton();
 
-        if ($this->title !== '') {
-            Html::addCssClass($this->titleOptions, ['titleOptions' => 'modal-title']);
-        }
-
-        $header = ($this->title === '') ? '' : Html::tag('h5', $this->title, $this->titleOptions)->render();
-
-        if ($button !== null) {
-            $header .= "\n" . $button;
-        } elseif ($header === '') {
+        if ($button === '' && $title === '') {
             return '';
         }
 
-        Html::addCssClass($this->headerOptions, ['headerOptions' => 'modal-header']);
+        $options = $this->headerOptions;
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
+        $content = $title . $button;
 
-        return Html::div($header, $this->headerOptions)
-            ->encode($this->encodeTags)
-            ->render();
+        Html::addCssClass($options, ['headerOptions' => 'modal-header']);
+
+        return Html::tag($tag, $content, $options)->encode(false)->render();
+    }
+
+    /**
+     * Render title HTML markup
+     *
+     * @return string|null
+     */
+    private function renderTitle(): ?string
+    {
+        if ($this->title === null) {
+            return '';
+        }
+
+        $options = $this->titleOptions;
+        $options['id'] = $this->getTitleId();
+        $tag = ArrayHelper::remove($options, 'tag', 'h5');
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
+
+        Html::addCssClass($options, ['modal-title']);
+
+        return Html::tag($tag, $this->title, $options)->encode($encode)->render();
     }
 
     /**
@@ -337,13 +559,12 @@ final class Modal extends Widget
      */
     private function renderBodyBegin(): string
     {
-        Html::addCssClass($this->bodyOptions, ['widget' => 'modal-body']);
+        $options = $this->bodyOptions;
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
 
-        if ($this->encodeTags === false) {
-            $this->bodyOptions['encode'] = false;
-        }
+        Html::addCssClass($options, ['widget' => 'modal-body']);
 
-        return Html::openTag('div', $this->bodyOptions);
+        return Html::openTag($tag, $options);
     }
 
     /**
@@ -353,7 +574,9 @@ final class Modal extends Widget
      */
     private function renderBodyEnd(): string
     {
-        return Html::closeTag('div');
+        $tag = ArrayHelper::getValue($this->bodyOptions, 'tag', 'div');
+
+        return Html::closeTag($tag);
     }
 
     /**
@@ -365,36 +588,64 @@ final class Modal extends Widget
      */
     private function renderFooter(): string
     {
-        if ($this->footer === '') {
+        if ($this->footer === null) {
             return '';
         }
 
-        Html::addCssClass($this->footerOptions, ['widget' => 'modal-footer']);
+        $options = $this->footerOptions;
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
+        Html::addCssClass($options, ['widget' => 'modal-footer']);
 
-        return Html::div($this->footer, $this->footerOptions)
-            ->encode($this->encodeTags)
-            ->render();
+        return Html::tag($tag, $this->footer, $options)->encode($encode)->render();
     }
 
     /**
      * Renders the toggle button.
      *
+     * @param array $options additional options for current button
+     *
      * @throws JsonException
      *
-     * @return string the rendering result
+     * @return string|null the rendering result
      */
-    private function renderToggleButton(): ?string
+    public function renderToggleButton(array $options = []): ?string
     {
-        if ($this->toggleButtonEnabled === false) {
+        if ($this->toggleButton === null && count($options) === 0) {
             return null;
         }
 
-        $tag = ArrayHelper::remove($this->toggleButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->toggleButton, 'label', 'Show');
+        $options = array_merge(
+            [
+               'data-bs-toggle' => 'modal',
+            ],
+            $this->toggleButton,
+            $options
+        );
 
-        return Html::tag($tag, $label, $this->toggleButton)
-            ->encode($this->encodeTags)
-            ->render();
+        $tag = ArrayHelper::remove($options, 'tag', 'button');
+        $label = ArrayHelper::remove($options, 'label', 'Show');
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
+
+        if ($tag === 'button' && !isset($options['type'])) {
+            $options['type'] = 'button';
+        }
+
+        if (!isset($options['data-bs-target'])) {
+            $target = (string) $this->getId();
+
+            if ($tag === 'a') {
+                if (!isset($options['href'])) {
+                    $options['href'] = '#' . $target;
+                } else {
+                    $options['data-bs-target'] = '#' . $target;
+                }
+            } else {
+                $options['data-bs-target'] = '#' . $target;
+            }
+        }
+
+        return Html::tag($tag, $label, $options)->encode($encode)->render();
     }
 
     /**
@@ -402,66 +653,28 @@ final class Modal extends Widget
      *
      * @throws JsonException
      *
-     * @return string the rendering result
+     * @return string|null the rendering result
+     *
+     * @link https://getbootstrap.com/docs/5.1/components/close-button/
      */
     private function renderCloseButton(): ?string
     {
-        if ($this->closeButtonEnabled === false) {
+        if ($this->closeButton === null) {
             return null;
         }
 
-        $tag = ArrayHelper::remove($this->closeButton, 'tag', 'button');
-        $label = ArrayHelper::remove($this->closeButton, 'label', Html::span('&times;', [
-            'aria-hidden' => 'true',
-        ])->render());
-
-        return Html::tag($tag, $label, $this->closeButton)
-            ->encode($this->encodeTags)
-            ->render();
-    }
-
-    /**
-     * Initializes the widget options.
-     *
-     * This method sets the default values for various options.
-     */
-    private function initOptions(): void
-    {
-        $this->options = array_merge([
-            'class' => 'fade',
-            'role' => 'dialog',
-            'tabindex' => -1,
-            'aria-hidden' => 'true',
-        ], $this->options);
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'modal']);
-
-        $this->titleOptions = array_merge([
-            'id' => $this->options['id'] . '-label',
-        ], $this->titleOptions);
-
-        if (!isset($this->options['aria-label'], $this->options['aria-labelledby']) && $this->title !== '') {
-            $this->options['aria-labelledby'] = $this->titleOptions['id'];
-        }
-
-        if ($this->closeButtonEnabled !== false) {
-            Html::addCssClass($this->closeButton, ['closeButton' => 'close']);
-
-            $this->closeButton = array_merge([
+        $options = array_merge([
                 'data-bs-dismiss' => 'modal',
-                'type' => 'button',
+                'aria-label' => 'Close',
             ], $this->closeButton);
+        $tag = ArrayHelper::remove($options, 'tag', 'button');
+        $label = ArrayHelper::remove($options, 'label', '');
+        $encode = ArrayHelper::remove($options, 'encode', !empty($label));
+
+        if ($tag === 'button' && !isset($options['type'])) {
+            $options['type'] = 'button';
         }
 
-        if ($this->toggleButton !== []) {
-            $this->toggleButton = array_merge([
-                'data-bs-toggle' => 'modal',
-                'type' => 'button',
-            ], $this->toggleButton);
-            if (!isset($this->toggleButton['data-bs-target']) && !isset($this->toggleButton['href'])) {
-                $this->toggleButton['data-bs-target'] = '#' . $this->options['id'];
-            }
-        }
+        return Html::tag($tag, $label, $options)->encode($encode)->render();
     }
 }
