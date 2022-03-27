@@ -582,7 +582,7 @@ HTML;
     public function testManyTogglers(): void
     {
         Modal::counter(0);
-        $widget =  Modal::widget();
+        $widget = Modal::widget();
 
         $html = $widget->renderToggleButton();
         $html .= $widget->renderToggleButton(['label' => 'New Label']);

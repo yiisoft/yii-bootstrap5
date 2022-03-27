@@ -472,9 +472,9 @@ final class NavBarTest extends TestCase
         foreach ($themes as $theme => $classNames) {
             foreach ($classNames as $class) {
                 $html = NavBar::widget()->theme($theme)->options([
-                        'class' => $class,
-                        'id' => 'expanded-navbar',
-                    ])->begin();
+                    'class' => $class,
+                    'id' => 'expanded-navbar',
+                ])->begin();
                 $html .= NavBar::end();
                 $expected = <<<HTML
                 <nav id="expanded-navbar" class="{$class} navbar navbar-expand-lg {$theme}">

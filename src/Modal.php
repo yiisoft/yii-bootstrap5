@@ -617,7 +617,7 @@ final class Modal extends Widget
 
         $options = array_merge(
             [
-               'data-bs-toggle' => 'modal',
+                'data-bs-toggle' => 'modal',
             ],
             $this->toggleButton,
             $options
@@ -664,9 +664,9 @@ final class Modal extends Widget
         }
 
         $options = array_merge([
-                'data-bs-dismiss' => 'modal',
-                'aria-label' => 'Close',
-            ], $this->closeButton);
+            'data-bs-dismiss' => 'modal',
+            'aria-label' => 'Close',
+        ], $this->closeButton);
         $tag = ArrayHelper::remove($options, 'tag', 'button');
         $label = ArrayHelper::remove($options, 'label', '');
         $encode = ArrayHelper::remove($options, 'encode', !empty($label));
