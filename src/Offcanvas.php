@@ -18,11 +18,13 @@ final class Offcanvas extends Widget
     private array $headerOptions = [];
     private array $titleOptions = [];
     private array $bodyOptions = [];
-    private array $closeButtonOptions = [];
+    private array $closeButtonOptions = [
+        'class' => 'btn-close',
+    ];
     private ?string $title = null;
     private string $placement = self::PLACEMENT_START;
     private bool $scroll = false;
-    private bool $backdrop = true;
+    private bool $withoutBackdrop = false;
 
     public function getId(?string $suffix = '-offcanvas'): ?string
     {
@@ -36,7 +38,7 @@ final class Offcanvas extends Widget
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
-    public function scroll(bool $scroll): self
+    public function scroll(bool $scroll = true): self
     {
         $new = clone $this;
         $new->scroll = $scroll;
@@ -45,16 +47,16 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Enable/disable offcanvas
+     * Enable/disable offcanvas backdrop
      *
      * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
-    public function backdrop(bool $backdrop): self
+    public function withoutBackdrop(bool $withoutBackdrop = true): self
     {
         $new = clone $this;
-        $new->backdrop = $backdrop;
+        $new->withoutBackdrop = $withoutBackdrop;
 
         return $new;
     }
@@ -203,7 +205,7 @@ final class Offcanvas extends Widget
             $options['data-bs-scroll'] = 'true';
         }
 
-        if (!$this->backdrop) {
+        if ($this->withoutBackdrop) {
             $options['data-bs-backdrop'] = 'false';
         }
 
@@ -216,8 +218,8 @@ final class Offcanvas extends Widget
 
     protected function run(): string
     {
-        $tag = ArrayHelper::getValue($this->options, 'tag', 'div');
-        $bodyTag = ArrayHelper::getValue($this->bodyOptions, 'tag', 'div');
+        $tag = $this->options['tag'] ?? 'div';
+        $bodyTag = $this->bodyOptions['tag'] ?? 'div';
 
         return Html::closeTag($bodyTag) . Html::closeTag($tag);
     }
@@ -272,17 +274,13 @@ final class Offcanvas extends Widget
     private function renderCloseButton(): string
     {
         $options = $this->closeButtonOptions;
-        $label = ArrayHelper::remove($options, 'label');
+        $label = ArrayHelper::remove($options, 'label', '');
         $encode = ArrayHelper::remove($options, 'encode');
-
-        if ($label === null) {
-            Html::addCssClass($options, ['btn-close']);
-        }
 
         $options['type'] = 'button';
         $options['aria-label'] = 'Close';
         $options['data-bs-dismiss'] = 'offcanvas';
 
-        return Html::tag('button', $label, $options)->encode($encode)->render();
+        return Html::button($label, $options)->encode($encode)->render();
     }
 }

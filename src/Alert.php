@@ -31,10 +31,11 @@ final class Alert extends Widget
     private ?string $header = null;
     private array $headerOptions = [];
     private string $headerTag = 'h4';
-    private ?array $closeButton = [
+    private array $closeButton = [
         'class' => 'btn-close',
     ];
     private string $closeButtonTag = 'button';
+    private bool $closeButtonInside = true;
     private bool $encode = false;
     private array $options = [];
     private array $classNames = [];
@@ -49,13 +50,12 @@ final class Alert extends Widget
     {
         $options = $this->prepareOptions();
         $tag = ArrayHelper::remove($options, 'tag', 'div');
-        $closeButtonOutside = $this->closeButton['outside'] ?? false;
 
         $content = Html::openTag($tag, $options);
         $content .= $this->renderHeader();
         $content .= $this->encode ? Html::encode($this->body) : $this->body;
 
-        if (!$closeButtonOutside) {
+        if ($this->closeButtonInside) {
             $content .= $this->renderCloseButton(false);
         }
 
@@ -160,10 +160,10 @@ final class Alert extends Widget
      *
      * @return self
      */
-    public function withoutCloseButton(): self
+    public function withoutCloseButton(bool $value = false): self
     {
         $new = clone $this;
-        $new->closeButton = null;
+        $new->closeButtonInside = $value;
 
         return $new;
     }
@@ -334,10 +334,6 @@ final class Alert extends Widget
      */
     public function renderCloseButton(bool $outside = true): ?string
     {
-        if ($this->closeButton === null) {
-            return null;
-        }
-
         $options = array_merge(
             $this->closeButton,
             [
@@ -347,8 +343,6 @@ final class Alert extends Widget
         );
         $label = ArrayHelper::remove($options, 'label', '');
         $encode = ArrayHelper::remove($options, 'encode', $this->encode);
-
-        unset($options['outside']);
 
         if ($this->closeButtonTag === 'button' && !isset($options['type'])) {
             $options['type'] = 'button';
@@ -393,7 +387,7 @@ final class Alert extends Widget
         $options['id'] = $this->getId();
         $classNames = array_merge(['alert'], $this->classNames);
 
-        if ($this->closeButton !== null) {
+        if ($this->closeButtonInside) {
             $classNames[] = 'alert-dismissible';
         }
 

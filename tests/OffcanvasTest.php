@@ -235,7 +235,7 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->backdrop(false)->begin();
+        $html = Offcanvas::widget()->title('Offcanvas title')->withoutBackdrop()->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
