@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use RuntimeException;
 use Yiisoft\Definitions\Exception\InvalidConfigException;
+use Yiisoft\Html\Tag\B;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 
 /**
@@ -74,6 +75,17 @@ final class AccordionTest extends TestCase
                     ],
                     'encode' => false,
                 ],
+                [
+                    'label' => 'Accordion item #3 - Stringable object',
+                    'content' => B::tag()->content('This is a Stringable object'),
+                ],
+                [
+                    'label' => 'Accordion item #4 - array',
+                    'content' => [
+                        '<p>This is a standard string content</p>',
+                        B::tag()->content('This is a Stringable object'),
+                    ],
+                ],
             ])
             ->render();
         $expected = <<<'HTML'
@@ -112,9 +124,35 @@ final class AccordionTest extends TestCase
         </button>
         </h2>
         <div id="w0-accordion-collapse2" class="testContentOptions2 accordion-collapse collapse" aria-labelledby="w0-accordion-collapse2-heading" data-bs-parent="#w0-accordion">
-        <div class="accordion-body"><b>test content1</b></div>
-        <div class="accordion-body">
+        <div class="accordion-body"><b>test content1</b>
         <strong>This is the third items accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. Its also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+        </div>
+        </div>
+        </div>
+
+        <div class="accordion-item">
+        <h2 id="w0-accordion-collapse3-heading" class="accordion-header">
+        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="w0-accordion-collapse3" data-bs-target="#w0-accordion-collapse3">
+        Accordion item #3 - Stringable object
+        </button>
+        </h2>
+        <div id="w0-accordion-collapse3" class="accordion-collapse collapse" aria-labelledby="w0-accordion-collapse3-heading" data-bs-parent="#w0-accordion">
+        <div class="accordion-body">
+        <b>This is a Stringable object</b>
+        </div>
+        </div>
+        </div>
+
+        <div class="accordion-item">
+        <h2 id="w0-accordion-collapse4-heading" class="accordion-header">
+        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="w0-accordion-collapse4" data-bs-target="#w0-accordion-collapse4">
+        Accordion item #4 - array
+        </button>
+        </h2>
+        <div id="w0-accordion-collapse4" class="accordion-collapse collapse" aria-labelledby="w0-accordion-collapse4-heading" data-bs-parent="#w0-accordion">
+        <div class="accordion-body">
+        <p>This is a standard string content</p>
+        <b>This is a Stringable object</b>
         </div>
         </div>
         </div>
@@ -220,8 +258,6 @@ final class AccordionTest extends TestCase
         <div id="w0-accordion-collapse2" class="testContentOptions2 accordion-collapse collapse" aria-labelledby="w0-accordion-collapse2-heading" data-bs-parent="#w0-accordion">
         <div class="accordion-body">
         <b>test content1</b>
-        </div>
-        <div class="accordion-body">
         <strong>This is the third items accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. Its also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
         </div>
