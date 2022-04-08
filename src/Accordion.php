@@ -477,7 +477,7 @@ final class Accordion extends Widget
     {
         $items = '';
 
-        if ($this->isAStringableObject($item['content'])) {
+        if ($this->isStringableObject($item['content'])) {
             $content = [$item['content']];
         } else {
             $content = (array) $item['content'];
