@@ -484,7 +484,7 @@ final class Accordion extends Widget
         }
 
         foreach ($content as $value) {
-            if (!is_string($value) && !is_numeric($value) && !$this->isAStringableObject($value)) {
+            if (!is_string($value) && !is_numeric($value) && !$this->isStringableObject($value)) {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
 
@@ -496,7 +496,7 @@ final class Accordion extends Widget
             ->render();
     }
 
-    private function isAStringableObject($value): bool
+    private function isStringableObject($value): bool
     {
         return is_object($value) && method_exists($value, '__toString');
     }
