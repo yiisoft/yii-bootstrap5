@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
-use Stringable;
 use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_key_exists;
 use function array_merge;
 use function implode;
@@ -478,18 +476,28 @@ final class Accordion extends Widget
     private function renderBody(array $item): string
     {
         $items = '';
-        $content = (array) $item['content'];
+
+        if ($this->isStringableObject($item['content'])) {
+            $content = [$item['content']];
+        } else {
+            $content = (array) $item['content'];
+        }
 
         foreach ($content as $value) {
-            if (!is_string($value) && !is_numeric($value) && !is_a($value, Stringable::class)) {
+            if (!is_string($value) && !is_numeric($value) && !$this->isStringableObject($value)) {
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
 
-            $items .= Html::div((string) $value, ['class' => 'accordion-body'])
-                    ->encode($this->encodeTags)
-                    ->render();
+            $items .= (string) $value;
         }
 
-        return $items;
+        return Html::div($items, ['class' => 'accordion-body'])
+            ->encode($this->encodeTags)
+            ->render();
+    }
+
+    private function isStringableObject($value): bool
+    {
+        return is_object($value) && method_exists($value, '__toString');
     }
 }
