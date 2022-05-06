@@ -48,7 +48,7 @@ use Yiisoft\Html\Html;
  *        ];
  *    }
  *
- *    <?php NavBar::widget()
+ *    <?php echo NavBar::widget()
  *        ->brandText('My Application Basic')
  *        ->brandUrl('/')
  *        ->options([
