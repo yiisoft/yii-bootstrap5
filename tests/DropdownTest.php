@@ -64,7 +64,9 @@ final class DropdownTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Dropdown::widget()->items([['url' => '#test']])->render();
+        Dropdown::widget()
+            ->items([['url' => '#test']])
+            ->render();
     }
 
     public function testSubMenuOptions(): void

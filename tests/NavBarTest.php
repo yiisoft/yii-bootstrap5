@@ -45,7 +45,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandImage('/images/test.jpg')->brandUrl('/')->begin();
+        $html = NavBar::widget()
+            ->brandImage('/images/test.jpg')
+            ->brandUrl('/')
+            ->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -58,7 +61,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('/index.php')->begin();
+        $html = NavBar::widget()
+            ->brandText('Yii Framework')
+            ->brandUrl('/index.php')
+            ->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -71,7 +77,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('Yii Framework')->brandUrl('')->begin();
+        $html = NavBar::widget()
+            ->brandText('Yii Framework')
+            ->brandUrl('')
+            ->begin();
         $html .= NavBar::end();
 
         $this->assertStringContainsString(
@@ -100,7 +109,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('My Company')->brandUrl('/')->begin();
+        $html = NavBar::widget()
+            ->brandText('My Company')
+            ->brandUrl('/')
+            ->begin();
         $html .= Nav::widget()
             ->items([
                 ['label' => 'Home', 'url' => '#'],
@@ -151,7 +163,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->collapseOptions(['class' => 'testMe'])->begin();
+        $html = NavBar::widget()
+            ->collapseOptions(['class' => 'testMe'])
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -170,7 +184,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('My App')->brandOptions(['class' => 'text-dark'])->begin();
+        $html = NavBar::widget()
+            ->brandText('My App')
+            ->brandOptions(['class' => 'text-dark'])
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -189,7 +206,10 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandImage('empty.gif')->brandImageAttributes(['width' => 100, 'height' => 100])->begin();
+        $html = NavBar::widget()
+            ->brandImage('empty.gif')
+            ->brandImageAttributes(['width' => 100, 'height' => 100])
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -208,7 +228,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->screenReaderToggleText('Toggler navigation')->begin();
+        $html = NavBar::widget()
+            ->screenReaderToggleText('Toggler navigation')
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -227,7 +249,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->togglerContent('<div class="navbar-toggler-icon"></div>')->begin();
+        $html = NavBar::widget()
+            ->togglerContent('<div class="navbar-toggler-icon"></div>')
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -246,7 +270,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->togglerOptions(['class' => 'testMe'])->begin();
+        $html = NavBar::widget()
+            ->togglerOptions(['class' => 'testMe'])
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -265,7 +291,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->withoutRenderInnerContainer()->begin();
+        $html = NavBar::widget()
+            ->withoutRenderInnerContainer()
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -282,7 +310,9 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->innerContainerOptions(['class' => 'text-link'])->begin();
+        $html = NavBar::widget()
+            ->innerContainerOptions(['class' => 'text-link'])
+            ->begin();
         $html .= NavBar::end();
         $expected = <<<'HTML'
         <nav id="w0-navbar" class="navbar navbar-expand-lg navbar-light">
@@ -301,7 +331,11 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->brandText('My Company')->expandSize(null)->brandUrl('/')->begin();
+        $html = NavBar::widget()
+            ->brandText('My Company')
+            ->expandSize(null)
+            ->brandUrl('/')
+            ->begin();
         $html .= Nav::widget()
             ->items([
                 ['label' => 'Home', 'url' => '#'],
@@ -350,7 +384,9 @@ final class NavBarTest extends TestCase
         ]);
 
         foreach ($sizes as $size) {
-            $html = $NavBar->expandSize($size)->begin() . NavBar::end();
+            $html = $NavBar
+                    ->expandSize($size)
+                    ->begin() . NavBar::end();
             $expected = <<<HTML
             <nav id="expanded-navbar" class="navbar {$size} navbar-light">
             <div class="container">
@@ -370,7 +406,10 @@ final class NavBarTest extends TestCase
         NavBar::counter(0);
 
         $offcanvas = Offcanvas::widget()->title('Navbar offcanvas title');
-        $html = NavBar::widget()->offcanvas($offcanvas)->expandSize(null)->begin();
+        $html = NavBar::widget()
+            ->offcanvas($offcanvas)
+            ->expandSize(null)
+            ->begin();
         $html .= '<p>Some content in navbar offcanvas</p>';
         $html .= NavBar::end();
 
@@ -401,7 +440,10 @@ final class NavBarTest extends TestCase
         NavBar::counter(0);
 
         $offcanvas = Offcanvas::widget()->title('Navbar offcanvas title');
-        $html = NavBar::widget()->offcanvas($offcanvas)->expandSize(NavBar::EXPAND_XL)->begin();
+        $html = NavBar::widget()
+            ->offcanvas($offcanvas)
+            ->expandSize(NavBar::EXPAND_XL)
+            ->begin();
         $html .= '<p>Some content in navbar offcanvas</p>';
         $html .= NavBar::end();
 
@@ -431,16 +473,20 @@ final class NavBarTest extends TestCase
     {
         NavBar::counter(0);
 
-        $html = NavBar::widget()->innerContainerOptions([
-            'class' => 'container-fluid',
-        ])->togglerOptions([
-            'data' => [
-                'bs-target' => '#navbarToggleExternalContent',
-            ],
-            'aria' => [
-                'controls' => 'navbarToggleExternalContent',
-            ],
-        ])->expandSize(null)->begin();
+        $html = NavBar::widget()
+            ->innerContainerOptions([
+                'class' => 'container-fluid',
+            ])
+            ->togglerOptions([
+                'data' => [
+                    'bs-target' => '#navbarToggleExternalContent',
+                ],
+                'aria' => [
+                    'controls' => 'navbarToggleExternalContent',
+                ],
+            ])
+            ->expandSize(null)
+            ->begin();
         $html .= NavBar::end();
 
         $expected = <<<'HTML'
@@ -471,10 +517,13 @@ final class NavBarTest extends TestCase
 
         foreach ($themes as $theme => $classNames) {
             foreach ($classNames as $class) {
-                $html = NavBar::widget()->theme($theme)->options([
-                    'class' => $class,
-                    'id' => 'expanded-navbar',
-                ])->begin();
+                $html = NavBar::widget()
+                    ->theme($theme)
+                    ->options([
+                        'class' => $class,
+                        'id' => 'expanded-navbar',
+                    ])
+                    ->begin();
                 $html .= NavBar::end();
                 $expected = <<<HTML
                 <nav id="expanded-navbar" class="{$class} navbar navbar-expand-lg {$theme}">

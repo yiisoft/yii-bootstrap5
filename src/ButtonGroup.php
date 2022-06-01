@@ -137,7 +137,9 @@ final class ButtonGroup extends Widget
                     ArrayHelper::setValueByPath($button, 'options.type', 'button');
                 }
 
-                $buttonWidget = Button::widget()->label($button['label'])->options($button['options']);
+                $buttonWidget = Button::widget()
+                    ->label($button['label'])
+                    ->options($button['options']);
 
                 if ($button['encodeLabel'] === false) {
                     $buttonWidget = $buttonWidget->withoutEncodeLabels();

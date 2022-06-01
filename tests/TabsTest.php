@@ -430,7 +430,9 @@ final class TabsTest extends TestCase
     {
         Tabs::counter(0);
 
-        $html = Tabs::widget()->panes(['content' => '<div>Content 1</div>'])->render();
+        $html = Tabs::widget()
+            ->panes(['content' => '<div>Content 1</div>'])
+            ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-tabs" role="tablist"></ul>
         <div class="tab-content"><div>Content 1</div></div>
@@ -441,7 +443,9 @@ final class TabsTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Tabs::widget()->items([['content' => '<div>Content 1</div>']])->render();
+        Tabs::widget()
+            ->items([['content' => '<div>Content 1</div>']])
+            ->render();
     }
 
     public function testNavType(): void
@@ -469,7 +473,8 @@ final class TabsTest extends TestCase
             ->paneOptions([
                 'tag' => 'article',
                 'class' => 'custom-class',
-            ])->render();
+            ])
+            ->render();
 
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -487,7 +492,8 @@ final class TabsTest extends TestCase
             ->navType('nav-lg')
             ->linkOptions([
                 'class' => 'custom-link-class',
-            ])->render();
+            ])
+            ->render();
 
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
@@ -500,7 +506,8 @@ final class TabsTest extends TestCase
         $html = Tabs::widget()
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
-            ->withoutEncodeLabels()->render();
+            ->withoutEncodeLabels()
+            ->render();
         $expected = <<<'HTML'
         <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>

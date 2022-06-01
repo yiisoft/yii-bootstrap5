@@ -33,7 +33,9 @@ final class ProgressTest extends TestCase
     {
         Progress::counter(0);
 
-        $html = Progress::widget()->percent('25')->render();
+        $html = Progress::widget()
+            ->percent('25')
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-progress" class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div></div>
         HTML;
@@ -44,7 +46,9 @@ final class ProgressTest extends TestCase
     {
         Progress::counter(0);
 
-        $html = Progress::widget()->bars([['label' => 'Progress', 'percent' => '25']])->render();
+        $html = Progress::widget()
+            ->bars([['label' => 'Progress', 'percent' => '25']])
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-progress" class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">Progress</div></div>
         HTML;
@@ -73,7 +77,9 @@ final class ProgressTest extends TestCase
     public function testMissingPercent(): void
     {
         $this->expectException(RuntimeException::class);
-        Progress::widget()->bars(['options' => ['class' => ['bg-info']]])->render();
+        Progress::widget()
+            ->bars(['options' => ['class' => ['bg-info']]])
+            ->render();
     }
 
     public function testOptions(): void

@@ -243,7 +243,10 @@ final class Dropdown extends Widget
                 $content = Html::tag($tag, $label, $linkOptions);
             }
 
-            return Li::tag()->content($content)->attributes($itemOptions)->encode(false);
+            return Li::tag()
+                ->content($content)
+                ->attributes($itemOptions)
+                ->encode(false);
         }
 
         $submenuOptions = $this->submenuOptions;
@@ -261,9 +264,9 @@ final class Dropdown extends Widget
         $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
 
         $dropdown = self::widget()
-                    ->items($item['items'])
-                    ->options($submenuOptions)
-                    ->submenuOptions($submenuOptions);
+            ->items($item['items'])
+            ->options($submenuOptions)
+            ->submenuOptions($submenuOptions);
 
         if ($this->encodeLabels === false) {
             $dropdown = $dropdown->withoutEncodeLabels();
@@ -277,6 +280,9 @@ final class Dropdown extends Widget
 
         $toggle = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
 
-        return Li::tag()->content($toggle . $dropdown->render())->attributes($itemOptions)->encode(false);
+        return Li::tag()
+            ->content($toggle . $dropdown->render())
+            ->attributes($itemOptions)
+            ->encode(false);
     }
 }

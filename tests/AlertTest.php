@@ -130,7 +130,9 @@ final class AlertTest extends TestCase
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')->render();
+        $html = Alert::widget()
+            ->body('Message1')
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
@@ -143,7 +145,10 @@ final class AlertTest extends TestCase
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')->withoutCloseButton()->render();
+        $html = Alert::widget()
+            ->body('Message1')
+            ->withoutCloseButton()
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert" role="alert">Message1
 
@@ -156,7 +161,10 @@ final class AlertTest extends TestCase
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')->closeButton(['class' => 'btn-lg'])->render();
+        $html = Alert::widget()
+            ->body('Message1')
+            ->closeButton(['class' => 'btn-lg'])
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
         <button type="button" class="btn-lg" aria-label="Close" data-bs-dismiss="alert"></button>
@@ -166,12 +174,14 @@ final class AlertTest extends TestCase
 
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')
+        $html = Alert::widget()
+            ->body('Message1')
             ->closeButtonTag('a')
             ->closeButton([
                 'class' => 'btn-close',
                 'href' => '/',
-            ])->render();
+            ])
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible" role="alert">Message1
         <a class="btn-close" href="/" aria-label="Close" data-bs-dismiss="alert"></a>
@@ -184,7 +194,10 @@ final class AlertTest extends TestCase
     {
         Alert::counter(0);
 
-        $html = Alert::widget()->body('Message1')->fade()->render();
+        $html = Alert::widget()
+            ->body('Message1')
+            ->fade()
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible fade show" role="alert">Message1
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
@@ -206,7 +219,10 @@ final class AlertTest extends TestCase
             $alert = Alert::widget()->{$type}();
         }
 
-        $html = $alert->body($type)->withoutCloseButton()->render();
+        $html = $alert
+            ->body($type)
+            ->withoutCloseButton()
+            ->render();
 
         $this->assertEqualsHTML($expected, $html);
     }
@@ -221,7 +237,9 @@ final class AlertTest extends TestCase
             ->headerTag('h5')
             ->headerOptions([
                 'class' => 'header-class',
-            ])->fade()->render();
+            ])
+            ->fade()
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-alert" class="alert alert-dismissible fade show" role="alert">
         <h5 class="header-class alert-heading">Alert header</h5>

@@ -74,9 +74,13 @@ use Yiisoft\Html\Html;
  *    public function index(ServerRequestInterface $request): ResponseInterface
  *    {
  *        $response = $this->responseFactory->createResponse();
- *        $currentPath = $request->getUri()->getPath();
+ *        $currentPath = $request
+ *            ->getUri()
+ *            ->getPath();
  *        $output = $this->render('index', ['currentPath' => $currentPath]);
- *        $response->getBody()->write($output);
+ *        $response
+ *            ->getBody()
+ *            ->write($output);
  *
  *        return $response;
  *    }
@@ -508,7 +512,9 @@ final class NavBar extends Widget
             $brand = Html::a($content, $this->brandUrl, $options);
         }
 
-        return $brand->encode($encode)->render();
+        return $brand
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -547,6 +553,8 @@ final class NavBar extends Widget
         return Html::button(
             $this->togglerContent,
             ArrayHelper::merge($defauts, $options)
-        )->encode($encode)->render();
+        )
+            ->encode($encode)
+            ->render();
     }
 }

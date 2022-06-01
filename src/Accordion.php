@@ -340,7 +340,9 @@ final class Accordion extends Widget
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
-            $items[] = Html::div($item, $options)->encode(false)->render();
+            $items[] = Html::div($item, $options)
+                ->encode(false)
+                ->render();
         }
 
         return implode('', $items);
@@ -386,7 +388,9 @@ final class Accordion extends Widget
 
         Html::addCssClass($options, ['widget' => 'accordion-header']);
 
-        return Html::tag($tag, $toggle, $options)->encode(false)->render();
+        return Html::tag($tag, $toggle, $options)
+            ->encode(false)
+            ->render();
     }
 
     /**
@@ -430,7 +434,9 @@ final class Accordion extends Widget
             }
         }
 
-        return Html::tag($tag, $label, $options)->encode($encode)->render();
+        return Html::tag($tag, $label, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -463,7 +469,9 @@ final class Accordion extends Widget
             $options['data-bs-parent'] = '#' . $this->getId();
         }
 
-        return Html::tag($tag, $body, $options)->encode(false)->render();
+        return Html::tag($tag, $body, $options)
+            ->encode(false)
+            ->render();
     }
 
     /**

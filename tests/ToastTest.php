@@ -42,7 +42,10 @@ final class ToastTest extends TestCase
     {
         Toast::counter(0);
 
-        $html = Toast::widget()->dateTime('a minute ago')->title('Toast title')->begin();
+        $html = Toast::widget()
+            ->dateTime('a minute ago')
+            ->title('Toast title')
+            ->begin();
         $html .= 'Woohoo, you\'re reading this text in a toast!';
         $html .= Toast::end();
         $expected = <<<'HTML'

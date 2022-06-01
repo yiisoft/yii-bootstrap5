@@ -239,7 +239,9 @@ final class Offcanvas extends Widget
         $title = (string) $this->renderTitle();
         $closeButton = $this->renderCloseButton();
 
-        return Html::tag($tag, $title . $closeButton, $options)->encode(false)->render();
+        return Html::tag($tag, $title . $closeButton, $options)
+            ->encode(false)
+            ->render();
     }
 
     /**
@@ -263,7 +265,9 @@ final class Offcanvas extends Widget
             $options['id'] = $id . '-title';
         }
 
-        return Html::tag($tag, $this->title, $options)->encode($encode)->render();
+        return Html::tag($tag, $this->title, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -281,6 +285,8 @@ final class Offcanvas extends Widget
         $options['aria-label'] = 'Close';
         $options['data-bs-dismiss'] = 'offcanvas';
 
-        return Html::button($label, $options)->encode($encode)->render();
+        return Html::button($label, $options)
+            ->encode($encode)
+            ->render();
     }
 }

@@ -63,7 +63,9 @@ final class Carousel extends Widget
         return Html::div(
             $this->renderIndicators() . $this->renderItems() . $this->renderControls(),
             $this->options
-        )->encode($this->encodeTags)->render();
+        )
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**
@@ -221,7 +223,9 @@ final class Carousel extends Widget
                 $captionOptions = ArrayHelper::remove($item, 'captionOptions', []);
                 Html::addCssClass($captionOptions, ['captionOptions' => 'carousel-caption']);
 
-                $caption = Html::div($caption, $captionOptions)->encode($this->encodeTags)->render();
+                $caption = Html::div($caption, $captionOptions)
+                    ->encode($this->encodeTags)
+                    ->render();
             }
 
             $options = ArrayHelper::getValue($item, 'options', []);

@@ -223,7 +223,9 @@ final class Toast extends Widget
         $button = $this->renderCloseButton();
         $tag = ArrayHelper::remove($this->titleOptions, 'tag', 'strong');
         Html::addCssClass($this->titleOptions, ['widget' => 'me-auto']);
-        $title = Html::tag($tag, $this->title, $this->titleOptions)->encode($this->encodeTags)->render();
+        $title = Html::tag($tag, $this->title, $this->titleOptions)
+            ->encode($this->encodeTags)
+            ->render();
 
         if ($this->dateTime !== '') {
             $tag = ArrayHelper::remove($this->dateTimeOptions, 'tag', 'small');
@@ -274,7 +276,9 @@ final class Toast extends Widget
         $label = ArrayHelper::remove(
             $this->closeButton,
             'label',
-            Html::tag('span', '&times;', ['aria-hidden' => 'true'])->encode(false)->render()
+            Html::tag('span', '&times;', ['aria-hidden' => 'true'])
+                ->encode(false)
+                ->render()
         );
 
         return Html::tag($tag, "\n" . $label . "\n", $this->closeButton)
