@@ -433,7 +433,9 @@ final class Tabs extends Widget
             /** @psalm-suppress ConflictingReferenceConstraint */
             if ($this->renderTabContent) {
                 $tag = ArrayHelper::remove($options, 'tag', 'div');
-                $this->panes[] = Html::tag($tag, $item['content'] ?? '', $options)->encode($this->encodeTags)->render();
+                $this->panes[] = Html::tag($tag, $item['content'] ?? '', $options)
+                    ->encode($this->encodeTags)
+                    ->render();
             }
         }
     }

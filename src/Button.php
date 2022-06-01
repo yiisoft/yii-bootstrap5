@@ -38,7 +38,9 @@ final class Button extends Widget
             $this->tagName,
             $this->encodeLabels ? Html::encode($this->label) : $this->label,
             $this->options
-        )->encode($this->encodeTags)->render();
+        )
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**

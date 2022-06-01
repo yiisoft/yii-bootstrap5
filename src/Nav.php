@@ -56,9 +56,13 @@ use function is_string;
  *    public function index(ServerRequestInterface $request): ResponseInterface
  *    {
  *        $response = $this->responseFactory->createResponse();
- *        $currentPath = $request->getUri()->getPath();
+ *        $currentPath = $request
+ *           ->getUri()
+ *          ->getPath();
  *        $output = $this->render('index', ['currentPath' => $currentPath]);
- *        $response->getBody()->write($output);
+ *        $response
+ *          ->getBody()
+ *          ->write($output);
  *
  *        return $response;
  *    }
@@ -384,7 +388,9 @@ final class Nav extends Widget
             'li',
             Html::a($label, $url, $linkOptions)->encode($this->encodeTags) . $items,
             $options
-        )->encode($this->encodeTags)->render();
+        )
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**

@@ -140,7 +140,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->closeButton(['class' => 'btn-lg btn-close'])->begin();
+        $html = Modal::widget()
+            ->closeButton(['class' => 'btn-lg btn-close'])
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -165,7 +167,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withoutCloseButton()->begin();
+        $html = Modal::widget()
+            ->withoutCloseButton()
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -189,7 +193,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->footerOptions(['class' => 'text-dark'])->begin();
+        $html = Modal::widget()
+            ->footerOptions(['class' => 'text-dark'])
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -214,7 +220,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->headerOptions(['class' => 'text-danger'])->begin();
+        $html = Modal::widget()
+            ->headerOptions(['class' => 'text-danger'])
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -239,7 +247,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->options(['class' => 'testMe'])->begin();
+        $html = Modal::widget()
+            ->options(['class' => 'testMe'])
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -264,7 +274,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->title('My first modal.')->begin();
+        $html = Modal::widget()
+            ->title('My first modal.')
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -289,7 +301,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->title('')->begin();
+        $html = Modal::widget()
+            ->title('')
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -314,7 +328,10 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->title('My first modal.')->titleOptions(['class' => 'text-center'])->begin();
+        $html = Modal::widget()
+            ->title('My first modal.')
+            ->titleOptions(['class' => 'text-center'])
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -339,7 +356,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->withoutToggleButton()->begin();
+        $html = Modal::widget()
+            ->withoutToggleButton()
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -364,7 +383,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->size(Modal::SIZE_LARGE)->begin();
+        $html = Modal::widget()
+            ->size(Modal::SIZE_LARGE)
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -384,7 +405,9 @@ HTML;
         HTML;
         $this->assertEqualsHTML($expected, $html);
 
-        $html = Modal::widget()->size(Modal::SIZE_SMALL)->begin();
+        $html = Modal::widget()
+            ->size(Modal::SIZE_SMALL)
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -409,7 +432,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->fade(false)->begin();
+        $html = Modal::widget()
+            ->fade(false)
+            ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
@@ -444,7 +469,9 @@ HTML;
         foreach ($fullscreen as $className) {
             Modal::counter(0);
 
-            $html = Modal::widget()->fullscreen($className)->begin();
+            $html = Modal::widget()
+                ->fullscreen($className)
+                ->begin();
             $html .= Modal::end();
 
             $expected = <<<HTML
@@ -470,19 +497,25 @@ HTML;
         Modal::counter(0);
 
         $html = Modal::widget()
-                ->contentOptions([
-                    'tag' => 'form',
-                    'action' => '/',
-                ])->bodyOptions([
-                    'tag' => 'fieldset',
-                ])->headerOptions([
-                    'tag' => 'header',
-                ])->titleOptions([
-                    'tag' => 'h4',
-                ])->footerOptions([
-                    'tag' => 'footer',
-                ])->title('Title')
-                ->footer('<button type="submit">Save</button>')->begin();
+            ->contentOptions([
+                'tag' => 'form',
+                'action' => '/',
+            ])
+            ->bodyOptions([
+                'tag' => 'fieldset',
+            ])
+            ->headerOptions([
+                'tag' => 'header',
+            ])
+            ->titleOptions([
+                'tag' => 'h4',
+            ])
+            ->footerOptions([
+                'tag' => 'footer',
+            ])
+            ->title('Title')
+            ->footer('<button type="submit">Save</button>')
+            ->begin();
         $html .= '<input type="text">';
         $html .= Modal::end();
 
@@ -511,7 +544,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->staticBackdrop()->begin();
+        $html = Modal::widget()
+            ->staticBackdrop()
+            ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML
@@ -535,7 +570,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->scrollable()->begin();
+        $html = Modal::widget()
+            ->scrollable()
+            ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML
@@ -559,7 +596,9 @@ HTML;
     {
         Modal::counter(0);
 
-        $html = Modal::widget()->centered()->begin();
+        $html = Modal::widget()
+            ->centered()
+            ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML

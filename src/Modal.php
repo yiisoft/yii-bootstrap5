@@ -526,7 +526,9 @@ final class Modal extends Widget
 
         Html::addCssClass($options, ['headerOptions' => 'modal-header']);
 
-        return Html::tag($tag, $content, $options)->encode(false)->render();
+        return Html::tag($tag, $content, $options)
+            ->encode(false)
+            ->render();
     }
 
     /**
@@ -547,7 +549,9 @@ final class Modal extends Widget
 
         Html::addCssClass($options, ['modal-title']);
 
-        return Html::tag($tag, $this->title, $options)->encode($encode)->render();
+        return Html::tag($tag, $this->title, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -597,7 +601,9 @@ final class Modal extends Widget
         $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
         Html::addCssClass($options, ['widget' => 'modal-footer']);
 
-        return Html::tag($tag, $this->footer, $options)->encode($encode)->render();
+        return Html::tag($tag, $this->footer, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -645,7 +651,9 @@ final class Modal extends Widget
             }
         }
 
-        return Html::tag($tag, $label, $options)->encode($encode)->render();
+        return Html::tag($tag, $label, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -675,6 +683,8 @@ final class Modal extends Widget
             $options['type'] = 'button';
         }
 
-        return Html::tag($tag, $label, $options)->encode($encode)->render();
+        return Html::tag($tag, $label, $options)
+            ->encode($encode)
+            ->render();
     }
 }

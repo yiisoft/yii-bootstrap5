@@ -12,7 +12,9 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->begin();
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -35,10 +37,13 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->options([
-            'class' => 'custom-class',
-            'data-custom' => 'custom-data',
-        ])->title('Offcanvas title')->begin();
+        $html = Offcanvas::widget()
+            ->options([
+                'class' => 'custom-class',
+                'data-custom' => 'custom-data',
+            ])
+            ->title('Offcanvas title')
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -61,11 +66,14 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->headerOptions([
-            'tag' => 'div',
-            'class' => 'custom-class',
-            'data-custom' => 'custom-data',
-        ])->title('Offcanvas title')->begin();
+        $html = Offcanvas::widget()
+            ->headerOptions([
+                'tag' => 'div',
+                'class' => 'custom-class',
+                'data-custom' => 'custom-data',
+            ])
+            ->title('Offcanvas title')
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -88,10 +96,13 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->titleOptions([
-            'tag' => 'h2',
-            'class' => 'h4',
-        ])->begin();
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->titleOptions([
+                'tag' => 'h2',
+                'class' => 'h4',
+            ])
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -114,10 +125,13 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->bodyOptions([
-            'class' => 'custom-body-class',
-            'data-custom' => 'custom-body-data',
-        ])->begin();
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->bodyOptions([
+                'class' => 'custom-body-class',
+                'data-custom' => 'custom-body-data',
+            ])
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -140,7 +154,9 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('')->begin();
+        $html = Offcanvas::widget()
+            ->title('')
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -192,7 +208,9 @@ final class OffcanvasTest extends TestCase
         ]);
 
         foreach ($placements as $placement) {
-            $html = $Offcanvas->placement($placement)->begin() . Offcanvas::end();
+            $html = $Offcanvas
+                    ->placement($placement)
+                    ->begin() . Offcanvas::end();
 
             $expected = <<<HTML
             <div id="offcanvas-placement" class="offcanvas {$placement}" tabindex="-1">
@@ -212,7 +230,10 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->scroll(true)->begin();
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->scroll(true)
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 
@@ -235,7 +256,10 @@ final class OffcanvasTest extends TestCase
     {
         Offcanvas::counter(0);
 
-        $html = Offcanvas::widget()->title('Offcanvas title')->withoutBackdrop()->begin();
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->withoutBackdrop()
+            ->begin();
         $html .= '<p>Some content here</p>';
         $html .= Offcanvas::end();
 

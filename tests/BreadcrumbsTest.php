@@ -38,14 +38,18 @@ final class BreadcrumbsTest extends TestCase
 
     public function testMissingLinks(): void
     {
-        $html = Breadcrumbs::widget()->links([])->render();
+        $html = Breadcrumbs::widget()
+            ->links([])
+            ->render();
         $this->assertEmpty($html);
     }
 
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Breadcrumbs::widget()->links([['url' => '#']])->render();
+        Breadcrumbs::widget()
+            ->links([['url' => '#']])
+            ->render();
     }
 
     public function testActiveItemTemplate(): void

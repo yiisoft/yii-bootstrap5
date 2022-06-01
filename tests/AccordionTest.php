@@ -288,7 +288,9 @@ final class AccordionTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The "label" option is required.');
-        Accordion::widget()->items($items)->render();
+        Accordion::widget()
+            ->items($items)
+            ->render();
     }
 
     public function testMissingContent(): void
@@ -301,7 +303,9 @@ final class AccordionTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The "content" option is required.');
-        Accordion::widget()->items($items)->render();
+        Accordion::widget()
+            ->items($items)
+            ->render();
     }
 
     public function testTypeContentException(): void
@@ -315,7 +319,9 @@ final class AccordionTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The "content" option should be a string, array or object.');
-        Accordion::widget()->items($items)->render();
+        Accordion::widget()
+            ->items($items)
+            ->render();
     }
 
     public function testAutoCloseItems(): void
@@ -332,10 +338,15 @@ final class AccordionTest extends TestCase
                 'content' => 'Content 2',
             ],
         ];
-        $html = Accordion::widget()->items($items)->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
         $this->assertStringContainsString('data-bs-parent="', $html);
 
-        $html = Accordion::widget()->allowMultipleOpenedItems()->items($items)->render();
+        $html = Accordion::widget()
+            ->allowMultipleOpenedItems()
+            ->items($items)
+            ->render();
         $this->assertStringNotContainsString('data-bs-parent="', $html);
     }
 
@@ -355,7 +366,9 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">
 
@@ -446,7 +459,10 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->options(['class' => 'testMe'])->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->options(['class' => 'testMe'])
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="testMe accordion">
 
@@ -492,7 +508,9 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">
 
@@ -522,7 +540,10 @@ final class AccordionTest extends TestCase
         HTML;
         $this->assertEqualsHTML($expected, $html);
 
-        $html = Accordion::widget()->items($items)->withoutEncodeLabels()->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->withoutEncodeLabels()
+            ->render();
         $expected = <<<'HTML'
         <div id="w1-accordion" class="accordion">
 
@@ -570,7 +591,9 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">
 
@@ -614,7 +637,10 @@ final class AccordionTest extends TestCase
             ],
         ];
 
-        $html = Accordion::widget()->items($items)->defaultExpand(false)->render();
+        $html = Accordion::widget()
+            ->items($items)
+            ->defaultExpand(false)
+            ->render();
         $expected = <<<'HTML'
         <div id="w0-accordion" class="accordion">
 

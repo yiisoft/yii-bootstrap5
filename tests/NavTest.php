@@ -58,7 +58,9 @@ final class NavTest extends TestCase
     public function testMissingLabel(): void
     {
         $this->expectException(RuntimeException::class);
-        Nav::widget()->items([['content' => 'Page1']])->render();
+        Nav::widget()
+            ->items([['content' => 'Page1']])
+            ->render();
     }
 
     public function testRenderDropdownWithDropdownOptions(): void
@@ -412,7 +414,8 @@ final class NavTest extends TestCase
         $html = Nav::widget()
             ->itemOptions([
                 'class' => 'custom-item-class',
-            ])->items([
+            ])
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
                     'items' => [
@@ -439,7 +442,8 @@ final class NavTest extends TestCase
         $html = Nav::widget()
             ->linkOptions([
                 'class' => 'custom-link-class',
-            ])->items([
+            ])
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
                     'items' => [
@@ -466,7 +470,8 @@ final class NavTest extends TestCase
         $html = Nav::widget()
             ->dropdownOptions([
                 'class' => 'dropdown-menu-dark',
-            ])->items([
+            ])
+            ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
                     'items' => [
@@ -491,7 +496,8 @@ final class NavTest extends TestCase
         Nav::counter(0);
 
         $html = Nav::widget()
-            ->activeClass('custom-active-class')->items([
+            ->activeClass('custom-active-class')
+            ->items([
                 [
                     'active' => true,
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',

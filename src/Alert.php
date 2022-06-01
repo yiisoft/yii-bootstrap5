@@ -352,7 +352,9 @@ final class Alert extends Widget
             $options['data-bs-target'] = '#' . $this->getId();
         }
 
-        return Html::tag($this->closeButtonTag, $label, $options)->encode($encode)->render();
+        return Html::tag($this->closeButtonTag, $label, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**
@@ -371,7 +373,9 @@ final class Alert extends Widget
 
         Html::addCssClass($options, ['alert-heading']);
 
-        return Html::tag($this->headerTag, $this->header, $options)->encode($encode)->render();
+        return Html::tag($this->headerTag, $this->header, $options)
+            ->encode($encode)
+            ->render();
     }
 
     /**

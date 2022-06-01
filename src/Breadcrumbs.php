@@ -65,9 +65,13 @@ final class Breadcrumbs extends Widget
 
         return Html::tag(
             'nav',
-            Html::tag($this->tag, implode('', $links), $this->options)->encode($this->encodeTags)->render(),
+            Html::tag($this->tag, implode('', $links), $this->options)
+                ->encode($this->encodeTags)
+                ->render(),
             $this->navOptions
-        )->encode($this->encodeTags)->render();
+        )
+            ->encode($this->encodeTags)
+            ->render();
     }
 
     /**

@@ -300,7 +300,10 @@ final class ButtonDropdown extends Widget
             $buttonOptions['role'] = 'button';
         }
 
-        $button = Button::widget()->label($label)->options($buttonOptions)->tagName($this->tagName);
+        $button = Button::widget()
+            ->label($label)
+            ->options($buttonOptions)
+            ->tagName($this->tagName);
 
         if ($this->encodeLabels === false) {
             $button = $button->withoutEncodeLabels();
