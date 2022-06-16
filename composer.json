@@ -1,26 +1,21 @@
 {
-    "name": "yiisoft/yii-bootstrap5",
+    "name": "redcatgirl/yii-bootstrap.386",
     "type": "library",
-    "description": "Yii Framework Twitter Bootstrap 5 Extension",
+    "description": "Yii Framework Twitter Bootstrap Extension i386 theme",
     "keywords": [
         "yii",
-        "bootstrap5"
+        "bootstrap",
+        "theme",
+        "i386",
+        "MSDOS"
     ],
-    "license": "BSD-3-Clause",
     "support": {
-        "source": "https://github.com/yiisoft/yii-bootstrap5",
-        "issues": "https://github.com/yiisoft/yii-bootstrap5/issues",
-        "forum": "https://www.yiiframework.com/forum/",
-        "wiki": "https://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "chat": "https://t.me/yii3en"
-    },
-    "provide": {
-        "yiisoft/yii-bootstrap": "1.0"
+        "source": "https://github.com/RedCatGirl/yii-bootstrap.386",
+        "issues": "https://github.com/RedCatGirl/yii-bootstrap.386/issues"
     },
     "require": {
         "php": "^7.4|^8.0",
-        "npm-asset/bootstrap": "^5.0.0",
+        "kristopolous/bootsrap.386": "^4.0",
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^1.0|^2.0",
         "yiisoft/assets": "^2.0",
@@ -38,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap5\\": "src"
+            "RedCatGirl\\YiiBootstrap386\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Yii\\Bootstrap5\\Tests\\": "tests"
+            "RedCatGirl\\YiiBootstrap386\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -61,13 +56,26 @@
         "sort-packages": true,
         "allow-plugins": {
             "infection/extension-installer": true,
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "repositories": [
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "kristopolous/bootsrap.386",
+                "version": "4.0",
+                "dist": {
+                    "url": "https://github.com/kristopolous/BOOTSTRA.386/blob/master/bootstra.386-latest-v4.zip?raw=true",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "scripts": {

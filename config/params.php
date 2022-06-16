@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 /**
- * For use bootstrap 5 style as default in Yii Forms set `$params['yiisoft/form']['defaultConfig']` to `bootstrap5`.
+ * For use bootstrap theme i386 style as default in Yii Forms set `$params['yiisoft/form']['defaultConfig']` to `bootstrap`.
  */
 
 return [
-    'yiisoft/form' => [
+    'yii-bootstrap.386/form' => [
         'configs' => [
-            'bootstrap5' => [
+            'yii-bootstrap386' => [
                 'containerClass' => 'mb-3',
                 'invalidClass' => 'is-invalid',
                 'errorClass' => 'text-danger fst-italic',

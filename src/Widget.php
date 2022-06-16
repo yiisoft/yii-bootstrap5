@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace RedCatGirl\YiiBootstrap386;
 
 abstract class Widget extends \Yiisoft\Widget\Widget
 {

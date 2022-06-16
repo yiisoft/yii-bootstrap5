@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
+use RedCatGirl\YiiBootstrap386\Breadcrumbs;
 
 /**
  * Tests for Breadcrumbs widget

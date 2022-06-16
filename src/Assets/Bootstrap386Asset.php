@@ -12,15 +12,15 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
  *
  * BootstrapAsset.
  *
- * @package Bootstrap5
+ * @package Bootstrap386
  */
-final class BootstrapAsset extends AssetBundle
+final class Bootstrap386Asset extends AssetBundle
 {
     public ?string $basePath = '@assets';
 
     public ?string $baseUrl = '@assetsUrl';
 
-    public ?string $sourcePath = '@npm/bootstrap/dist';
+    public ?string $sourcePath = '@vendor/kristopolous/bootsrap.386';
 
     public array $css = [
         'css/bootstrap.css',

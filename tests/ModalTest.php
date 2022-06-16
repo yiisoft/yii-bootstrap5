@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Modal;
+use RedCatGirl\YiiBootstrap386\Modal;
 
 /**
  * Tests for Modal widget.

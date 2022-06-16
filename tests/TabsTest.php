@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
 use RuntimeException;
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\Tabs;
+use RedCatGirl\YiiBootstrap386\Dropdown;
+use RedCatGirl\YiiBootstrap386\Tabs;
 
 /**
  * Tests for Tabs widget.

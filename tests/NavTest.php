@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\Nav;
+use RedCatGirl\YiiBootstrap386\Dropdown;
+use RedCatGirl\YiiBootstrap386\Nav;
 
 /**
  * Tests for Nav widget.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Assets;
+namespace RedCatGirl\YiiBootstrap386\Assets;
 
 use Yiisoft\Assets\AssetBundle;
 

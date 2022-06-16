@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\Carousel;
+use RedCatGirl\YiiBootstrap386\Carousel;
 
 /**
  * Tests for Carousel widget.

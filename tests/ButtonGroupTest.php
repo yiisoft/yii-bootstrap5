@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Button;
-use Yiisoft\Yii\Bootstrap5\ButtonGroup;
+use RedCatGirl\YiiBootstrap386\Button;
+use RedCatGirl\YiiBootstrap386\ButtonGroup;
 
 /**
  * Tests for Button widget.

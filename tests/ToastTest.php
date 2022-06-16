@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace RedCatGirl\YiiBootstrap386\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Toast;
+use RedCatGirl\YiiBootstrap386\Toast;
 
 /**
  * Tests for Toast widget.
