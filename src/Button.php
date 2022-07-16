@@ -19,6 +19,7 @@ use Yiisoft\Html\Html;
  */
 final class Button extends Widget
 {
+    /** @psalm-var non-empty-string */
     private string $tagName = 'button';
     private string $label = 'Button';
     private bool $encodeLabels = true;
@@ -92,6 +93,7 @@ final class Button extends Widget
      * The tag to use to render the button.
      *
      * @param string $value
+     * @psalm-param non-empty-string $value
      *
      * @return self
      */

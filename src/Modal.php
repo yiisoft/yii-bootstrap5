@@ -625,7 +625,7 @@ final class Modal extends Widget
             [
                 'data-bs-toggle' => 'modal',
             ],
-            $this->toggleButton,
+            $this->toggleButton ?? [],
             $options
         );
 

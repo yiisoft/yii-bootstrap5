@@ -30,10 +30,12 @@ final class Alert extends Widget
     private string $body = '';
     private ?string $header = null;
     private array $headerOptions = [];
+    /** @psalm-var non-empty-string */
     private string $headerTag = 'h4';
     private array $closeButton = [
         'class' => 'btn-close',
     ];
+    /** @psalm-var non-empty-string */
     private string $closeButtonTag = 'button';
     private bool $closeButtonInside = true;
     private bool $encode = false;
@@ -116,6 +118,7 @@ final class Alert extends Widget
      * Set tag name for header
      *
      * @param string $tag
+     * @psalm-param non-empty-string $tag
      *
      * @return self
      */
@@ -172,6 +175,7 @@ final class Alert extends Widget
      * Set close button tag
      *
      * @param string $tag
+     * @psalm-param non-empty-string $tag
      *
      * @return self
      */

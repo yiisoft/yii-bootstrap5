@@ -53,6 +53,7 @@ final class ButtonDropdown extends Widget
     private array $dropdown = [];
     private string $direction = self::DIRECTION_DOWN;
     private bool $split = false;
+    /** @psalm-var non-empty-string */
     private string $tagName = 'button';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
@@ -240,6 +241,7 @@ final class ButtonDropdown extends Widget
      * The tag to use to render the button.
      *
      * @param string $value
+     * @psalm-param non-empty-string $value
      *
      * @return self
      */
