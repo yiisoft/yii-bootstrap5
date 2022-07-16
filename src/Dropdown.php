@@ -194,7 +194,7 @@ final class Dropdown extends Widget
 
         return Html::ul()
             ->items(...$lines)
-            ->attributes($options)
+            ->addAttributes($options)
             ->render();
     }
 
@@ -245,7 +245,7 @@ final class Dropdown extends Widget
 
             return Li::tag()
                 ->content($content)
-                ->attributes($itemOptions)
+                ->addAttributes($itemOptions)
                 ->encode(false);
         }
 
@@ -282,7 +282,7 @@ final class Dropdown extends Widget
 
         return Li::tag()
             ->content($toggle . $dropdown->render())
-            ->attributes($itemOptions)
+            ->addAttributes($itemOptions)
             ->encode(false);
     }
 }

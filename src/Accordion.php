@@ -504,6 +504,10 @@ final class Accordion extends Widget
             ->render();
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     private function isStringableObject($value): bool
     {
         return is_object($value) && method_exists($value, '__toString');

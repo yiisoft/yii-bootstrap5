@@ -500,7 +500,7 @@ final class NavBar extends Widget
 
         if (!empty($this->brandImage)) {
             $encode = false;
-            $content = Html::img($this->brandImage)->attributes($this->brandImageAttributes);
+            $content = Html::img($this->brandImage)->addAttributes($this->brandImageAttributes);
         }
 
         if (!empty($this->brandText)) {

@@ -61,9 +61,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "infection/extension-installer": true,
-            "composer/package-versions-deprecated": true,
-            "composer/installers": true,
-            "oomphinc/composer-installers-extender": true
+            "composer/package-versions-deprecated": true
         }
     },
     "repositories": [

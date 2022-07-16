@@ -57,6 +57,7 @@ final class ButtonDropdown extends Widget
     private string $tagName = 'button';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
+    /** @psalm-var class-string */
     private string $dropdownClass = Dropdown::class;
     private bool $renderContainer = true;
 
@@ -154,6 +155,7 @@ final class ButtonDropdown extends Widget
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      *
      * @param string $value
+     * @psalm-param class-string $value
      *
      * @return self
      */
