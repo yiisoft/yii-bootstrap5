@@ -373,7 +373,7 @@ final class Tabs extends Widget
      * Renders tab items as specified on {@see items}.
      *
      * @param array $items
-     * @param string $navId
+     * @param string|null $navId
      * @param string $prefix
      *
      * @throws JsonException|RuntimeException

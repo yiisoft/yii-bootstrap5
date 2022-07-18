@@ -272,9 +272,9 @@ final class ButtonDropdown extends Widget
             $label = Html::encode($label);
         }
 
-        if ($this->split) {
-            $buttonOptions = $this->buttonOptions;
+        $buttonOptions = $this->buttonOptions;
 
+        if ($this->split) {
             $this->buttonOptions['data-bs-toggle'] = 'dropdown';
             $this->buttonOptions['aria-haspopup'] = 'true';
             $this->buttonOptions['aria-expanded'] = 'false';
@@ -289,8 +289,6 @@ final class ButtonDropdown extends Widget
                 ->withoutEncodeLabels()
                 ->render();
         } else {
-            $buttonOptions = $this->buttonOptions;
-
             Html::addCssClass($buttonOptions, ['toggle' => 'dropdown-toggle']);
 
             $buttonOptions['data-bs-toggle'] = 'dropdown';
