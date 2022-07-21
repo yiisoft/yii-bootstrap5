@@ -505,6 +505,7 @@ final class Accordion extends Widget
 
     /**
      * @param mixed $value
+     *
      * @return bool
      */
     private function isStringableObject($value): bool

@@ -54,6 +54,7 @@ use function array_merge;
  *         ],
  *     ]);
  * ```
+ *
  * @psalm-suppress MissingConstructor
  */
 final class Tabs extends Widget

@@ -162,6 +162,7 @@ final class Alert extends Widget
      * Disable close button.
      *
      * @param bool $value
+     *
      * @return self
      */
     public function withoutCloseButton(bool $value = false): self
