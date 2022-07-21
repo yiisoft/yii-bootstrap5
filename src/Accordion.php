@@ -351,7 +351,6 @@ final class Accordion extends Widget
     /**
      * Renders a single collapsible item group.
      *
-     * @param string $label a label of the item group {@see items}
      * @param array $item a single item from {@see items}
      * @param int $index the item index as each item group content must have an id
      *
@@ -496,7 +495,7 @@ final class Accordion extends Widget
                 throw new RuntimeException('The "content" option should be a string, array or object.');
             }
 
-            $items .= (string) $value;
+            $items .= $value;
         }
 
         return Html::div($items, ['class' => 'accordion-body'])
@@ -504,6 +503,10 @@ final class Accordion extends Widget
             ->render();
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     private function isStringableObject($value): bool
     {
         return is_object($value) && method_exists($value, '__toString');

@@ -24,7 +24,7 @@
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^1.0|^2.0",
         "yiisoft/assets": "^2.0",
-        "yiisoft/html": "^2.0",
+        "yiisoft/html": "^2.5",
         "yiisoft/json": "^1.0",
         "yiisoft/widget": "^1.0"
     },
@@ -61,7 +61,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "infection/extension-installer": true,
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "repositories": [

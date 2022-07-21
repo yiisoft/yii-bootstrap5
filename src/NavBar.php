@@ -180,7 +180,8 @@ final class NavBar extends Widget
         $htmlStart .= $this->renderBrand();
 
         if ($offcanvas) {
-            $htmlStart .= $this->renderToggleButton($this->offcanvas->getId());
+            $offcanvasId = $this->offcanvas ? $this->offcanvas->getId() : null;
+            $htmlStart .= $this->renderToggleButton($offcanvasId);
             $htmlStart .= $offcanvas;
         } elseif ($this->expandSize) {
             $collapseOptions = $this->collapseOptions;
@@ -499,7 +500,7 @@ final class NavBar extends Widget
 
         if (!empty($this->brandImage)) {
             $encode = false;
-            $content = Html::img($this->brandImage)->attributes($this->brandImageAttributes);
+            $content = Html::img($this->brandImage)->addAttributes($this->brandImageAttributes);
         }
 
         if (!empty($this->brandText)) {

@@ -53,9 +53,11 @@ final class ButtonDropdown extends Widget
     private array $dropdown = [];
     private string $direction = self::DIRECTION_DOWN;
     private bool $split = false;
+    /** @psalm-var non-empty-string */
     private string $tagName = 'button';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
+    /** @psalm-var class-string */
     private string $dropdownClass = Dropdown::class;
     private bool $renderContainer = true;
 
@@ -153,6 +155,7 @@ final class ButtonDropdown extends Widget
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      *
      * @param string $value
+     * @psalm-param class-string $value
      *
      * @return self
      */
@@ -240,6 +243,7 @@ final class ButtonDropdown extends Widget
      * The tag to use to render the button.
      *
      * @param string $value
+     * @psalm-param non-empty-string $value
      *
      * @return self
      */
@@ -268,9 +272,9 @@ final class ButtonDropdown extends Widget
             $label = Html::encode($label);
         }
 
-        if ($this->split) {
-            $buttonOptions = $this->buttonOptions;
+        $buttonOptions = $this->buttonOptions;
 
+        if ($this->split) {
             $this->buttonOptions['data-bs-toggle'] = 'dropdown';
             $this->buttonOptions['aria-haspopup'] = 'true';
             $this->buttonOptions['aria-expanded'] = 'false';
@@ -285,8 +289,6 @@ final class ButtonDropdown extends Widget
                 ->withoutEncodeLabels()
                 ->render();
         } else {
-            $buttonOptions = $this->buttonOptions;
-
             Html::addCssClass($buttonOptions, ['toggle' => 'dropdown-toggle']);
 
             $buttonOptions['data-bs-toggle'] = 'dropdown';

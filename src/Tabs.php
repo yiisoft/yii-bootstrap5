@@ -54,6 +54,7 @@ use function array_merge;
  *         ],
  *     ]);
  * ```
+ * @psalm-suppress MissingConstructor
  */
 final class Tabs extends Widget
 {
@@ -212,7 +213,7 @@ final class Tabs extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      * {@see Nav::linkOptions()}
      *
-     * @param array $options
+     * @param array $value
      *
      * @return self
      */
@@ -225,7 +226,7 @@ final class Tabs extends Widget
      * List of HTML attributes for the item container tags. This will be overwritten by the "options" set in individual
      * {@see items}. The following special options are recognized.
      *
-     * @param array $value
+     * @param array $options
      *
      * @return self
      *
@@ -332,7 +333,7 @@ final class Tabs extends Widget
     /**
      * Prepare Nav::widget for using
      *
-     * @param array $options
+     * @param array $definitions
      * @param array $items
      *
      * @return Nav
@@ -372,7 +373,7 @@ final class Tabs extends Widget
      * Renders tab items as specified on {@see items}.
      *
      * @param array $items
-     * @param string $navId
+     * @param string|null $navId
      * @param string $prefix
      *
      * @throws JsonException|RuntimeException

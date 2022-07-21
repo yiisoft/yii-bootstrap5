@@ -26,6 +26,7 @@ use function strtr;
  */
 final class Breadcrumbs extends Widget
 {
+    /** @psalm-var non-empty-string */
     private string $tag = 'ol';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
@@ -201,6 +202,7 @@ final class Breadcrumbs extends Widget
      * The name of the breadcrumb container tag.
      *
      * @param string $value
+     * @psalm-param non-empty-string $value
      *
      * @return self
      */

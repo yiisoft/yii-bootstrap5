@@ -106,6 +106,7 @@ final class Nav extends Widget
     private bool $activateParents = false;
     private ?string $activeClass = null;
     private string $currentPath = '';
+    /** @psalm-var class-string  */
     private string $dropdownClass = Dropdown::class;
     private array $options = [];
     private array $itemOptions = [];
@@ -232,6 +233,7 @@ final class Nav extends Widget
      * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
      *
      * @param string $value
+     * @psalm-param class-string $value
      *
      * @return self
      */

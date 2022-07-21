@@ -235,7 +235,7 @@ final class Modal extends Widget
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      *
-     * @param array $value
+     * @param array|null $value
      *
      * @return self
      */
@@ -260,7 +260,7 @@ final class Modal extends Widget
     /**
      * The footer content in the modal window.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      */
@@ -325,7 +325,7 @@ final class Modal extends Widget
     /**
      * The title content in the modal window.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      */
@@ -368,7 +368,7 @@ final class Modal extends Widget
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      *
-     * @param array $value
+     * @param array|null $value
      *
      * @return self
      */
@@ -393,7 +393,7 @@ final class Modal extends Widget
     /**
      * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return self
      *
@@ -625,7 +625,7 @@ final class Modal extends Widget
             [
                 'data-bs-toggle' => 'modal',
             ],
-            $this->toggleButton,
+            $this->toggleButton ?? [],
             $options
         );
 
@@ -640,12 +640,8 @@ final class Modal extends Widget
         if (!isset($options['data-bs-target'])) {
             $target = (string) $this->getId();
 
-            if ($tag === 'a') {
-                if (!isset($options['href'])) {
-                    $options['href'] = '#' . $target;
-                } else {
-                    $options['data-bs-target'] = '#' . $target;
-                }
+            if ($tag === 'a' && !isset($options['href'])) {
+                $options['href'] = '#' . $target;
             } else {
                 $options['data-bs-target'] = '#' . $target;
             }
