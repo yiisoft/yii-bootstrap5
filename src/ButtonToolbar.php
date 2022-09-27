@@ -81,8 +81,6 @@ final class ButtonToolbar extends Widget
      * - encodeLabels: bool whether to HTML-encode the button labels.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function buttonGroups(array $value): self
     {
@@ -98,8 +96,6 @@ final class ButtonToolbar extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {

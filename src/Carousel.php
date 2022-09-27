@@ -74,8 +74,6 @@ final class Carousel extends Widget
      * If null, it means the previous and the next control buttons should not be displayed.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function controls(array $value): self
     {
@@ -87,8 +85,6 @@ final class Carousel extends Widget
 
     /**
      * Animate slides with a fade transition instead of a slide. Defaults to `false`.
-     *
-     * @return self
      */
     public function withCrossfade(): self
     {
@@ -113,8 +109,6 @@ final class Carousel extends Widget
      * ```
      *
      * @param array $value
-     *
-     * @return self
      */
     public function items(array $value): self
     {
@@ -130,8 +124,6 @@ final class Carousel extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -143,8 +135,6 @@ final class Carousel extends Widget
 
     /**
      * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
-     *
-     * @return self
      */
     public function withoutShowIndicators(): self
     {
@@ -209,7 +199,7 @@ final class Carousel extends Widget
      *
      * @return string the rendering result.
      */
-    private function renderItem($item, int $index): string
+    private function renderItem(array|string $item, int $index): string
     {
         if (is_string($item)) {
             $content = $item;
@@ -248,8 +238,6 @@ final class Carousel extends Widget
      * Renders previous and next control buttons.
      *
      * @throws JsonException|RuntimeException if {@see controls} is invalid.
-     *
-     * @return string
      */
     private function renderControls(): string
     {

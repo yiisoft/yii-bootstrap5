@@ -34,7 +34,6 @@ final class Offcanvas extends Widget
     /**
      * Enable/disable body scroll when offcanvas show
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
@@ -49,7 +48,6 @@ final class Offcanvas extends Widget
     /**
      * Enable/disable offcanvas backdrop
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
@@ -64,9 +62,7 @@ final class Offcanvas extends Widget
     /**
      * Set placement for opened offcanvas
      *
-     * @param string $placement
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#placement
      */
@@ -84,8 +80,6 @@ final class Offcanvas extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function options(array $options): self
     {
@@ -101,8 +95,6 @@ final class Offcanvas extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function headerOptions(array $options): self
     {
@@ -115,9 +107,7 @@ final class Offcanvas extends Widget
     /**
      * Set/remove offcanvas title
      *
-     * @param string|null $title
      *
-     * @return self
      */
     public function title(?string $title): self
     {
@@ -133,8 +123,6 @@ final class Offcanvas extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function titleOptions(array $options): self
     {
@@ -150,8 +138,6 @@ final class Offcanvas extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function bodyOptions(array $options): self
     {
@@ -167,8 +153,6 @@ final class Offcanvas extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function closeButtonOptions(array $options): self
     {

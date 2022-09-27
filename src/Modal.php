@@ -112,8 +112,6 @@ final class Modal extends Widget
 
     /**
      * Prepare options for modal layer
-     *
-     * @return array
      */
     private function prepareOptions(): array
     {
@@ -145,8 +143,6 @@ final class Modal extends Widget
 
     /**
      * Prepare options for dialog layer
-     *
-     * @return array
      */
     private function prepareDialogOptions(): array
     {
@@ -177,9 +173,7 @@ final class Modal extends Widget
     /**
      * Dialog layer options
      *
-     * @param array $options
      *
-     * @return self
      */
     public function dialogOptions(array $options): self
     {
@@ -192,9 +186,7 @@ final class Modal extends Widget
     /**
      * Set options for content layer
      *
-     * @param array $options
      *
-     * @return self
      */
     public function contentOptions(array $options): self
     {
@@ -210,8 +202,6 @@ final class Modal extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function bodyOptions(array $value): self
     {
@@ -236,8 +226,6 @@ final class Modal extends Widget
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      *
      * @param array|null $value
-     *
-     * @return self
      */
     public function closeButton(?array $value): self
     {
@@ -249,8 +237,6 @@ final class Modal extends Widget
 
     /**
      * Disable close button.
-     *
-     * @return self
      */
     public function withoutCloseButton(): self
     {
@@ -260,9 +246,7 @@ final class Modal extends Widget
     /**
      * The footer content in the modal window.
      *
-     * @param string|null $value
      *
-     * @return self
      */
     public function footer(?string $value): self
     {
@@ -277,7 +261,6 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -294,7 +277,6 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -310,7 +292,6 @@ final class Modal extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -325,9 +306,7 @@ final class Modal extends Widget
     /**
      * The title content in the modal window.
      *
-     * @param string|null $value
      *
-     * @return self
      */
     public function title(?string $value): self
     {
@@ -343,8 +322,6 @@ final class Modal extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function titleOptions(array $value): self
     {
@@ -369,8 +346,6 @@ final class Modal extends Widget
      * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
      *
      * @param array|null $value
-     *
-     * @return self
      */
     public function toggleButton(?array $value): self
     {
@@ -382,8 +357,6 @@ final class Modal extends Widget
 
     /**
      * Disable toggle button.
-     *
-     * @return self
      */
     public function withoutToggleButton(): self
     {
@@ -393,9 +366,7 @@ final class Modal extends Widget
     /**
      * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
      *
-     * @param string|null $value
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#optional-sizes
      */
@@ -410,9 +381,7 @@ final class Modal extends Widget
     /**
      * Enable/disable static backdrop
      *
-     * @param bool $value
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#static-backdrop
      */
@@ -431,9 +400,7 @@ final class Modal extends Widget
     /**
      * Enable/Disable scrolling long content
      *
-     * @param bool $scrollable
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#scrolling-long-content
      */
@@ -452,9 +419,7 @@ final class Modal extends Widget
     /**
      * Enable/Disable vertically centered
      *
-     * @param bool $centered
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#vertically-centered
      */
@@ -473,9 +438,7 @@ final class Modal extends Widget
     /**
      * Set/remove fade animation
      *
-     * @param bool $fade
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#remove-animation
      */
@@ -490,9 +453,7 @@ final class Modal extends Widget
     /**
      * Enable/disable fullscreen mode
      *
-     * @param string|null $fullscreen
      *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#fullscreen-modal
      */
@@ -533,8 +494,6 @@ final class Modal extends Widget
 
     /**
      * Render title HTML markup
-     *
-     * @return string|null
      */
     private function renderTitle(): ?string
     {

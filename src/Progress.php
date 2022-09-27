@@ -89,8 +89,6 @@ final class Progress extends Widget
      * ```
      *
      * @param array $value
-     *
-     * @return self
      */
     public function bars(array $value): self
     {
@@ -105,7 +103,6 @@ final class Progress extends Widget
      *
      * @param array $value
      *
-     * @return self
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
@@ -120,9 +117,7 @@ final class Progress extends Widget
     /**
      * The button label.
      *
-     * @param string $value
      *
-     * @return self
      */
     public function label(string $value): self
     {
@@ -137,7 +132,6 @@ final class Progress extends Widget
      *
      * @param array $value
      *
-     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -152,9 +146,7 @@ final class Progress extends Widget
     /**
      * The amount of progress as a percentage.
      *
-     * @param string $value
      *
-     * @return self
      */
     public function percent(string $value): self
     {
