@@ -94,11 +94,6 @@ final class Tabs extends Widget
 
     /**
      * Set all options for nav widget
-     *
-     * @param array $definitions
-     * @param bool $replace
-     *
-     * @return self
      */
     public function navDefinitions(array $definitions, bool $replace = true): self
     {
@@ -115,23 +110,14 @@ final class Tabs extends Widget
 
     /**
      * Set allowed option for Nav::widget
-     *
-     * @param string $name
-     * @param mixed $value
-     *
-     * @return self
      */
-    public function navDefinition(string $name, $value): self
+    public function navDefinition(string $name, mixed $value): self
     {
         return $this->navDefinitions([$name => $value], false);
     }
 
     /**
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -140,10 +126,6 @@ final class Tabs extends Widget
 
     /**
      * Base options for nav
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function dropdownOptions(array $options): self
     {
@@ -152,8 +134,6 @@ final class Tabs extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -181,8 +161,6 @@ final class Tabs extends Widget
      *     * contentOptions: optional, array, the HTML attributes of the tab content container.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function items(array $value): self
     {
@@ -200,8 +178,6 @@ final class Tabs extends Widget
      * {@see Nav::itemOptions()}
      *
      * @param array $value
-     *
-     * @return self
      */
     public function itemOptions(array $value): self
     {
@@ -215,8 +191,6 @@ final class Tabs extends Widget
      * {@see Nav::linkOptions()}
      *
      * @param array $value
-     *
-     * @return self
      */
     public function linkOptions(array $value): self
     {
@@ -228,8 +202,6 @@ final class Tabs extends Widget
      * {@see items}. The following special options are recognized.
      *
      * @param array $options
-     *
-     * @return self
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -243,10 +215,6 @@ final class Tabs extends Widget
 
     /**
      * Specifies the Bootstrap tab styling.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function navType(string $value): self
     {
@@ -261,8 +229,6 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return self
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -272,10 +238,6 @@ final class Tabs extends Widget
 
     /**
      * Tab panes (contents).
-     *
-     * @param array $value
-     *
-     * @return self
      */
     public function panes(array $value): self
     {
@@ -287,8 +249,6 @@ final class Tabs extends Widget
 
     /**
      * Manually render `tab-content` yourself in case your tab contents are complex.
-     *
-     * @return self
      */
     public function withoutRenderTabContent(): self
     {
@@ -303,8 +263,6 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     * @return self
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function tabContentOptions(array $value): self
@@ -317,8 +275,6 @@ final class Tabs extends Widget
 
     /**
      * Renders tab panes.
-     *
-     * @param array $panes
      *
      * @throws JsonException
      *
@@ -333,11 +289,6 @@ final class Tabs extends Widget
 
     /**
      * Prepare Nav::widget for using
-     *
-     * @param array $definitions
-     * @param array $items
-     *
-     * @return Nav
      */
     private function prepareNav(array $definitions, array $items): Nav
     {
@@ -352,8 +303,6 @@ final class Tabs extends Widget
 
     /**
      * Prepare options to send it to Nav::widget
-     *
-     * @return array
      */
     private function prepareNavDefinitions(): array
     {
@@ -372,10 +321,6 @@ final class Tabs extends Widget
 
     /**
      * Renders tab items as specified on {@see items}.
-     *
-     * @param array $items
-     * @param string|null $navId
-     * @param string $prefix
      *
      * @throws JsonException|RuntimeException
      */

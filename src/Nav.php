@@ -143,8 +143,6 @@ final class Nav extends Widget
      * If a menu item is a string, it will be rendered directly without HTML encoding.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function items(array $value): self
     {
@@ -156,8 +154,6 @@ final class Nav extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -169,8 +165,6 @@ final class Nav extends Widget
 
     /**
      * Disable activate items according to whether their currentPath.
-     *
-     * @return self
      *
      * {@see isItemActive}
      */
@@ -184,8 +178,6 @@ final class Nav extends Widget
 
     /**
      * Whether to activate parent menu items when one of the corresponding child menu items is active.
-     *
-     * @return self
      */
     public function activateParents(): self
     {
@@ -197,10 +189,6 @@ final class Nav extends Widget
 
     /**
      * Additional CSS class for active item. Like "bg-success", "bg-primary" etc
-     *
-     * @param string|null $className
-     *
-     * @return self
      */
     public function activeClass(?string $className): self
     {
@@ -216,10 +204,6 @@ final class Nav extends Widget
 
     /**
      * Allows you to assign the current path of the url from request controller.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function currentPath(string $value): self
     {
@@ -232,10 +216,7 @@ final class Nav extends Widget
     /**
      * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
      *
-     * @param string $value
      * @psalm-param class-string $value
-     *
-     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -251,8 +232,6 @@ final class Nav extends Widget
      * {@see Nav::renderDropdown()} for details on how this options will be used
      *
      * @param array $options
-     *
-     * @return self
      */
     public function dropdownOptions(array $options): self
     {
@@ -268,8 +247,6 @@ final class Nav extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -281,10 +258,6 @@ final class Nav extends Widget
 
     /**
      * Options for each item if not present in self
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function itemOptions(array $options): self
     {
@@ -296,10 +269,6 @@ final class Nav extends Widget
 
     /**
      * Options for each item link if not present in current item
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function linkOptions(array $options): self
     {
@@ -313,8 +282,6 @@ final class Nav extends Widget
      * Renders widget items.
      *
      * @throws JsonException|RuntimeException
-     *
-     * @return string
      */
     private function renderItems(): string
     {
@@ -342,7 +309,7 @@ final class Nav extends Widget
      *
      * @return string the rendering result.
      */
-    private function renderItem($item): string
+    private function renderItem(array|string $item): string
     {
         if (is_string($item)) {
             return $item;
@@ -427,8 +394,6 @@ final class Nav extends Widget
      * @param array $items
      * @param bool $active should the parent be active too
      *
-     * @return array
-     *
      * {@see items}
      */
     private function isChildActive(array $items, bool &$active): array
@@ -468,7 +433,7 @@ final class Nav extends Widget
      *
      * @return bool whether the menu item is active
      */
-    private function isItemActive($item): bool
+    private function isItemActive(array|string $item): bool
     {
         if (isset($item['active'])) {
             return ArrayHelper::getValue($item, 'active', false);

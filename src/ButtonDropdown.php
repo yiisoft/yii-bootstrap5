@@ -97,8 +97,6 @@ final class ButtonDropdown extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function buttonOptions(array $value): self
     {
@@ -114,8 +112,6 @@ final class ButtonDropdown extends Widget
      * Possible values are 'left', 'right', 'up', or 'down' (default)
      *
      * @param string $value
-     *
-     * @return self
      */
     public function direction(string $value): self
     {
@@ -140,8 +136,6 @@ final class ButtonDropdown extends Widget
      * {@see Dropdown}
      *
      * @param array $value
-     *
-     * @return self
      */
     public function dropdown(array $value): self
     {
@@ -154,10 +148,7 @@ final class ButtonDropdown extends Widget
     /**
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      *
-     * @param string $value
      * @psalm-param class-string $value
-     *
-     * @return self
      */
     public function dropdownClass(string $value): self
     {
@@ -169,8 +160,6 @@ final class ButtonDropdown extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -182,10 +171,6 @@ final class ButtonDropdown extends Widget
 
     /**
      * The button label.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function label(string $value): self
     {
@@ -201,8 +186,6 @@ final class ButtonDropdown extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -215,8 +198,6 @@ final class ButtonDropdown extends Widget
     /**
      * Whether to render the container using the {@see options} as HTML attributes. If set to `false`, the container
      * element enclosing the button and dropdown will NOT be rendered.
-     *
-     * @return self
      */
     public function withoutRenderContainer(): self
     {
@@ -228,8 +209,6 @@ final class ButtonDropdown extends Widget
 
     /**
      * Whether to display a group of split-styled button group.
-     *
-     * @return self
      */
     public function split(): self
     {
@@ -242,10 +221,7 @@ final class ButtonDropdown extends Widget
     /**
      * The tag to use to render the button.
      *
-     * @param string $value
      * @psalm-param non-empty-string $value
-     *
-     * @return self
      */
     public function tagName(string $value): self
     {
