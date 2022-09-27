@@ -69,8 +69,6 @@ final class Alert extends Widget
     /**
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
-     *
-     *
      */
     public function body(string $value): self
     {
@@ -82,8 +80,6 @@ final class Alert extends Widget
 
     /**
      * The header content in alert component
-     *
-     *
      */
     public function header(?string $header): self
     {
@@ -112,7 +108,6 @@ final class Alert extends Widget
      * Set tag name for header
      *
      * @psalm-param non-empty-string $tag
-     *
      */
     public function headerTag(string $tag): self
     {
@@ -150,8 +145,6 @@ final class Alert extends Widget
 
     /**
      * Disable close button.
-     *
-     *
      */
     public function withoutCloseButton(bool $value = false): self
     {
@@ -165,7 +158,6 @@ final class Alert extends Widget
      * Set close button tag
      *
      * @psalm-param non-empty-string $tag
-     *
      */
     public function closeButtonTag(string $tag): self
     {
@@ -192,8 +184,6 @@ final class Alert extends Widget
 
     /**
      * Enable/Disable encode body
-     *
-     *
      */
     public function encode(bool $encode = true): self
     {
@@ -205,8 +195,6 @@ final class Alert extends Widget
 
     /**
      * Enable/Disable dissmiss animation
-     *
-     *
      */
     public function fade(bool $fade = true): self
     {
@@ -218,8 +206,6 @@ final class Alert extends Widget
 
     /**
      * Set type of alert, 'alert-success', 'alert-danger', 'custom-alert' etc
-     *
-     *
      */
     public function addClassNames(string ...$classNames): self
     {

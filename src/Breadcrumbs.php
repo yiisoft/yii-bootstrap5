@@ -78,8 +78,6 @@ final class Breadcrumbs extends Widget
     /**
      * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each active item.
-     *
-     *
      */
     public function activeItemTemplate(string $value): self
     {
@@ -121,8 +119,6 @@ final class Breadcrumbs extends Widget
     /**
      * The template used to render each inactive item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each inactive item.
-     *
-     *
      */
     public function itemTemplate(string $value): self
     {
@@ -188,7 +184,6 @@ final class Breadcrumbs extends Widget
      * The name of the breadcrumb container tag.
      *
      * @psalm-param non-empty-string $value
-     *
      */
     public function tag(string $value): self
     {

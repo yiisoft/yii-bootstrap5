@@ -57,8 +57,6 @@ final class Button extends Widget
 
     /**
      * The button label
-     *
-     *
      */
     public function label(string $value): self
     {
@@ -87,7 +85,6 @@ final class Button extends Widget
      * The tag to use to render the button.
      *
      * @psalm-param non-empty-string $value
-     *
      */
     public function tagName(string $value): self
     {

@@ -96,8 +96,6 @@ final class Dropdown extends Widget
 
     /**
      * The HTML attributes for sub-menu container tags.
-     *
-     *
      */
     public function submenuOptions(array $value): self
     {
@@ -111,7 +109,6 @@ final class Dropdown extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -124,8 +121,6 @@ final class Dropdown extends Widget
 
     /**
      * Options for each item if not present in self
-     *
-     *
      */
     public function itemOptions(array $options): self
     {
@@ -137,8 +132,6 @@ final class Dropdown extends Widget
 
     /**
      * Options for each item link if not present in current item
-     *
-     *
      */
     public function linkOptions(array $options): self
     {
@@ -189,8 +182,6 @@ final class Dropdown extends Widget
 
     /**
      * Render current dropdown item
-     *
-     *
      */
     private function renderItem(array $item): Li
     {

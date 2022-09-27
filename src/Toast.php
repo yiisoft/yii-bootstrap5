@@ -112,8 +112,6 @@ final class Toast extends Widget
 
     /**
      * The date/time content in the toast window.
-     *
-     *
      */
     public function dateTime(string $value): self
     {
@@ -127,7 +125,6 @@ final class Toast extends Widget
      * Additional DateTime options.
      *
      * @param array $value
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -144,7 +141,6 @@ final class Toast extends Widget
      *
      * @param array $value
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
@@ -159,7 +155,6 @@ final class Toast extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -172,8 +167,6 @@ final class Toast extends Widget
 
     /**
      * The title content in the toast window.
-     *
-     *
      */
     public function title(string $value): self
     {

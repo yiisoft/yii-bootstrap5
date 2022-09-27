@@ -226,8 +226,6 @@ final class NavBar extends Widget
 
     /**
      * Set size before then content will be expanded
-     *
-     *
      */
     public function expandSize(?string $size): self
     {
@@ -239,8 +237,6 @@ final class NavBar extends Widget
 
     /**
      * Set color theme for NavBar
-     *
-     *
      */
     public function theme(?string $theme): self
     {
@@ -271,7 +267,6 @@ final class NavBar extends Widget
      *
      * @param array $value
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function collapseOptions(array $value): self
@@ -284,8 +279,6 @@ final class NavBar extends Widget
 
     /**
      * Set/remove Offcanvas::widget instead of collapse
-     *
-     *
      */
     public function offcanvas(?Offcanvas $offcanvas): self
     {
@@ -297,8 +290,6 @@ final class NavBar extends Widget
 
     /**
      * The text of the brand or empty if it's not used. Note that this is not HTML-encoded.
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
@@ -312,8 +303,6 @@ final class NavBar extends Widget
 
     /**
      * Src of the brand image or empty if it's not used. Note that this param will override `$this->brandText` param.
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#image
      */
@@ -344,8 +333,6 @@ final class NavBar extends Widget
      * The URL for the brand's hyperlink tag and will be used for the "href" attribute of the brand link. Default value
      * is "/". You may set it to empty string if you want no link at all.
      *
-     *
-     *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#text
      */
     public function brandUrl(?string $value): self
@@ -373,8 +360,6 @@ final class NavBar extends Widget
 
     /**
      * Text to show for screen readers for the button to toggle the navbar.
-     *
-     *
      */
     public function screenReaderToggleText(string $value): self
     {
@@ -386,8 +371,6 @@ final class NavBar extends Widget
 
     /**
      * The toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`.
-     *
-     *
      */
     public function togglerContent(string $value): self
     {

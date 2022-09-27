@@ -94,8 +94,6 @@ final class Tabs extends Widget
 
     /**
      * Set all options for nav widget
-     *
-     *
      */
     public function navDefinitions(array $definitions, bool $replace = true): self
     {
@@ -112,8 +110,6 @@ final class Tabs extends Widget
 
     /**
      * Set allowed option for Nav::widget
-     *
-     *
      */
     public function navDefinition(string $name, mixed $value): self
     {
@@ -122,8 +118,6 @@ final class Tabs extends Widget
 
     /**
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
-     *
-     *
      */
     public function dropdownClass(string $value): self
     {
@@ -132,8 +126,6 @@ final class Tabs extends Widget
 
     /**
      * Base options for nav
-     *
-     *
      */
     public function dropdownOptions(array $options): self
     {
@@ -211,7 +203,6 @@ final class Tabs extends Widget
      *
      * @param array $options
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function paneOptions(array $options): self
@@ -224,8 +215,6 @@ final class Tabs extends Widget
 
     /**
      * Specifies the Bootstrap tab styling.
-     *
-     *
      */
     public function navType(string $value): self
     {
@@ -240,7 +229,6 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -250,8 +238,6 @@ final class Tabs extends Widget
 
     /**
      * Tab panes (contents).
-     *
-     *
      */
     public function panes(array $value): self
     {
@@ -277,7 +263,6 @@ final class Tabs extends Widget
      *
      * @param array $value
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function tabContentOptions(array $value): self
@@ -291,8 +276,8 @@ final class Tabs extends Widget
     /**
      * Renders tab panes.
      *
-     *
      * @throws JsonException
+     *
      * @return string the rendering result.
      */
     private function renderPanes(array $panes): string
@@ -304,8 +289,6 @@ final class Tabs extends Widget
 
     /**
      * Prepare Nav::widget for using
-     *
-     *
      */
     private function prepareNav(array $definitions, array $items): Nav
     {
@@ -338,7 +321,6 @@ final class Tabs extends Widget
 
     /**
      * Renders tab items as specified on {@see items}.
-     *
      *
      * @throws JsonException|RuntimeException
      */

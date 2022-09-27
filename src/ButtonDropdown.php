@@ -149,7 +149,6 @@ final class ButtonDropdown extends Widget
      * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
      *
      * @psalm-param class-string $value
-     *
      */
     public function dropdownClass(string $value): self
     {
@@ -172,8 +171,6 @@ final class ButtonDropdown extends Widget
 
     /**
      * The button label.
-     *
-     *
      */
     public function label(string $value): self
     {
@@ -225,7 +222,6 @@ final class ButtonDropdown extends Widget
      * The tag to use to render the button.
      *
      * @psalm-param non-empty-string $value
-     *
      */
     public function tagName(string $value): self
     {

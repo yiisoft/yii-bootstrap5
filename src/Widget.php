@@ -30,7 +30,6 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * Set the Id of the widget.
      *
-     *
      * @return self
      */
     public function id(string $value): self

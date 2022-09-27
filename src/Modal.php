@@ -172,8 +172,6 @@ final class Modal extends Widget
 
     /**
      * Dialog layer options
-     *
-     *
      */
     public function dialogOptions(array $options): self
     {
@@ -185,8 +183,6 @@ final class Modal extends Widget
 
     /**
      * Set options for content layer
-     *
-     *
      */
     public function contentOptions(array $options): self
     {
@@ -245,8 +241,6 @@ final class Modal extends Widget
 
     /**
      * The footer content in the modal window.
-     *
-     *
      */
     public function footer(?string $value): self
     {
@@ -260,7 +254,6 @@ final class Modal extends Widget
      * Additional footer options.
      *
      * @param array $value
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -277,7 +270,6 @@ final class Modal extends Widget
      *
      * @param array $value
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function headerOptions(array $value): self
@@ -292,7 +284,6 @@ final class Modal extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -305,8 +296,6 @@ final class Modal extends Widget
 
     /**
      * The title content in the modal window.
-     *
-     *
      */
     public function title(?string $value): self
     {
@@ -366,8 +355,6 @@ final class Modal extends Widget
     /**
      * The modal size. Can be {@see SIZE_LARGE} or {@see SIZE_SMALL}, or null for default.
      *
-     *
-     *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#optional-sizes
      */
     public function size(?string $value): self
@@ -380,8 +367,6 @@ final class Modal extends Widget
 
     /**
      * Enable/disable static backdrop
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#static-backdrop
      */
@@ -400,8 +385,6 @@ final class Modal extends Widget
     /**
      * Enable/Disable scrolling long content
      *
-     *
-     *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#scrolling-long-content
      */
     public function scrollable(bool $scrollable = true): self
@@ -418,8 +401,6 @@ final class Modal extends Widget
 
     /**
      * Enable/Disable vertically centered
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#vertically-centered
      */
@@ -438,8 +419,6 @@ final class Modal extends Widget
     /**
      * Set/remove fade animation
      *
-     *
-     *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#remove-animation
      */
     public function fade(bool $fade = true): self
@@ -452,8 +431,6 @@ final class Modal extends Widget
 
     /**
      * Enable/disable fullscreen mode
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#fullscreen-modal
      */

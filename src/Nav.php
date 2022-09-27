@@ -166,7 +166,6 @@ final class Nav extends Widget
     /**
      * Disable activate items according to whether their currentPath.
      *
-     *
      * {@see isItemActive}
      */
     public function withoutActivateItems(): self
@@ -190,8 +189,6 @@ final class Nav extends Widget
 
     /**
      * Additional CSS class for active item. Like "bg-success", "bg-primary" etc
-     *
-     *
      */
     public function activeClass(?string $className): self
     {
@@ -207,8 +204,6 @@ final class Nav extends Widget
 
     /**
      * Allows you to assign the current path of the url from request controller.
-     *
-     *
      */
     public function currentPath(string $value): self
     {
@@ -222,7 +217,6 @@ final class Nav extends Widget
      * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
      *
      * @psalm-param class-string $value
-     *
      */
     public function dropdownClass(string $value): self
     {
@@ -264,8 +258,6 @@ final class Nav extends Widget
 
     /**
      * Options for each item if not present in self
-     *
-     *
      */
     public function itemOptions(array $options): self
     {
@@ -277,8 +269,6 @@ final class Nav extends Widget
 
     /**
      * Options for each item link if not present in current item
-     *
-     *
      */
     public function linkOptions(array $options): self
     {
@@ -403,7 +393,6 @@ final class Nav extends Widget
      *
      * @param array $items
      * @param bool $active should the parent be active too
-     *
      *
      * {@see items}
      */

@@ -197,8 +197,6 @@ final class Accordion extends Widget
 
     /**
      * Set expand property for items without it
-     *
-     *
      */
     public function defaultExpand(?bool $default): self
     {
@@ -215,8 +213,6 @@ final class Accordion extends Widget
 
     /**
      * Options for each header if not present in item
-     *
-     *
      */
     public function headerOptions(array $options): self
     {
@@ -250,8 +246,6 @@ final class Accordion extends Widget
 
     /**
      * Content options for items if not present in current
-     *
-     *
      */
     public function contentOptions(array $options): self
     {
@@ -279,7 +273,6 @@ final class Accordion extends Widget
     /**
      * Remove the default background-color, some borders, and some rounded corners to render accordions
      * edge-to-edge with their parent container.
-     *
      *
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
      */
@@ -355,8 +348,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse header
-     *
-     *
      */
     private function renderHeader(array $item, int $index): string
     {
@@ -374,8 +365,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse switcher
-     *
-     *
      */
     private function renderToggle(array $item, int $index): string
     {
@@ -417,8 +406,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse item
-     *
-     *
      */
     private function renderCollapse(array $item, int $index): string
     {
@@ -449,8 +436,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse body
-     *
-     *
      */
     private function renderBody(array $item): string
     {

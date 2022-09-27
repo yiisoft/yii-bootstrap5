@@ -280,7 +280,6 @@ HTML_WRAP;
     /**
      * @dataProvider invalidItemsProvider
      *
-     *
      * @throws InvalidConfigException
      */
     public function testMissingLabel(array $items): void

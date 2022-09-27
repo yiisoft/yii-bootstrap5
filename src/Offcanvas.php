@@ -34,7 +34,6 @@ final class Offcanvas extends Widget
     /**
      * Enable/disable body scroll when offcanvas show
      *
-     *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
     public function scroll(bool $scroll = true): self
@@ -48,7 +47,6 @@ final class Offcanvas extends Widget
     /**
      * Enable/disable offcanvas backdrop
      *
-     *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
     public function withoutBackdrop(bool $withoutBackdrop = true): self
@@ -61,8 +59,6 @@ final class Offcanvas extends Widget
 
     /**
      * Set placement for opened offcanvas
-     *
-     *
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#placement
      */
@@ -106,8 +102,6 @@ final class Offcanvas extends Widget
 
     /**
      * Set/remove offcanvas title
-     *
-     *
      */
     public function title(?string $title): self
     {
