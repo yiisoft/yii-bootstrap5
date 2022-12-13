@@ -74,8 +74,6 @@ final class Dropdown extends Widget
      * To insert divider use `-`.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function items(array $value): self
     {
@@ -87,8 +85,6 @@ final class Dropdown extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -100,10 +96,6 @@ final class Dropdown extends Widget
 
     /**
      * The HTML attributes for sub-menu container tags.
-     *
-     * @param array $value
-     *
-     * @return self
      */
     public function submenuOptions(array $value): self
     {
@@ -117,8 +109,6 @@ final class Dropdown extends Widget
      * @param array $value the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
-     * @return self
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function options(array $value): self
@@ -131,10 +121,6 @@ final class Dropdown extends Widget
 
     /**
      * Options for each item if not present in self
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function itemOptions(array $options): self
     {
@@ -146,10 +132,6 @@ final class Dropdown extends Widget
 
     /**
      * Options for each item link if not present in current item
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function linkOptions(array $options): self
     {
@@ -200,10 +182,6 @@ final class Dropdown extends Widget
 
     /**
      * Render current dropdown item
-     *
-     * @param array $item
-     *
-     * @return Li
      */
     private function renderItem(array $item): Li
     {

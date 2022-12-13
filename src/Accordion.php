@@ -131,8 +131,6 @@ final class Accordion extends Widget
      * Whether to close other items if an item is opened. Defaults to `true` which causes an accordion effect.
      *
      * Set this to `false` to allow keeping multiple items open at once.
-     *
-     * @return self
      */
     public function allowMultipleOpenedItems(): self
     {
@@ -144,8 +142,6 @@ final class Accordion extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -190,8 +186,6 @@ final class Accordion extends Widget
      * ```
      *
      * @param array $value
-     *
-     * @return self
      */
     public function items(array $value): self
     {
@@ -204,10 +198,6 @@ final class Accordion extends Widget
 
     /**
      * Set expand property for items without it
-     *
-     * @param bool|null $default
-     *
-     * @return self
      */
     public function defaultExpand(?bool $default): self
     {
@@ -224,10 +214,6 @@ final class Accordion extends Widget
 
     /**
      * Options for each header if not present in item
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function headerOptions(array $options): self
     {
@@ -250,8 +236,6 @@ final class Accordion extends Widget
      * ```
      *
      * @param array $value
-     *
-     * @return self
      */
     public function itemToggleOptions(array $value): self
     {
@@ -263,10 +247,6 @@ final class Accordion extends Widget
 
     /**
      * Content options for items if not present in current
-     *
-     * @param array $options
-     *
-     * @return self
      */
     public function contentOptions(array $options): self
     {
@@ -282,8 +262,6 @@ final class Accordion extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -296,8 +274,6 @@ final class Accordion extends Widget
     /**
      * Remove the default background-color, some borders, and some rounded corners to render accordions
      * edge-to-edge with their parent container.
-     *
-     * @return self
      *
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#flush
      */
@@ -373,11 +349,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse header
-     *
-     * @param array $item
-     * @param int $index
-     *
-     * @return string
      */
     private function renderHeader(array $item, int $index): string
     {
@@ -395,11 +366,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse switcher
-     *
-     * @param array $item
-     * @param int $index
-     *
-     * @return string
      */
     private function renderToggle(array $item, int $index): string
     {
@@ -441,11 +407,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse item
-     *
-     * @param array $item
-     * @param int $index
-     *
-     * @return string
      */
     private function renderCollapse(array $item, int $index): string
     {
@@ -476,10 +437,6 @@ final class Accordion extends Widget
 
     /**
      * Render collapse body
-     *
-     * @param array $item
-     *
-     * @return string
      */
     private function renderBody(array $item): string
     {
@@ -504,12 +461,7 @@ final class Accordion extends Widget
             ->render();
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    private function isStringableObject($value): bool
+    private function isStringableObject(mixed $value): bool
     {
         return is_object($value) && method_exists($value, '__toString');
     }
