@@ -30,8 +30,6 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * Set the Id of the widget.
      *
-     * @param string $value
-     *
      * @return self
      */
     public function id(string $value): self
@@ -44,8 +42,6 @@ abstract class Widget extends \Yiisoft\Widget\Widget
 
     /**
      * Counter used to generate {@see id} for widgets.
-     *
-     * @param int $value
      */
     public static function counter(int $value): void
     {

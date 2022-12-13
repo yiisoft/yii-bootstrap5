@@ -78,10 +78,6 @@ final class Breadcrumbs extends Widget
     /**
      * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each active item.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function activeItemTemplate(string $value): self
     {
@@ -93,8 +89,6 @@ final class Breadcrumbs extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -113,8 +107,6 @@ final class Breadcrumbs extends Widget
      * the home link will not be rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function homeLink(array $value): self
     {
@@ -127,10 +119,6 @@ final class Breadcrumbs extends Widget
     /**
      * The template used to render each inactive item in the breadcrumbs. The token `{link}` will be replaced with the
      * actual HTML link for each inactive item.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function itemTemplate(string $value): self
     {
@@ -153,8 +141,6 @@ final class Breadcrumbs extends Widget
      * ```
      *
      * @param array $value
-     *
-     * @return self
      */
     public function links(array $value): self
     {
@@ -170,8 +156,6 @@ final class Breadcrumbs extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function navOptions(array $value): self
     {
@@ -187,8 +171,6 @@ final class Breadcrumbs extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -201,10 +183,7 @@ final class Breadcrumbs extends Widget
     /**
      * The name of the breadcrumb container tag.
      *
-     * @param string $value
      * @psalm-param non-empty-string $value
-     *
-     * @return self
      */
     public function tag(string $value): self
     {

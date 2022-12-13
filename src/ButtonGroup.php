@@ -69,8 +69,6 @@ final class ButtonGroup extends Widget
      * - visible: bool, optional, whether this button is visible. Defaults to true.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function buttons(array $value): self
     {
@@ -82,8 +80,6 @@ final class ButtonGroup extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -99,8 +95,6 @@ final class ButtonGroup extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
