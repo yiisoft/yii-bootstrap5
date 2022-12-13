@@ -69,10 +69,6 @@ final class Alert extends Widget
     /**
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function body(string $value): self
     {
@@ -84,10 +80,6 @@ final class Alert extends Widget
 
     /**
      * The header content in alert component
-     *
-     * @param string|null $header
-     *
-     * @return self
      */
     public function header(?string $header): self
     {
@@ -103,8 +95,6 @@ final class Alert extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $options
-     *
-     * @return self
      */
     public function headerOptions(array $options): self
     {
@@ -117,10 +107,7 @@ final class Alert extends Widget
     /**
      * Set tag name for header
      *
-     * @param string $tag
      * @psalm-param non-empty-string $tag
-     *
-     * @return self
      */
     public function headerTag(string $tag): self
     {
@@ -147,8 +134,6 @@ final class Alert extends Widget
      * attributes.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function closeButton(array $value): self
     {
@@ -160,10 +145,6 @@ final class Alert extends Widget
 
     /**
      * Disable close button.
-     *
-     * @param bool $value
-     *
-     * @return self
      */
     public function withoutCloseButton(bool $value = false): self
     {
@@ -176,10 +157,7 @@ final class Alert extends Widget
     /**
      * Set close button tag
      *
-     * @param string $tag
      * @psalm-param non-empty-string $tag
-     *
-     * @return self
      */
     public function closeButtonTag(string $tag): self
     {
@@ -195,8 +173,6 @@ final class Alert extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -208,10 +184,6 @@ final class Alert extends Widget
 
     /**
      * Enable/Disable encode body
-     *
-     * @param bool $encode
-     *
-     * @return self
      */
     public function encode(bool $encode = true): self
     {
@@ -223,10 +195,6 @@ final class Alert extends Widget
 
     /**
      * Enable/Disable dissmiss animation
-     *
-     * @param bool $fade
-     *
-     * @return self
      */
     public function fade(bool $fade = true): self
     {
@@ -238,10 +206,6 @@ final class Alert extends Widget
 
     /**
      * Set type of alert, 'alert-success', 'alert-danger', 'custom-alert' etc
-     *
-     * @param string ...$classNames
-     *
-     * @return self
      */
     public function addClassNames(string ...$classNames): self
     {
@@ -253,8 +217,6 @@ final class Alert extends Widget
 
     /**
      * Short method for primary alert type
-     *
-     * @return self
      */
     public function primary(): self
     {
@@ -263,8 +225,6 @@ final class Alert extends Widget
 
     /**
      * Short method for secondary alert type
-     *
-     * @return self
      */
     public function secondary(): self
     {
@@ -273,8 +233,6 @@ final class Alert extends Widget
 
     /**
      * Short method for success alert type
-     *
-     * @return self
      */
     public function success(): self
     {
@@ -283,8 +241,6 @@ final class Alert extends Widget
 
     /**
      * Short method for danger alert type
-     *
-     * @return self
      */
     public function danger(): self
     {
@@ -293,8 +249,6 @@ final class Alert extends Widget
 
     /**
      * Short method for warning alert type
-     *
-     * @return self
      */
     public function warning(): self
     {
@@ -303,8 +257,6 @@ final class Alert extends Widget
 
     /**
      * Short method for info alert type
-     *
-     * @return self
      */
     public function info(): self
     {
@@ -313,8 +265,6 @@ final class Alert extends Widget
 
     /**
      * Short method for light alert type
-     *
-     * @return self
      */
     public function light(): self
     {
@@ -323,8 +273,6 @@ final class Alert extends Widget
 
     /**
      * Short method for dark alert type
-     *
-     * @return self
      */
     public function dark(): self
     {
@@ -365,8 +313,6 @@ final class Alert extends Widget
 
     /**
      * Render header tag
-     *
-     * @return string|null
      */
     private function renderHeader(): ?string
     {
@@ -388,8 +334,6 @@ final class Alert extends Widget
      * Prepare the widget options.
      *
      * This method returns the default values for various options.
-     *
-     * @return array
      */
     private function prepareOptions(): array
     {

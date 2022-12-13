@@ -46,8 +46,6 @@ final class Button extends Widget
 
     /**
      * When tags Labels HTML should not be encoded.
-     *
-     * @return self
      */
     public function withoutEncodeLabels(): self
     {
@@ -59,10 +57,6 @@ final class Button extends Widget
 
     /**
      * The button label
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function label(string $value): self
     {
@@ -78,8 +72,6 @@ final class Button extends Widget
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
      * @param array $value
-     *
-     * @return self
      */
     public function options(array $value): self
     {
@@ -92,10 +84,7 @@ final class Button extends Widget
     /**
      * The tag to use to render the button.
      *
-     * @param string $value
      * @psalm-param non-empty-string $value
-     *
-     * @return self
      */
     public function tagName(string $value): self
     {
