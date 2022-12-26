@@ -25,7 +25,7 @@
         "yiisoft/arrays": "^1.0|^2.0",
         "yiisoft/assets": "^2.0",
         "yiisoft/files": "^2.0",
-        "yiisoft/html": "^2.5",
+        "yiisoft/html": "^3.0",
         "yiisoft/json": "^1.0",
         "yiisoft/widget": "^1.0"
     },
