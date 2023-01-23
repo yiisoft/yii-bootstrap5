@@ -194,7 +194,7 @@ final class Offcanvas extends Widget
         return $html;
     }
 
-    protected function run(): string
+    public function render(): string
     {
         $tag = $this->options['tag'] ?? 'div';
         $bodyTag = $this->bodyOptions['tag'] ?? 'div';

@@ -48,7 +48,7 @@ final class Alert extends Widget
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
-    protected function run(): string
+    public function render(): string
     {
         $options = $this->prepareOptions();
         $tag = ArrayHelper::remove($options, 'tag', 'div');

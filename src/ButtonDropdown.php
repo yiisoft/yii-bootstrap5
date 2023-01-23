@@ -61,7 +61,7 @@ final class ButtonDropdown extends Widget
     private string $dropdownClass = Dropdown::class;
     private bool $renderContainer = true;
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->dropdown['items'])) {
             return '';

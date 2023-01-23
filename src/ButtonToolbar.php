@@ -54,7 +54,7 @@ final class ButtonToolbar extends Widget
     private array $buttonGroups = [];
     private array $options = [];
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-toolbar";

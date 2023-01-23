@@ -113,7 +113,7 @@ final class Nav extends Widget
     private array $linkOptions = [];
     private array $dropdownOptions = [];
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-nav";

@@ -202,7 +202,7 @@ final class NavBar extends Widget
         return $htmlStart;
     }
 
-    protected function run(): string
+    public function render(): string
     {
         $htmlRun = '';
 

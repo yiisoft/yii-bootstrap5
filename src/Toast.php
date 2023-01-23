@@ -68,7 +68,7 @@ final class Toast extends Widget
             $this->renderBodyBegin();
     }
 
-    protected function run(): string
+    public function render(): string
     {
         return $this->renderBodyEnd() . Html::closeTag('div');
     }

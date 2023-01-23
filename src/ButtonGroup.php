@@ -42,7 +42,7 @@ final class ButtonGroup extends Widget
     private bool $encodeTags = false;
     private array $options = [];
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-button-group";
