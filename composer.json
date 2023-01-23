@@ -27,7 +27,7 @@
         "yiisoft/files": "^2.0",
         "yiisoft/html": "^3.0",
         "yiisoft/json": "^1.0",
-        "yiisoft/widget": "^1.0"
+        "yiisoft/widget": "^2.0"
     },
     "require-dev": {
         "maglnet/composer-require-checker": "^4.3",
