@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Aliases\Aliases;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Widget\WidgetFactory;
