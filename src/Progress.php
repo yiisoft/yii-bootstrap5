@@ -60,7 +60,7 @@ final class Progress extends Widget
     private array $barOptions = [];
     private bool $encodeTags = false;
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-progress";

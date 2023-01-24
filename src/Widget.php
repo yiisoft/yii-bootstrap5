@@ -12,11 +12,11 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     private static int $counter = 0;
 
     /**
-     * Returns the Id of the widget.
+     * Returns the ID of the widget.
      *
      * $param string|null $suffix
      *
-     * @return string|null Id of the widget.
+     * @return string|null ID of the widget.
      */
     public function getId(?string $suffix = null): ?string
     {
@@ -28,7 +28,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the Id of the widget.
+     * Set the ID of the widget.
      *
      * @return self
      */

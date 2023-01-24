@@ -43,7 +43,7 @@ final class Dropdown extends Widget
     private array $itemOptions = [];
     private array $linkOptions = [];
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-dropdown";

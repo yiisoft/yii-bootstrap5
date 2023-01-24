@@ -76,7 +76,7 @@ final class Tabs extends Widget
         return $this->navDefinitions['options']['id'] ?? parent::getId($suffix);
     }
 
-    protected function beforeRun(): bool
+    public function render(): string
     {
         Html::addCssClass($this->tabContentOptions, ['tabContentOptions' => 'tab-content']);
 
@@ -84,11 +84,6 @@ final class Tabs extends Widget
         $this->prepareItems($this->items, $navDefinitions['options']['id']);
         $this->nav = $this->prepareNav($navDefinitions, $this->items);
 
-        return parent::beforeRun();
-    }
-
-    protected function run(): string
-    {
         return $this->nav->render() . $this->renderPanes($this->panes);
     }
 
@@ -298,7 +293,7 @@ final class Tabs extends Widget
             $widgetDefinitions[$name . '()'] = [$value];
         }
 
-        return Nav::widget($widgetDefinitions)->items($items);
+        return Nav::widget([], $widgetDefinitions)->items($items);
     }
 
     /**

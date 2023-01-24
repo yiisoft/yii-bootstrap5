@@ -97,7 +97,7 @@ final class Modal extends Widget
             $this->renderBodyBegin();
     }
 
-    protected function run(): string
+    public function render(): string
     {
         $contentTag = ArrayHelper::getValue($this->contentOptions, 'tag', 'div');
         $dialogTag = ArrayHelper::getValue($this->dialogOptions, 'tag', 'div');

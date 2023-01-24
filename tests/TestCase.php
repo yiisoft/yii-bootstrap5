@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Aliases\Aliases;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Widget\WidgetFactory;
@@ -20,9 +19,8 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         $this->container = new Container(ContainerConfig::create());
-        $this->aliases = $this->container->get(Aliases::class);
 
-        WidgetFactory::initialize($this->container, []);
+        WidgetFactory::initialize($this->container);
     }
 
     protected function tearDown(): void

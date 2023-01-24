@@ -105,7 +105,7 @@ final class Accordion extends Widget
         return ArrayHelper::getValueByPath($item, ['headerOptions', 'id'], $this->getCollapseId($item, $index) . '-heading');
     }
 
-    public function beforeRun(): bool
+    public function render(): string
     {
         Html::addCssClass($this->options, ['widget' => 'accordion']);
 
@@ -117,11 +117,6 @@ final class Accordion extends Widget
             $this->options['id'] = $this->getId();
         }
 
-        return parent::beforeRun();
-    }
-
-    protected function run(): string
-    {
         return Html::div($this->renderItems(), $this->options)
             ->encode($this->encodeTags)
             ->render();

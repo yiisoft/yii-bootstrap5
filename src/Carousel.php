@@ -47,7 +47,7 @@ final class Carousel extends Widget
     private bool $crossfade = false;
     private array $options = ['data-bs-ride' => 'carousel'];
 
-    protected function run(): string
+    public function render(): string
     {
         if (!isset($this->options['id'])) {
             $this->options['id'] = "{$this->getId()}-carousel";
