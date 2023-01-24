@@ -293,7 +293,7 @@ final class Tabs extends Widget
             $widgetDefinitions[$name . '()'] = [$value];
         }
 
-        return Nav::widget($widgetDefinitions)->items($items);
+        return Nav::widget([], $widgetDefinitions)->items($items);
     }
 
     /**

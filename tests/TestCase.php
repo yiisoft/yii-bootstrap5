@@ -20,9 +20,8 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         $this->container = new Container(ContainerConfig::create());
-        $this->aliases = $this->container->get(Aliases::class);
 
-        WidgetFactory::initialize($this->container, []);
+        WidgetFactory::initialize($this->container);
     }
 
     protected function tearDown(): void
