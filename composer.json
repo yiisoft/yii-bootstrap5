@@ -23,7 +23,7 @@
         "npm-asset/bootstrap": "^5.0.0",
         "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^1.0|^2.0|^3.0",
-        "yiisoft/assets": "^2.0",
+        "yiisoft/assets": "^4.0",
         "yiisoft/files": "^2.0",
         "yiisoft/html": "^3.0",
         "yiisoft/json": "^1.0",
@@ -36,7 +36,7 @@
         "roave/infection-static-analysis-plugin": "^1.16",
         "spatie/phpunit-watcher": "^1.23",
         "vimeo/psalm": "^4.18",
-        "yiisoft/aliases": "^1.1|^2.0",
+        "yiisoft/aliases": "^3.0",
         "yiisoft/di": "^1.0"
     },
     "autoload": {
