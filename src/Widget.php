@@ -51,7 +51,6 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * The prefix to the automatically generated widget IDs.
      *
-     *
      * @return self
      * {@see getId()}
      */

@@ -265,7 +265,6 @@ final class NavBar extends Widget
     /**
      * The HTML attributes for the container tag. The following special options are recognized.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function collapseOptions(array $value): self

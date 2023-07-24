@@ -190,7 +190,6 @@ final class Tabs extends Widget
      * List of HTML attributes for the item container tags. This will be overwritten by the "options" set in individual
      * {@see items}. The following special options are recognized.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function paneOptions(array $options): self
@@ -214,7 +213,6 @@ final class Tabs extends Widget
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -247,7 +245,6 @@ final class Tabs extends Widget
 
     /**
      * List of HTML attributes for the `tab-content` container. This will always contain the CSS class `tab-content`.
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

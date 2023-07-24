@@ -251,7 +251,6 @@ final class Modal extends Widget
     /**
      * Additional footer options.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function footerOptions(array $value): self
@@ -264,7 +263,6 @@ final class Modal extends Widget
 
     /**
      * Additional header options.
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

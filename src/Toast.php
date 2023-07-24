@@ -122,7 +122,6 @@ final class Toast extends Widget
     /**
      * Additional DateTime options.
      *
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function dateTimeOptions(array $value): self
@@ -135,7 +134,6 @@ final class Toast extends Widget
 
     /**
      * Additional header options.
-     *
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
