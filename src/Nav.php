@@ -141,8 +141,6 @@ final class Nav extends Widget
      *   only this item.
      *
      * If a menu item is a string, it will be rendered directly without HTML encoding.
-     *
-     * @param array $value
      */
     public function items(array $value): self
     {
@@ -230,8 +228,6 @@ final class Nav extends Widget
      * Options for dropdownClass if not present in current item
      *
      * {@see Nav::renderDropdown()} for details on how this options will be used
-     *
-     * @param array $options
      */
     public function dropdownOptions(array $options): self
     {
@@ -245,8 +241,6 @@ final class Nav extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {
@@ -391,9 +385,7 @@ final class Nav extends Widget
     /**
      * Check to see if a child item is active optionally activating the parent.
      *
-     * @param array $items
      * @param bool $active should the parent be active too
-     *
      * {@see items}
      */
     private function isChildActive(array $items, bool &$active): array

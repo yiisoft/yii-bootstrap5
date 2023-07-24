@@ -72,8 +72,6 @@ final class Carousel extends Widget
      * The labels for the previous and the next control buttons.
      *
      * If null, it means the previous and the next control buttons should not be displayed.
-     *
-     * @param array $value
      */
     public function controls(array $value): self
     {
@@ -107,8 +105,6 @@ final class Carousel extends Widget
      *     'options' => [],
      * ]
      * ```
-     *
-     * @param array $value
      */
     public function items(array $value): self
     {
@@ -122,8 +118,6 @@ final class Carousel extends Widget
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

@@ -67,8 +67,6 @@ final class ButtonGroup extends Widget
      * - label: string, required, the button label.
      * - options: array, optional, the HTML attributes of the button.
      * - visible: bool, optional, whether this button is visible. Defaults to true.
-     *
-     * @param array $value
      */
     public function buttons(array $value): self
     {
@@ -93,8 +91,6 @@ final class ButtonGroup extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

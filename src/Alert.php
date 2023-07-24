@@ -93,8 +93,6 @@ final class Alert extends Widget
      * The HTML attributes for the widget header tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function headerOptions(array $options): self
     {
@@ -132,8 +130,6 @@ final class Alert extends Widget
      *
      * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts) for the supported HTML
      * attributes.
-     *
-     * @param array $value
      */
     public function closeButton(array $value): self
     {
@@ -171,8 +167,6 @@ final class Alert extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

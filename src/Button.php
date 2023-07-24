@@ -70,8 +70,6 @@ final class Button extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

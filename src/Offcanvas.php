@@ -74,8 +74,6 @@ final class Offcanvas extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function options(array $options): self
     {
@@ -89,8 +87,6 @@ final class Offcanvas extends Widget
      * The HTML attributes for the widget header tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function headerOptions(array $options): self
     {
@@ -115,8 +111,6 @@ final class Offcanvas extends Widget
      * The HTML attributes for the widget title tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function titleOptions(array $options): self
     {
@@ -130,8 +124,6 @@ final class Offcanvas extends Widget
      * The HTML attributes for the widget body tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function bodyOptions(array $options): self
     {
@@ -145,8 +137,6 @@ final class Offcanvas extends Widget
      * The HTML attributes for the widget close button tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $options
      */
     public function closeButtonOptions(array $options): self
     {
