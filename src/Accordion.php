@@ -179,8 +179,6 @@ final class Accordion extends Widget
      *         ],
      *     );
      * ```
-     *
-     * @param array $value
      */
     public function items(array $value): self
     {
@@ -229,8 +227,6 @@ final class Accordion extends Widget
      *     'class' => 'custom-toggle',
      * ]
      * ```
-     *
-     * @param array $value
      */
     public function itemToggleOptions(array $value): self
     {
@@ -255,8 +251,6 @@ final class Accordion extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

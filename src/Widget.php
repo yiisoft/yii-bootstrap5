@@ -51,10 +51,7 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * The prefix to the automatically generated widget IDs.
      *
-     * @param string $value
-     *
      * @return self
-     *
      * {@see getId()}
      */
     public function autoIdPrefix(string $value): self

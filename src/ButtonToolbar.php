@@ -79,8 +79,6 @@ final class ButtonToolbar extends Widget
      * - buttons: array list of buttons. Either as array or string representation
      * - options: array optional, the HTML attributes of the button group.
      * - encodeLabels: bool whether to HTML-encode the button labels.
-     *
-     * @param array $value
      */
     public function buttonGroups(array $value): self
     {
@@ -94,8 +92,6 @@ final class ButtonToolbar extends Widget
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

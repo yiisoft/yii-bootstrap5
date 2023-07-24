@@ -105,8 +105,6 @@ final class Breadcrumbs extends Widget
      *
      * If this property is not set, it will default to a link pointing with the label 'Home'. If this property is false,
      * the home link will not be rendered.
-     *
-     * @param array $value
      */
     public function homeLink(array $value): self
     {
@@ -139,8 +137,6 @@ final class Breadcrumbs extends Widget
      *     'template' => 'own template of the item', // optional, if not set $this->itemTemplate will be used
      * ]
      * ```
-     *
-     * @param array $value
      */
     public function links(array $value): self
     {
@@ -154,8 +150,6 @@ final class Breadcrumbs extends Widget
      * The HTML attributes for the widgets nav container tag.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function navOptions(array $value): self
     {
@@ -169,8 +163,6 @@ final class Breadcrumbs extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

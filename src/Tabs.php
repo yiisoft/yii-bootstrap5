@@ -154,8 +154,6 @@ final class Tabs extends Widget
      *     * active: bool, optional, whether the item tab header and pane should be visible or not.
      *     * content: string, required if `items` is not set. The content (HTML) of the tab pane.
      *     * contentOptions: optional, array, the HTML attributes of the tab content container.
-     *
-     * @param array $value
      */
     public function items(array $value): self
     {
@@ -171,8 +169,6 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      * {@see Nav::itemOptions()}
-     *
-     * @param array $value
      */
     public function itemOptions(array $value): self
     {
@@ -184,8 +180,6 @@ final class Tabs extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      * {@see Nav::linkOptions()}
-     *
-     * @param array $value
      */
     public function linkOptions(array $value): self
     {
@@ -195,8 +189,6 @@ final class Tabs extends Widget
     /**
      * List of HTML attributes for the item container tags. This will be overwritten by the "options" set in individual
      * {@see items}. The following special options are recognized.
-     *
-     * @param array $options
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -221,8 +213,6 @@ final class Tabs extends Widget
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -255,8 +245,6 @@ final class Tabs extends Widget
 
     /**
      * List of HTML attributes for the `tab-content` container. This will always contain the CSS class `tab-content`.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

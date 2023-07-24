@@ -72,8 +72,6 @@ final class Dropdown extends Widget
      *   merged with {@see submenuOptions}.
      *
      * To insert divider use `-`.
-     *
-     * @param array $value
      */
     public function items(array $value): self
     {

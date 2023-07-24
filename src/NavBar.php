@@ -265,8 +265,6 @@ final class NavBar extends Widget
     /**
      * The HTML attributes for the container tag. The following special options are recognized.
      *
-     * @param array $value
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function collapseOptions(array $value): self
@@ -318,8 +316,6 @@ final class NavBar extends Widget
      * Set attributes for brandImage
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $attributes
      */
     public function brandImageAttributes(array $attributes): self
     {
@@ -347,8 +343,6 @@ final class NavBar extends Widget
      * The HTML attributes of the brand link.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function brandOptions(array $value): self
     {
@@ -384,8 +378,6 @@ final class NavBar extends Widget
      * The HTML attributes of the navbar toggler button.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function togglerOptions(array $value): self
     {
@@ -410,8 +402,6 @@ final class NavBar extends Widget
      * The HTML attributes of the inner container.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function innerContainerOptions(array $value): self
     {
@@ -425,8 +415,6 @@ final class NavBar extends Widget
      * The HTML attributes for the widget container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

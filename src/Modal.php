@@ -196,8 +196,6 @@ final class Modal extends Widget
      * Body options.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function bodyOptions(array $value): self
     {
@@ -253,8 +251,6 @@ final class Modal extends Widget
     /**
      * Additional footer options.
      *
-     * @param array $value
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function footerOptions(array $value): self
@@ -267,8 +263,6 @@ final class Modal extends Widget
 
     /**
      * Additional header options.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -309,8 +303,6 @@ final class Modal extends Widget
      * Additional title options.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function titleOptions(array $value): self
     {

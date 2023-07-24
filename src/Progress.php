@@ -87,8 +87,6 @@ final class Progress extends Widget
      *     'options' => [],
      * ]
      * ```
-     *
-     * @param array $value
      */
     public function bars(array $value): self
     {
@@ -100,8 +98,6 @@ final class Progress extends Widget
 
     /**
      * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
@@ -126,8 +122,6 @@ final class Progress extends Widget
 
     /**
      * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */

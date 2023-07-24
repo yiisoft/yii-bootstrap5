@@ -95,8 +95,6 @@ final class ButtonDropdown extends Widget
      * The HTML attributes of the button.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function buttonOptions(array $value): self
     {
@@ -110,8 +108,6 @@ final class ButtonDropdown extends Widget
      * The drop-direction of the widget.
      *
      * Possible values are 'left', 'right', 'up', or 'down' (default)
-     *
-     * @param string $value
      */
     public function direction(string $value): self
     {
@@ -134,8 +130,6 @@ final class ButtonDropdown extends Widget
      * ```
      *
      * {@see Dropdown}
-     *
-     * @param array $value
      */
     public function dropdown(array $value): self
     {
@@ -184,8 +178,6 @@ final class ButtonDropdown extends Widget
      * The HTML attributes for the container tag. The following special options are recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function options(array $value): self
     {

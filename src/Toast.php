@@ -99,8 +99,6 @@ final class Toast extends Widget
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
      * [Toast plugin help](https://getbootstrap.com/docs/5.0/components/toasts/) for the supported HTML attributes.
-     *
-     * @param array $value
      */
     public function closeButton(array $value): self
     {
@@ -124,8 +122,6 @@ final class Toast extends Widget
     /**
      * Additional DateTime options.
      *
-     * @param array $value
-     *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function dateTimeOptions(array $value): self
@@ -138,8 +134,6 @@ final class Toast extends Widget
 
     /**
      * Additional header options.
-     *
-     * @param array $value
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -180,8 +174,6 @@ final class Toast extends Widget
      * Additional title options.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     *
-     * @param array $value
      */
     public function titleOptions(array $value): self
     {
