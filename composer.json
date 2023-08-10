@@ -20,8 +20,6 @@
     },
     "require": {
         "php": "^8.0",
-        "npm-asset/bootstrap": "^5.0.0",
-        "oomphinc/composer-installers-extender": "^2.0.0",
         "yiisoft/arrays": "^1.0|^2.0|^3.0",
         "yiisoft/assets": "^4.0",
         "yiisoft/files": "^2.0",
