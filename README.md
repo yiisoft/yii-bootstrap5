@@ -14,7 +14,7 @@ and plugins in terms of Yii widgets, and thus makes using Bootstrap components/p
 in Yii applications extremely easy.
 
 [Yii Framework]:        http://www.yiiframework.com/
-[Twitter Bootstrap 4]:  https://getbootstrap.com/docs/5.0/getting-started/introduction/
+[Twitter Bootstrap 5.2]:  https://getbootstrap.com/docs/5.2/getting-started/introduction/
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
@@ -37,6 +37,53 @@ The preferred way to install this extension is through [composer](http://getcomp
 ```
 php composer.phar require --prefer-dist yiisoft/yii-bootstrap5
 ```
+
+## Install assets
+
+There are several ways to install the assets, they are:
+
+1. Using the [AssetPackagist](https://asset-packagist.org/) package manager.
+
+Add to composer.json the following:
+
+```json
+{
+    "require": {
+        "npm-asset/bootstrap": "^5.3",
+    },
+    "extra": {
+        "installer-types": [
+            "npm-asset"
+        ],
+        "installer-paths": {
+            "./node_modules/{$name}": [
+                "type:npm-asset"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
+```
+
+Once the changes are made, you can install the assets using the following command:
+
+```php
+composer update
+```
+
+2. Using the [npm-asset](https://www.npmjs.com/) package manager.    
+
+Run the following command at the root directory of your application.
+
+```shell
+npm i bootstrap@5.3.1
+```
+
 
 ## General usage
 
