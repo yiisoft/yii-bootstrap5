@@ -42,7 +42,7 @@ php composer.phar require --prefer-dist yiisoft/yii-bootstrap5
 
 There are several ways to install the assets, they are:
 
-1.- Using the [AssetPackagist](https://asset-packagist.org/) package manager.
+1. Using the [AssetPackagist](https://asset-packagist.org/) package manager.
 
 Add to composer.json the following:
 
@@ -73,10 +73,10 @@ Add to composer.json the following:
 Once the changes are made, you can install the assets using the following command:
 
 ```php
-composer update --prefer-dist
+composer update
 ```
 
-2.- Using the [npm-asset](https://www.npmjs.com/) package manager.    
+2. Using the [npm-asset](https://www.npmjs.com/) package manager.    
 
 Run the following command at the root directory of your application.
 
