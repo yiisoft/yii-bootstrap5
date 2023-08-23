@@ -177,6 +177,10 @@ final class Offcanvas extends Widget
             $options['data-bs-backdrop'] = 'false';
         }
 
+        if ($this->theme) {
+            $options['data-bs-theme'] = $this->theme;
+        }
+
         $html = Html::openTag($tag, $options);
         $html .= $this->renderHeader();
         $html .= Html::openTag($bodyTag, $bodyOptions);

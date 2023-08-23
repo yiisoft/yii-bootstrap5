@@ -32,6 +32,10 @@ final class Button extends Widget
             $this->options['id'] = "{$this->getId()}-button";
         }
 
+        if ($this->theme) {
+            $this->options['data-bs-theme'] = $this->theme;
+        }
+
         /** @psalm-suppress InvalidArgument */
         Html::addCssClass($this->options, ['widget' => 'btn']);
 

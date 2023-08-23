@@ -6,14 +6,18 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
 use RuntimeException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\CustomTag;
 use Yiisoft\Html\Tag\Li;
-
+use Yiisoft\Html\Tag\Ul;
 use function array_key_exists;
 use function array_merge;
 use function array_merge_recursive;
+use function array_unique;
+use function is_array;
 use function is_string;
 
 /**
@@ -35,24 +39,100 @@ use function is_string;
  */
 final class Dropdown extends Widget
 {
-    private array $items = [];
+    public const ALIGNMENT_END = 'dropdown-menu-end';
+    public const ALIGNMENT_SM_END = 'dropdown-menu-sm-end';
+    public const ALIGNMENT_MD_END = 'dropdown-menu-md-end';
+    public const ALIGNMENT_LG_END = 'dropdown-menu-lg-end';
+    public const ALIGNMENT_XL_END = 'dropdown-menu-xl-end';
+    public const ALIGNMENT_XXL_END = 'dropdown-menu-xxl-end';
+    public const ALIGNMENT_SM_START = 'dropdown-menu-sm-start';
+    public const ALIGNMENT_MD_START = 'dropdown-menu-md-start';
+    public const ALIGNMENT_LG_START = 'dropdown-menu-lg-start';
+    public const ALIGNMENT_XL_START = 'dropdown-menu-xl-start';
+    public const ALIGNMENT_XXL_START = 'dropdown-menu-xxl-start';
+
+    private array|string|Stringable|null $items = [];
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private array $submenuOptions = [];
     private array $options = [];
     private array $itemOptions = [];
     private array $linkOptions = [];
+    private array $alignment = [];
 
-    public function render(): string
+    private ?string $tagName = null;
+
+    public function getId(?string $suffix = '-dropdown'): ?string
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-dropdown";
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
+
+    private function prepareOptions(): array
+    {
+        $options = $this->options;
+        $options['id'] = $this->getId();
+        $classNames = array_merge(['widget' => 'dropdown-menu'], $this->alignment);
+
+        if ($this->theme) {
+            $options['data-bs-theme'] = $this->theme;
+
+            if ($this->theme === self::THEME_DARK) {
+                $classNames[] = 'dropdown-menu-dark';
+            }
         }
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
+        Html::addCssClass($options, $classNames);
 
-        return $this->renderItems($this->items, $this->options);
+        return $options;
+    }
+
+    private function prepareDropdownLayout(): CustomTag|Ul
+    {
+        $options = $this->prepareOptions();
+
+        if (is_array($this->items)) {
+            return Html::ul()
+                ->attributes($options);
+        }
+
+        $tagName = ArrayHelper::remove($options, 'tag', 'div');
+
+        return Html::tag($tagName, '', $options)
+            ->encode($this->encodeTags);
+    }
+
+    public function begin(): ?string
+    {
+        parent::begin();
+
+        $options = $this->prepareOptions();
+        $this->tagName = is_array($this->items) ? 'ul' : ArrayHelper::remove($options, 'tag', 'div');
+
+        return Html::openTag($this->tagName, $options);
+    }
+
+    /**
+     * @return string
+     * @throws InvalidConfigException
+     * @throws JsonException
+     */
+    public function render(): string
+    {
+        if ($this->tagName) {
+            return Html::closeTag($this->tagName);
+        }
+
+        $layout = $this->prepareDropdownLayout();
+
+        if (is_array($this->items)) {
+            /** @var Ul $layout */
+            return $this->renderItems($layout, $this->items);
+        }
+        /** @var CustomTag $layout */
+        return $layout
+            ->content((string) $this->items)
+            ->render();
     }
 
     /**
@@ -73,10 +153,23 @@ final class Dropdown extends Widget
      *
      * To insert divider use `-`.
      */
-    public function items(array $value): self
+    public function items(array|string|Stringable|null $value): self
     {
         $new = clone $this;
         $new->items = $value;
+        $new->tagName = null;
+
+        return $new;
+    }
+
+    /**
+     * Set dropdown alignment
+     * @see https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-alignment
+     */
+    public function withAlignment(string ...$alignment): self
+    {
+        $new = clone $this;
+        $new->alignment = array_unique($alignment);
 
         return $new;
     }
@@ -88,6 +181,14 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->encodeLabels = false;
+
+        return $new;
+    }
+
+    public function withEncodeTags(bool $encode): self
+    {
+        $new = clone $this;
+        $new->encodeTags = $encode;
 
         return $new;
     }
@@ -113,6 +214,7 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->options = $value;
+        $new->tagName = null;
 
         return $new;
     }
@@ -142,15 +244,15 @@ final class Dropdown extends Widget
     /**
      * Renders menu items.
      *
+     * @param Ul $layout
      * @param array $items the menu items to be rendered
-     * @param array $options the container HTML attributes
      *
      * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
      * items.
      *
      * @return string the rendering result.
      */
-    private function renderItems(array $items, array $options = []): string
+    private function renderItems(Ul $layout, array $items): string
     {
         $lines = [];
 
@@ -170,11 +272,8 @@ final class Dropdown extends Widget
             $lines[] = $this->renderItem($item);
         }
 
-        $options = array_merge(['aria-expanded' => 'false'], $options);
-
-        return Html::ul()
+        return $layout
             ->items(...$lines)
-            ->attributes($options)
             ->render();
     }
 

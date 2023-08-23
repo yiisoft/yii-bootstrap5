@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-abstract class Widget extends \Yiisoft\Widget\Widget
+use Yiisoft\Widget\Widget as YiiWidget;
+
+abstract class Widget extends YiiWidget
 {
+    public const THEME_DARK = 'dark';
+    public const THEME_LIGHT = 'light';
+
     private ?string $id = null;
     private bool $autoGenerate = true;
     private string $autoIdPrefix = 'w';
     private static int $counter = 0;
+    protected ?string $theme = null;
+
 
     /**
      * Returns the ID of the widget.
@@ -30,9 +37,9 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * Set the ID of the widget.
      *
-     * @return self
+     * @return static
      */
-    public function id(string $value): self
+    public function id(string $value): static
     {
         $new = clone $this;
         $new->id = $value;
@@ -51,14 +58,32 @@ abstract class Widget extends \Yiisoft\Widget\Widget
     /**
      * The prefix to the automatically generated widget IDs.
      *
-     * @return self
+     * @return static
      * {@see getId()}
      */
-    public function autoIdPrefix(string $value): self
+    public function autoIdPrefix(string $value): static
     {
         $new = clone $this;
         $new->autoIdPrefix = $value;
 
         return $new;
+    }
+
+    public function withTheme(?string $theme): static
+    {
+        $new = clone $this;
+        $new->theme = $theme;
+
+        return $new;
+    }
+
+    public function withDarkTheme(): static
+    {
+        return $this->withTheme(self::THEME_DARK);
+    }
+
+    public function withLightTheme(): static
+    {
+        return $this->withTheme(self::THEME_LIGHT);
     }
 }
