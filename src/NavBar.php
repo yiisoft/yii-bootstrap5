@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Stringable;
 use JsonException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
@@ -120,9 +120,6 @@ final class NavBar extends Widget
     public const EXPAND_XL = 'navbar-expand-xl';
     public const EXPAND_XXL = 'navbar-expand-xxl';
 
-    public const THEME_LIGHT = 'navbar-light';
-    public const THEME_DARK = 'navbar-dark';
-
     private array $collapseOptions = [];
     private ?string $brandText = null;
     private ?string $brandImage = null;
@@ -137,7 +134,6 @@ final class NavBar extends Widget
     private array $options = [];
     private bool $encodeTags = false;
     private ?string $expandSize = self::EXPAND_LG;
-    private ?string $theme = self::THEME_LIGHT;
     private ?Offcanvas $offcanvas = null;
 
     public function getId(?string $suffix = '-navbar'): ?string
@@ -162,7 +158,13 @@ final class NavBar extends Widget
         }
 
         if ($this->theme) {
-            $classNames['theme'] = $this->theme;
+            $options['data-bs-theme'] = $this->theme;
+
+            if ($this->theme === self::THEME_DARK) {
+                $classNames['theme'] = 'navbar-dark';
+            } elseif ($this->theme === self::THEME_LIGHT) {
+                $classNames['theme'] = 'navbar-light';
+            }
         }
 
         Html::addCssClass($options, $classNames);
@@ -233,33 +235,6 @@ final class NavBar extends Widget
         $new->expandSize = $size;
 
         return $new;
-    }
-
-    /**
-     * Set color theme for NavBar
-     */
-    public function theme(?string $theme): self
-    {
-        $new = clone $this;
-        $new->theme = $theme;
-
-        return $new;
-    }
-
-    /**
-     * Short method for light navbar theme
-     */
-    public function light(): self
-    {
-        return $this->theme(self::THEME_LIGHT);
-    }
-
-    /**
-     * Short method for dark navbar theme
-     */
-    public function dark(): self
-    {
-        return $this->theme(self::THEME_DARK);
     }
 
     /**

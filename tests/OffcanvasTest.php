@@ -277,4 +277,56 @@ final class OffcanvasTest extends TestCase
 
         $this->assertEqualsHTML($expected, $html);
     }
+
+    public function testThemes(): void
+    {
+        Offcanvas::counter(0);
+
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->withDarkTheme()
+            ->withoutBackdrop()
+            ->begin();
+        $html .= '<p>Some content here</p>';
+        $html .= Offcanvas::end();
+
+        $expected = <<<'HTML'
+        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="w0-offcanvas-title" data-bs-backdrop="false" data-bs-theme="dark">
+        <header class="offcanvas-header">
+        <h5 id="w0-offcanvas-title" class="offcanvas-title">Offcanvas title</h5>
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="offcanvas"></button>
+        </header>
+        <div class="offcanvas-body">
+        <p>Some content here</p>
+        </div>
+        </div>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+
+
+        Offcanvas::counter(0);
+
+        $html = Offcanvas::widget()
+            ->title('Offcanvas title')
+            ->withTheme('red')
+            ->withoutBackdrop()
+            ->begin();
+        $html .= '<p>Some content here</p>';
+        $html .= Offcanvas::end();
+
+        $expected = <<<'HTML'
+        <div id="w0-offcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="w0-offcanvas-title" data-bs-backdrop="false" data-bs-theme="red">
+        <header class="offcanvas-header">
+        <h5 id="w0-offcanvas-title" class="offcanvas-title">Offcanvas title</h5>
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="offcanvas"></button>
+        </header>
+        <div class="offcanvas-body">
+        <p>Some content here</p>
+        </div>
+        </div>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+    }
 }

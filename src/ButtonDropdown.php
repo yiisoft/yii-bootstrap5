@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\Html;
@@ -17,11 +18,9 @@ use Yiisoft\Html\Html;
  * // a button group using Dropdown widget
  * echo ButtonDropdown::widget()
  *     ->label('Action')
- *     ->dropdown'([
- *         'items' => [
- *             ['label' => 'DropdownA', 'url' => '/'],
- *             ['label' => 'DropdownB', 'url' => '#'],
- *         ],
+ *     ->items([
+*             ['label' => 'DropdownA', 'url' => '/'],
+*             ['label' => 'DropdownB', 'url' => '#'],
  *     ]);
  * ```
  */
@@ -48,47 +47,49 @@ final class ButtonDropdown extends Widget
     public const DIRECTION_UP = 'up';
 
     private string $label = 'Button';
+    private ?array $labelOptions = null;
     private array $options = [];
     private array $buttonOptions = [];
-    private array $dropdown = [];
+    private array|string|Stringable $items = [];
     private string $direction = self::DIRECTION_DOWN;
     private bool $split = false;
     /** @psalm-var non-empty-string */
     private string $tagName = 'button';
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
-    /** @psalm-var class-string */
-    private string $dropdownClass = Dropdown::class;
+    /** @psalm-var class-string|Dropdown */
+    private string|Dropdown $dropdownClass = Dropdown::class;
     private bool $renderContainer = true;
+
+    public function getId(?string $suffix = '-button-dropdown'): ?string
+    {
+        return $this->options['id'] ?? parent::getId($suffix);
+    }
 
     public function render(): string
     {
-        if (!isset($this->dropdown['items'])) {
+        if (empty($this->items)) {
             return '';
         }
 
-        /** Set options id to button options id to ensure correct css selector in plugin initialisation */
-        if (empty($this->options['id'])) {
-            $id = $this->getId();
-
-            $this->options['id'] = "{$id}-button-dropdown";
-            $this->buttonOptions['id'] = "{$id}-button";
-        }
-
-        $html = $this->renderButton() . "\n" . $this->renderDropdown();
-
         if ($this->renderContainer) {
-            /** @psalm-suppress InvalidArgument */
-            Html::addCssClass($this->options, ['widget' => 'drop' . $this->direction, 'btn-group']);
-
             $options = $this->options;
+            $options['id'] = $this->getId();
+
+            /** @psalm-suppress InvalidArgument */
+            Html::addCssClass($options, ['widget' => 'drop' . $this->direction, 'btn-group']);
+
+            if ($this->theme) {
+                $options['data-bs-theme'] = $this->theme;
+            }
+
             $tag = ArrayHelper::remove($options, 'tag', 'div');
-            $html = Html::tag($tag, $html, $options)
+            return Html::tag($tag, $this->renderButton() . "\n" . $this->renderDropdown(), $options)
                 ->encode($this->encodeTags)
                 ->render();
         }
 
-        return $html;
+        return $this->renderButton() . "\n" . $this->renderDropdown();
     }
 
     /**
@@ -122,19 +123,17 @@ final class ButtonDropdown extends Widget
      *
      * ```php
      *    [
-     *        'items' => [
      *            ['label' => 'DropdownA', 'url' => '/'],
      *            ['label' => 'DropdownB', 'url' => '#'],
-     *        ],
      *    ]
      * ```
      *
      * {@see Dropdown}
      */
-    public function dropdown(array $value): self
+    public function items(array|string|Stringable $value): self
     {
         $new = clone $this;
-        $new->dropdown = $value;
+        $new->items = $value;
 
         return $new;
     }
@@ -144,7 +143,7 @@ final class ButtonDropdown extends Widget
      *
      * @psalm-param class-string $value
      */
-    public function dropdownClass(string $value): self
+    public function dropdownClass(string|Dropdown $value): self
     {
         $new = clone $this;
         $new->dropdownClass = $value;
@@ -170,6 +169,14 @@ final class ButtonDropdown extends Widget
     {
         $new = clone $this;
         $new->label = $value;
+
+        return $new;
+    }
+
+    public function withLabelOptions(?array $options): self
+    {
+        $new = clone $this;
+        $new->labelOptions = $options;
 
         return $new;
     }
@@ -223,6 +230,31 @@ final class ButtonDropdown extends Widget
         return $new;
     }
 
+    private function prepareButtonOptions(bool $toggle): array
+    {
+        $options = $this->buttonOptions;
+        $classNames = ['button' => 'btn'];
+
+        if ($toggle) {
+            $options['data-bs-toggle'] = 'dropdown';
+            $options['aria-haspopup'] = 'true';
+            $options['aria-expanded'] = 'false';
+            $classNames['toggle'] = 'dropdown-toggle';
+        }
+
+        Html::addCssClass($options, $classNames);
+
+        if ($this->tagName !== 'button') {
+            $options['role'] = 'button';
+
+            if ($this->tagName === 'a' && !isset($options['href'])) {
+                $options['href'] = '#';
+            }
+        }
+
+        return $options;
+    }
+
     /**
      * Generates the button dropdown.
      *
@@ -232,47 +264,12 @@ final class ButtonDropdown extends Widget
      */
     private function renderButton(): string
     {
-        Html::addCssClass($this->buttonOptions, ['buttonOptions' => 'btn']);
-
-        $label = $this->label;
-
-        if ($this->encodeLabels !== false) {
-            $label = Html::encode($label);
-        }
-
-        $buttonOptions = $this->buttonOptions;
-
-        if ($this->split) {
-            $this->buttonOptions['data-bs-toggle'] = 'dropdown';
-            $this->buttonOptions['aria-haspopup'] = 'true';
-            $this->buttonOptions['aria-expanded'] = 'false';
-
-            Html::addCssClass($this->buttonOptions, ['toggle' => 'dropdown-toggle dropdown-toggle-split']);
-
-            unset($buttonOptions['id']);
-
-            $splitButton = Button::widget()
-                ->label('<span class="sr-only">Toggle Dropdown</span>')
-                ->options($this->buttonOptions)
-                ->withoutEncodeLabels()
-                ->render();
-        } else {
-            Html::addCssClass($buttonOptions, ['toggle' => 'dropdown-toggle']);
-
-            $buttonOptions['data-bs-toggle'] = 'dropdown';
-            $buttonOptions['aria-haspopup'] = 'true';
-            $buttonOptions['aria-expanded'] = 'false';
-            $splitButton = '';
-        }
-
-        if (!isset($buttonOptions['href']) && ($this->tagName === 'a')) {
-            $buttonOptions['href'] = '#';
-            $buttonOptions['role'] = 'button';
-        }
-
+        $splitButton = $this->renderSplitButton();
+        $options = $this->prepareButtonOptions($splitButton === null);
         $button = Button::widget()
-            ->label($label)
-            ->options($buttonOptions)
+            ->options($options)
+            ->label($this->renderLabel())
+            ->withTheme($this->renderContainer ? null : $this->theme)
             ->tagName($this->tagName);
 
         if ($this->encodeLabels === false) {
@@ -282,16 +279,61 @@ final class ButtonDropdown extends Widget
         return $button->render() . "\n" . $splitButton;
     }
 
+    private function renderSplitButton(): ?string
+    {
+        if ($this->split === false) {
+            return null;
+        }
+
+        $options = $this->prepareButtonOptions(true);
+        Html::addCssClass($options, 'dropdown-toggle-split');
+
+        return Button::widget()
+            ->options($options)
+            ->label('<span class="visually-hidden">Toggle Dropdown</span>')
+            ->tagName($this->tagName)
+            ->withoutEncodeLabels()
+            ->withTheme($this->renderContainer ? null : $this->theme)
+            ->render();
+    }
+
+    private function renderLabel(): string
+    {
+        if ($this->labelOptions === null) {
+            return $this->encodeLabels ? Html::encode($this->label) : $this->label;
+        }
+
+        $options = $this->labelOptions;
+        $tag = ArrayHelper::remove($options, 'tag', 'span');
+        $encode = ArrayHelper::remove($options, 'encode', $this->encodeLabels);
+
+        return Html::tag($tag, $this->label, $options)
+            ->encode($encode)
+            ->render();
+    }
+
     /**
      * Generates the dropdown menu.
      *
-     * @return string the rendering result.
+     * @return string
+     * @throws InvalidConfigException
+     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
+     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
+     * @throws \Yiisoft\Factory\NotFoundException
      */
     private function renderDropdown(): string
     {
-        $dropdownClass = $this->dropdownClass;
+        if (is_string($this->dropdownClass)) {
+            $dropdownClass = $this->dropdownClass;
+            /** @var Dropdown $dropdownClass */
+            $dropdown = $dropdownClass::widget()->items($this->items);
+        } else {
+            $dropdown = $this->dropdownClass->items($this->items);
+        }
 
-        $dropdown = $dropdownClass::widget()->items($this->dropdown['items']);
+        if ($this->theme && !$this->renderContainer) {
+            $dropdown = $dropdown->withTheme($this->theme);
+        }
 
         if ($this->encodeLabels === false) {
             $dropdown = $dropdown->withoutEncodeLabels();

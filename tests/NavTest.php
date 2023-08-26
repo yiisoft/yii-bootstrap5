@@ -46,7 +46,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -93,7 +93,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="test1" class="test dropdown-menu" aria-expanded="false" data-id="t1">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="test1" class="test dropdown-menu" data-id="t1">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -126,7 +126,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -216,7 +216,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><a class="dropdown-item" href="site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -247,7 +247,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><a class="dropdown-item" href="/site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -280,8 +280,8 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
-        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="w2-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w1-dropdown" class="dropdown-menu">
+        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="w2-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page</h6></li>
         </ul></li>
         </ul></li></ul>
@@ -376,7 +376,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -398,7 +398,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w2-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown"><span><i class=fas fas-test></i>Dropdown1</span></a><ul id="w3-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w2-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown"><span><i class=fas fas-test></i>Dropdown1</span></a><ul id="w3-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -426,7 +426,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -454,7 +454,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -482,7 +482,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu-dark dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu-dark dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -509,7 +509,7 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu" aria-expanded="false">
+        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
