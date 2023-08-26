@@ -304,7 +304,6 @@ final class DropdownTest extends TestCase
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
-
     }
 
     public function testEncodeLabels(): void

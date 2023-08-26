@@ -315,11 +315,11 @@ final class ButtonDropdown extends Widget
     /**
      * Generates the dropdown menu.
      *
-     * @return string
      * @throws InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
      * @throws \Yiisoft\Factory\NotFoundException
+     * @return string
      */
     private function renderDropdown(): string
     {

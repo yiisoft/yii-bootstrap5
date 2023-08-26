@@ -310,6 +310,5 @@ final class ButtonDropdownTest extends TestCase
         </ul></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
-
     }
 }

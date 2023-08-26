@@ -17,7 +17,6 @@ abstract class Widget extends YiiWidget
     private static int $counter = 0;
     protected ?string $theme = null;
 
-
     /**
      * Returns the ID of the widget.
      *

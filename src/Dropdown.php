@@ -13,6 +13,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\CustomTag;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
+
 use function array_key_exists;
 use function array_merge;
 use function array_merge_recursive;
@@ -113,9 +114,9 @@ final class Dropdown extends Widget
     }
 
     /**
-     * @return string
      * @throws InvalidConfigException
      * @throws JsonException
+     * @return string
      */
     public function render(): string
     {
