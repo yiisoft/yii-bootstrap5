@@ -245,12 +245,10 @@ final class Dropdown extends Widget
     /**
      * Renders menu items.
      *
-     * @param Ul $layout
      * @param array $items the menu items to be rendered
      *
      * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
      * items.
-     *
      * @return string the rendering result.
      */
     private function renderItems(Ul $layout, array $items): string
