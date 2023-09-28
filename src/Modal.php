@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_merge;
 
 /**
@@ -19,7 +19,7 @@ use function array_merge;
  * ```php
  * Modal::widget()
  *     ->title('Hello world')
- *     ->toggleButton(['label' => 'click me'])
+ *     ->withToggleOptions(['label' => 'click me'])
  *     ->begin();
  *
  * echo 'Say hello...';
@@ -27,7 +27,7 @@ use function array_merge;
  * echo Modal::end();
  * ```
  */
-final class Modal extends Widget
+final class Modal extends AbstractCloseButtonWidget
 {
     /**
      * Size classes
@@ -47,7 +47,7 @@ final class Modal extends Widget
     public const FULLSCREEN_BELOW_XL = 'modal-fullscreen-xl-down';
     public const FULLSCREEN_BELOW_XXL = 'modal-fullscreen-xxl-down';
 
-    private ?string $title = null;
+    private string|Stringable|null $title = null;
     private array $titleOptions = [];
     private array $headerOptions = [];
     private array $dialogOptions = [];
@@ -56,8 +56,6 @@ final class Modal extends Widget
     private ?string $footer = null;
     private array $footerOptions = [];
     private ?string $size = self::SIZE_DEFAULT;
-    private ?array $closeButton = ['class' => 'btn-close'];
-    private ?array $toggleButton = [];
     private array $options = [];
     private bool $encodeTags = false;
     private bool $fade = true;
@@ -65,10 +63,16 @@ final class Modal extends Widget
     private bool $scrollable = false;
     private bool $centered = false;
     private ?string $fullscreen = null;
+    protected string|Stringable $toggleLabel = 'Show';
 
     public function getId(?string $suffix = '-modal'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
+    }
+
+    public function toggleComponent(): string
+    {
+        return 'modal';
     }
 
     public function getTitleId(): string
@@ -89,7 +93,7 @@ final class Modal extends Widget
         Html::addCssClass($contentOptions, ['modal-content']);
 
         return
-            $this->renderToggleButton() .
+            ($this->renderToggle ? $this->renderToggle() : '') .
             Html::openTag('div', $options) .
             Html::openTag($dialogTag, $dialogOptions) .
             Html::openTag($contentTag, $contentOptions) .
@@ -99,14 +103,11 @@ final class Modal extends Widget
 
     public function render(): string
     {
-        $contentTag = ArrayHelper::getValue($this->contentOptions, 'tag', 'div');
-        $dialogTag = ArrayHelper::getValue($this->dialogOptions, 'tag', 'div');
-
         return
             $this->renderBodyEnd() .
             $this->renderFooter() .
-            Html::closeTag($contentTag) . // modal-content
-            Html::closeTag($dialogTag) . // modal-dialog
+            Html::closeTag($this->contentOptions['tag'] ?? 'div') . // modal-content
+            Html::closeTag($this->dialogOptions['tag'] ?? 'div') . // modal-dialog
             Html::closeTag('div');
     }
 
@@ -206,38 +207,6 @@ final class Modal extends Widget
     }
 
     /**
-     * The options for rendering the close button tag.
-     *
-     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
-     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to '&times;'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
-     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
-     *
-     * @param array|null $value
-     */
-    public function closeButton(?array $value): self
-    {
-        $new = clone $this;
-        $new->closeButton = $value;
-
-        return $new;
-    }
-
-    /**
-     * Disable close button.
-     */
-    public function withoutCloseButton(): self
-    {
-        return $this->closeButton(null);
-    }
-
-    /**
      * The footer content in the modal window.
      */
     public function footer(?string $value): self
@@ -310,38 +279,6 @@ final class Modal extends Widget
         $new->titleOptions = $value;
 
         return $new;
-    }
-
-    /**
-     * The options for rendering the toggle button tag.
-     *
-     * The toggle button is used to toggle the visibility of the modal window. If {@see toggleButtonEnabled} is false,
-     * no toggle button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to 'Show'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag. Please refer to the
-     * [Modal plugin help](http://getbootstrap.com/javascript/#modals) for the supported HTML attributes.
-     *
-     * @param array|null $value
-     */
-    public function toggleButton(?array $value): self
-    {
-        $new = clone $this;
-        $new->toggleButton = $value;
-
-        return $new;
-    }
-
-    /**
-     * Disable toggle button.
-     */
-    public function withoutToggleButton(): self
-    {
-        return $this->toggleButton(null);
     }
 
     /**
@@ -530,84 +467,6 @@ final class Modal extends Widget
         Html::addCssClass($options, ['widget' => 'modal-footer']);
 
         return Html::tag($tag, $this->footer, $options)
-            ->encode($encode)
-            ->render();
-    }
-
-    /**
-     * Renders the toggle button.
-     *
-     * @param array $options additional options for current button
-     *
-     * @throws JsonException
-     *
-     * @return string|null the rendering result
-     */
-    public function renderToggleButton(array $options = []): ?string
-    {
-        if ($this->toggleButton === null && count($options) === 0) {
-            return null;
-        }
-
-        $options = array_merge(
-            [
-                'data-bs-toggle' => 'modal',
-            ],
-            $this->toggleButton ?? [],
-            $options
-        );
-
-        $tag = ArrayHelper::remove($options, 'tag', 'button');
-        $label = ArrayHelper::remove($options, 'label', 'Show');
-        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
-
-        if ($tag === 'button' && !isset($options['type'])) {
-            $options['type'] = 'button';
-        }
-
-        if (!isset($options['data-bs-target'])) {
-            $target = (string) $this->getId();
-
-            if ($tag === 'a' && !isset($options['href'])) {
-                $options['href'] = '#' . $target;
-            } else {
-                $options['data-bs-target'] = '#' . $target;
-            }
-        }
-
-        return Html::tag($tag, $label, $options)
-            ->encode($encode)
-            ->render();
-    }
-
-    /**
-     * Renders the close button.
-     *
-     * @throws JsonException
-     *
-     * @return string|null the rendering result
-     *
-     * @link https://getbootstrap.com/docs/5.1/components/close-button/
-     */
-    private function renderCloseButton(): ?string
-    {
-        if ($this->closeButton === null) {
-            return null;
-        }
-
-        $options = array_merge([
-            'data-bs-dismiss' => 'modal',
-            'aria-label' => 'Close',
-        ], $this->closeButton);
-        $tag = ArrayHelper::remove($options, 'tag', 'button');
-        $label = ArrayHelper::remove($options, 'label', '');
-        $encode = ArrayHelper::remove($options, 'encode', !empty($label));
-
-        if ($tag === 'button' && !isset($options['type'])) {
-            $options['type'] = 'button';
-        }
-
-        return Html::tag($tag, $label, $options)
             ->encode($encode)
             ->render();
     }

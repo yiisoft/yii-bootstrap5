@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\Base\Tag;
+use function array_merge;
 
 /**
  * NavBar renders a navbar HTML component.
@@ -112,7 +113,7 @@ use Yiisoft\Html\Html;
  *    }
  * ```
  */
-final class NavBar extends Widget
+final class NavBar extends AbstractToggleWidget
 {
     public const EXPAND_SM = 'navbar-expand-sm';
     public const EXPAND_MD = 'navbar-expand-md';
@@ -127,24 +128,74 @@ final class NavBar extends Widget
     private ?string $brandUrl = '/';
     private array $brandOptions = [];
     private string $screenReaderToggleText = 'Toggle navigation';
-    private string $togglerContent = '<span class="navbar-toggler-icon"></span>';
-    private array $togglerOptions = [];
+    protected string|Stringable $toggleLabel  = '<span class="navbar-toggler-icon"></span>';
     private bool $renderInnerContainer = true;
     private array $innerContainerOptions = [];
     private array $options = [];
     private bool $encodeTags = false;
     private ?string $expandSize = self::EXPAND_LG;
-    private ?Offcanvas $offcanvas = null;
+    private Offcanvas|Collapse|null $widget = null;
+    protected bool $renderToggle = false;
 
     public function getId(?string $suffix = '-navbar'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
+    protected function toggleComponent(): string
+    {
+        if ($this->widget instanceof Offcanvas) {
+            return 'offcanvas';
+        }
+
+        return 'collapse';
+    }
+
+    /**
+     * @return string
+     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
+     * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
+     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
+     * @throws \Yiisoft\Factory\NotFoundException
+     */
     public function begin(): string
     {
-        /** Run Offcanvas::begin before NavBar parent::begin for right stack order */
-        $offcanvas = $this->offcanvas ? $this->offcanvas->begin() : null;
+        /** Run Offcanvas|Collapse::begin before NavBar parent::begin for right stack order */
+        if ($this->expandSize && $this->widget === null) {
+            $collapseOptions = $this->collapseOptions;
+            Html::addCssClass($collapseOptions, ['collapse' => 'collapse', 'widget' => 'navbar-collapse']);
+
+            $this->widget = Collapse::widget()
+                ->withOptions($collapseOptions)
+                ->withBodyOptions([
+                    'tag' => null,
+                ]);
+        }
+
+        if ($this->widget) {
+
+            [$tagName, $options, $encode] = $this->prepareToggleOptions();
+            unset(
+                $options['data-bs-target'],
+                $options['data']['bs-target'],
+                $options['aria-controls'],
+                $options['aria']['controls'],
+            );
+
+            $widget = $this->widget
+                ->withToggle(true)
+                ->withToggleLabel($this->toggleLabel)
+                ->withToggleOptions(
+                    array_merge($options, [
+                        'tag' => $tagName,
+                        'encode' => $encode,
+                    ])
+                )
+                ->begin();
+
+        } else {
+            $widget = '';
+        }
 
         parent::begin();
 
@@ -181,24 +232,10 @@ final class NavBar extends Widget
 
         $htmlStart .= $this->renderBrand();
 
-        if ($offcanvas) {
-            $offcanvasId = $this->offcanvas ? $this->offcanvas->getId() : null;
-            $htmlStart .= $this->renderToggleButton($offcanvasId);
-            $htmlStart .= $offcanvas;
-        } elseif ($this->expandSize) {
-            $collapseOptions = $this->collapseOptions;
-            $collapseTag = ArrayHelper::remove($collapseOptions, 'tag', 'div');
-
-            if (!isset($collapseOptions['id'])) {
-                $collapseOptions['id'] = $options['id'] . '-collapse';
-            }
-
-            Html::addCssClass($collapseOptions, ['collapse' => 'collapse', 'widget' => 'navbar-collapse']);
-
-            $htmlStart .= $this->renderToggleButton($collapseOptions['id']);
-            $htmlStart .= Html::openTag($collapseTag, $collapseOptions);
-        } elseif ($this->togglerOptions) {
-            $htmlStart .= $this->renderToggleButton(null);
+        if ($widget) {
+            $htmlStart .= $widget;
+        } elseif ($this->renderToggle) {
+            $htmlStart .= $this->renderToggle();
         }
 
         return $htmlStart;
@@ -206,22 +243,13 @@ final class NavBar extends Widget
 
     public function render(): string
     {
-        $htmlRun = '';
-
-        if ($this->offcanvas) {
-            $htmlRun = $this->offcanvas::end();
-        } elseif ($this->expandSize) {
-            $tag = ArrayHelper::getValue($this->collapseOptions, 'tag', 'div');
-            $htmlRun = Html::closeTag($tag);
-        }
+        $htmlRun = $this->widget ? $this->widget::end() : '';
 
         if ($this->renderInnerContainer) {
             $htmlRun .= Html::closeTag('div');
         }
 
-        $tag = ArrayHelper::getValue($this->options, 'tag', 'nav');
-
-        $htmlRun .= Html::closeTag($tag);
+        $htmlRun .= Html::closeTag($this->options['tag'] ?? 'nav');
 
         return $htmlRun;
     }
@@ -251,12 +279,12 @@ final class NavBar extends Widget
     }
 
     /**
-     * Set/remove Offcanvas::widget instead of collapse
+     * Set/remove Offcanvas::widget or Collapse::widget
      */
-    public function offcanvas(?Offcanvas $offcanvas): self
+    public function withWidget(Offcanvas|Collapse|null $widget): self
     {
         $new = clone $this;
-        $new->offcanvas = $offcanvas;
+        $new->widget = $widget;
 
         return $new;
     }
@@ -339,30 +367,6 @@ final class NavBar extends Widget
     }
 
     /**
-     * The toggle button content. Defaults to bootstrap 4 default `<span class="navbar-toggler-icon"></span>`.
-     */
-    public function togglerContent(string $value): self
-    {
-        $new = clone $this;
-        $new->togglerContent = $value;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes of the navbar toggler button.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function togglerOptions(array $value): self
-    {
-        $new = clone $this;
-        $new->togglerOptions = $value;
-
-        return $new;
-    }
-
-    /**
      * This for a 100% width navbar.
      */
     public function withoutRenderInnerContainer(): self
@@ -431,44 +435,29 @@ final class NavBar extends Widget
             ->render();
     }
 
+    protected function prepareToggleOptions(): array
+    {
+        [$tagName, $options] = parent::prepareToggleOptions();
+
+        Html::addCssClass($options, ['widget' => 'navbar-toggler']);
+        $options['aria-label'] = $this->screenReaderToggleText;
+
+        return [$tagName, $options, $this->encodeTags];
+    }
+
     /**
      * Renders collapsible toggle button.
      *
-     * @param string|null $targetId - ID of target element for current button
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering toggle button.
+     * @return Tag the rendering toggle button.
      *
      * @link https://getbootstrap.com/docs/5.0/components/navbar/#toggler
      */
-    private function renderToggleButton(?string $targetId): string
+    public function renderToggle(): Tag
     {
-        $options = $this->togglerOptions;
-        $encode = ArrayHelper::remove($options, 'encode', $this->encodeTags);
-        Html::addCssClass($options, ['widget' => 'navbar-toggler']);
-
-        $defauts = [
-            'type' => 'button',
-            'data' => [
-                'bs-toggle' => $this->offcanvas ? 'offcanvas' : 'collapse',
-            ],
-            'aria' => [
-                'controls' => $targetId,
-                'expanded' => 'false',
-                'label' => $this->screenReaderToggleText,
-            ],
-        ];
-
-        if ($targetId) {
-            $defauts['data']['bs-target'] = '#' . $targetId;
+        if ($this->widget) {
+            return $this->widget->renderToggle();
         }
 
-        return Html::button(
-            $this->togglerContent,
-            ArrayHelper::merge($defauts, $options)
-        )
-            ->encode($encode)
-            ->render();
+        return parent::renderToggle();
     }
 }

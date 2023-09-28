@@ -6,11 +6,10 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
 use RuntimeException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_key_exists;
-use function array_merge;
 use function implode;
 use function is_array;
 use function is_numeric;
@@ -85,8 +84,9 @@ final class Accordion extends Widget
     private bool $encodeTags = false;
     private bool $autoCloseItems = true;
     private array $headerOptions = [];
-    private array $itemToggleOptions = [];
+    private array $toggleOptions = [];
     private array $contentOptions = [];
+    private array $bodyOptions = [];
     private array $options = [];
     private bool $flush = false;
 
@@ -95,29 +95,25 @@ final class Accordion extends Widget
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
-    private function getCollapseId(array $item, int $index): string
-    {
-        return ArrayHelper::getValueByPath($item, ['contentOptions', 'id'], $this->getId() . '-collapse' . $index);
-    }
-
-    private function getHeaderId(array $item, int $index): string
-    {
-        return ArrayHelper::getValueByPath($item, ['headerOptions', 'id'], $this->getCollapseId($item, $index) . '-heading');
-    }
-
+    /**
+     * @return string
+     * @throws JsonException
+     */
     public function render(): string
     {
-        Html::addCssClass($this->options, ['widget' => 'accordion']);
+        $options = $this->options;
+        $options['id'] = $this->getId();
+        Html::addCssClass($options, ['widget' => 'accordion']);
 
         if ($this->flush) {
-            Html::addCssClass($this->options, ['flush' => 'accordion-flush']);
+            Html::addCssClass($options, ['flush' => 'accordion-flush']);
         }
 
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
+        if ($this->theme) {
+            $options['data-bs-theme'] = $this->theme;
         }
 
-        return Html::div($this->renderItems(), $this->options)
+        return Html::div($this->renderItems(), $options)
             ->encode($this->encodeTags)
             ->render();
     }
@@ -228,10 +224,10 @@ final class Accordion extends Widget
      * ]
      * ```
      */
-    public function itemToggleOptions(array $value): self
+    public function toggleOptions(array $options): self
     {
         $new = clone $this;
-        $new->itemToggleOptions = $value;
+        $new->toggleOptions = $options;
 
         return $new;
     }
@@ -256,6 +252,14 @@ final class Accordion extends Widget
     {
         $new = clone $this;
         $new->options = $value;
+
+        return $new;
+    }
+
+    public function bodyOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->bodyOptions = $options;
 
         return $new;
     }
@@ -286,7 +290,7 @@ final class Accordion extends Widget
         $items = [];
         $index = 0;
         $expanded = in_array(true, $this->expands, true);
-        $allClose = !$expanded && count($this->items) === count(array_filter($this->expands, fn ($expand) => $expand === false));
+        $allClose = !$expanded && count($this->items) === count(array_filter($this->expands, static fn ($expand) => $expand === false));
 
         foreach ($this->items as $item) {
             if (!is_array($item)) {
@@ -302,13 +306,15 @@ final class Accordion extends Widget
             }
 
             $options = ArrayHelper::getValue($item, 'options', []);
-            $item = $this->renderItem($item, $index++);
+            $item = $this->renderItem($item);
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
             $items[] = Html::div($item, $options)
                 ->encode(false)
                 ->render();
+
+            $index++;
         }
 
         return implode('', $items);
@@ -324,104 +330,66 @@ final class Accordion extends Widget
      *
      * @return string the rendering result
      */
-    private function renderItem(array $item, int $index): string
+    private function renderItem(array $item): string
     {
         if (!array_key_exists('content', $item)) {
             throw new RuntimeException('The "content" option is required.');
         }
 
-        $header = $this->renderHeader($item, $index);
-        $collapse = $this->renderCollapse($item, $index);
+        $collapse = $this->renderCollapse($item);
+        $header = $this->renderHeader($collapse, ArrayHelper::getValue($item, 'headerOptions'));
 
-        return $header . $collapse;
+        return $header . $collapse->render();
     }
 
     /**
      * Render collapse header
      */
-    private function renderHeader(array $item, int $index): string
+    private function renderHeader(Collapse $collapse, ?array $headerOptions): string
     {
-        $options = ArrayHelper::getValue($item, 'headerOptions', $this->headerOptions);
+        $options = $headerOptions ?? $this->headerOptions;
         $tag = ArrayHelper::remove($options, 'tag', 'h2');
-        $options['id'] = $this->getHeaderId($item, $index);
-        $toggle = $this->renderToggle($item, $index);
 
         Html::addCssClass($options, ['widget' => 'accordion-header']);
 
-        return Html::tag($tag, $toggle, $options)
+        return Html::tag($tag, $collapse->renderToggle(), $options)
             ->encode(false)
-            ->render();
-    }
-
-    /**
-     * Render collapse switcher
-     */
-    private function renderToggle(array $item, int $index): string
-    {
-        $label = $item['label'];
-        $expand = $item['expand'] ?? false;
-        $collapseId = $this->getCollapseId($item, $index);
-
-        $options = array_merge(
-            [
-                'data-bs-toggle' => 'collapse',
-                'aria-expanded' => $expand ? 'true' : 'false',
-                'aria-controls' => $collapseId,
-            ],
-            $item['toggleOptions'] ?? $this->itemToggleOptions
-        );
-        $tag = ArrayHelper::remove($options, 'tag', 'button');
-        $encode = ArrayHelper::remove($options, 'encode', $this->encodeLabels);
-
-        Html::addCssClass($options, ['accordion-button']);
-
-        if (!$expand) {
-            Html::addCssClass($options, ['collapsed']);
-        }
-
-        if ($tag === 'a') {
-            $options['href'] = '#' . $collapseId;
-        } else {
-            $options['data-bs-target'] = '#' . $collapseId;
-
-            if ($tag === 'button' && !isset($options['type'])) {
-                $options['type'] = 'button';
-            }
-        }
-
-        return Html::tag($tag, $label, $options)
-            ->encode($encode)
             ->render();
     }
 
     /**
      * Render collapse item
      */
-    private function renderCollapse(array $item, int $index): string
+    private function renderCollapse(array $item): Collapse
     {
         $expand = $item['expand'] ?? false;
         $options = $item['contentOptions'] ?? $this->contentOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
-        $body = $this->renderBody($item);
-        $options['id'] = $this->getCollapseId($item, $index);
+        $toggleOptions = $item['toggleOptions'] ?? $this->toggleOptions;
+        $bodyOptions = $item['bodyOptions'] ?? $this->bodyOptions;
 
-        Html::addCssClass($options, ['accordion-collapse collapse']);
+        $toggleOptions['encode'] ??= $this->encodeLabels;
+        $bodyOptions['encode'] ??= $this->encodeTags;
 
-        if ($expand) {
-            Html::addCssClass($options, ['show']);
-        }
+        Html::addCssClass($options, ['accordion-collapse']);
+        Html::addCssClass($toggleOptions, ['accordion-button']);
+        Html::addCssClass($bodyOptions, ['widget' => 'accordion-body']);
 
-        if (!isset($options['aria-label'], $options['aria-labelledby'])) {
-            $options['aria-labelledby'] = $this->getHeaderId($item, $index);
+        if (!$expand) {
+            Html::addCssClass($toggleOptions, ['collapsed']);
         }
 
         if ($this->autoCloseItems) {
             $options['data-bs-parent'] = '#' . $this->getId();
         }
 
-        return Html::tag($tag, $body, $options)
-            ->encode(false)
-            ->render();
+        return Collapse::widget()
+            ->withToggleLabel($item['label'])
+            ->withToggleOptions($toggleOptions)
+            ->withOptions($options)
+            ->withContent($this->renderBody($item))
+            ->withBodyOptions($bodyOptions)
+            ->withCollapsed($expand)
+            ->withToggle(false);
     }
 
     /**
@@ -445,13 +413,11 @@ final class Accordion extends Widget
             $items .= $value;
         }
 
-        return Html::div($items, ['class' => 'accordion-body'])
-            ->encode($this->encodeTags)
-            ->render();
+        return $items;
     }
 
     private function isStringableObject(mixed $value): bool
     {
-        return is_object($value) && method_exists($value, '__toString');
+        return $value instanceof Stringable;
     }
 }
