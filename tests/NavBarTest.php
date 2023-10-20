@@ -419,7 +419,6 @@ final class NavBarTest extends TestCase
 
     /**
      * @dataProvider expandSizeDataProvider
-     * @return void
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
@@ -428,8 +427,8 @@ final class NavBarTest extends TestCase
     public function testExpandSize(string $size, string $expected): void
     {
         $html = NavBar::widget()->options([
-                'id' => 'expanded-navbar',
-            ])
+            'id' => 'expanded-navbar',
+        ])
             ->expandSize($size)
             ->begin() . NavBar::end();
 
@@ -568,7 +567,6 @@ final class NavBarTest extends TestCase
      * @dataProvider colorThemeDataProvider
      * @param string $theme
      * @param string $expected
-     * @return void
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
@@ -616,7 +614,6 @@ final class NavBarTest extends TestCase
      * @dataProvider toggleWidgetDataProvider
      * @param Collapse|Offcanvas|null $widget
      * @param string $expected
-     * @return void
      */
     public function testToggle(?string $widget, string $expected): void
     {

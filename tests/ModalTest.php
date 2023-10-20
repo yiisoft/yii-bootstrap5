@@ -455,7 +455,6 @@ HTML;
 
     /**
      * @dataProvider sizeDataProvider
-     * @return void
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
@@ -604,7 +603,7 @@ HTML;
                 </div>
                 </div>
                 HTML,
-            ]
+            ],
         ];
     }
 
@@ -612,7 +611,6 @@ HTML;
      * @dataProvider screenSizeDataProvider
      * @param string $size
      * @param string $exprected
-     * @return void
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException

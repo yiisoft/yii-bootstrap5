@@ -9,6 +9,7 @@ use RuntimeException;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
+
 use function array_key_exists;
 use function implode;
 use function is_array;
@@ -96,8 +97,8 @@ final class Accordion extends Widget
     }
 
     /**
-     * @return string
      * @throws JsonException
+     * @return string
      */
     public function render(): string
     {

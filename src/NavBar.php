@@ -8,6 +8,7 @@ use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
+
 use function array_merge;
 
 /**
@@ -128,7 +129,7 @@ final class NavBar extends AbstractToggleWidget
     private ?string $brandUrl = '/';
     private array $brandOptions = [];
     private string $screenReaderToggleText = 'Toggle navigation';
-    protected string|Stringable $toggleLabel  = '<span class="navbar-toggler-icon"></span>';
+    protected string|Stringable $toggleLabel = '<span class="navbar-toggler-icon"></span>';
     private bool $renderInnerContainer = true;
     private array $innerContainerOptions = [];
     private array $options = [];
@@ -152,11 +153,11 @@ final class NavBar extends AbstractToggleWidget
     }
 
     /**
-     * @return string
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
      * @throws \Yiisoft\Factory\NotFoundException
+     * @return string
      */
     public function begin(): string
     {
@@ -173,7 +174,6 @@ final class NavBar extends AbstractToggleWidget
         }
 
         if ($this->widget) {
-
             [$tagName, $options, $encode] = $this->prepareToggleOptions();
             unset(
                 $options['data-bs-target'],
@@ -192,7 +192,6 @@ final class NavBar extends AbstractToggleWidget
                     ])
                 )
                 ->begin();
-
         } else {
             $widget = '';
         }

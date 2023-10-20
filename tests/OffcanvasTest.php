@@ -249,7 +249,6 @@ final class OffcanvasTest extends TestCase
 
     /**
      * @dataProvider placementDataProvider
-     * @return void
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
@@ -258,8 +257,8 @@ final class OffcanvasTest extends TestCase
     public function testPlacement(string $placement, string $expected): void
     {
         $html = Offcanvas::widget()->options([
-                    'id' => 'offcanvas-placement',
-                ])
+            'id' => 'offcanvas-placement',
+        ])
                 ->placement($placement)
                 ->begin() . Offcanvas::end();
 
