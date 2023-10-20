@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-final class Offcanvas extends Widget
+final class Offcanvas extends AbstractCloseButtonWidget
 {
     public const PLACEMENT_TOP = 'offcanvas-top';
     public const PLACEMENT_END = 'offcanvas-end';
@@ -18,17 +18,20 @@ final class Offcanvas extends Widget
     private array $headerOptions = [];
     private array $titleOptions = [];
     private array $bodyOptions = [];
-    private array $closeButtonOptions = [
-        'class' => 'btn-close',
-    ];
     private ?string $title = null;
     private string $placement = self::PLACEMENT_START;
     private bool $scroll = false;
     private bool $withoutBackdrop = false;
+    protected bool $renderToggle = false;
 
     public function getId(?string $suffix = '-offcanvas'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
+    }
+
+    protected function toggleComponent(): string
+    {
+        return 'offcanvas';
     }
 
     /**
@@ -133,19 +136,6 @@ final class Offcanvas extends Widget
         return $new;
     }
 
-    /**
-     * The HTML attributes for the widget close button tag. The following special options are recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function closeButtonOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->closeButtonOptions = $options;
-
-        return $new;
-    }
-
     public function begin(): string
     {
         parent::begin();
@@ -181,7 +171,8 @@ final class Offcanvas extends Widget
             $options['data-bs-theme'] = $this->theme;
         }
 
-        $html = Html::openTag($tag, $options);
+        $html = $this->renderToggle ? $this->renderToggle() : '';
+        $html .= Html::openTag($tag, $options);
         $html .= $this->renderHeader();
         $html .= Html::openTag($bodyTag, $bodyOptions);
 
@@ -238,26 +229,6 @@ final class Offcanvas extends Widget
         }
 
         return Html::tag($tag, $this->title, $options)
-            ->encode($encode)
-            ->render();
-    }
-
-    /**
-     * Renders offcanvas close button.
-     *
-     * @return string the rendering close button.
-     */
-    private function renderCloseButton(): string
-    {
-        $options = $this->closeButtonOptions;
-        $label = ArrayHelper::remove($options, 'label', '');
-        $encode = ArrayHelper::remove($options, 'encode');
-
-        $options['type'] = 'button';
-        $options['aria-label'] = 'Close';
-        $options['data-bs-dismiss'] = 'offcanvas';
-
-        return Html::button($label, $options)
             ->encode($encode)
             ->render();
     }
