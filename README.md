@@ -50,6 +50,7 @@ Add to composer.json the following:
 {
     "require": {
         "npm-asset/bootstrap": "^5.3",
+        "oomphinc/composer-installers-extender": "^2.0"
     },
     "extra": {
         "installer-types": [
