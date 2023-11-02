@@ -8,7 +8,6 @@ use JsonException;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_merge;
 
 /**
@@ -28,8 +27,10 @@ use function array_merge;
  * echo Modal::end();
  * ```
  */
-final class Modal extends AbstractCloseButtonWidget
+final class Modal extends AbstractToggleWidget
 {
+    use CloseButtonTrait;
+
     /**
      * Size classes
      */
@@ -382,7 +383,7 @@ final class Modal extends AbstractCloseButtonWidget
     private function renderHeader(): string
     {
         $title = (string) $this->renderTitle();
-        $button = (string) $this->renderCloseButton();
+        $button = (string) $this->renderCloseButton(true);
 
         if ($button === '' && $title === '') {
             return '';

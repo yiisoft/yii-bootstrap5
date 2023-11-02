@@ -9,7 +9,6 @@ use RuntimeException;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_key_exists;
 use function implode;
 use function is_array;
@@ -84,6 +83,7 @@ final class Accordion extends Widget
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private bool $autoCloseItems = true;
+    private array $itemOptions = [];
     private array $headerOptions = [];
     private array $toggleOptions = [];
     private array $contentOptions = [];
@@ -202,6 +202,14 @@ final class Accordion extends Widget
         return $new;
     }
 
+    public function withItemOptions(array $options): self
+    {
+        $new = clone $this;
+        $new->itemOptions = $options;
+
+        return $new;
+    }
+
     /**
      * Options for each header if not present in item
      */
@@ -306,12 +314,13 @@ final class Accordion extends Widget
                 throw new RuntimeException('The "label" option is required.');
             }
 
-            $options = ArrayHelper::getValue($item, 'options', []);
+            $options = ArrayHelper::getValue($item, 'options', $this->itemOptions);
+            $tag = ArrayHelper::remove($options, 'tag', 'div');
             $item = $this->renderItem($item);
 
             Html::addCssClass($options, ['panel' => 'accordion-item']);
 
-            $items[] = Html::div($item, $options)
+            $items[] = Html::tag($tag, $item, $options)
                 ->encode(false)
                 ->render();
 

@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_key_exists;
 
 /**
@@ -61,8 +60,8 @@ final class Collapse extends AbstractToggleWidget
         $new = clone $this;
         $new->bodyOptions = $options;
 
-        if (!array_key_exists('tag', $this->bodyOptions)) {
-            $this->bodyOptions['tag'] = 'div';
+        if (!array_key_exists('tag', $options)) {
+            $new->bodyOptions['tag'] = 'div';
         }
 
         return $new;

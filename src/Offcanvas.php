@@ -7,8 +7,10 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-final class Offcanvas extends AbstractCloseButtonWidget
+final class Offcanvas extends AbstractToggleWidget
 {
+    use CloseButtonTrait;
+
     public const PLACEMENT_TOP = 'offcanvas-top';
     public const PLACEMENT_END = 'offcanvas-end';
     public const PLACEMENT_BOTTOM = 'offcanvas-bottom';
@@ -200,7 +202,7 @@ final class Offcanvas extends AbstractCloseButtonWidget
         Html::addCssClass($options, ['widget' => 'offcanvas-header']);
 
         $title = (string) $this->renderTitle();
-        $closeButton = $this->renderCloseButton();
+        $closeButton = $this->renderCloseButton(true);
 
         return Html::tag($tag, $title . $closeButton, $options)
             ->encode(false)
