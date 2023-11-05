@@ -609,7 +609,6 @@ HTML;
 
     /**
      * @dataProvider screenSizeDataProvider
-     * @param string $size
      * @param string $exprected
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
