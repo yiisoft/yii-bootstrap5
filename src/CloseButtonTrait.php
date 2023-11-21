@@ -16,7 +16,6 @@ trait CloseButtonTrait
     private bool $encodeCloseButton = true;
     private bool $showCloseButton = true;
 
-
     abstract protected function toggleComponent(): string;
 
     abstract public function getId(): ?string;
