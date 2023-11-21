@@ -48,6 +48,8 @@ HTML;
 
     public function testFooter(): void
     {
+        Modal::counter(0);
+
         $widget = Modal::widget()
             ->withToggleLabel('Show');
         $modal = $widget->footer(
@@ -58,7 +60,7 @@ HTML;
                 ],
             ])
             ->withCloseButtonLabel('Close')
-            ->renderCloseButton() . "\n" .
+            ->renderCloseButton(true) . "\n" .
             Html::button(
                 'Save changes',
                 [

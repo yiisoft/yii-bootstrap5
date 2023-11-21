@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-
 use function array_merge;
 
 /**
@@ -27,17 +26,13 @@ use function array_merge;
  */
 final class Alert extends Widget
 {
-    private string $body = '';
+    use CloseButtonTrait;
+
+    private string|Stringable $body = '';
     private ?string $header = null;
     private array $headerOptions = [];
     /** @psalm-var non-empty-string */
     private string $headerTag = 'h4';
-    private array $closeButton = [
-        'class' => 'btn-close',
-    ];
-    /** @psalm-var non-empty-string */
-    private string $closeButtonTag = 'button';
-    private bool $closeButtonInside = true;
     private bool $encode = false;
     private array $options = [];
     private array $classNames = [];
@@ -48,29 +43,31 @@ final class Alert extends Widget
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
+    protected function toggleComponent(): string
+    {
+        return 'alert';
+    }
+
     public function render(): string
     {
         $options = $this->prepareOptions();
         $tag = ArrayHelper::remove($options, 'tag', 'div');
 
-        $content = Html::openTag($tag, $options);
-        $content .= $this->renderHeader();
-        $content .= $this->encode ? Html::encode($this->body) : $this->body;
-
-        if ($this->closeButtonInside) {
-            $content .= $this->renderCloseButton(false);
-        }
-
-        $content .= Html::closeTag($tag);
-
-        return $content;
+        return Html::tag($tag, '', $options)
+            ->encode(false)
+            ->content(
+                (string) $this->renderHeader(),
+                $this->encode ? Html::encode($this->body) : $this->body,
+                (string) $this->renderCloseButton(true)
+            )
+            ->render();
     }
 
     /**
      * The body content in the alert component. Alert widget will also be treated as the body content, and will be
      * rendered before this.
      */
-    public function body(string $value): self
+    public function body(string|Stringable $value): self
     {
         $new = clone $this;
         $new->body = $value;
@@ -111,54 +108,6 @@ final class Alert extends Widget
     {
         $new = clone $this;
         $new->headerTag = $tag;
-
-        return $new;
-    }
-
-    /**
-     * The options for rendering the close button tag.
-     *
-     * The close button is displayed in the header of the modal window. Clicking on the button will hide the modal
-     * window. If {@see closeButtonEnabled} is false, no close button will be rendered.
-     *
-     * The following special options are supported:
-     *
-     * - tag: string, the tag name of the button. Defaults to 'button'.
-     * - label: string, the label of the button. Defaults to '&times;'.
-     *
-     * The rest of the options will be rendered as the HTML attributes of the button tag.
-     *
-     * Please refer to the [Alert documentation](http://getbootstrap.com/components/#alerts) for the supported HTML
-     * attributes.
-     */
-    public function closeButton(array $value): self
-    {
-        $new = clone $this;
-        $new->closeButton = $value;
-
-        return $new;
-    }
-
-    /**
-     * Disable close button.
-     */
-    public function withoutCloseButton(bool $value = false): self
-    {
-        $new = clone $this;
-        $new->closeButtonInside = $value;
-
-        return $new;
-    }
-
-    /**
-     * Set close button tag
-     *
-     * @psalm-param non-empty-string $tag
-     */
-    public function closeButtonTag(string $tag): self
-    {
-        $new = clone $this;
-        $new->closeButtonTag = $tag;
 
         return $new;
     }
@@ -274,38 +223,6 @@ final class Alert extends Widget
     }
 
     /**
-     * Renders the close button.
-     *
-     * @throws JsonException
-     *
-     * @return string the rendering result
-     */
-    public function renderCloseButton(bool $outside = true): ?string
-    {
-        $options = array_merge(
-            $this->closeButton,
-            [
-                'aria-label' => 'Close',
-                'data-bs-dismiss' => 'alert',
-            ],
-        );
-        $label = ArrayHelper::remove($options, 'label', '');
-        $encode = ArrayHelper::remove($options, 'encode', $this->encode);
-
-        if ($this->closeButtonTag === 'button' && !isset($options['type'])) {
-            $options['type'] = 'button';
-        }
-
-        if ($outside) {
-            $options['data-bs-target'] = '#' . $this->getId();
-        }
-
-        return Html::tag($this->closeButtonTag, $label, $options)
-            ->encode($encode)
-            ->render();
-    }
-
-    /**
      * Render header tag
      */
     private function renderHeader(): ?string
@@ -335,7 +252,7 @@ final class Alert extends Widget
         $options['id'] = $this->getId();
         $classNames = array_merge(['alert'], $this->classNames);
 
-        if ($this->closeButtonInside) {
+        if ($this->showCloseButton) {
             $classNames[] = 'alert-dismissible';
         }
 

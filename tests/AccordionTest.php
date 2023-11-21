@@ -829,4 +829,65 @@ HTML_WRAP;
         HTML;
         $this->assertEqualsHTML($expected, $html);
     }
+
+    public function testItemOptions(): void
+    {
+        $items = [
+            [
+                'label' => 'Caption 1',
+                'content' => 'Table rows 1',
+            ],
+            [
+                'label' => 'Caption 2',
+                'content' => 'Table rows 2',
+                'contentOptions' => [
+                    'tag' => 'tbody',
+                    'class' => [
+                        'bg-success',
+                    ],
+                ],
+            ],
+        ];
+
+        $html = Accordion::widget()
+            ->items($items)
+            ->defaultExpand(false)
+            ->withItemOptions([
+                'tag' => 'table',
+            ])
+            ->headerOptions([
+                'tag' => 'caption',
+            ])
+            ->contentOptions([
+                'tag' => 'tbody',
+            ])
+            ->bodyOptions([
+                'tag' => null,
+            ])
+            ->render();
+        $expected = <<<'HTML'
+        <div id="w0-accordion" class="accordion">
+
+        <table class="accordion-item">
+        <caption class="accordion-header">
+        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" aria-controls="w1-collapse" data-bs-target="#w1-collapse" aria-expanded="false">Caption 1</button>
+        </caption>
+        <tbody id="w1-collapse" class="accordion-collapse collapse" data-bs-parent="#w0-accordion">
+        Table rows 1
+        </tbody>
+        </table>
+
+        <table class="accordion-item">
+        <caption class="accordion-header">
+        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" aria-controls="w2-collapse" data-bs-target="#w2-collapse" aria-expanded="false">Caption 2</button>
+        </caption>
+        <tbody id="w2-collapse" class="bg-success accordion-collapse collapse" data-bs-parent="#w0-accordion">
+        Table rows 2
+        </tbody>
+        </table>
+
+        </div>
+        HTML;
+        $this->assertEqualsHTML($expected, $html);
+    }
 }
