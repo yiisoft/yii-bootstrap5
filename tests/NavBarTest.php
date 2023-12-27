@@ -565,8 +565,6 @@ final class NavBarTest extends TestCase
 
     /**
      * @dataProvider colorThemeDataProvider
-     * @param string $theme
-     * @param string $expected
      * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
      * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
      * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
@@ -613,7 +611,6 @@ final class NavBarTest extends TestCase
     /**
      * @dataProvider toggleWidgetDataProvider
      * @param Collapse|Offcanvas|null $widget
-     * @param string $expected
      */
     public function testToggle(?string $widget, string $expected): void
     {
