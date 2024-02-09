@@ -16,8 +16,6 @@ final class ButtonGroupTest extends TestCase
 {
     public function testRender(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
             ->buttons([
                 ['label' => 'button-A'],
@@ -38,8 +36,6 @@ final class ButtonGroupTest extends TestCase
 
     public function testButtonOptions(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
             ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
@@ -55,8 +51,6 @@ final class ButtonGroupTest extends TestCase
 
     public function testEncodeLabes(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
             ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
@@ -85,8 +79,6 @@ final class ButtonGroupTest extends TestCase
 
     public function testOptions(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
             ->buttons([
                 ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],

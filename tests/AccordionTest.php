@@ -10,25 +10,17 @@ use Yiisoft\Html\Tag\B;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 
 /**
- * Tests for Accordion widget
- *
- * AccordionTest
+ * Tests for `Accordion` widget
  */
 final class AccordionTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Accordion::counter(0);
-    }
-
     /**
      * @link https://getbootstrap.com/docs/5.0/components/accordion/#example
      */
     public function testRender(): void
     {
         $html = Accordion::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Accordion Item #1',
@@ -94,7 +86,7 @@ final class AccordionTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML_WRAP'
-<div id="w0-accordion" class="accordion">
+<div id="test" class="accordion">
 
 <div class="accordion-item">
 <h2 class="accordion-header">
@@ -173,6 +165,7 @@ HTML_WRAP;
     public function testFlush(): void
     {
         $html = Accordion::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Accordion Item #1',
@@ -228,7 +221,7 @@ HTML_WRAP;
             ->flush()
             ->render();
         $expected = <<<'HTML_WRAP'
-<div id="w0-accordion" class="accordion accordion-flush">
+<div id="test" class="accordion accordion-flush">
 
 <div class="accordion-item">
 <h2 class="accordion-header">
@@ -282,8 +275,6 @@ HTML_WRAP;
 
     /**
      * @dataProvider invalidItemsProvider
-     *
-     * @throws InvalidConfigException
      */
     public function testMissingLabel(array $items): void
     {
@@ -351,8 +342,6 @@ HTML_WRAP;
 
     public function testExpandOptions(): void
     {
-        Accordion::counter(0);
-
         $items = [
             [
                 'label' => 'Item 1',
@@ -366,10 +355,11 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -455,11 +445,12 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->options(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="testMe accordion">
+        <div id="test" class="testMe accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -502,10 +493,11 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -534,6 +526,7 @@ HTML_WRAP;
         $this->assertEqualsHTML($expected, $html);
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->withoutEncodeLabels()
             ->render();
@@ -583,10 +576,11 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -614,9 +608,6 @@ HTML_WRAP;
         HTML;
         $this->assertEqualsHTML($expected, $html);
 
-
-        Accordion::counter(0);
-
         $items = [
             [
                 'label' => 'Item 1',
@@ -629,11 +620,12 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->defaultExpand(false)
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -681,6 +673,7 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->defaultExpand(false)
             ->bodyOptions([
@@ -691,7 +684,7 @@ HTML_WRAP;
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -739,6 +732,7 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->defaultExpand(false)
             ->headerOptions([
@@ -746,7 +740,7 @@ HTML_WRAP;
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <header class="accordion-header">
@@ -794,6 +788,7 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->defaultExpand(false)
             ->contentOptions([
@@ -801,7 +796,7 @@ HTML_WRAP;
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -850,6 +845,7 @@ HTML_WRAP;
         ];
 
         $html = Accordion::widget()
+            ->id('test')
             ->items($items)
             ->defaultExpand(false)
             ->withItemOptions([
@@ -866,7 +862,7 @@ HTML_WRAP;
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-accordion" class="accordion">
+        <div id="test" class="accordion">
 
         <table class="accordion-item">
         <caption class="accordion-header">

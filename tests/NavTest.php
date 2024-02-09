@@ -17,9 +17,8 @@ final class NavTest extends TestCase
 {
     public function testRender(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -45,14 +44,14 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
         <li class="dropdown-divider"></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testMissingLabel(): void
@@ -65,9 +64,8 @@ final class NavTest extends TestCase
 
     public function testRenderDropdownWithDropdownOptions(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -92,20 +90,19 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="test1" class="test dropdown-menu" data-id="t1">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testEmptyItems(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -125,14 +122,14 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
         <li class="nav-item"><a class="nav-link" href="#">Page4</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -140,9 +137,8 @@ final class NavTest extends TestCase
      */
     public function testExplicitActive(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->withoutActivateItems()
             ->items([
                 [
@@ -157,11 +153,11 @@ final class NavTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
         <li class="nav-item"><a class="nav-link" href="/site/index">Item2</a></li></ul>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -169,9 +165,8 @@ final class NavTest extends TestCase
      */
     public function testImplicitActive(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->currentPath('/site/index')
             ->items([
                 [
@@ -185,10 +180,10 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link active" href="#">Item1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="#">Item1</a></li>
         <li class="nav-item"><a class="nav-link active" href="/site/index">Item2</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -196,9 +191,8 @@ final class NavTest extends TestCase
      */
     public function testExplicitActiveSubitems(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->withoutActivateItems()
             ->currentPath('/site/index')
             ->items([
@@ -215,13 +209,13 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><a class="dropdown-item" href="site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -229,9 +223,8 @@ final class NavTest extends TestCase
      */
     public function testImplicitActiveSubitems(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Item1',
@@ -246,13 +239,13 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
         <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
         <li><a class="dropdown-item" href="/site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -261,9 +254,9 @@ final class NavTest extends TestCase
      */
     public function testDeepActivateParents(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD1'])
             ->activateParents()
             ->items([
                 [
@@ -280,20 +273,19 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="w1-dropdown" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="testDD1" class="dropdown-menu">
+        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="testDD2" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page</h6></li>
         </ul></li>
         </ul></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testEncodeLabel(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Page1</span>',
@@ -302,11 +294,12 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Page1&lt;/span&gt;</a></li></ul>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Page1&lt;/span&gt;</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
 
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Page1</span>',
@@ -316,16 +309,15 @@ final class NavTest extends TestCase
             ->withoutEncodeLabels()
             ->render();
         $expected = <<<'HTML'
-        <ul id="w1-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#"><span><i class=fas fas-test></i>Page1</span></a></li></ul>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#"><span><i class=fas fas-test></i>Page1</span></a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testDropdownClass(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -335,16 +327,15 @@ final class NavTest extends TestCase
             ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testOptions(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -354,16 +345,16 @@ final class NavTest extends TestCase
             ->options(['class' => 'text-link'])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="text-link nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
+        <ul id="test" class="text-link nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testDropdownEncodeLabels(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD'])
             ->items([
                 [
                     'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
@@ -376,15 +367,17 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
         <li class="dropdown-divider"></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
 
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD'])
             ->withoutEncodeLabels()
             ->items([
                 [
@@ -398,20 +391,20 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w2-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown"><span><i class=fas fas-test></i>Dropdown1</span></a><ul id="w3-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown"><span><i class=fas fas-test></i>Dropdown1</span></a><ul id="testDD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
         <li class="dropdown-divider"></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testMainOptions(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD'])
             ->itemOptions([
                 'class' => 'custom-item-class',
             ])
@@ -426,20 +419,20 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testMainLinkOptions(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD'])
             ->linkOptions([
                 'class' => 'custom-link-class',
             ])
@@ -454,21 +447,21 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testMainDropdownOptions(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
             ->dropdownOptions([
+                'id' => 'testDD',
                 'class' => 'dropdown-menu-dark',
             ])
             ->items([
@@ -482,20 +475,20 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu-dark dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu-dark dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testAdditionalActiveClass(): void
     {
-        Nav::counter(0);
-
         $html = Nav::widget()
+            ->id('test')
+            ->dropdownOptions(['id' => 'testDD'])
             ->activeClass('custom-active-class')
             ->items([
                 [
@@ -509,13 +502,13 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-nav" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="w1-dropdown" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     /**
@@ -524,14 +517,14 @@ final class NavTest extends TestCase
     public function testHomeLink(): void
     {
         // Home link is active.
-        Nav::counter(0);
         $expected = <<<HTML
-        <ul id="w0-nav" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE(
+        $this->assertSame(
             $expected,
             Nav::widget()
+                ->id('test')
                 ->currentPath('/home')
                 ->items([
                     [
@@ -548,12 +541,13 @@ final class NavTest extends TestCase
 
         // Home link is not active.
         $expected = <<<HTML
-        <ul id="w1-nav" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE(
+        $this->assertSame(
             $expected,
             Nav::widget()
+                ->id('test')
                 ->currentPath('/home')
                 ->items([
                     [
@@ -571,12 +565,13 @@ final class NavTest extends TestCase
 
         // Home link and item1 is active.
         $expected = <<<HTML
-        <ul id="w2-nav" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE(
+        $this->assertSame(
             $expected,
             Nav::widget()
+                ->id('test')
                 ->currentPath('/home')
                 ->items([
                     [
@@ -594,12 +589,13 @@ final class NavTest extends TestCase
 
         // Home link is not active and item1 is active.
         $expected = <<<HTML
-        <ul id="w3-nav" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
         HTML;
-        $this->assertEqualsWithoutLE(
+        $this->assertSame(
             $expected,
             Nav::widget()
+                ->id('test')
                 ->currentPath('/item1')
                 ->items([
                     [

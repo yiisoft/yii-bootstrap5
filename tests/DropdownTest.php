@@ -17,8 +17,6 @@ final class DropdownTest extends TestCase
 {
     public function testRender(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items([
                 [
@@ -64,8 +62,6 @@ final class DropdownTest extends TestCase
 
     public function testRenderString(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items('Some string content')
             ->render();
@@ -77,8 +73,6 @@ final class DropdownTest extends TestCase
 
     public function testRenderStringableContent(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items(Html::p('Some stringable p-tag content'))
             ->render();
@@ -92,8 +86,6 @@ final class DropdownTest extends TestCase
 
     public function testAlignment(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items('I\'m alignment end dropdown')
             ->withAlignment(Dropdown::ALIGNMENT_END)
@@ -104,8 +96,6 @@ final class DropdownTest extends TestCase
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
-
-        Dropdown::counter(0);
 
         $html = Dropdown::widget()
             ->items('I\'m alignment end, but xl start dropdown')
@@ -121,8 +111,6 @@ final class DropdownTest extends TestCase
 
     public function testOuterContent(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items(null)
             ->begin();
@@ -138,8 +126,6 @@ final class DropdownTest extends TestCase
 
     public function testTheme(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items('I\'m dark dropdown')
             ->withDarkTheme()
@@ -151,8 +137,6 @@ final class DropdownTest extends TestCase
 
         $this->assertEqualsWithoutLE($expected, $html);
 
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items('I\'m light dropdown')
             ->withLightTheme()
@@ -163,8 +147,6 @@ final class DropdownTest extends TestCase
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
-
-        Dropdown::counter(0);
 
         $html = Dropdown::widget()
             ->items('I\'m blue dropdown')
@@ -188,8 +170,6 @@ final class DropdownTest extends TestCase
 
     public function testSubMenuOptions(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items([
                 [
@@ -231,8 +211,6 @@ final class DropdownTest extends TestCase
 
     public function testForms(): void
     {
-        Dropdown::counter(0);
-
         $form = <<<'HTML'
         <form class="px-4 py-3">
         <div class="form-group">
@@ -292,8 +270,6 @@ final class DropdownTest extends TestCase
 
     public function testEncodeTags(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items(Html::p('Some stringable p-tag content'))
             ->withEncodeTags(true)
@@ -308,8 +284,6 @@ final class DropdownTest extends TestCase
 
     public function testEncodeLabels(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->items([
                 [
@@ -356,8 +330,6 @@ final class DropdownTest extends TestCase
 
     public function testMainOptions(): void
     {
-        Dropdown::counter(0);
-
         $html = Dropdown::widget()
             ->withoutEncodeLabels()
             ->itemOptions([

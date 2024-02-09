@@ -8,13 +8,6 @@ use Yiisoft\Yii\Bootstrap5\Collapse;
 
 final class CollapseTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Collapse::counter(0);
-    }
-
     public function testSimpleCollapse(): void
     {
         $html = Collapse::widget()
@@ -84,8 +77,6 @@ HTML;
 
     public function testSeparateSwitcher(): void
     {
-        Collapse::counter(0);
-
         $collapse = Collapse::widget()
             ->withToggleLabel('Toggle')
             ->withToggleOptions([

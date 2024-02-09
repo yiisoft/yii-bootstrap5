@@ -16,13 +16,6 @@ use Yiisoft\Yii\Bootstrap5\Offcanvas;
  */
 final class NavBarTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        NavBar::counter(0);
-    }
-
     public function testRender(): void
     {
         $html = NavBar::widget()

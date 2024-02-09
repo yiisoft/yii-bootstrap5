@@ -8,16 +8,12 @@ use Yiisoft\Yii\Bootstrap5\ButtonDropdown;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 
 /**
- * Tests for ButtonDropdown widget
- *
- * ButtonDropdownTest
+ * Tests for `ButtonDropdown` widget
  */
 final class ButtonDropdownTest extends TestCase
 {
     public function testRender(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->render();
@@ -40,8 +36,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testDirection(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->direction(ButtonDropdown::DIRECTION_LEFT)
             ->label('Action')
@@ -63,8 +57,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testSplit(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->direction(ButtonDropdown::DIRECTION_DOWN)
             ->label('Split dropdown')
@@ -87,8 +79,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testButtonOptions(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([
                 ['label' => 'ItemA', 'url' => '#'],
@@ -109,8 +99,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testDropdownClass(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([
                 ['label' => 'ItemA', 'url' => '#'],
@@ -131,8 +119,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testEncodeLabels(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items(
                 [
@@ -173,8 +159,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testOptions(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->options(['class' => 'testMe'])
@@ -192,8 +176,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testRenderContainer(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->withoutRenderContainer()
@@ -211,8 +193,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testTagName(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->tagName('a')
@@ -231,8 +211,6 @@ final class ButtonDropdownTest extends TestCase
 
     public function testLabelOptions(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->label('Custom label')
@@ -258,8 +236,6 @@ final class ButtonDropdownTest extends TestCase
         $dropdown = Dropdown::widget()
             ->withAlignment(Dropdown::ALIGNMENT_END);
 
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->dropdownClass($dropdown)
@@ -278,9 +254,8 @@ final class ButtonDropdownTest extends TestCase
 
     public function testTheme(): void
     {
-        ButtonDropdown::counter(0);
-
         $html = ButtonDropdown::widget()
+            ->id('test')
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->withoutRenderContainer()
             ->withDarkTheme()
@@ -294,8 +269,6 @@ final class ButtonDropdownTest extends TestCase
         </ul>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
-
-        ButtonDropdown::counter(0);
 
         $html = ButtonDropdown::widget()
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])

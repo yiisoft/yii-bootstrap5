@@ -16,8 +16,6 @@ final class ButtonToolbarTest extends TestCase
 {
     public function testRender(): void
     {
-        ButtonToolbar::counter(0);
-
         $html = ButtonToolbar::widget()
             ->options([
                 'aria-label' => 'Toolbar with button groups',
@@ -61,8 +59,6 @@ final class ButtonToolbarTest extends TestCase
 
     public function testButtonGroupEmpty(): void
     {
-        ButtonToolbar::counter(0);
-
         $html = ButtonToolbar::widget()
             ->buttonGroups([[]])
             ->render();
@@ -74,8 +70,6 @@ final class ButtonToolbarTest extends TestCase
 
     public function testButtonOptions(): void
     {
-        ButtonToolbar::counter(0);
-
         $html = ButtonToolbar::widget()
             ->buttonGroups([
                 [
@@ -96,8 +90,6 @@ final class ButtonToolbarTest extends TestCase
 
     public function testAdditionalContent(): void
     {
-        ButtonToolbar::counter(0);
-
         $addHtml = <<<'HTML'
         <div class="input-group">
         <div class="input-group-prepend">

@@ -14,13 +14,6 @@ use Yiisoft\Yii\Bootstrap5\Modal;
  */
 final class ModalTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Modal::counter(0);
-    }
-
     public function testBodyOptions(): void
     {
         $html = Modal::widget()
@@ -48,8 +41,6 @@ HTML;
 
     public function testFooter(): void
     {
-        Modal::counter(0);
-
         $widget = Modal::widget()
             ->withToggleLabel('Show');
         $modal = $widget->footer(
@@ -94,8 +85,6 @@ HTML;
 
     public function testToogleButtom(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleOptions([
                 'class' => ['btn', 'btn-primary'],
@@ -144,8 +133,6 @@ HTML;
 
     public function testWithCloseButton(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withCloseButtonOptions(['class' => 'btn-lg'])
             ->withToggleLabel('Show')
@@ -172,8 +159,6 @@ HTML;
 
     public function testWithoutCloseButton(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withoutCloseButton()
             ->withToggleLabel('Show')
@@ -199,8 +184,6 @@ HTML;
 
     public function testWithFooterOptions(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->footerOptions(['class' => 'text-dark'])
             ->withToggleLabel('Show')
@@ -227,8 +210,6 @@ HTML;
 
     public function testWithHeaderOptions(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->headerOptions(['class' => 'text-danger'])
@@ -255,8 +236,6 @@ HTML;
 
     public function testWithOptions(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->options(['class' => 'testMe'])
@@ -283,8 +262,6 @@ HTML;
 
     public function testWithTitle(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->title('My first modal.')
@@ -311,8 +288,6 @@ HTML;
 
     public function testWithEmptyTitle(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->title('')
@@ -339,8 +314,6 @@ HTML;
 
     public function testWithTitleOptions(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->title('My first modal.')
@@ -368,8 +341,6 @@ HTML;
 
     public function testWithoutToggleButton(): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggle(false)
             ->begin();
@@ -464,8 +435,6 @@ HTML;
      */
     public function testWithSize(string $size, string $expected): void
     {
-        Modal::counter(0);
-
         $html = Modal::widget()
             ->withToggleLabel('Show')
             ->size($size)
