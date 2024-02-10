@@ -8,22 +8,21 @@ use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Modal;
 
 /**
- * Tests for Modal widget.
- *
- * ModalTest.
+ * Tests for `Modal` widget.
  */
 final class ModalTest extends TestCase
 {
     public function testBodyOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
             ->withToggleLabel('Show')
             ->begin();
         $html .= Modal::end();
         $expected = <<<'HTML'
-<button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-<div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+<button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header">
@@ -42,6 +41,7 @@ HTML;
     public function testFooter(): void
     {
         $widget = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show');
         $modal = $widget->footer(
             $widget->withCloseButtonOptions([
@@ -65,8 +65,8 @@ HTML;
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-<button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-<div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+<button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header">
@@ -86,6 +86,7 @@ HTML;
     public function testToogleButtom(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleOptions([
                 'class' => ['btn', 'btn-primary'],
             ])
@@ -113,8 +114,8 @@ HTML;
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Launch demo modal</button>
-<div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Launch demo modal</button>
+<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header">
@@ -134,14 +135,15 @@ HTML;
     public function testWithCloseButton(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withCloseButtonOptions(['class' => 'btn-lg'])
             ->withToggleLabel('Show')
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -160,14 +162,15 @@ HTML;
     public function testWithoutCloseButton(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withoutCloseButton()
             ->withToggleLabel('Show')
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
 
@@ -185,14 +188,15 @@ HTML;
     public function testWithFooterOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->footerOptions(['class' => 'text-dark'])
             ->withToggleLabel('Show')
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -211,14 +215,15 @@ HTML;
     public function testWithHeaderOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->headerOptions(['class' => 'text-danger'])
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="text-danger modal-header">
@@ -237,14 +242,15 @@ HTML;
     public function testWithOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->options(['class' => 'testMe'])
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="testMe modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="testMe modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -263,17 +269,18 @@ HTML;
     public function testWithTitle(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->title('My first modal.')
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
         <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header"><h5 id="w0-modal-label" class="modal-title">My first modal.</h5>
+        <div class="modal-header"><h5 id="test-label" class="modal-title">My first modal.</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body">
         <p>Woohoo, you're reading this text in a modal!</p>
@@ -289,17 +296,18 @@ HTML;
     public function testWithEmptyTitle(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->title('')
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header"><h5 id="w0-modal-label" class="modal-title"></h5>
+        <div class="modal-header"><h5 id="test-label" class="modal-title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body">
         <p>Woohoo, you're reading this text in a modal!</p>
@@ -315,6 +323,7 @@ HTML;
     public function testWithTitleOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->title('My first modal.')
             ->titleOptions(['class' => 'text-center'])
@@ -322,11 +331,11 @@ HTML;
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
         <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header"><h5 id="w0-modal-label" class="text-center modal-title">My first modal.</h5>
+        <div class="modal-header"><h5 id="test-label" class="text-center modal-title">My first modal.</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body">
         <p>Woohoo, you're reading this text in a modal!</p>
@@ -342,13 +351,14 @@ HTML;
     public function testWithoutToggleButton(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggle(false)
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
 
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -370,8 +380,8 @@ HTML;
             [
                 Modal::SIZE_LARGE,
                 <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -389,8 +399,8 @@ HTML;
             [
                 Modal::SIZE_SMALL,
                 <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -408,8 +418,8 @@ HTML;
             [
                 Modal::SIZE_EXTRA_LARGE,
                 <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -428,14 +438,11 @@ HTML;
 
     /**
      * @dataProvider sizeDataProvider
-     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
-     * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
-     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
-     * @throws \Yiisoft\Factory\NotFoundException
      */
     public function testWithSize(string $size, string $expected): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->size($size)
             ->begin();
@@ -448,14 +455,15 @@ HTML;
     public function testWithoutAnimation(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->fade(false)
             ->begin();
         $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
         $html .= Modal::end();
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -477,8 +485,8 @@ HTML;
             [
                 Modal::FULLSCREEN_ALWAYS,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -494,8 +502,8 @@ HTML;
             [
                 Modal::FULLSCREEN_BELOW_SM,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-sm-down">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -511,8 +519,8 @@ HTML;
             [
                 Modal::FULLSCREEN_BELOW_MD,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-md-down">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -528,8 +536,8 @@ HTML;
             [
                 Modal::FULLSCREEN_BELOW_LG,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-lg-down">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -545,8 +553,8 @@ HTML;
             [
                 Modal::FULLSCREEN_BELOW_XL,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-xl-down">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -562,8 +570,8 @@ HTML;
             [
                 Modal::FULLSCREEN_BELOW_XXL,
                 <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-                <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-xxl-down">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -580,15 +588,11 @@ HTML;
 
     /**
      * @dataProvider screenSizeDataProvider
-     * @param string $exprected
-     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
-     * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
-     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
-     * @throws \Yiisoft\Factory\NotFoundException
      */
     public function testFullscreen(string $size, string $expected): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->fullscreen($size)
             ->begin();
@@ -601,6 +605,7 @@ HTML;
     public function testCustomTag(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->withToggleLabel('Show')
             ->contentOptions([
                 'tag' => 'form',
@@ -625,12 +630,12 @@ HTML;
         $html .= Modal::end();
 
         $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="w0-modal-label">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
         <div class="modal-dialog">
         <form class="modal-content" action="/">
         <header class="modal-header">
-        <h4 id="w0-modal-label" class="modal-title">Title</h4>
+        <h4 id="test-label" class="modal-title">Title</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </header>
         <fieldset class="modal-body">
@@ -648,13 +653,14 @@ HTML;
     public function testStaticBackdrop(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->staticBackdrop()
             ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -672,13 +678,14 @@ HTML;
     public function testScrollingLongContent(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->scrollable()
             ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
@@ -696,13 +703,14 @@ HTML;
     public function testVerticallyCentered(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->centered()
             ->begin();
         $html .= Modal::end();
 
         $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
@@ -719,7 +727,7 @@ HTML;
 
     public function testManyTogglers(): void
     {
-        $widget = Modal::widget();
+        $widget = Modal::widget()->id('test');
 
         $html = $widget->renderToggle();
         $html .= $widget->withToggleLabel('New Label')
@@ -740,11 +748,11 @@ HTML;
         ->renderToggle();
 
         $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">New Label</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">New Label 2</button>
-        <a href="#w0-modal" data-bs-toggle="modal" aria-controls="w0-modal" role="button">Show</a>
-        <a href="/" data-bs-toggle="modal" aria-controls="w0-modal" role="button" data-bs-target="#w0-modal">Show</a>
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label 2</button>
+        <a href="#test" data-bs-toggle="modal" aria-controls="test" role="button">Show</a>
+        <a href="/" data-bs-toggle="modal" aria-controls="test" role="button" data-bs-target="#test">Show</a>
         HTML;
 
         $this->assertEqualsHTML($expected, $html);
@@ -753,6 +761,7 @@ HTML;
     public function testDialogOptions(): void
     {
         $html = Modal::widget()
+            ->id('test')
             ->centered()
             ->dialogOptions([
                 'class' => 'bg-white',
@@ -761,8 +770,8 @@ HTML;
         $html .= Modal::end();
 
         $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="w0-modal" data-bs-target="#w0-modal">Show</button>
-        <div id="w0-modal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
+        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="bg-white modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">

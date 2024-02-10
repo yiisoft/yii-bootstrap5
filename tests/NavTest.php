@@ -9,9 +9,7 @@ use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Nav;
 
 /**
- * Tests for Nav widget.
- *
- * NavTest
+ * Tests for `Nav` widget.
  */
 final class NavTest extends TestCase
 {
@@ -27,6 +25,7 @@ final class NavTest extends TestCase
                 ],
                 [
                     'label' => 'Dropdown1',
+                    'dropdownOptions' => ['id' => 'testDd1'],
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
@@ -45,7 +44,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="testDd1" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -110,6 +109,7 @@ final class NavTest extends TestCase
                 ],
                 [
                     'label' => 'Dropdown1',
+                    'dropdownOptions' => ['id' => 'TEST_DD'],
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2'],
                         ['label' => 'Page3', 'content' => 'Page3'],
@@ -123,7 +123,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="w1-dropdown" class="dropdown-menu">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="TEST_DD" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li>
@@ -201,6 +201,7 @@ final class NavTest extends TestCase
                 ],
                 [
                     'label' => 'Item2',
+                    'dropdownOptions' => ['id' => 'TEST_DROPDOWN'],
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2', 'url' => 'site/index'],
                         ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
@@ -210,7 +211,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="TEST_DROPDOWN" class="dropdown-menu">
         <li><a class="dropdown-item" href="site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -231,6 +232,7 @@ final class NavTest extends TestCase
                 ],
                 [
                     'label' => 'Item2',
+                    'dropdownOptions' => ['id' => 'TEST_DROPDOWN'],
                     'items' => [
                         ['label' => 'Page2', 'content' => 'Page2', 'url' => '/site/index'],
                         ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
@@ -240,7 +242,7 @@ final class NavTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="w1-dropdown" class="dropdown-menu">
+        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="TEST_DROPDOWN" class="dropdown-menu">
         <li><a class="dropdown-item" href="/site/index">Page2</a></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
         </ul></li></ul>
@@ -256,14 +258,15 @@ final class NavTest extends TestCase
     {
         $html = Nav::widget()
             ->id('test')
-            ->dropdownOptions(['id' => 'testDD1'])
             ->activateParents()
             ->items([
                 [
                     'label' => 'Dropdown',
+                    'dropdownOptions' => ['id' => 'DD_ID'],
                     'items' => [
                         [
                             'label' => 'Sub-dropdown',
+                            'submenuOptions' => ['id' => 'SUB_ID'],
                             'items' => [
                                 ['label' => 'Page', 'content' => 'Page', 'active' => true],
                             ],
@@ -273,8 +276,8 @@ final class NavTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="testDD1" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="testDD2" class="dropdown-menu">
+        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="DD_ID" class="dropdown-menu">
+        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="SUB_ID" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page</h6></li>
         </ul></li>
         </ul></li></ul>
