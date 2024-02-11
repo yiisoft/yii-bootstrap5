@@ -15,12 +15,15 @@ final class ButtonDropdownTest extends TestCase
     public function testRender(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -37,6 +40,9 @@ final class ButtonDropdownTest extends TestCase
     public function testDirection(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->direction(ButtonDropdown::DIRECTION_LEFT)
             ->label('Action')
             ->items([
@@ -45,9 +51,9 @@ final class ButtonDropdownTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropleft btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+        <div id="TEST_ID" class="dropleft btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -58,6 +64,9 @@ final class ButtonDropdownTest extends TestCase
     public function testSplit(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->direction(ButtonDropdown::DIRECTION_DOWN)
             ->label('Split dropdown')
             ->split()
@@ -67,9 +76,9 @@ final class ButtonDropdownTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w2-button" class="btn">Split dropdown</button>
-        <button id="w1-button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>
-        <ul id="w3-dropdown" class="dropdown-menu">
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn">Split dropdown</button>
+        <button id="B_ID" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -80,16 +89,18 @@ final class ButtonDropdownTest extends TestCase
     public function testButtonOptions(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
             ->items([
                 ['label' => 'ItemA', 'url' => '#'],
                 ['label' => 'ItemB', 'url' => '#'],
             ])
-            ->buttonOptions(['class' => 'btn-lg'])
+            ->buttonOptions(['class' => 'btn-lg', 'id' => 'B_ID'])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -100,6 +111,9 @@ final class ButtonDropdownTest extends TestCase
     public function testDropdownClass(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([
                 ['label' => 'ItemA', 'url' => '#'],
                 ['label' => 'ItemB', 'url' => '#'],
@@ -107,9 +121,9 @@ final class ButtonDropdownTest extends TestCase
             ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -120,6 +134,9 @@ final class ButtonDropdownTest extends TestCase
     public function testEncodeLabels(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items(
                 [
                     ['label' => 'ItemA', 'url' => '#'],
@@ -128,9 +145,9 @@ final class ButtonDropdownTest extends TestCase
             )
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">&lt;span&gt;&lt;i class=fas fas-tests&gt;ItemB&gt;&lt;/i&gt;&lt;/span&gt;</a></li>
         </ul></div>
@@ -138,6 +155,9 @@ final class ButtonDropdownTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items(
                 [
                     ['label' => 'ItemA', 'url' => '#'],
@@ -147,9 +167,9 @@ final class ButtonDropdownTest extends TestCase
             ->withoutEncodeLabels()
             ->render();
         $expected = <<<'HTML'
-        <div id="w3-button-dropdown" class="dropdown btn-group"><button id="w4-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w5-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#"><span><i class=fas fas-tests>ItemB></i></span></a></li>
         </ul></div>
@@ -160,13 +180,16 @@ final class ButtonDropdownTest extends TestCase
     public function testOptions(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->options(['class' => 'testMe'])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="testMe dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="testMe dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
@@ -177,13 +200,15 @@ final class ButtonDropdownTest extends TestCase
     public function testRenderContainer(): void
     {
         $html = ButtonDropdown::widget()
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->withoutRenderContainer()
             ->render();
         $expected = <<<'HTML'
-        <button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w1-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul>
@@ -194,14 +219,17 @@ final class ButtonDropdownTest extends TestCase
     public function testTagName(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->tagName('a')
             ->render();
 
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><a id="w1-button" class="btn dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Button</a>
+        <div id="TEST_ID" class="dropdown btn-group"><a id="B_ID" class="btn dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Button</a>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><h6 class="dropdown-header">ItemB</h6></li>
         </ul></div>
@@ -212,6 +240,9 @@ final class ButtonDropdownTest extends TestCase
     public function testLabelOptions(): void
     {
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->label('Custom label')
             ->withLabelOptions([
@@ -221,9 +252,9 @@ final class ButtonDropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="d-none d-lg-inline-block">Custom label</span></button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="d-none d-lg-inline-block">Custom label</span></button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="D_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><h6 class="dropdown-header">ItemB</h6></li>
         </ul></div>
@@ -237,14 +268,17 @@ final class ButtonDropdownTest extends TestCase
             ->withAlignment(Dropdown::ALIGNMENT_END);
 
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->dropdownOptions(['id' => 'D_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
             ->dropdownClass($dropdown)
             ->render();
 
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu dropdown-menu-end">
+        <ul id="D_ID" class="dropdown-menu dropdown-menu-end">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><h6 class="dropdown-header">ItemB</h6></li>
         </ul></div>
@@ -255,15 +289,16 @@ final class ButtonDropdownTest extends TestCase
     public function testTheme(): void
     {
         $html = ButtonDropdown::widget()
-            ->id('test')
+            ->dropdownOptions(['id' => 'DD_ID'])
+            ->buttonOptions(['id' => 'B_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->withoutRenderContainer()
             ->withDarkTheme()
             ->render();
         $expected = <<<'HTML'
-        <button id="w0-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-theme="dark">Button</button>
+        <button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-theme="dark">Button</button>
 
-        <ul id="w1-dropdown" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">
+        <ul id="DD_ID" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul>
@@ -271,13 +306,16 @@ final class ButtonDropdownTest extends TestCase
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonDropdown::widget()
+            ->id('TEST_ID')
+            ->buttonOptions(['id' => 'B_ID'])
+            ->dropdownOptions(['id' => 'DD_ID'])
             ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
             ->withLightTheme()
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-dropdown" class="dropdown btn-group" data-bs-theme="light"><button id="w1-button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
+        <div id="TEST_ID" class="dropdown btn-group" data-bs-theme="light"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
 
-        <ul id="w2-dropdown" class="dropdown-menu">
+        <ul id="DD_ID" class="dropdown-menu">
         <li><a class="dropdown-item" href="#">ItemA</a></li>
         <li><a class="dropdown-item" href="#">ItemB</a></li>
         </ul></div>
