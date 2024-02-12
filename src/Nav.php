@@ -116,7 +116,7 @@ final class Nav extends Widget
     public function render(): string
     {
         if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-nav";
+            $this->options['id'] = $this->getId();
         }
 
         Html::addCssClass($this->options, ['widget' => 'nav']);

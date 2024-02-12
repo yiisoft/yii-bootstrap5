@@ -45,7 +45,7 @@ final class ButtonGroup extends Widget
     public function render(): string
     {
         if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-button-group";
+            $this->options['id'] = $this->getId();
         }
 
         /** @psalm-suppress InvalidArgument */

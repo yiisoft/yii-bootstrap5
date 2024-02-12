@@ -29,7 +29,7 @@ final class Button extends Widget
     public function render(): string
     {
         if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-button";
+            $this->options['id'] = $this->getId();
         }
 
         if ($this->theme) {

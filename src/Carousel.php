@@ -50,7 +50,7 @@ final class Carousel extends Widget
     public function render(): string
     {
         if (!isset($this->options['id'])) {
-            $this->options['id'] = "{$this->getId()}-carousel";
+            $this->options['id'] = $this->getId();
         }
 
         /** @psalm-suppress InvalidArgument */

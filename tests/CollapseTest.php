@@ -8,16 +8,10 @@ use Yiisoft\Yii\Bootstrap5\Collapse;
 
 final class CollapseTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Collapse::counter(0);
-    }
-
     public function testSimpleCollapse(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -26,8 +20,8 @@ final class CollapseTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
-<div id="w0-collapse" class="collapse">
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
+<div id="TEST_ID" class="collapse">
 <div class="card card-body">
 Collapse content
 </div>
@@ -40,6 +34,7 @@ HTML;
     public function testLinkCollapse(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'tag' => 'a',
@@ -48,8 +43,8 @@ HTML;
             ->render();
 
         $expected = <<<'HTML'
-<a href="#w0-collapse" data-bs-toggle="collapse" aria-controls="w0-collapse" role="button" aria-expanded="false">Toggle</a>
-<div id="w0-collapse" class="collapse">
+<a href="#TEST_ID" data-bs-toggle="collapse" aria-controls="TEST_ID" role="button" aria-expanded="false">Toggle</a>
+<div id="TEST_ID" class="collapse">
 <div class="card card-body">
 Collapse content
 </div>
@@ -62,6 +57,7 @@ HTML;
     public function testHorizontalCollapse(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -71,8 +67,8 @@ HTML;
             ->render();
 
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
-<div id="w0-collapse" class="collapse collapse-horizontal">
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
+<div id="TEST_ID" class="collapse collapse-horizontal">
 <div class="card card-body">
 Collapse content
 </div>
@@ -84,9 +80,8 @@ HTML;
 
     public function testSeparateSwitcher(): void
     {
-        Collapse::counter(0);
-
         $collapse = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -99,9 +94,9 @@ HTML;
 
         $expected = <<<'HTML'
 <p>
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
 </p>
-<div id="w0-collapse" class="collapse collapse-horizontal">
+<div id="TEST_ID" class="collapse collapse-horizontal">
 <div class="card card-body">
 Collapse content
 </div>
@@ -114,6 +109,7 @@ HTML;
     public function testWithoutBody(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -125,8 +121,8 @@ HTML;
             ->render();
 
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
-<div id="w0-collapse" class="collapse">
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
+<div id="TEST_ID" class="collapse">
 Collapse content
 </div>
 HTML;
@@ -137,6 +133,7 @@ HTML;
     public function testOuterContent(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -146,8 +143,8 @@ HTML;
         $html .= Collapse::end();
 
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
-<div id="w0-collapse" class="collapse">
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
+<div id="TEST_ID" class="collapse">
 <div class="card card-body">
 Very very very looooong content
 </div>
@@ -159,6 +156,7 @@ HTML;
     public function testBodyTag(): void
     {
         $html = Collapse::widget()
+            ->id('TEST_ID')
             ->withToggleLabel('Toggle')
             ->withToggleOptions([
                 'class' => 'btn btn-primary',
@@ -170,8 +168,8 @@ HTML;
             ->render();
 
         $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="w0-collapse" data-bs-target="#w0-collapse" aria-expanded="false">Toggle</button>
-<div id="w0-collapse" class="collapse">
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" aria-controls="TEST_ID" data-bs-target="#TEST_ID" aria-expanded="false">Toggle</button>
+<div id="TEST_ID" class="collapse">
 <article class="card card-body">
 Collapse content
 </article>

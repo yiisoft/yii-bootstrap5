@@ -59,6 +59,7 @@ final class ButtonDropdown extends Widget
     private bool $encodeTags = false;
     /** @psalm-var class-string|Dropdown */
     private string|Dropdown $dropdownClass = Dropdown::class;
+    private ?array $dropdownOptions = null;
     private bool $renderContainer = true;
 
     public function getId(?string $suffix = '-button-dropdown'): ?string
@@ -148,6 +149,13 @@ final class ButtonDropdown extends Widget
         $new = clone $this;
         $new->dropdownClass = $value;
 
+        return $new;
+    }
+
+    public function dropdownOptions(?array $options): self
+    {
+        $new = clone $this;
+        $new->dropdownOptions = $options;
         return $new;
     }
 
@@ -329,6 +337,10 @@ final class ButtonDropdown extends Widget
             $dropdown = $dropdownClass::widget()->items($this->items);
         } else {
             $dropdown = $this->dropdownClass->items($this->items);
+        }
+
+        if ($this->dropdownOptions !== null) {
+            $dropdown = $dropdown->options($this->dropdownOptions);
         }
 
         if ($this->theme && !$this->renderContainer) {

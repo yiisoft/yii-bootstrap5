@@ -12,7 +12,7 @@ use Yiisoft\Html\Tag\Base\Tag;
 use function array_merge;
 
 /**
- * NavBar renders a navbar HTML component.
+ * `NavBar` renders a navbar HTML component.
  *
  * Any content enclosed between the {@see begin()} and {@see end()} calls of NavBar is treated as the content of the
  * navbar. You may use widgets such as {@see Nav} or {@see \Yiisoft\Widget\Menu} to build up such content. For example,
@@ -138,9 +138,9 @@ final class NavBar extends AbstractToggleWidget
     private Offcanvas|Collapse|null $widget = null;
     protected bool $renderToggle = false;
 
-    public function getId(?string $suffix = '-navbar'): ?string
+    public function getId(): ?string
     {
-        return $this->options['id'] ?? parent::getId($suffix);
+        return $this->options['id'] ?? parent::getId();
     }
 
     protected function toggleComponent(): string
@@ -152,13 +152,6 @@ final class NavBar extends AbstractToggleWidget
         return 'collapse';
     }
 
-    /**
-     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
-     * @throws \Yiisoft\Definitions\Exception\InvalidConfigException
-     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
-     * @throws \Yiisoft\Factory\NotFoundException
-     * @return string
-     */
     public function begin(): string
     {
         /** Run Offcanvas|Collapse::begin before NavBar parent::begin for right stack order */

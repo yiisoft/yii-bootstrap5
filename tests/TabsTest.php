@@ -10,17 +10,14 @@ use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Tabs;
 
 /**
- * Tests for Tabs widget.
- *
- * TabsTest
+ * Tests for `Tabs` widget.
  */
 final class TabsTest extends TestCase
 {
     public function testRoleTabList(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -32,7 +29,7 @@ final class TabsTest extends TestCase
                 ],
             ])
             ->render();
-        $this->assertStringContainsString('<ul id="w0-tabs" class="nav nav-tabs" role="tablist">', $html);
+        $this->assertStringContainsString('<ul id="test" class="nav nav-tabs" role="tablist">', $html);
     }
 
     /**
@@ -42,9 +39,8 @@ final class TabsTest extends TestCase
      */
     public function testIds(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -80,26 +76,26 @@ final class TabsTest extends TestCase
             ])
             ->render();
 
-        $page1 = 'w0-tabs-tab0';
-        $page2 = 'w0-tabs-dd1-tab0';
-        $page3 = 'w0-tabs-dd1-tab1';
-        $page4 = 'w0-tabs-dd2-tab0';
-        $page5 = 'w0-tabs-dd2-tab1';
+        $page1 = 'test-tab0';
+        $page2 = 'test-dd1-tab0';
+        $page3 = 'test-dd1-tab1';
+        $page4 = 'test-dd2-tab0';
+        $page5 = 'test-dd2-tab1';
 
         $shouldContain = [
-            'w0-tabs', // nav widget container
+            'id="test"', // nav widget container
             "#$page1", // Page1
 
-            'w1', // Dropdown1
+            'Dropdown1', // Dropdown1
             "$page2", // Page2
             "$page3", // Page3
 
 
-            'w2', // Dropdown2
+            'Dropdown2', // Dropdown2
             "#$page4", // Page4
             "#$page5", // Page5
 
-            'w3', // Dropdown3
+            'Dropdown3', // Dropdown3
 
             // containers
             "id=\"$page1\"",
@@ -120,8 +116,6 @@ final class TabsTest extends TestCase
 
     public function testVisible(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
             ->items([
                 [
@@ -154,9 +148,8 @@ final class TabsTest extends TestCase
 
     public function testDisabled(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([
                 [
                     'label' => 'Page1',
@@ -185,19 +178,19 @@ final class TabsTest extends TestCase
             ])
             ->render();
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab0" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
+            '<li class="nav-item"><a class="nav-link disabled" href="#test-tab0" data-bs-toggle="tab" role="tab" aria-controls="test-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#w0-tabs-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="true">Page2</a></li>',
+            '<li class="nav-item"><a class="nav-link active" href="#test-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-tab1" aria-selected="true">Page2</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#w0-tabs-tab2" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
+            '<li class="nav-item"><a class="nav-link disabled" href="#test-tab2" data-bs-toggle="tab" role="tab" aria-controls="test-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
             $html
         );
         $this->assertStringContainsString(
-            '<a class="dropdown-item disabled" href="#w0-tabs-dd3-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
+            '<a class="dropdown-item disabled" href="#test-dd3-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
             $html
         );
         $this->assertStringContainsString(
@@ -208,8 +201,6 @@ final class TabsTest extends TestCase
 
     public function testItem(): void
     {
-        Tabs::counter(0);
-
         $checkTag = 'article';
 
         $html = Tabs::widget()
@@ -231,8 +222,6 @@ final class TabsTest extends TestCase
 
     public function testTabContentOptions(): void
     {
-        Tabs::counter(0);
-
         $checkAttribute = 'test_attribute';
         $checkValue = 'check_attribute';
 
@@ -292,8 +281,6 @@ final class TabsTest extends TestCase
 
     public function testActivateTab(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
             ->items([
                 [
@@ -325,8 +312,6 @@ final class TabsTest extends TestCase
 
     public function testTabLabelEncoding(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
             ->withoutEncodeLabels()
             ->id('mytab')
@@ -356,9 +341,8 @@ final class TabsTest extends TestCase
      */
     public function testIdRendering(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([
                 [
                     'paneOptions' => ['id' => 'pane1'],
@@ -372,19 +356,18 @@ final class TabsTest extends TestCase
             ])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
-        <li class="nav-item"><a class="nav-link" href="#w0-tabs-tab1" data-bs-toggle="tab" role="tab" aria-controls="w0-tabs-tab1" aria-selected="false">Tab 2</a></li></ul>
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#test-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-tab1" aria-selected="false">Tab 2</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div>
-        <div id="w0-tabs-tab1" class="tab-pane"><div>Content 2</div></div></div>
+        <div id="test-tab1" class="tab-pane"><div>Content 2</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testDropdownClass(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items(
                 [
                     [
@@ -397,17 +380,16 @@ final class TabsTest extends TestCase
             ->dropdownClass(Dropdown::class)
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testHeaderOptions(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items(
                 [
                     [
@@ -420,24 +402,23 @@ final class TabsTest extends TestCase
             ->itemOptions(['class' => 'text-center'])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-tabs" role="tablist"><li class="text-center nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="text-center nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testPanes(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->panes(['content' => '<div>Content 1</div>'])
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-tabs" role="tablist"></ul>
+        <ul id="test" class="nav nav-tabs" role="tablist"></ul>
         <div class="tab-content"><div>Content 1</div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testMissingLabel(): void
@@ -450,24 +431,22 @@ final class TabsTest extends TestCase
 
     public function testNavType(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testPaneOptions(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->paneOptions([
@@ -477,17 +456,16 @@ final class TabsTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><article id="pane1" class="custom-class tab-pane active"><div>Content 1</div></article></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testNavOption(): void
     {
-        Tabs::counter(0);
-
         $html = Tabs::widget()
+            ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->linkOptions([
@@ -496,30 +474,28 @@ final class TabsTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        Tabs::counter(0);
+        $this->assertSame($expected, $html);
 
         $html = Tabs::widget()
+            ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->withoutEncodeLabels()
             ->render();
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testNavOptions(): void
     {
-        Tabs::counter(0);
-
         $widget = Tabs::widget()
+            ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
             ->navType('nav-lg')
             ->navDefinitions([
@@ -532,9 +508,10 @@ final class TabsTest extends TestCase
             ]);
 
         $expected = <<<'HTML'
-        <ul id="w0-tabs" class="nav nav-lg" role="tablist"><li class="custom-item-class nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav nav-lg" role="tablist"><li class="custom-item-class nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertEqualsWithoutLE($expected, $widget->render());
+
+        $this->assertSame($expected, $widget->render());
     }
 }

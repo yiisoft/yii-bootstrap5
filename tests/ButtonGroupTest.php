@@ -8,95 +8,91 @@ use Yiisoft\Yii\Bootstrap5\Button;
 use Yiisoft\Yii\Bootstrap5\ButtonGroup;
 
 /**
- * Tests for Button widget.
- *
- * ButtonGroupTest
+ * Tests for `ButtonGroup` widget.
  */
 final class ButtonGroupTest extends TestCase
 {
     public function testRender(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
+            ->id('TEST_ID')
             ->buttons([
-                ['label' => 'button-A'],
-                ['label' => 'button-B', 'visible' => true],
+                ['label' => 'button-A', 'options' => ['id' => 'BTN1']],
+                ['label' => 'button-B', 'visible' => true, 'options' => ['id' => 'BTN2']],
                 ['label' => 'button-C', 'visible' => false],
                 Button::widget()
+                    ->id('BTN4')
                     ->label('button-D')
                     ->render(),
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w1-button-group" class="btn-group" role="group"><button type="button" id="w2-button" class="btn">button-A</button>
-        <button type="button" id="w3-button" class="btn">button-B</button>
-        <button id="w0-button" class="btn">button-D</button></div>
+        <div id="TEST_ID" class="btn-group" role="group"><button type="button" id="BTN1" class="btn">button-A</button>
+        <button type="button" id="BTN2" class="btn">button-B</button>
+        <button id="BTN4" class="btn">button-D</button></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testButtonOptions(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
+            ->id('TEST_ID')
             ->buttons([
-                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
-                ['label' => 'button-B'],
+                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit', 'id' => 'BTN1']],
+                ['label' => 'button-B', 'options' => ['id' => 'BTN2']],
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-group" class="btn-group" role="group"><button type="submit" id="w1-button" class="btn-primary btn">button-A</button>
-        <button type="button" id="w2-button" class="btn">button-B</button></div>
+        <div id="TEST_ID" class="btn-group" role="group"><button type="submit" id="BTN1" class="btn-primary btn">button-A</button>
+        <button type="button" id="BTN2" class="btn">button-B</button></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testEncodeLabes(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
+            ->id('TEST_ID')
             ->buttons([
-                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
-                ['label' => '<span><i class=fas fas-test></i>button-B</span>'],
+                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit', 'id' => 'BTN1']],
+                ['label' => '<span><i class=fas fas-test></i>button-B</span>', 'options' => ['id' => 'BTN2']],
             ])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-group" class="btn-group" role="group"><button type="submit" id="w1-button" class="btn-primary btn">button-A</button>
-        <button type="button" id="w2-button" class="btn">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;button-B&lt;/span&gt;</button></div>
+        <div id="TEST_ID" class="btn-group" role="group"><button type="submit" id="BTN1" class="btn-primary btn">button-A</button>
+        <button type="button" id="BTN2" class="btn">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;button-B&lt;/span&gt;</button></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
 
         $html = ButtonGroup::widget()
+            ->id('TEST_ID')
             ->buttons([
-                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
-                ['label' => '<span><i class=fas fas-test></i>button-B</span>'],
+                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit', 'id' => 'BTN1']],
+                ['label' => '<span><i class=fas fas-test></i>button-B</span>', 'options' => ['id' => 'BTN2']],
             ])
             ->withoutEncodeLabels()
             ->render();
         $expected = <<<'HTML'
-        <div id="w3-button-group" class="btn-group" role="group"><button type="submit" id="w4-button" class="btn-primary btn">button-A</button>
-        <button type="button" id="w5-button" class="btn"><span><i class=fas fas-test></i>button-B</span></button></div>
+        <div id="TEST_ID" class="btn-group" role="group"><button type="submit" id="BTN1" class="btn-primary btn">button-A</button>
+        <button type="button" id="BTN2" class="btn"><span><i class=fas fas-test></i>button-B</span></button></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
 
     public function testOptions(): void
     {
-        ButtonGroup::counter(0);
-
         $html = ButtonGroup::widget()
+            ->id('TEST_ID')
             ->buttons([
-                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit']],
-                ['label' => 'button-B'],
+                ['label' => 'button-A', 'options' => ['class' => 'btn-primary', 'type' => 'submit', 'id' => 'BTN1']],
+                ['label' => 'button-B', 'options' => ['id' => 'BTN2']],
             ])
             ->options(['class' => 'btn-lg'])
             ->render();
         $expected = <<<'HTML'
-        <div id="w0-button-group" class="btn-lg btn-group" role="group"><button type="submit" id="w1-button" class="btn-primary btn">button-A</button>
-        <button type="button" id="w2-button" class="btn">button-B</button></div>
+        <div id="TEST_ID" class="btn-lg btn-group" role="group"><button type="submit" id="BTN1" class="btn-primary btn">button-A</button>
+        <button type="button" id="BTN2" class="btn">button-B</button></div>
         HTML;
         $this->assertEqualsWithoutLE($expected, $html);
     }
