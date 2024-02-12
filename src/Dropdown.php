@@ -103,8 +103,7 @@ final class Dropdown extends Widget
     {
         parent::begin();
         $this->isStartedByBegin = true;
-
-        return Html::openTag($this->getContainerTag(), $this->prepareContainerAttributes());
+        return $this->renderDropdownBegin();
     }
 
     /**
@@ -116,19 +115,15 @@ final class Dropdown extends Widget
     {
         if ($this->isStartedByBegin) {
             $this->isStartedByBegin = false;
-            return Html::closeTag($this->getContainerTag());
+            return $this->renderDropdownEnd();
         }
 
-        $layout = $this->prepareDropdownLayout();
-
-        if (is_array($this->items)) {
-            /** @var Ul $layout */
-            return $this->renderItems($layout, $this->items);
+        $content = $this->renderDropdownContent();
+        if (!empty($content)) {
+            $content = "\n" . $content . "\n";
         }
-        /** @var CustomTag $layout */
-        return $layout
-            ->content((string) $this->items)
-            ->render();
+
+        return $this->renderDropdownBegin() . $content . $this->renderDropdownEnd();
     }
 
     /**
@@ -239,35 +234,22 @@ final class Dropdown extends Widget
         return $attributes;
     }
 
-    private function prepareDropdownLayout(): CustomTag|Ul
-    {
-        $options = $this->prepareContainerAttributes();
-
-        if (is_array($this->items)) {
-            return Html::ul()
-                ->attributes($options);
-        }
-
-        $tagName = ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::tag($tagName, '', $options)
-            ->encode($this->encodeTags);
-    }
-
     /**
      * Renders menu items.
-     *
-     * @param array $items the menu items to be rendered
-     *
+     *     *
      * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
      * items.
      * @return string the rendering result.
      */
-    private function renderItems(Ul $layout, array $items): string
+    private function renderDropdownContent(): string
     {
+        if (!is_array($this->items)) {
+            return (string)$this->items;
+        }
+
         $lines = [];
 
-        foreach ($items as $item) {
+        foreach ($this->items as $item) {
             if (is_string($item)) {
                 $item = ['label' => $item, 'encode' => false, 'enclose' => false];
             }
@@ -280,12 +262,10 @@ final class Dropdown extends Widget
                 throw new RuntimeException("The 'label' option is required.");
             }
 
-            $lines[] = $this->renderItem($item);
+            $lines[] = $this->renderItem($item)->render();
         }
 
-        return $layout
-            ->items(...$lines)
-            ->render();
+        return implode("\n", $lines);
     }
 
     /**
@@ -370,6 +350,16 @@ final class Dropdown extends Widget
             ->content($toggle . $dropdown->render())
             ->attributes($itemOptions)
             ->encode(false);
+    }
+
+    private function renderDropdownBegin(): string
+    {
+        return Html::openTag($this->getContainerTag(), $this->prepareContainerAttributes());
+    }
+
+    private function renderDropdownEnd(): string
+    {
+        return Html::closeTag($this->getContainerTag());
     }
 
     /**

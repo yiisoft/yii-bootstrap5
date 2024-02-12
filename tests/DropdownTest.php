@@ -67,7 +67,11 @@ final class DropdownTest extends TestCase
             ->items('Some string content')
             ->render();
 
-        $expected = '<div id="TEST_ID" class="dropdown-menu">Some string content</div>';
+        $expected = <<<HTML
+        <div id="TEST_ID" class="dropdown-menu">
+        Some string content
+        </div>
+        HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
     }
@@ -80,7 +84,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu"><p>Some stringable p-tag content</p></div>
+        <div id="TEST_ID" class="dropdown-menu">
+        <p>Some stringable p-tag content</p>
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -95,7 +101,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end">I'm alignment end dropdown</div>
+        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end">
+        I'm alignment end dropdown
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -107,7 +115,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end dropdown-menu-xl-start">I'm alignment end, but xl start dropdown</div>
+        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end dropdown-menu-xl-start">
+        I'm alignment end, but xl start dropdown
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -135,7 +145,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">I'm dark dropdown</div>
+        <div id="TEST_ID" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">
+        I'm dark dropdown
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -147,7 +159,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="light">I'm light dropdown</div>
+        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="light">
+        I'm light dropdown
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
@@ -159,7 +173,9 @@ final class DropdownTest extends TestCase
             ->render();
 
         $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="blue">I'm blue dropdown</div>
+        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="blue">
+        I'm blue dropdown
+        </div>
         HTML;
 
         $this->assertEqualsWithoutLE($expected, $html);
