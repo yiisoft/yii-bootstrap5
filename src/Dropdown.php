@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use InvalidArgumentException;
 use JsonException;
 use RuntimeException;
 use Stringable;
@@ -52,65 +53,58 @@ final class Dropdown extends Widget
     public const ALIGNMENT_XL_START = 'dropdown-menu-xl-start';
     public const ALIGNMENT_XXL_START = 'dropdown-menu-xxl-start';
 
-    private array|string|Stringable|null $items = [];
+    private array|string|Stringable|null $items = null;
     private bool $encodeLabels = true;
     private bool $encodeTags = false;
     private array $submenuOptions = [];
-    private array $options = [];
     private array $itemOptions = [];
     private array $linkOptions = [];
     private array $alignment = [];
 
-    private ?string $tagName = null;
+    /**
+     * @psalm-var non-empty-string|null
+     */
+    private ?string $containerTag = null;
+    private array $containerAttributes = [];
 
-    public function getId(?string $suffix = '-dropdown'): ?string
+    private bool $isStartedByBegin = false;
+
+    public function containerTag(?string $tag): self
     {
-        return $this->options['id'] ?? parent::getId($suffix);
-    }
-
-    private function prepareOptions(): array
-    {
-        $options = $this->options;
-        $options['id'] = $this->getId();
-        $classNames = array_merge(['widget' => 'dropdown-menu'], $this->alignment);
-
-        if ($this->theme) {
-            $options['data-bs-theme'] = $this->theme;
-
-            if ($this->theme === self::THEME_DARK) {
-                $classNames[] = 'dropdown-menu-dark';
-            }
+        if ($tag === '') {
+            throw new InvalidArgumentException('Tag name cannot be empty.');
         }
 
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, $classNames);
-
-        return $options;
+        $new = clone $this;
+        $new->containerTag = $tag;
+        return $new;
     }
 
-    private function prepareDropdownLayout(): CustomTag|Ul
+    public function containerAttributes(array $attributes): self
     {
-        $options = $this->prepareOptions();
+        $new = clone $this;
+        $new->containerAttributes = $attributes;
+        return $new;
+    }
 
-        if (is_array($this->items)) {
-            return Html::ul()
-                ->attributes($options);
-        }
+    public function addContainerAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->containerAttributes = array_merge($new->containerAttributes, $attributes);
+        return $new;
+    }
 
-        $tagName = ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::tag($tagName, '', $options)
-            ->encode($this->encodeTags);
+    public function getId(): ?string
+    {
+        return $this->containerAttributes['id'] ?? parent::getId();
     }
 
     public function begin(): ?string
     {
         parent::begin();
+        $this->isStartedByBegin = true;
 
-        $options = $this->prepareOptions();
-        $this->tagName = is_array($this->items) ? 'ul' : ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::openTag($this->tagName, $options);
+        return Html::openTag($this->getContainerTag(), $this->prepareContainerAttributes());
     }
 
     /**
@@ -120,8 +114,9 @@ final class Dropdown extends Widget
      */
     public function render(): string
     {
-        if ($this->tagName) {
-            return Html::closeTag($this->tagName);
+        if ($this->isStartedByBegin) {
+            $this->isStartedByBegin = false;
+            return Html::closeTag($this->getContainerTag());
         }
 
         $layout = $this->prepareDropdownLayout();
@@ -158,8 +153,6 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->items = $value;
-        $new->tagName = null;
-
         return $new;
     }
 
@@ -201,22 +194,6 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->submenuOptions = $value;
-
-        return $new;
-    }
-
-    /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
-     * recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $new = clone $this;
-        $new->options = $value;
-        $new->tagName = null;
-
         return $new;
     }
 
@@ -240,6 +217,41 @@ final class Dropdown extends Widget
         $new->linkOptions = $options;
 
         return $new;
+    }
+
+    private function prepareContainerAttributes(): array
+    {
+        $attributes = $this->containerAttributes;
+        $attributes['id'] = $this->getId();
+
+        $classNames = array_merge(['widget' => 'dropdown-menu'], $this->alignment);
+
+        if ($this->theme) {
+            $attributes['data-bs-theme'] = $this->theme;
+
+            if ($this->theme === self::THEME_DARK) {
+                $classNames[] = 'dropdown-menu-dark';
+            }
+        }
+
+        Html::addCssClass($attributes, $classNames);
+
+        return $attributes;
+    }
+
+    private function prepareDropdownLayout(): CustomTag|Ul
+    {
+        $options = $this->prepareContainerAttributes();
+
+        if (is_array($this->items)) {
+            return Html::ul()
+                ->attributes($options);
+        }
+
+        $tagName = ArrayHelper::remove($options, 'tag', 'div');
+
+        return Html::tag($tagName, '', $options)
+            ->encode($this->encodeTags);
     }
 
     /**
@@ -339,7 +351,7 @@ final class Dropdown extends Widget
 
         $dropdown = self::widget()
             ->items($item['items'])
-            ->options($submenuOptions)
+            ->containerAttributes($submenuOptions)
             ->submenuOptions($submenuOptions);
 
         if ($this->encodeLabels === false) {
@@ -358,5 +370,13 @@ final class Dropdown extends Widget
             ->content($toggle . $dropdown->render())
             ->attributes($itemOptions)
             ->encode(false);
+    }
+
+    /**
+     * @psalm-return non-empty-string
+     */
+    private function getContainerTag(): string
+    {
+        return $this->containerTag ?? is_array($this->items) ? 'ul' : 'div';
     }
 }

@@ -340,7 +340,7 @@ final class ButtonDropdown extends Widget
         }
 
         if ($this->dropdownOptions !== null) {
-            $dropdown = $dropdown->options($this->dropdownOptions);
+            $dropdown = $dropdown->containerAttributes($this->dropdownOptions);
         }
 
         if ($this->theme && !$this->renderContainer) {

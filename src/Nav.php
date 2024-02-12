@@ -373,7 +373,7 @@ final class Nav extends Widget
 
         $dropdown = $dropdownClass::widget()
             ->items($items)
-            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', $this->dropdownOptions));
+            ->containerAttributes(ArrayHelper::getValue($parentItem, 'dropdownOptions', $this->dropdownOptions));
 
         if ($this->encodeLabels === false) {
             $dropdown->withoutEncodeLabels();

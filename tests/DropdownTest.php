@@ -115,10 +115,7 @@ final class DropdownTest extends TestCase
 
     public function testOuterContent(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items(null)
-            ->begin();
+        $html = Dropdown::widget()->id('TEST_ID')->begin();
         $html .= 'I\'m very-very-very-very long content';
         $html .= Dropdown::end();
 
@@ -126,7 +123,7 @@ final class DropdownTest extends TestCase
         <div id="TEST_ID" class="dropdown-menu">I'm very-very-very-very long content</div>
         HTML;
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertSame($expected, $html);
     }
 
     public function testTheme(): void
