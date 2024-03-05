@@ -94,8 +94,8 @@ use function is_string;
  *    }
  * ```
  *
- * {@see http://getbootstrap.com/components/#dropdowns}
- * {@see http://getbootstrap.com/components/#nav}
+ * {@see https://getbootstrap.com/components/#dropdowns}
+ * {@see https://getbootstrap.com/components/#nav}
  */
 final class Nav extends Widget
 {
