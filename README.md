@@ -2,7 +2,7 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://yiisoft.github.io/docs/images/yii_logo.svg" height="100px">
     </a>
-    <a href="http://getbootstrap.com/" target="_blank" rel="external">
+    <a href="https://getbootstrap.com/" target="_blank" rel="external">
         <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="100px">
     </a>
     <h1 align="center">Yii Framework Twitter Bootstrap 5 Extension</h1>
@@ -13,7 +13,7 @@ This [Yii Framework] extension encapsulates [Twitter Bootstrap 5] components
 and plugins in terms of Yii widgets, and thus makes using Bootstrap components/plugins
 in Yii applications extremely easy.
 
-[Yii Framework]:        http://www.yiiframework.com/
+[Yii Framework]:        https://www.yiiframework.com/
 [Twitter Bootstrap 5.2]:  https://getbootstrap.com/docs/5.2/getting-started/introduction/
 
 For license information check the [LICENSE](LICENSE.md)-file.
@@ -32,7 +32,7 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 Installation
 ------------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
 ```
 php composer.phar require --prefer-dist yiisoft/yii-bootstrap5
