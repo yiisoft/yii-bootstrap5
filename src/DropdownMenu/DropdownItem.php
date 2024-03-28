@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\DropdownMenu;
 
-use Stringable;
 use Yiisoft\Html\Tag\Base\Tag;
 
 final class DropdownItem
@@ -15,7 +14,6 @@ final class DropdownItem
         public bool $active = false,
         public array|string|null $containerClass = null,
         public array $containerAttributes = [],
-    )
-    {
+    ) {
     }
 }
