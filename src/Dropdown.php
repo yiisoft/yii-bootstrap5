@@ -234,7 +234,7 @@ final class Dropdown extends Widget
 
     /**
      * Renders menu items.
-     *     *
+     *
      * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
      * items.
      * @return string the rendering result.
@@ -242,7 +242,7 @@ final class Dropdown extends Widget
     private function renderDropdownContent(): string
     {
         if (!is_array($this->items)) {
-            return (string)$this->items;
+            return (string) $this->items;
         }
 
         $lines = [];
