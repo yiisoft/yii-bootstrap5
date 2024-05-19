@@ -8,6 +8,6 @@
 下記のコマンドを実行してください。
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii-bootstrap4
+composer require yiisoft/yii-bootstrap5
 ```
 
