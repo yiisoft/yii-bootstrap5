@@ -8,7 +8,7 @@ A maneira recomendada para instalar esta extensão é através do [composer](htt
 Então rode
 
 ```
-composer require yiisoft/yii-bootstrap4
+composer require yiisoft/yii-bootstrap5
 ```
 
 Ou Adicione
