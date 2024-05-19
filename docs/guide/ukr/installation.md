@@ -8,7 +8,7 @@
 Запустіть
 
 ```
-composer require yiisoft/yii-bootstrap4
+composer require yiisoft/yii-bootstrap5
 ```
 
 або додайте
