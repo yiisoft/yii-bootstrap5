@@ -8,6 +8,6 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii-bootstrap5
+composer require yiisoft/yii-bootstrap5
 ```
 

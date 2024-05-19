@@ -8,7 +8,7 @@ Der empfohlene Weg zur Installation dieser Erweiterung ist mittels [composer](ht
 Führen Sie entweder folgenden Befehlt aus
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii-bootstrap4
+composer require yiisoft/yii-bootstrap4
 ```
 
 oder fügen Sie folgendes
