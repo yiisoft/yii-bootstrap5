@@ -8,6 +8,6 @@
 下記のコマンドを実行してください。
 
 ```
-composer require yiisoft/yii-bootstrap4
+composer require yiisoft/yii-bootstrap5
 ```
 
