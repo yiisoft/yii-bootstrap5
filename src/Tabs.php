@@ -12,9 +12,6 @@ use Yiisoft\Html\Html;
 use function array_key_exists;
 use function array_merge;
 use function implode;
-use function in_array;
-use function is_string;
-use function preg_match;
 
 /**
  * Tabs renders a Tab bootstrap javascript component.

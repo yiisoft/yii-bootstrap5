@@ -450,7 +450,6 @@ final class TabsTest extends TestCase
     /**
      * @dataProvider navTypeDataProvider
      * @param string $navType
-     * @return void
      */
     public function testNavType(string $navType): void
     {
