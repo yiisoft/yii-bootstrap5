@@ -429,18 +429,41 @@ final class TabsTest extends TestCase
             ->render();
     }
 
-    public function testNavType(): void
+    public static function navTypeDataProvider(): array
+    {
+        return [
+            [
+                'nav-lg',
+            ],
+            [
+                Tabs::NAV_TABS,
+            ],
+            [
+                Tabs::NAV_PILLS,
+            ],
+            [
+                Tabs::NAV_UNDERLINE,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider navTypeDataProvider
+     * @param string $navType
+     * @return void
+     */
+    public function testNavType(string $navType): void
     {
         $html = Tabs::widget()
             ->id('test')
             ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType('nav-lg')
+            ->navType($navType)
             ->render();
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
+        <ul id="test" class="nav [[navType]]" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
         HTML;
-        $this->assertSame($expected, $html);
+        $this->assertSame(str_replace('[[navType]]', $navType, $expected), $html);
     }
 
     public function testPaneOptions(): void
@@ -510,6 +533,99 @@ final class TabsTest extends TestCase
         $expected = <<<'HTML'
         <ul id="test" class="nav nav-lg" role="tablist"><li class="custom-item-class nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
         <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        HTML;
+
+        $this->assertSame($expected, $widget->render());
+    }
+
+    public function testNavFade(): void
+    {
+        $widget = Tabs::widget()
+            ->id('test')
+            ->withFade()
+            ->items([
+                [
+                    'label' => 'Page1',
+                    'content' => 'Page1',
+                    'paneOptions' => [
+                        'id' => 'pane1',
+                    ],
+                ],
+                [
+                    'label' => 'Page2',
+                    'content' => 'Page2',
+                    'paneOptions' => [
+                        'id' => 'pane2',
+                    ],
+                ],
+            ]);
+
+        $expected = <<<'HTML'
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane fade active show">Page1</div>
+        <div id="pane2" class="tab-pane fade">Page2</div></div>
+        HTML;
+
+        $this->assertSame($expected, $widget->render());
+    }
+
+    public function testCustomFade(): void
+    {
+        $widget = Tabs::widget()
+            ->id('test')
+            ->items([
+                [
+                    'label' => 'Page1',
+                    'content' => 'Page1',
+                    'paneOptions' => [
+                        'id' => 'pane1',
+                        'fade' => true,
+                    ],
+                ],
+                [
+                    'label' => 'Page2',
+                    'content' => 'Page2',
+                    'paneOptions' => [
+                        'id' => 'pane2',
+                    ],
+                ],
+            ]);
+
+        $expected = <<<'HTML'
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane fade active show">Page1</div>
+        <div id="pane2" class="tab-pane">Page2</div></div>
+        HTML;
+
+        $this->assertSame($expected, $widget->render());
+
+        $widget = Tabs::widget()
+            ->id('test')
+            ->items([
+                [
+                    'label' => 'Page1',
+                    'content' => 'Page1',
+                    'paneOptions' => [
+                        'id' => 'pane1',
+                    ],
+                ],
+                [
+                    'label' => 'Page2',
+                    'content' => 'Page2',
+                    'paneOptions' => [
+                        'id' => 'pane2',
+                        'fade' => true,
+                    ],
+                ],
+            ]);
+
+        $expected = <<<'HTML'
+        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
+        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
+        <div class="tab-content"><div id="pane1" class="tab-pane active">Page1</div>
+        <div id="pane2" class="tab-pane fade">Page2</div></div>
         HTML;
 
         $this->assertSame($expected, $widget->render());
