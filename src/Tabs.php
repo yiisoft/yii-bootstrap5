@@ -11,6 +11,10 @@ use Yiisoft\Html\Html;
 
 use function array_key_exists;
 use function array_merge;
+use function implode;
+use function in_array;
+use function is_string;
+use function preg_match;
 
 /**
  * Tabs renders a Tab bootstrap javascript component.
@@ -59,10 +63,13 @@ use function array_merge;
  */
 final class Tabs extends Widget
 {
+    public const NAV_TABS = 'nav-tabs';
     public const NAV_PILLS = 'nav-pills';
+    public const NAV_UNDERLINE = 'nav-underline';
 
     private array $items = [];
     private bool $encodeTags = false;
+    private bool $fade = false;
     private string $navType = 'nav-tabs';
     private bool $renderTabContent = true;
     private array $tabContentOptions = [];
@@ -71,9 +78,9 @@ final class Tabs extends Widget
     private Nav $nav;
     private array $navDefinitions = [];
 
-    public function getId(?string $suffix = '-tabs'): ?string
+    public function getId(): ?string
     {
-        return $this->navDefinitions['options']['id'] ?? parent::getId($suffix);
+        return $this->navDefinitions['options']['id'] ?? parent::getId();
     }
 
     public function render(): string
@@ -243,6 +250,14 @@ final class Tabs extends Widget
         return $new;
     }
 
+    public function withFade(bool $fade = true): self
+    {
+        $new = clone $this;
+        $new->fade = $fade;
+
+        return $new;
+    }
+
     /**
      * List of HTML attributes for the `tab-content` container. This will always contain the CSS class `tab-content`.
      *
@@ -353,11 +368,13 @@ final class Tabs extends Widget
                 ArrayHelper::setValueByPath($items[$n], 'linkOptions.aria-selected', $selected ? 'true' : 'false');
             }
 
+            $fade = ArrayHelper::remove($options, 'fade', $this->fade);
+
             /** @psalm-suppress InvalidArgument */
-            Html::addCssClass($options, ['widget' => 'tab-pane']);
+            Html::addCssClass($options, ['widget' => 'tab-pane' . ($fade ? ' fade' : '')]);
 
             if ($selected) {
-                Html::addCssClass($options, ['active' => 'active']);
+                Html::addCssClass($options, ['active' => 'active' . ($fade ? ' show' : '')]);
             }
 
             /** @psalm-suppress ConflictingReferenceConstraint */
