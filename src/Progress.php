@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
+use LogicException;
 use RuntimeException;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
+
+use function sprintf;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -43,23 +46,14 @@ use Yiisoft\Html\Html;
  *     ->withBarOptions([
  *          'class' => 'bg-success'
  *     ]);
- *
- * // stacked bars
- * echo Progress::widget()
- *     bars => ([
- *         ['percent' => '30', 'options' => ['class' => 'bg-danger']],
- *         ['percent' => '30', 'label' => 'test', 'options' => ['class' => 'bg-success']],
- *         ['percent' => '35', 'options' => ['class' => 'bg-warning']],
- *     ]);
- * ```
  */
 final class Progress extends Widget
 {
     private string $label = '';
     private string|Stringable $content = '';
     private int|float|null $percent = null;
-    private int $min = 0;
-    private int $max = 100;
+    private int|float $min = 0;
+    private int|float $max = 100;
     private array $options = [];
     private array $barOptions = [];
     private bool $striped = false;
@@ -139,10 +133,21 @@ final class Progress extends Widget
      */
     public function withPercent(int|float $percent): self
     {
+        if ($percent < 0) {
+            throw new LogicException(
+                sprintf('"$percent" must be greater or equals 0. %d given', $percent)
+            );
+        }
+
         $new = clone $this;
         $new->percent = $percent;
 
         return $new;
+    }
+
+    public function withCalculatedPercent(int|float $value, int|float $max): self
+    {
+        return $this->withPercent($value / $max * 100);
     }
 
     public function withMin(int|float $min): self

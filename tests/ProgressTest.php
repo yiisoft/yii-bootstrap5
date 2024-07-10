@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use LogicException;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Progress;
 use Yiisoft\Yii\Bootstrap5\ProgressStack;
@@ -252,6 +253,16 @@ final class ProgressTest extends TestCase
             ->render();
     }
 
+    public function testWrongPercent(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('"$percent" must be greater or equals 0. -1 given');
+
+        Progress::widget()
+            ->withPercent(-1)
+            ->render();
+    }
+
     public function testOptions(): void
     {
         $html = Progress::widget()
@@ -262,6 +273,19 @@ final class ProgressTest extends TestCase
             ->render();
         $expected = <<<'HTML'
         <div id="test" class="text-danger progress" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 35%;">Progress</div></div>
+        HTML;
+        $this->assertSame($expected, $html);
+    }
+
+    public function testCalculatedPercent(): void
+    {
+        $html = Progress::widget()
+            ->id('test')
+            ->withCalculatedPercent(275, 1000)
+            ->render();
+
+        $expected = <<<'HTML'
+        <div id="test" class="progress" role="progressbar" aria-valuenow="27.5" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 27.5%;"></div></div>
         HTML;
         $this->assertSame($expected, $html);
     }
