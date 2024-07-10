@@ -78,7 +78,7 @@ use function is_string;
  */
 final class Accordion extends Widget
 {
-    array $items = [];
+    private array $items = [];
     private array $expands = [];
     private ?bool $defaultExpand = null;
     private bool $encodeLabels = true;
@@ -107,6 +107,12 @@ final class Accordion extends Widget
         $options['id'] = $this->getId();
         Html::addCssClass($options, ['widget' => 'accordion']);
 
+       $mystring = 'abc';
+$findme   = 'a';
+if( strpos($mystring, $findme) === false) {
+    echo 1;
+}
+        
         if ($this->flush) {
             Html::addCssClass($options, ['flush' => 'accordion-flush']);
         }
