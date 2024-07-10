@@ -11,7 +11,7 @@ use Yiisoft\Html\Tag\Base\Tag;
 
 abstract class AbstractToggleWidget extends Widget
 {
-    protected array $toggleOptions = [];
+    protected array $toggleOptions = array();
     protected string|Stringable $toggleLabel = '';
     protected bool $renderToggle = true;
 
