@@ -11,7 +11,10 @@ use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
+use function round;
 use function sprintf;
+
+use const PHP_ROUND_HALF_UP;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -21,29 +24,29 @@ use function sprintf;
  * ```php
  * // default with label
  * echo Progress::widget()
- *     ->withPercent(60)
- *     ->withLabel('test');
+ *     ->percent(60)
+ *     ->label('test');
  *
  * // styled
  * echo Progress::widget()
- *     ->withPercent(65)
- *     ->withBarOptions([
+ *     ->percent(65)
+ *     ->barOptions([
  *          'class' => 'bg-danger'
  *     ]);
  *
  * // striped
  * echo Progress::widget()
- *     ->withStriped()
- *     ->withPercent(70)
- *     ->withBarOptions([
+ *     ->striped()
+ *     ->percent(70)
+ *     ->barOptions([
  *         'class' => 'bg-warning'
  *     ]);
  *
  * // striped animated
  * echo Progress::widget()
- *     ->withPercent(70)
- *     ->withAnimated()
- *     ->withBarOptions([
+ *     ->percent(70)
+ *     ->animated()
+ *     ->barOptions([
  *          'class' => 'bg-success'
  *     ]);
  */
@@ -58,6 +61,7 @@ final class Progress extends Widget
     private array $barOptions = [];
     private bool $striped = false;
     private bool $animated = false;
+    private bool $inStack = false;
 
     public function render(): string
     {
@@ -66,6 +70,7 @@ final class Progress extends Widget
         }
 
         $options = $this->options;
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
 
         if (!isset($options['id'])) {
             $options['id'] = $this->getId();
@@ -82,9 +87,11 @@ final class Progress extends Widget
         $options['aria']['valuemax'] = $this->max;
 
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, ['progress']);
+        Html::addCssClass($options, 'progress');
 
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
+        if ($this->inStack) {
+            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+        }
 
         return Html::tag($tag, $this->renderBar(), $options)
                 ->encode(false)
@@ -92,11 +99,11 @@ final class Progress extends Widget
     }
 
     /**
-     * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
+     * The HTML attributes of the bar.
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
-    public function withBarOptions(array $value): self
+    public function barOptions(array $value): self
     {
         $new = clone $this;
         $new->barOptions = $value;
@@ -104,10 +111,7 @@ final class Progress extends Widget
         return $new;
     }
 
-    /**
-     * The button label.
-     */
-    public function withLabel(string $value): self
+    public function label(string $value): self
     {
         $new = clone $this;
         $new->label = $value;
@@ -120,7 +124,7 @@ final class Progress extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function withOptions(array $value): self
+    public function options(array $value): self
     {
         $new = clone $this;
         $new->options = $value;
@@ -131,7 +135,7 @@ final class Progress extends Widget
     /**
      * The amount of progress as a percentage.
      */
-    public function withPercent(int|float $percent): self
+    public function percent(int|float $percent): self
     {
         if ($percent < 0) {
             throw new LogicException(
@@ -145,12 +149,32 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function withCalculatedPercent(int|float $value, int|float $max): self
-    {
-        return $this->withPercent($value / $max * 100);
+    /**
+     *
+     * @param int|float $value
+     * @param int|float $max
+     * @psalm-param int<0, max>|null $precision
+     * @psalm-param int<0, max> $mode
+     *
+     * @return self
+     */
+    public function calculatedPercent(
+        int|float $value,
+        int|float $max,
+        ?int $precision = null,
+        int $mode = PHP_ROUND_HALF_UP
+    ): self {
+
+        $percent = $value / $max * 100;
+
+        if ($precision !== null) {
+            $percent = round($percent, $precision, $mode);
+        }
+
+        return $this->percent($percent);
     }
 
-    public function withMin(int|float $min): self
+    public function min(int|float $min): self
     {
         $new = clone $this;
         $new->min = $min;
@@ -158,7 +182,7 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function withMax(int|float $max): self
+    public function max(int|float $max): self
     {
         $new = clone $this;
         $new->max = $max;
@@ -166,7 +190,7 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function withContent(string|Stringable $content): self
+    public function content(string|Stringable $content): self
     {
         $new = clone $this;
         $new->content = $content;
@@ -174,7 +198,7 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function withStriped(bool $striped = true): self
+    public function striped(bool $striped = true): self
     {
         $new = clone $this;
         $new->striped = $striped;
@@ -182,7 +206,7 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function withAnimated(bool $animated = true): self
+    public function animated(bool $animated = true): self
     {
         $new = clone $this;
         $new->animated = $animated;
@@ -194,12 +218,16 @@ final class Progress extends Widget
         return $new;
     }
 
+    public function inStack(bool $inStack = true): self
+    {
+        $new = clone $this;
+        $new->inStack = $inStack;
+
+        return $new;
+    }
+
     /**
      * Generates a bar.
-     *
-     * @param string $percent the percentage of the bar
-     * @param string $label , optional, the label to display at the bar
-     * @param array $options the HTML attributes of the bar
      *
      * @throws JsonException
      *
@@ -220,9 +248,11 @@ final class Progress extends Widget
             $classNames[] = 'progress-bar-animated';
         }
 
-        /** @psalm-suppress InvalidArgument */
         Html::addCssClass($options, $classNames);
-        Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+
+        if (!$this->inStack) {
+            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+        }
 
         return Html::tag($tag, $this->content, $options)
                 ->encode($encode)

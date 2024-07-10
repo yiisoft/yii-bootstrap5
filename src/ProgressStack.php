@@ -7,8 +7,10 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
+use function array_map;
+
 /**
- * ProgressStack renders a bootstrap progress bar component.
+ * `ProgressStack` renders a bootstrap progress bar component.
  *
  * @see https://getbootstrap.com/docs/5.3/components/progress/#multiple-bars
  */
@@ -20,15 +22,15 @@ final class ProgressStack extends Widget
     private array $bars = [];
     private array $options = [];
 
-    public function withBars(Progress ...$bars): self
+    public function bars(Progress ...$bars): self
     {
         $new = clone $this;
-        $new->bars = $bars;
+        $new->bars = array_map(static fn (Progress $bar) => $bar->inStack(true), $bars);
 
         return $new;
     }
 
-    public function withOptions(array $options): self
+    public function options(array $options): self
     {
         $new = clone $this;
         $new->options = $options;
@@ -50,8 +52,7 @@ final class ProgressStack extends Widget
 
         $tag = ArrayHelper::remove($options, 'tag', 'div');
 
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, ['progress-stacked']);
+        Html::addCssClass($options, 'progress-stacked');
 
         return Html::tag($tag)
                 ->content(...$this->bars)

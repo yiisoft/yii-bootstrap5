@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use LogicException;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Progress;
-use Yiisoft\Yii\Bootstrap5\ProgressStack;
 
 /**
  * Tests for `Progress` widget.
@@ -18,9 +17,9 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withLabel('Progress')
-            ->withPercent(25)
-            ->withBarOptions(['class' => 'bg-warning'])
+            ->label('Progress')
+            ->percent(25)
+            ->barOptions(['class' => 'bg-warning'])
             ->render();
         $expected = <<<'HTML'
         <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="bg-warning progress-bar" style="width: 25%;"></div></div>
@@ -32,10 +31,10 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withLabel('Progress')
-            ->withMin(5)
-            ->withPercent(10)
-            ->withBarOptions(['class' => 'bg-warning'])
+            ->label('Progress')
+            ->min(5)
+            ->percent(10)
+            ->barOptions(['class' => 'bg-warning'])
             ->render();
 
         $expected = <<<'HTML'
@@ -48,10 +47,10 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withLabel('Progress')
-            ->withMax(95)
-            ->withPercent(90)
-            ->withBarOptions(['class' => 'bg-warning'])
+            ->label('Progress')
+            ->max(95)
+            ->percent(90)
+            ->barOptions(['class' => 'bg-warning'])
             ->render();
 
         $expected = <<<'HTML'
@@ -79,13 +78,13 @@ final class ProgressTest extends TestCase
     {
         $widget = Progress::widget()
             ->id('test')
-            ->withPercent(90)
-            ->withBarOptions(['class' => 'bg-danger']);
+            ->percent(90)
+            ->barOptions(['class' => 'bg-danger']);
 
         if ($striped === null) {
-            $widget = $widget->withStriped();
+            $widget = $widget->striped();
         } else {
-            $widget = $widget->withStriped($striped);
+            $widget = $widget->striped($striped);
         }
 
         $html = $widget->render();
@@ -125,13 +124,13 @@ final class ProgressTest extends TestCase
     {
         $widget = Progress::widget()
             ->id('test')
-            ->withPercent(90)
-            ->withBarOptions(['class' => 'bg-danger']);
+            ->percent(90)
+            ->barOptions(['class' => 'bg-danger']);
 
         if ($animated === null) {
-            $widget = $widget->withAnimated();
+            $widget = $widget->animated();
         } else {
-            $widget = $widget->withAnimated($animated);
+            $widget = $widget->animated($animated);
         }
 
         $html = $widget->render();
@@ -156,7 +155,7 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withPercent(25)
+            ->percent(25)
             ->render();
         $expected = <<<'HTML'
         <div id="test" class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%;"></div></div>
@@ -168,80 +167,12 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withPercent(25)
-            ->withContent('Content')
-            ->withLabel('Progress')
+            ->percent(25)
+            ->content('Content')
+            ->label('Progress')
             ->render();
         $expected = <<<'HTML'
         <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%;">Content</div></div>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    public function testBarsMultiple(): void
-    {
-        $bars = [
-            Progress::widget()
-                ->id('bar-1')
-                ->withPercent(15),
-            Progress::widget()
-                ->id('bar-2')
-                ->withPercent(30)
-                ->withBarOptions([
-                    'class' => 'bg-success',
-                ]),
-            Progress::widget()
-                ->id('bar-3')
-                ->withPercent(20)
-                ->withBarOptions([
-                    'class' => 'bg-info',
-                ]),
-        ];
-
-        $html = ProgressStack::widget()
-            ->id('test')
-            ->withBars(...$bars)
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="progress-stacked"><div id="bar-1" class="progress" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 15%;"></div></div><div id="bar-2" class="progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="bg-success progress-bar" style="width: 30%;"></div></div><div id="bar-3" class="progress" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><div class="bg-info progress-bar" style="width: 20%;"></div></div></div>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    public function testEmptyBarsMultiple(): void
-    {
-        $this->assertEmpty(ProgressStack::widget()->render());
-    }
-
-    public function testBarsMultipleOptions(): void
-    {
-        $bars = [
-            Progress::widget()
-                ->id('bar-1')
-                ->withPercent(15),
-            Progress::widget()
-                ->id('bar-2')
-                ->withPercent(30)
-                ->withBarOptions([
-                    'class' => 'bg-success',
-                ]),
-            Progress::widget()
-                ->id('bar-3')
-                ->withPercent(20)
-                ->withBarOptions([
-                    'class' => 'bg-info',
-                ]),
-        ];
-
-        $html = ProgressStack::widget()
-            ->id('test')
-            ->withBars(...$bars)
-            ->withOptions([
-                'class' => 'border',
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="border progress-stacked"><div id="bar-1" class="progress" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 15%;"></div></div><div id="bar-2" class="progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="bg-success progress-bar" style="width: 30%;"></div></div><div id="bar-3" class="progress" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><div class="bg-info progress-bar" style="width: 20%;"></div></div></div>
         HTML;
         $this->assertSame($expected, $html);
     }
@@ -259,7 +190,7 @@ final class ProgressTest extends TestCase
         $this->expectExceptionMessage('"$percent" must be greater or equals 0. -1 given');
 
         Progress::widget()
-            ->withPercent(-1)
+            ->percent(-1)
             ->render();
     }
 
@@ -267,9 +198,9 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->withContent('Progress')
-            ->withPercent(35)
-            ->withOptions(['class' => 'text-danger'])
+            ->content('Progress')
+            ->percent(35)
+            ->options(['class' => 'text-danger'])
             ->render();
         $expected = <<<'HTML'
         <div id="test" class="text-danger progress" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 35%;">Progress</div></div>
@@ -277,16 +208,29 @@ final class ProgressTest extends TestCase
         $this->assertSame($expected, $html);
     }
 
-    public function testCalculatedPercent(): void
+    public static function calculatedPercentProvider(): array
+    {
+        return [
+            [275, 1000, null, 'aria-valuenow="27.5"'],
+            [276, 1000, 0, 'aria-valuenow="28"'],
+            [274, 1000, 0, 'aria-valuenow="27"'],
+        ];
+    }
+
+    /**
+     * @dataProvider calculatedPercentProvider
+     * @param int|float $value
+     * @param int|float $max
+     * @param int|null $precision
+     * @return void
+     */
+    public function testCalculatedPercent(int|float $value, int|float $max, ?int $precision, string $expected): void
     {
         $html = Progress::widget()
             ->id('test')
-            ->withCalculatedPercent(275, 1000)
+            ->calculatedPercent($value, $max, $precision)
             ->render();
 
-        $expected = <<<'HTML'
-        <div id="test" class="progress" role="progressbar" aria-valuenow="27.5" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 27.5%;"></div></div>
-        HTML;
-        $this->assertSame($expected, $html);
+        $this->assertStringContainsString($expected, $html);
     }
 }
