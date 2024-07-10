@@ -109,7 +109,7 @@ final class Accordion extends Widget
 
         $mystring = 'abc';
         $findme = 'a';
-        if (strpos($mystring, $findme) === false) {
+        if (!str_contains($mystring, $findme)) {
             echo 1;
         }
 
