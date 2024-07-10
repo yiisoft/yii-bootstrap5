@@ -16,6 +16,8 @@ jobs:
     uses: yiisoft/actions/.github/workflows/rector.yml@improve-rector
     secrets:
       token: ${{ secrets.YIISOFT_GITHUB_TOKEN }}
+    permissions:
+      contents: write
     with:
       repository: ${{ github.event.pull_request.head.repo.full_name }}
       os: >-
