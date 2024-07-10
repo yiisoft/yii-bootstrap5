@@ -78,7 +78,7 @@ use function is_string;
  */
 final class Accordion extends Widget
 {
-    private array $items = [];
+    array $items = [];
     private array $expands = [];
     private ?bool $defaultExpand = null;
     private bool $encodeLabels = true;
