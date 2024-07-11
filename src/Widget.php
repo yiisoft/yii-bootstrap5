@@ -9,8 +9,15 @@ use Yiisoft\Widget\Widget as YiiWidget;
 
 abstract class Widget extends YiiWidget
 {
-    public const THEME_DARK = 'dark';
-    public const THEME_LIGHT = 'light';
+    /**
+     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
+     */
+    final public const THEME_DARK = 'dark';
+
+    /**
+     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
+     */
+    final public const THEME_LIGHT = 'light';
 
     private ?string $id = null;
     private bool $autoGenerate = true;
