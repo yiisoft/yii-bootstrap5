@@ -9,8 +9,8 @@ use Yiisoft\Widget\Widget as YiiWidget;
 
 abstract class Widget extends YiiWidget
 {
-    public const THEME_DARK = 'dark';
-    public const THEME_LIGHT = 'light';
+    final public const THEME_DARK = 'dark';
+    final public const THEME_LIGHT = 'light';
 
     private ?string $id = null;
     private bool $autoGenerate = true;
