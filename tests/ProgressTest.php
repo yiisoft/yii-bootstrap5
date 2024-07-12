@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use LogicException;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Progress;
 
@@ -17,12 +18,136 @@ final class ProgressTest extends TestCase
         $html = Progress::widget()
             ->id('test')
             ->label('Progress')
-            ->percent('25')
+            ->percent(25)
             ->barOptions(['class' => 'bg-warning'])
             ->render();
         $expected = <<<'HTML'
-        <div id="test" class="progress"><div class="bg-warning progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">Progress</div></div>
+        <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="bg-warning progress-bar" style="width: 25%;"></div></div>
         HTML;
+        $this->assertSame($expected, $html);
+    }
+
+    public function testMin(): void
+    {
+        $html = Progress::widget()
+            ->id('test')
+            ->label('Progress')
+            ->min(5)
+            ->percent(10)
+            ->barOptions(['class' => 'bg-warning'])
+            ->render();
+
+        $expected = <<<'HTML'
+        <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="10" aria-valuemin="5" aria-valuemax="100"><div class="bg-warning progress-bar" style="width: 10%;"></div></div>
+        HTML;
+        $this->assertSame($expected, $html);
+    }
+
+    public function testMax(): void
+    {
+        $html = Progress::widget()
+            ->id('test')
+            ->label('Progress')
+            ->max(95)
+            ->percent(90)
+            ->barOptions(['class' => 'bg-warning'])
+            ->render();
+
+        $expected = <<<'HTML'
+        <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="90" aria-valuemin="0" aria-valuemax="95"><div class="bg-warning progress-bar" style="width: 90%;"></div></div>
+        HTML;
+        $this->assertSame($expected, $html);
+    }
+
+    public static function stripedDataProvider(): array
+    {
+        return [
+            [null, true],
+            [true, true],
+            [false, false],
+        ];
+    }
+
+    /**
+     * @dataProvider stripedDataProvider
+     * @param bool|null $striped
+     * @param bool $expected
+     * @return void
+     */
+    public function testStriped(?bool $striped, bool $expected): void
+    {
+        $widget = Progress::widget()
+            ->id('test')
+            ->percent(90)
+            ->barOptions(['class' => 'bg-danger']);
+
+        if ($striped === null) {
+            $widget = $widget->striped();
+        } else {
+            $widget = $widget->striped($striped);
+        }
+
+        $html = $widget->render();
+
+        if ($expected) {
+
+            $expected = <<<'HTML'
+            <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar progress-bar-striped" style="width: 90%;"></div></div>
+            HTML;
+
+        } else {
+
+            $expected = <<<'HTML'
+            <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar" style="width: 90%;"></div></div>
+            HTML;
+        }
+
+        $this->assertSame($expected, $html);
+    }
+
+    public static function animatedDataProvider(): array
+    {
+        return [
+            [null, true],
+            [true, true],
+            [false, false],
+        ];
+    }
+
+    /**
+     * @dataProvider animatedDataProvider
+     * @param bool|null $animated
+     * @param bool $expected
+     * @return void
+     */
+    public function testAnimated(?bool $animated, bool $expected): void
+    {
+        $widget = Progress::widget()
+            ->id('test')
+            ->percent(90)
+            ->barOptions(['class' => 'bg-danger']);
+
+        if ($animated === null) {
+            $widget = $widget->animated();
+        } else {
+            $widget = $widget->animated($animated);
+        }
+
+        $html = $widget->render();
+
+        if ($expected) {
+
+            $expected = <<<'HTML'
+            <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar progress-bar-striped progress-bar-animated" style="width: 90%;"></div></div>
+            HTML;
+
+        } else {
+
+            $expected = <<<'HTML'
+            <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar" style="width: 90%;"></div></div>
+            HTML;
+        }
+
         $this->assertSame($expected, $html);
     }
 
@@ -30,40 +155,24 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->percent('25')
+            ->percent(25)
             ->render();
         $expected = <<<'HTML'
-        <div id="test" class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div></div>
+        <div id="test" class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%;"></div></div>
         HTML;
         $this->assertSame($expected, $html);
     }
 
-    public function testBars(): void
+    public function testContent(): void
     {
         $html = Progress::widget()
             ->id('test')
-            ->bars([['label' => 'Progress', 'percent' => '25']])
+            ->percent(25)
+            ->content('Content')
+            ->label('Progress')
             ->render();
         $expected = <<<'HTML'
-        <div id="test" class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">Progress</div></div>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    public function testBarsMultiple(): void
-    {
-        $html = Progress::widget()
-            ->id('test')
-            ->bars([
-                ['percent' => '15'],
-                ['percent' => '30', 'options' => ['class' => ['bg-success']]],
-                ['percent' => '20', 'options' => ['class' => ['bg-info']]],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;"></div>
-        <div class="bg-success progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-        <div class="bg-info progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div></div>
+        <div id="test" class="progress" role="progressbar" aria-label="Progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%;">Content</div></div>
         HTML;
         $this->assertSame($expected, $html);
     }
@@ -72,7 +181,16 @@ final class ProgressTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         Progress::widget()
-            ->bars(['options' => ['class' => ['bg-info']]])
+            ->render();
+    }
+
+    public function testWrongPercent(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('"$percent" must be greater or equals 0. -1 given');
+
+        Progress::widget()
+            ->percent(-1)
             ->render();
     }
 
@@ -80,14 +198,39 @@ final class ProgressTest extends TestCase
     {
         $html = Progress::widget()
             ->id('test')
-            ->bars([
-                ['label' => 'Progress', 'percent' => '25'],
-            ])
+            ->content('Progress')
+            ->percent(35)
             ->options(['class' => 'text-danger'])
             ->render();
         $expected = <<<'HTML'
-        <div id="test" class="text-danger progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">Progress</div></div>
+        <div id="test" class="text-danger progress" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 35%;">Progress</div></div>
         HTML;
         $this->assertSame($expected, $html);
+    }
+
+    public static function calculatedPercentProvider(): array
+    {
+        return [
+            [275, 1000, null, 'aria-valuenow="27.5"'],
+            [276, 1000, 0, 'aria-valuenow="28"'],
+            [274, 1000, 0, 'aria-valuenow="27"'],
+        ];
+    }
+
+    /**
+     * @dataProvider calculatedPercentProvider
+     * @param int|float $value
+     * @param int|float $max
+     * @param int|null $precision
+     * @return void
+     */
+    public function testCalculatedPercent(int|float $value, int|float $max, ?int $precision, string $expected): void
+    {
+        $html = Progress::widget()
+            ->id('test')
+            ->calculatedPercent($value, $max, $precision)
+            ->render();
+
+        $this->assertStringContainsString($expected, $html);
     }
 }

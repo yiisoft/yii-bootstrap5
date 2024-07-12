@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use JsonException;
+use LogicException;
 use RuntimeException;
+use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-use function array_merge;
-use function implode;
-use function rtrim;
-use function trim;
+use function round;
+use function sprintf;
+
+use const PHP_ROUND_HALF_UP;
 
 /**
  * Progress renders a bootstrap progress bar component.
@@ -22,82 +24,82 @@ use function trim;
  * ```php
  * // default with label
  * echo Progress::widget()
- *     ->percent('60')
+ *     ->percent(60)
  *     ->label('test');
  *
  * // styled
  * echo Progress::widget()
- *     ->bars([
- *         ['percent' => '65', 'options' => ['class' => 'bg-danger']]
+ *     ->percent(65)
+ *     ->barOptions([
+ *          'class' => 'bg-danger'
  *     ]);
  *
  * // striped
  * echo Progress::widget()
- *     ->bars([
- *         ['percent' => '70', 'options' => ['class' => 'bg-warning progress-bar-striped']]
+ *     ->striped()
+ *     ->percent(70)
+ *     ->barOptions([
+ *         'class' => 'bg-warning'
  *     ]);
  *
  * // striped animated
  * echo Progress::widget()
- *     ->percent('70')
- *     ->barOptions(['class' => 'bg-success progress-bar-animated progress-bar-striped']);
- *
- * // stacked bars
- * echo Progress::widget()
- *     bars => ([
- *         ['percent' => '30', 'options' => ['class' => 'bg-danger']],
- *         ['percent' => '30', 'label' => 'test', 'options' => ['class' => 'bg-success']],
- *         ['percent' => '35', 'options' => ['class' => 'bg-warning']],
+ *     ->percent(70)
+ *     ->animated()
+ *     ->barOptions([
+ *          'class' => 'bg-success'
  *     ]);
- * ```
  */
 final class Progress extends Widget
 {
     private string $label = '';
-    private string $percent = '';
-    private array $bars = [];
+    private string|Stringable $content = '';
+    private int|float|null $percent = null;
+    private int|float $min = 0;
+    private int|float $max = 100;
     private array $options = [];
     private array $barOptions = [];
-    private bool $encodeTags = false;
+    private bool $striped = false;
+    private bool $animated = false;
+    private bool $inStack = false;
 
     public function render(): string
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
+        if ($this->percent === null) {
+            throw new RuntimeException('The "percent" option is required.');
         }
 
+        $options = $this->options;
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
+
+        if (!isset($options['id'])) {
+            $options['id'] = $this->getId();
+        }
+
+        $options['role'] = 'progressbar';
+
+        if ($this->label) {
+            $options['aria']['label'] = $this->label;
+        }
+
+        $options['aria']['valuenow'] = $this->percent;
+        $options['aria']['valuemin'] = $this->min;
+        $options['aria']['valuemax'] = $this->max;
+
         /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'progress']);
+        Html::addCssClass($options, 'progress');
 
-        return $this->renderProgress();
+        if ($this->inStack) {
+            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+        }
+
+        return Html::tag($tag, $this->renderBar(), $options)
+                ->encode(false)
+                ->render();
     }
 
     /**
-     * Set of bars that are stacked together to form a single progress bar.
-     *
-     * Each bar is an array of the following structure:
-     *
-     * ```php
-     * [
-     *     // required, the amount of progress as a percentage.
-     *     'percent' => '30',
-     *     // optional, the label to be displayed on the bar
-     *     'label' => '30%',
-     *     // optional, array, additional HTML attributes for the bar tag
-     *     'options' => [],
-     * ]
-     * ```
-     */
-    public function bars(array $value): self
-    {
-        $new = clone $this;
-        $new->bars = $value;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes of the bar. This property will only be considered if {@see bars} is empty.
+     * The HTML attributes of the bar.
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
@@ -109,9 +111,6 @@ final class Progress extends Widget
         return $new;
     }
 
-    /**
-     * The button label.
-     */
     public function label(string $value): self
     {
         $new = clone $this;
@@ -136,71 +135,127 @@ final class Progress extends Widget
     /**
      * The amount of progress as a percentage.
      */
-    public function percent(string $value): self
+    public function percent(int|float $percent): self
     {
+        if ($percent < 0) {
+            throw new LogicException(
+                sprintf('"$percent" must be greater or equals 0. %d given', $percent)
+            );
+        }
+
         $new = clone $this;
-        $new->percent = $value;
+        $new->percent = $percent;
 
         return $new;
     }
 
     /**
-     * Renders the progress.
      *
-     * @throws JsonException|RuntimeException if the "percent" option is not set in a stacked progress bar.
+     * @param int|float $value
+     * @param int|float $max
+     * @psalm-param int<0, max>|null $precision
+     * @psalm-param int<0, max> $mode
      *
-     * @return string the rendering result.
+     * @return self
      */
-    private function renderProgress(): string
+    public function calculatedPercent(
+        int|float $value,
+        int|float $max,
+        ?int $precision = null,
+        int $mode = PHP_ROUND_HALF_UP
+    ): self {
+
+        $percent = $value / $max * 100;
+
+        if ($precision !== null) {
+            $percent = round($percent, $precision, $mode);
+        }
+
+        return $this->percent($percent);
+    }
+
+    public function min(int|float $min): self
     {
-        if (empty($this->bars)) {
-            $this->bars = [
-                ['label' => $this->label, 'percent' => $this->percent, 'options' => $this->barOptions],
-            ];
+        $new = clone $this;
+        $new->min = $min;
+
+        return $new;
+    }
+
+    public function max(int|float $max): self
+    {
+        $new = clone $this;
+        $new->max = $max;
+
+        return $new;
+    }
+
+    public function content(string|Stringable $content): self
+    {
+        $new = clone $this;
+        $new->content = $content;
+
+        return $new;
+    }
+
+    public function striped(bool $striped = true): self
+    {
+        $new = clone $this;
+        $new->striped = $striped;
+
+        return $new;
+    }
+
+    public function animated(bool $animated = true): self
+    {
+        $new = clone $this;
+        $new->animated = $animated;
+
+        if ($new->animated) {
+            $new->striped = true;
         }
 
-        $bars = [];
+        return $new;
+    }
 
-        foreach ($this->bars as $bar) {
-            $label = ArrayHelper::getValue($bar, 'label', '');
-            if (!isset($bar['percent'])) {
-                throw new RuntimeException('The "percent" option is required.');
-            }
-            $options = ArrayHelper::getValue($bar, 'options', []);
-            $bars[] = $this->renderBar($bar['percent'], $label, $options);
-        }
+    public function inStack(bool $inStack = true): self
+    {
+        $new = clone $this;
+        $new->inStack = $inStack;
 
-        return Html::div(implode("\n", $bars), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
+        return $new;
     }
 
     /**
      * Generates a bar.
      *
-     * @param string $percent the percentage of the bar
-     * @param string $label , optional, the label to display at the bar
-     * @param array $options the HTML attributes of the bar
-     *
      * @throws JsonException
      *
      * @return string the rendering result.
      */
-    private function renderBar(string $percent, string $label = '', array $options = []): string
+    private function renderBar(): string
     {
-        $valuePercent = (float)trim(rtrim($percent, '%'));
+        $options = $this->barOptions;
+        $encode = ArrayHelper::remove($options, 'encode');
+        $tag = ArrayHelper::remove($options, 'tag', 'div');
+        $classNames = ['progress-bar'];
 
-        $options = array_merge($options, [
-            'role' => 'progressbar',
-            'aria-valuenow' => $percent,
-            'aria-valuemin' => 0,
-            'aria-valuemax' => 100,
-        ]);
+        if ($this->striped) {
+            $classNames[] = 'progress-bar-striped';
+        }
 
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, ['widget' => 'progress-bar']);
-        Html::addCssStyle($options, ['width' => $valuePercent . '%'], true);
+        if ($this->animated) {
+            $classNames[] = 'progress-bar-animated';
+        }
 
-        return Html::div($label, $options)->render();
+        Html::addCssClass($options, $classNames);
+
+        if (!$this->inStack) {
+            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+        }
+
+        return Html::tag($tag, $this->content, $options)
+                ->encode($encode)
+                ->render();
     }
 }
