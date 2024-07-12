@@ -150,9 +150,8 @@ final class Progress extends Widget
     }
 
     /**
-     *
-     * @param int|float $value
-     * @param int|float $max
+     * @param float|int $value
+     * @param float|int $max
      * @psalm-param int<0, max>|null $precision
      * @psalm-param int<0, max> $mode
      *
@@ -164,7 +163,6 @@ final class Progress extends Widget
         ?int $precision = null,
         int $mode = PHP_ROUND_HALF_UP
     ): self {
-
         $percent = $value / $max * 100;
 
         if ($precision !== null) {

@@ -65,7 +65,6 @@ final class ProgressStackTest extends TestCase
      * @dataProvider stackOptionsProvider
      * @param array $options
      * @param string $expected
-     * @return void
      */
     public function testBarsMultipleOptions(array $options, string $expected): void
     {

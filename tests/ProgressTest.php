@@ -72,7 +72,6 @@ final class ProgressTest extends TestCase
      * @dataProvider stripedDataProvider
      * @param bool|null $striped
      * @param bool $expected
-     * @return void
      */
     public function testStriped(?bool $striped, bool $expected): void
     {
@@ -90,13 +89,10 @@ final class ProgressTest extends TestCase
         $html = $widget->render();
 
         if ($expected) {
-
             $expected = <<<'HTML'
             <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar progress-bar-striped" style="width: 90%;"></div></div>
             HTML;
-
         } else {
-
             $expected = <<<'HTML'
             <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar" style="width: 90%;"></div></div>
             HTML;
@@ -118,7 +114,6 @@ final class ProgressTest extends TestCase
      * @dataProvider animatedDataProvider
      * @param bool|null $animated
      * @param bool $expected
-     * @return void
      */
     public function testAnimated(?bool $animated, bool $expected): void
     {
@@ -136,13 +131,10 @@ final class ProgressTest extends TestCase
         $html = $widget->render();
 
         if ($expected) {
-
             $expected = <<<'HTML'
             <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar progress-bar-striped progress-bar-animated" style="width: 90%;"></div></div>
             HTML;
-
         } else {
-
             $expected = <<<'HTML'
             <div id="test" class="progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><div class="bg-danger progress-bar" style="width: 90%;"></div></div>
             HTML;
@@ -219,10 +211,9 @@ final class ProgressTest extends TestCase
 
     /**
      * @dataProvider calculatedPercentProvider
-     * @param int|float $value
-     * @param int|float $max
+     * @param float|int $value
+     * @param float|int $max
      * @param int|null $precision
-     * @return void
      */
     public function testCalculatedPercent(int|float $value, int|float $max, ?int $precision, string $expected): void
     {
