@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Override;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\NavType;
 
 final class NavTabs extends AbstractNav
 {
-    protected ?string $type = self::NAV_TABS;
+    protected ?NavType $type = NavType::Tabs;
     private array $contentOptions = [];
     private bool $renderContent = true;
     protected int|string|null $activeItem = 0;
@@ -54,9 +56,10 @@ final class NavTabs extends AbstractNav
             return $link;
         }
 
-        $type = $this->type === self::NAV_PILLS ? 'pill' : 'tab';
+        /** @var NavType $type */
+        $type = $this->type ?? NavType::Tabs;
 
-        return $link->setOption('data-bs-toggle', $type);
+        return $link->toggle($type->toggleComponent());
     }
 
     public function renderTabContent(): string
@@ -66,12 +69,8 @@ final class NavTabs extends AbstractNav
 
         Html::addCssClass($options, ['widget' => 'tab-content']);
 
-        foreach ($this->getVisibleItems() as $item) {
-            if ($item instanceof NavItem) {
-                $panes[] = (string)$item->getLink()->getPane();
-            } else {
-                $panes[] = (string)$item->getPane();
-            }
+        foreach ($this->getVisibleLinks() as $link) {
+            $panes[] = (string)$link->getPane();
         }
 
         return Html::div(implode('', $panes), $options)

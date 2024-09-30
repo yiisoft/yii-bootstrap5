@@ -8,7 +8,7 @@ use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-use function Safe\parse_url;
+use function parse_url;
 
 use const PHP_URL_PATH;
 
@@ -19,16 +19,24 @@ final class NavLink extends Widget
     private bool $disabled = false;
     private string|Stringable $label;
     private ?TabPane $pane = null;
+    private ?NavItem $item = null;
     private ?bool $encode = null;
     private ?string $url = null;
     private array $options = [];
     private ?array $activeOptions = null;
     private bool $visible = true;
+    private ?string $toggle = null;
 
-    /**
-     * @var string
-     */
-    private array $addedClassNames = [];
+    public function __clone(): void
+    {
+        if ($this->item) {
+            $this->item = $this->item->link($this);
+        }
+
+        if ($this->pane) {
+            $this->pane = $this->pane->link($this);
+        }
+    }
 
     public function getId(): ?string
     {
@@ -120,6 +128,19 @@ final class NavLink extends Widget
         return $this->pane;
     }
 
+    public function item(?NavItem $item): self
+    {
+        $new = clone $this;
+        $new->item = $item?->link($new);
+
+        return $new;
+    }
+
+    public function getItem(): ?NavItem
+    {
+        return $this->item;
+    }
+
     public function encode(?bool $encode): self
     {
         $new = clone $this;
@@ -163,11 +184,12 @@ final class NavLink extends Widget
         return $new;
     }
 
-    public function setOption(string $name, mixed $value): self
+    public function addOptions(array $options): self
     {
-        $this->options[$name] = $value;
+        $new = clone $this;
+        $new->options = ArrayHelper::merge($new->options, $options);
 
-        return $this;
+        return $new;
     }
 
     public function activeOptions(array $options, bool $replace = true): self
@@ -182,10 +204,10 @@ final class NavLink extends Widget
         return $this;
     }
 
-    public function addClassNames(string ...$classNames): self
+    public function toggle(?string $toggle): self
     {
         $new = clone $this;
-        $new->addedClassNames = $classNames;
+        $new->toggle = $toggle;
 
         return $new;
     }
@@ -197,7 +219,7 @@ final class NavLink extends Widget
         }
 
         $options = $this->options;
-        $classNames = [...$this->addedClassNames, ...['widget' => 'nav-link']];
+        $classNames = ['widget' => 'nav-link'];
 
         if (!isset($options['id'])) {
             $options['id'] = parent::getId();
@@ -207,6 +229,10 @@ final class NavLink extends Widget
             $options['href'] = $this->url;
         } elseif ($this->tag === 'button' && !isset($options['type'])) {
             $options['type'] = 'button';
+        }
+
+        if ($this->toggle && !isset($options['data-bs-toggle']) && !isset($options['data']['bs-toggle'])) {
+            $options['data-bs-toggle'] = $this->toggle;
         }
 
         if ($this->pane) {

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\AbstractNav;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\Enum\NavType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Menu;
 use Yiisoft\Yii\Bootstrap5\NavItem;
 use Yiisoft\Yii\Bootstrap5\NavLink;
-use Yiisoft\Yii\Bootstrap5\Size;
+
+use function array_map;
 
 final class MenuTest extends TestCase
 {
@@ -17,7 +19,7 @@ final class MenuTest extends TestCase
     {
         $nav = Menu::widget()
                 ->id('test-nav')
-                ->items(
+                ->links(
                     NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -40,7 +42,7 @@ final class MenuTest extends TestCase
                 ->id('test-nav')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->items(
+                ->links(
                     NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
                     NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -63,13 +65,16 @@ final class MenuTest extends TestCase
                 ->id('test-nav')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->items(
+                ->links(
                     NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                    NavItem::widget()
-                        ->tag('div')
-                        ->options(['class' => 'custom-item'])
-                        ->links(
-                            NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2')
+                    NavLink::widget()
+                        ->id('test-link-2')
+                        ->label('Link 2')
+                        ->url('/link-2')
+                        ->item(
+                            NavItem::widget()
+                                ->tag('div')
+                                ->options(['class' => 'custom-item'])
                         ),
                     NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
                 );
@@ -90,7 +95,7 @@ final class MenuTest extends TestCase
         $nav = Menu::widget()
                 ->id('test-nav')
                 ->activeItem('/link-2')
-                ->items(
+                ->links(
                     NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
                     NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -109,7 +114,7 @@ final class MenuTest extends TestCase
         $nav = Menu::widget()
                 ->id('test-nav')
                 ->activeItem(2)
-                ->items(
+                ->links(
                     NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
                     NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -143,18 +148,18 @@ final class MenuTest extends TestCase
 
         $item = NavItem::widget()
             ->dropdown($dropdown)
-            ->links($toggle, ...$items);
+            ->items(...$items);
 
         $nav = Menu::widget()
                 ->id('test-nav')
                 ->activeItem('/link-2')
                 ->activateParents(true)
-                ->items($item);
+                ->links($toggle->item($item));
 
         $expected = <<<'HTML'
         <ul id="test-nav" class="nav">
         <li class="nav-item dropdown">
-        <a id="test-toggle" class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">toggler</a>
+        <a id="test-toggle" class="dropdown-toggle nav-link active" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a>
         <ul id="test-dropdown" class="dropdown-menu">
         <li><a class="dropdown-item" href="/link-1">Link 1</a></li>
         <li><a class="dropdown-item active" href="/link-2">Link 2</a></li>
@@ -167,25 +172,32 @@ final class MenuTest extends TestCase
 
     public static function typeDataProvider(): array
     {
-        return [
-            [AbstractNav::NAV_TABS],
-            [AbstractNav::NAV_PILLS],
-            [AbstractNav::NAV_UNDERLINE],
-        ];
+        return array_map(
+            static fn (NavType $type) => [$type],
+            NavType::cases()
+        );
     }
 
     /**
      * @dataProvider typeDataProvider
      */
-    public function testType(string $type): void
+    public function testType(NavType $type): void
     {
         $nav = Menu::widget()
-                ->type($type)
-                ->items(
-                    NavLink::widget()->label('Link 1')->url('/link-1'),
+                ->links(
+                    NavLink::widget()->label('Link 1')->url('/link-1')
                 );
 
-        $this->assertStringContainsString('class="nav ' . $type . '"', (string)$nav);
+        $withType = $nav->type($type);
+
+        $withMethod = match ($type) {
+            NavType::Tabs => $nav->tabs(),
+            NavType::Pills => $nav->pills(),
+            NavType::Underline => $nav->underline(),
+        };
+
+        $this->assertStringContainsString('class="nav ' . $type->value . '"', (string)$withType);
+        $this->assertStringContainsString('class="nav ' . $type->value . '"', (string)$withMethod);
     }
 
     public static function verticalDataProvider(): array
@@ -208,7 +220,7 @@ final class MenuTest extends TestCase
     {
         $nav = Menu::widget()
                 ->vertical($value)
-                ->items(
+                ->links(
                     NavLink::widget()->label('Link 1')->url('/link-1'),
                 );
 
@@ -227,7 +239,7 @@ final class MenuTest extends TestCase
                     'class' => 'custom-nav',
                     'style' => 'margin: -1px',
                 ])
-                ->items(
+                ->links(
                     NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -251,7 +263,7 @@ final class MenuTest extends TestCase
         $this->assertNotSame($nav, $nav->tag('nav'));
         $this->assertNotSame($nav, $nav->options([]));
         $this->assertNotSame($nav, $nav->defaultItem(false));
-        $this->assertNotSame($nav, $nav->items());
+        $this->assertNotSame($nav, $nav->links());
         $this->assertNotSame($nav, $nav->type(null));
         $this->assertNotSame($nav, $nav->tabs());
         $this->assertNotSame($nav, $nav->pills());
@@ -265,7 +277,7 @@ final class MenuTest extends TestCase
     {
         $nav = Menu::widget()
                 ->id('test-nav')
-                ->items(
+                ->links(
                     NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2')->visible(false),
                     NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -283,10 +295,7 @@ final class MenuTest extends TestCase
 
     public function testEmpty(): void
     {
-        $nav = Menu::widget()
-                ->id('test-nav');
-
-        $this->assertEmpty((string)$nav);
+        $this->assertEmpty((string)Menu::widget());
     }
 
     public function testDefaultCustomItem(): void
@@ -299,7 +308,7 @@ final class MenuTest extends TestCase
                             'class' => 'default-custom-item',
                         ])
                 )
-                ->items(
+                ->links(
                     NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),

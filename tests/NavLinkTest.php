@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Stringable;
 use Yiisoft\Html\Html;
+use Yiisoft\Yii\Bootstrap5\NavItem;
 use Yiisoft\Yii\Bootstrap5\NavLink;
 use Yiisoft\Yii\Bootstrap5\TabPane;
 
@@ -261,13 +262,12 @@ final class NavLinkTest extends TestCase
         $this->assertNotSame($link, $link->visible(false));
         $this->assertNotSame($link, $link->label(''));
         $this->assertNotSame($link, $link->pane(null));
-        $this->assertNotSame($link, $link->addClassNames());
-
-        $this->assertSame($link, $link->activate());
-        $this->assertSame($link, $link->setOption('name', 'value'));
+        $this->assertNotSame($link, $link->item(NavItem::widget()));
+        $this->assertNotSame($link, $link->toggle(''));
 
         $link = $link->activeOptions([]);
 
+        $this->assertSame($link, $link->activate());
         $this->assertSame($link, $link->activeOptions(['test' => 1], false));
     }
 

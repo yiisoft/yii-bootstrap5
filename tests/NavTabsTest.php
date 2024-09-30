@@ -16,7 +16,7 @@ final class NavTabsTest extends TestCase
     {
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
-                ->items(
+                ->links(
                     NavLink::widget()->id('tab-1')->label('Link 1')->url('/link-1'),
                     NavLink::widget()->id('tab-2')->label('Link 2')->url('/link-2'),
                     NavLink::widget()->id('tab-3')->label('Link 3')->url('/link-3'),
@@ -38,7 +38,7 @@ final class NavTabsTest extends TestCase
     {
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -80,7 +80,7 @@ final class NavTabsTest extends TestCase
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
                 ->activeItem(0)
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -123,7 +123,7 @@ final class NavTabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -172,7 +172,7 @@ final class NavTabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -222,7 +222,7 @@ final class NavTabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -273,7 +273,7 @@ final class NavTabsTest extends TestCase
                 ->tabContentOptions([
                     'class' => 'custom-content-class',
                 ])
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -326,7 +326,7 @@ final class NavTabsTest extends TestCase
     {
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -369,7 +369,7 @@ final class NavTabsTest extends TestCase
     {
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -414,8 +414,8 @@ final class NavTabsTest extends TestCase
     {
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
-                ->type(NavTabs::NAV_PILLS)
-                ->items(
+                ->pills()
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -460,20 +460,19 @@ final class NavTabsTest extends TestCase
                 ->id('test-tabs')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->items(
-                    NavItem::widget()
-                        ->tag('div')
-                        ->links(
-                            NavLink::widget()
-                                ->label('Link 1')
-                                ->id('tab-1')
-                                ->pane(
-                                    TabPane::widget()
-                                        ->id('pane-1')
-                                        ->encode(true)
-                                        ->content('<span>Encoded content</span>')
-                                )
-                        ),
+                ->links(
+                    NavLink::widget()
+                           ->label('Link 1')
+                           ->id('tab-1')
+                           ->pane(
+                               TabPane::widget()
+                                   ->id('pane-1')
+                                   ->encode(true)
+                                   ->content('<span>Encoded content</span>')
+                           )
+                           ->item(
+                               NavItem::widget()->tag('div')
+                           ),
                     NavLink::widget()
                         ->label('Link 2')
                         ->id('tab-2')
@@ -506,7 +505,7 @@ final class NavTabsTest extends TestCase
         $tabs = NavTabs::widget()
                 ->id('test-tabs')
                 ->activeItem(null)
-                ->items(
+                ->links(
                     NavLink::widget()
                         ->label('Link 1')
                         ->id('tab-1')

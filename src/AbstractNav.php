@@ -4,40 +4,28 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Generator;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\NavType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
 use function iterator_count;
 
 abstract class AbstractNav extends Widget
 {
-    /**
-     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
-     */
-    final public const NAV_TABS = 'nav-tabs';
-
-    /**
-     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
-     */
-    final public const NAV_PILLS = 'nav-pills';
-
-    /**
-     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
-     */
-    final public const NAV_UNDERLINE = 'nav-underline';
-
     private string $tag = 'ul';
     private array $options = [];
     private bool|NavItem $defaultItem = true;
-    protected ?string $type = null;
+    protected ?NavType $type = null;
     private ?Size $vertical = null;
     protected int|string|null $activeItem = null;
     private bool $activateParents = false;
 
     /**
-     * @var NavItem[]|NavLink[]
+     * @var NavLink[]
      */
-    private array $items = [];
+    private array $links = [];
 
     public function tag(string $tag): static
     {
@@ -63,33 +51,27 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    public function items(NavItem|NavLink ...$items): static
+    public function links(NavLink ...$links): static
     {
         $new = clone $this;
-        $new->items = $items;
+        $new->links = $links;
 
         return $new;
     }
 
-    /**
-     * @return NavItem[]|NavLink[]
-     */
-    final protected function getVisibleItems(): iterable
+    final protected function getVisibleLinks(): Generator
     {
         $index = 0;
 
-        /** @var NavItem|NavLink $item */
-        foreach ($this->items as $item) {
-            /** @var NavLink $link */
-            $link = $item instanceof NavItem ? $item->getLink() : $item;
-
+        /** @var NavLink $link */
+        foreach ($this->links as $link) {
             if ($link->isVisible()) {
-                yield $index++ => $item;
+                yield $index++ => $link;
             }
         }
     }
 
-    public function type(?string $type): static
+    public function type(?NavType $type): static
     {
         $new = clone $this;
         $new->type = $type;
@@ -99,17 +81,17 @@ abstract class AbstractNav extends Widget
 
     public function tabs(): static
     {
-        return $this->type(self::NAV_TABS);
+        return $this->type(NavType::Tabs);
     }
 
     public function pills(): static
     {
-        return $this->type(self::NAV_PILLS);
+        return $this->type(NavType::Pills);
     }
 
     public function underline(): static
     {
-        return $this->type(self::NAV_UNDERLINE);
+        return $this->type(NavType::Underline);
     }
 
     public function vertical(?Size $vertical): static
@@ -136,27 +118,26 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    private function activateTree(NavItem|NavLink $item, NavLink ...$tree): void
+    private function activateTree(NavLink $link, NavLink ...$tree): void
     {
-        $isItem = $item instanceof NavItem;
-        $link = $isItem ? $item->getLink() : $item;
-        $tree[] = $link;
-
         if ($this->isLinkActive($link, null)) {
 
-            foreach ($tree as $navLink) {
-                $navLink->activate();
+            $link->activate();
+
+            foreach ($tree as $link) {
+                $link->activate();
             }
 
             return;
         }
 
-        if (!$isItem) {
-            return;
-        }
+        $tree[] = $link;
+        $items = $link->getItem()?->getItems() ?? [];
 
-        foreach ($item->getItems() as $subItem) {
-            $this->activateTree($subItem, ...$tree);
+        foreach ($items as $item) {
+
+            $link = $item instanceof NavItem ? $item->getLink() : $item;
+            $this->activateTree($link, ...$tree);
         }
     }
 
@@ -184,7 +165,7 @@ abstract class AbstractNav extends Widget
         }
 
         if ($this->type) {
-            $classNames['type'] = $this->type;
+            $classNames['type'] = $this->type->value;
         }
 
         if ($this->vertical === Size::ExtraSmall) {
@@ -195,8 +176,8 @@ abstract class AbstractNav extends Widget
 
         Html::addCssClass($options, $classNames);
 
-        foreach ($this->getVisibleItems() as $index => $item) {
-            $items[] = $this->renderItem($item, $index);
+        foreach ($this->getVisibleLinks() as $index => $link) {
+            $items[] = $this->renderItem($link, $index);
         }
 
         return Html::tag($this->tag)
@@ -207,40 +188,41 @@ abstract class AbstractNav extends Widget
 
     protected function prepareLink(NavLink $link, int $index): NavLink
     {
-        return $this->isLinkActive($link, $index) ? $link->activate() : $link;
+        if ($this->activateParents) {
+            $this->activateTree($link);
+        } elseif ($this->isLinkActive($link, $index)) {
+            $link->activate();
+        }
+
+        if ($this->defaultItem && $link->getItem() === null) {
+
+            if ($this->defaultItem === true) {
+                return $link->item(NavItem::widget());
+            }
+
+            return $link->item($this->defaultItem);
+        }
+
+        return $link;
     }
 
     public function render(): string
     {
-        if (iterator_count($this->getVisibleItems()) === 0) {
+        if (iterator_count($this->getVisibleLinks()) === 0) {
             return '';
         }
 
-        return $this->prepareNav()
-                    ->render();
+        return $this->prepareNav()->render();
     }
 
-    protected function renderItem(NavItem|NavLink $item, int $index): string
+    protected function renderItem(NavLink $link, int $index): string
     {
-        $isLink = $item instanceof NavLink;
-        /** @var NavLink $link */
-        $link = $isLink ? $item : $item->getLink();
-
-        if ($this->activateParents) {
-            $this->activateTree($item);
-        }
-
         $link = $this->prepareLink($link, $index);
 
-        if ($isLink) {
-
-            if ($this->defaultItem === true) {
-                $this->defaultItem = NavItem::widget();
-            }
-
-            $item = $this->defaultItem ? $this->defaultItem->links($link) : null;
+        if ($item = $link->getItem()) {
+            return $item->render();
         }
 
-        return ($item ?? $link)->render();
+        return $link->render();
     }
 }

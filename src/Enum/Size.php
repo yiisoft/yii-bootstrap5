@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace Yiisoft\Yii\Bootstrap5\Enum;
 
 enum Size: string
 {

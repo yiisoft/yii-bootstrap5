@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\Html;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 
 final class NavItem extends Widget
 {
@@ -12,6 +13,7 @@ final class NavItem extends Widget
     private string $tag = 'li';
     private array $options = [];
     private ?Dropdown $dropdown = null;
+    private DropDirection $dropDirection = DropDirection::Down;
 
     /**
      * @var self[]|NavLink[]
@@ -34,11 +36,10 @@ final class NavItem extends Widget
         return $new;
     }
 
-    public function links(NavLink $link, self|NavLink ...$items): self
+    public function link(NavLink $link): self
     {
         $new = clone $this;
         $new->link = $link;
-        $new->items = $items;
 
         return $new;
     }
@@ -46,6 +47,14 @@ final class NavItem extends Widget
     public function getLink(): NavLink
     {
         return $this->link;
+    }
+
+    public function items(self|NavLink ...$items): self
+    {
+        $new = clone $this;
+        $new->items = $items;
+
+        return $new;
     }
 
     /**
@@ -61,6 +70,14 @@ final class NavItem extends Widget
     {
         $new = clone $this;
         $new->dropdown = $dropdown;
+
+        return $new;
+    }
+
+    public function dropDirection(DropDirection $direction): self
+    {
+        $new = clone $this;
+        $new->dropDirection = $direction;
 
         return $new;
     }
@@ -108,12 +125,11 @@ final class NavItem extends Widget
 
     public function render(): string
     {
-        $link = $this->link;
-
-        if (!$link->isVisible()) {
+        if (!$this->link->isVisible()) {
             return '';
         }
 
+        $link = $this->link;
         $options = $this->options;
         $classNames = ['widget' => 'nav-item'];
 
@@ -123,14 +139,18 @@ final class NavItem extends Widget
 
         if ($dropdown = $this->prepareDropdown(...$this->items)) {
 
-            $classNames[] = 'dropdown';
-            $link = $link->setOption('data-bs-toggle', 'dropdown')
-                         ->setOption('aria-expanded', 'false')
-                         ->addClassNames('dropdown-toggle');
+            $classNames[] = $this->dropDirection->value;
+            $addOptions = [
+                'class' => 'dropdown-toggle',
+                'aria-expanded' => 'false',
+            ];
 
             if ($link->getTag() !== 'button') {
-                $link = $link->setOption('role', 'button');
+                $addOptions['role'] = 'button';
             }
+
+            $link = $link->toggle('dropdown')
+                         ->addOptions($addOptions);
         }
 
         Html::addCssClass($options, $classNames);

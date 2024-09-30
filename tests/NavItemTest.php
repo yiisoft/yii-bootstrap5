@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\NavItem;
 use Yiisoft\Yii\Bootstrap5\NavLink;
 
@@ -19,7 +20,7 @@ final class NavItemTest extends TestCase
             ->label('Simple nav link');
 
         $item = NavItem::widget()
-            ->links($link);
+            ->link($link);
 
         $expected = <<<'HTML'
         <li class="nav-item"><a id="test-link" class="nav-link">Simple nav link</a></li>
@@ -48,7 +49,7 @@ final class NavItemTest extends TestCase
 
         $item = NavItem::widget()
             ->tag($tag)
-            ->links($link);
+            ->link($link);
 
         $expected = <<<HTML
         <{$tag} class="nav-item"><a id="test-link" class="nav-link" href="#">Label for {$tag}</a></{$tag}>
@@ -86,7 +87,7 @@ final class NavItemTest extends TestCase
 
         $item = NavItem::widget()
             ->options($options)
-            ->links($link);
+            ->link($link);
 
         foreach ($expected as $option) {
             $this->assertStringContainsString($option, (string)$item);
@@ -101,11 +102,22 @@ final class NavItemTest extends TestCase
 
         $this->assertNotSame($item, $item->tag('b'));
         $this->assertNotSame($item, $item->options([]));
-        $this->assertNotSame($item, $item->links($link));
+        $this->assertNotSame($item, $item->link($link));
         $this->assertNotSame($item, $item->dropdown(null));
     }
 
-    public function testDropdown(): void
+    public static function dropdownDataProvider(): array
+    {
+        return array_map(
+            static fn (DropDirection $direction) => [$direction],
+            DropDirection::cases()
+        );
+    }
+
+    /**
+     * @dataProvider dropdownDataProvider
+     */
+    public function testDropdown(DropDirection $direction): void
     {
         $dropdown = Dropdown::widget()->id('test-dropdown');
 
@@ -116,22 +128,26 @@ final class NavItemTest extends TestCase
         $items = [
             NavLink::widget()->label('Link 1')->url('/link-1'),
             NavLink::widget()->label('Link 2')->url('/link-2'),
-            NavItem::widget()->links(
-                NavLink::widget()->label('Child toggler'),
-                NavLink::widget()->label('Child link 1'),
-                NavLink::widget()->label('Child link 2')
-            ),
+            NavItem::widget()
+                ->link(
+                    NavLink::widget()->label('Child toggler')
+                )->items(
+                    NavLink::widget()->label('Child link 1'),
+                    NavLink::widget()->label('Child link 2')
+                ),
             NavLink::widget()->label('Link 3')->url('/link-3'),
         ];
 
         $item = NavItem::widget()
             ->dropdown($dropdown)
-            ->links($toggle, ...$items);
+            ->dropDirection($direction)
+            ->link($toggle)
+            ->items(...$items);
 
         $html = preg_replace('/\sid="[^"]+"/', '', $item->render());
 
-        $expected = <<<'HTML'
-        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button">toggler</a><ul class="dropdown-menu">
+        $expected = <<<HTML
+        <li class="nav-item {$direction->value}"><a class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a><ul class="dropdown-menu">
         <li><a class="dropdown-item" href="/link-1">Link 1</a></li>
         <li><a class="dropdown-item" href="/link-2">Link 2</a></li>
         <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Child toggler</a><ul class="dropdown-menu">
@@ -153,7 +169,7 @@ final class NavItemTest extends TestCase
             ->visible(false);
 
         $item = NavItem::widget()
-            ->links($link);
+            ->link($link);
 
         $this->assertEmpty((string)$item);
     }
