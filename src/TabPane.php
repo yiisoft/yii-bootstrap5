@@ -9,8 +9,15 @@ use Yiisoft\Html\Html;
 
 final class TabPane extends Widget
 {
+    /**
+     * @psalm-suppress MissingConstructor
+     */
     private NavLink $link;
     private string|Stringable $content;
+
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     private string $tag = 'div';
     private array $options = [];
     private bool $fade = false;
@@ -24,6 +31,9 @@ final class TabPane extends Widget
         return $new;
     }
 
+    /**
+     * @psalm-param non-empty-string $tag
+     */
     public function tag(string $tag): self
     {
         $new = clone $this;

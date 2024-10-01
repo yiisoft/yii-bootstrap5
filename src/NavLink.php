@@ -14,10 +14,13 @@ use const PHP_URL_PATH;
 
 final class NavLink extends Widget
 {
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     private string $tag = 'a';
     private bool $active = false;
     private bool $disabled = false;
-    private string|Stringable $label;
+    private string|Stringable $label = '';
     private ?TabPane $pane = null;
     private ?NavItem $item = null;
     private ?bool $encode = null;
@@ -27,6 +30,9 @@ final class NavLink extends Widget
     private bool $visible = true;
     private ?string $toggle = null;
 
+    /**
+     * @psalm-suppress MethodSignatureMustOmitReturnType
+     */
     public function __clone(): void
     {
         if ($this->item) {
@@ -43,6 +49,9 @@ final class NavLink extends Widget
         return $this->options['id'] ?? parent::getId();
     }
 
+    /**
+     * @psalm-param non-empty-string $tag
+     */
     public function tag(string $tag): self
     {
         $new = clone $this;
@@ -110,7 +119,7 @@ final class NavLink extends Widget
         return $new;
     }
 
-    public function getLabel(): string
+    public function getLabel(): string|Stringable
     {
         return $this->label;
     }

@@ -14,6 +14,9 @@ use function iterator_count;
 
 abstract class AbstractNav extends Widget
 {
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     private string $tag = 'ul';
     private array $options = [];
     private bool|NavItem $defaultItem = true;
@@ -27,6 +30,9 @@ abstract class AbstractNav extends Widget
      */
     private array $links = [];
 
+    /**
+     * @psalm-param non-empty-string $tag
+     */
     public function tag(string $tag): static
     {
         $new = clone $this;

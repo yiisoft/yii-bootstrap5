@@ -9,7 +9,14 @@ use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 
 final class NavItem extends Widget
 {
+    /**
+     * @psalm-suppress MissingConstructor
+     */
     private NavLink $link;
+
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     private string $tag = 'li';
     private array $options = [];
     private ?Dropdown $dropdown = null;
@@ -28,6 +35,9 @@ final class NavItem extends Widget
         return $new;
     }
 
+    /**
+     * @psalm-param non-empty-string $tag
+     */
     public function tag(string $tag): self
     {
         $new = clone $this;
