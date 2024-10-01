@@ -7,13 +7,13 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Stringable;
 use Yiisoft\Html\Html;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 final class TabPane extends Widget
 {
-    /**
-     * @psalm-suppress MissingConstructor
-     */
     private NavLink $link;
-    private string|Stringable $content;
+    private string|Stringable $content = '';
 
     /**
      * @psalm-var non-empty-string $tag

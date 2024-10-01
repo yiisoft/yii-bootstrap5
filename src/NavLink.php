@@ -30,10 +30,7 @@ final class NavLink extends Widget
     private bool $visible = true;
     private ?string $toggle = null;
 
-    /**
-     * @psalm-suppress MethodSignatureMustOmitReturnType
-     */
-    public function __clone(): void
+    public function __clone()
     {
         if ($this->item) {
             $this->item = $this->item->link($this);

@@ -7,11 +7,11 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 final class NavItem extends Widget
 {
-    /**
-     * @psalm-suppress MissingConstructor
-     */
     private NavLink $link;
 
     /**
