@@ -92,6 +92,9 @@ final class NavItem extends Widget
         return $new;
     }
 
+    /**
+     * @psalm-suppress PossiblyUndefinedMethod
+     */
     private function prepareDropdownItems(self|NavLink ...$items): array
     {
         $array = [];
