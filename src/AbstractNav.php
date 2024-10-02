@@ -124,26 +124,24 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    private function activateTree(NavLink $link, NavLink ...$tree): void
+    private function activateTree(NavLink $link, NavLink ...$parents): void
     {
         if ($this->isLinkActive($link, null)) {
 
             $link->activate();
 
-            foreach ($tree as $link) {
+            foreach ($parents as $link) {
                 $link->activate();
             }
 
             return;
         }
 
-        $tree[] = $link;
         $items = $link->getItem()?->getItems() ?? [];
 
         foreach ($items as $item) {
-
-            $link = $item instanceof NavItem ? $item->getLink() : $item;
-            $this->activateTree($link, ...$tree);
+            $child = $item instanceof NavItem ? $item->getLink() : $item;
+            $this->activateTree($child, $link, ...$parents);
         }
     }
 
@@ -225,10 +223,6 @@ abstract class AbstractNav extends Widget
     {
         $link = $this->prepareLink($link, $index);
 
-        if ($item = $link->getItem()) {
-            return $item->render();
-        }
-
-        return $link->render();
+        return ($link->getItem() ?? $link)->render();
     }
 }

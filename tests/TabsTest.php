@@ -4,629 +4,541 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use RuntimeException;
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\Tabs;
+use Yiisoft\Yii\Bootstrap5\NavItem;
+use Yiisoft\Yii\Bootstrap5\NavLink;
+use Yiisoft\Yii\Bootstrap5\NavTabs;
+use Yiisoft\Yii\Bootstrap5\TabPane;
 
-/**
- * Tests for `Tabs` widget.
- */
 final class TabsTest extends TestCase
 {
-    public function testRoleTabList(): void
+    public function testTabsWoPanes(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                ],
-            ])
-            ->render();
-        $this->assertStringContainsString('<ul id="test" class="nav nav-tabs" role="tablist">', $html);
-    }
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->links(
+                    NavLink::widget()->id('tab-1')->label('Link 1')->url('/link-1'),
+                    NavLink::widget()->id('tab-2')->label('Link 2')->url('/link-2'),
+                    NavLink::widget()->id('tab-3')->label('Link 3')->url('/link-3'),
+                );
 
-    /**
-     * Each tab should have a corresponding unique ID
-     *
-     * {@see https://github.com/yiisoft/yii2/issues/6150}
-     */
-    public function testIds(): void
-    {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3'],
-                    ],
-                ],
-                [
-                    'label' => 'Dropdown2',
-                    'items' => [
-                        ['label' => 'Page4', 'content' => 'Page4'],
-                        ['label' => 'Page5', 'content' => 'Page5'],
-                    ],
-                ],
-                [
-                    'label' => $extAnchor1 = 'External link',
-                    'url' => $extUrl1 = '//other/route',
-                ],
-                [
-                    'label' => 'Dropdown3',
-                    'items' => [
-                        [
-                            'label' => $extAnchor2 = 'External Dropdown Link',
-                            'url' => $extUrl2 = '//other/dropdown/route',
-                        ],
-                    ],
-                ],
-            ])
-            ->render();
-
-        $page1 = 'test-tab0';
-        $page2 = 'test-dd1-tab0';
-        $page3 = 'test-dd1-tab1';
-        $page4 = 'test-dd2-tab0';
-        $page5 = 'test-dd2-tab1';
-
-        $shouldContain = [
-            'id="test"', // nav widget container
-            "#$page1", // Page1
-
-            'Dropdown1', // Dropdown1
-            "$page2", // Page2
-            "$page3", // Page3
-
-
-            'Dropdown2', // Dropdown2
-            "#$page4", // Page4
-            "#$page5", // Page5
-
-            'Dropdown3', // Dropdown3
-
-            // containers
-            "id=\"$page1\"",
-            "id=\"$page2\"",
-            "id=\"$page3\"",
-            "id=\"$page4\"",
-            "id=\"$page5\"",
-            Html::a($extAnchor1, $extUrl1, ['class' => 'nav-link'])->render(),
-            Html::a($extAnchor2, $extUrl2, [/*'tabindex' => -1, */
-                'class' => 'dropdown-item',
-            ])->render(),
-        ];
-
-        foreach ($shouldContain as $string) {
-            $this->assertStringContainsString($string, $html);
-        }
-    }
-
-    public function testVisible(): void
-    {
-        $html = Tabs::widget()
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-                [
-                    'label' => 'InvisiblePage',
-                    'content' => 'Invisible Page Content',
-                    'visible' => false,
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'InvisibleItem', 'content' => 'Invisible Item Content', 'visible' => false],
-                        ['label' => 'Page3', 'content' => 'Page3'],
-                        ['label' => 'External Link', 'url' => '//other/dropdown/route'],
-                        ['label' => 'Invisible External Link', 'url' => '//other/dropdown/route', 'visible' => false],
-                    ],
-                ],
-            ])
-            ->render();
-        $this->assertStringNotContainsString('InvisiblePage', $html);
-        $this->assertStringNotContainsString('Invisible Page Content', $html);
-        $this->assertStringNotContainsString('InvisibleItem', $html);
-        $this->assertStringNotContainsString('Invisible Item Content', $html);
-        $this->assertStringNotContainsString('Invisible External Link', $html);
-    }
-
-    public function testDisabled(): void
-    {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                    'disabled' => true,
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                ],
-                [
-                    'label' => 'DisabledPage',
-                    'content' => 'Disabled Page Content',
-                    'disabled' => true,
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'DisabledItem', 'content' => 'Disabled Item Content', 'disabled' => true],
-                        ['label' => 'Page3', 'content' => 'Page3'],
-                        ['label' => 'External Link', 'url' => '/other/dropdown/route'],
-                        ['label' => 'Disabled External Link', 'url' => '/other/dropdown/route', 'disabled' => true],
-                    ],
-                ],
-            ])
-            ->render();
-        $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#test-tab0" data-bs-toggle="tab" role="tab" aria-controls="test-tab0" tabindex="-1" aria-disabled="true">Page1</a></li>',
-            $html
-        );
-        $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#test-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-tab1" aria-selected="true">Page2</a></li>',
-            $html
-        );
-        $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link disabled" href="#test-tab2" data-bs-toggle="tab" role="tab" aria-controls="test-tab2" tabindex="-1" aria-disabled="true">DisabledPage</a></li>',
-            $html
-        );
-        $this->assertStringContainsString(
-            '<a class="dropdown-item disabled" href="#test-dd3-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-dd3-tab1" tabindex="-1" aria-disabled="true">DisabledItem</a>',
-            $html
-        );
-        $this->assertStringContainsString(
-            '<a class="dropdown-item disabled" href="/other/dropdown/route" tabindex="-1" aria-disabled="true">Disabled External Link</a>',
-            $html
-        );
-    }
-
-    public function testItem(): void
-    {
-        $checkTag = 'article';
-
-        $html = Tabs::widget()
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                ],
-            ])
-            ->itemOptions(['tag' => $checkTag])
-            ->withoutRenderTabContent()
-            ->render();
-        $this->assertStringNotContainsString('<' . $checkTag, $html);
-    }
-
-    public function testTabContentOptions(): void
-    {
-        $checkAttribute = 'test_attribute';
-        $checkValue = 'check_attribute';
-
-        $html = Tabs::widget()
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->tabContentOptions([
-                $checkAttribute => $checkValue,
-            ])
-            ->render();
-        $this->assertStringContainsString($checkAttribute . '=', $html);
-        $this->assertStringContainsString($checkValue, $html);
-    }
-
-    public function testActivateFirstVisibleTab(): void
-    {
-        $html = Tabs::widget()
-            ->items([
-                [
-                    'label' => 'Tab 1',
-                    'content' => 'some content',
-                    'visible' => false,
-                ],
-                [
-                    'label' => 'Tab 2',
-                    'content' => 'some content',
-                    'disabled' => true,
-                ],
-                [
-                    'label' => 'Tab 3',
-                    'content' => 'some content',
-                ],
-                [
-                    'label' => 'Tab 4',
-                    'content' => 'some content',
-                ],
-            ])
-            ->options(['id' => 'mytab'])
-            ->render();
-        $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab0" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab0" aria-selected="true">Tab 1</a></li>',
-            $html
-        );
-        $this-> assertStringNotContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab1" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab1" aria-selected="true">Tab 2</a></li>',
-            $html
-        );
-        $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
-            $html
-        );
-    }
-
-    public function testActivateTab(): void
-    {
-        $html = Tabs::widget()
-            ->items([
-                [
-                    'label' => 'Tab 1',
-                    'content' => 'some content',
-                    'visible' => false,
-                ],
-                [
-                    'label' => 'Tab 2',
-                    'content' => 'some content',
-                ],
-                [
-                    'label' => 'Tab 3',
-                    'content' => 'some content',
-                    'active' => true,
-                ],
-                [
-                    'label' => 'Tab 4',
-                    'content' => 'some content',
-                ],
-            ])
-            ->options(['id' => 'mytab'])
-            ->render();
-        $this->assertStringContainsString(
-            '<li class="nav-item"><a class="nav-link active" href="#mytab-tab2" data-bs-toggle="tab" role="tab" aria-controls="mytab-tab2" aria-selected="true">Tab 3</a></li>',
-            $html
-        );
-    }
-
-    public function testTabLabelEncoding(): void
-    {
-        $html = Tabs::widget()
-            ->withoutEncodeLabels()
-            ->id('mytab')
-            ->items([
-                [
-                    'label' => 'Tab 1<span>encoded</span>',
-                    'content' => 'some content',
-                    'encode' => true,
-                ],
-                [
-                    'label' => 'Tab 2<span>not encoded</span>',
-                    'content' => 'some content',
-                ],
-                [
-                    'label' => 'Tab 3<span>not encoded too</span>',
-                    'content' => 'some content',
-                ],
-            ])
-            ->render();
-        $this->assertStringContainsString('&lt;span&gt;encoded&lt;/span&gt;', $html);
-        $this->assertStringContainsString('<span>not encoded</span>', $html);
-        $this->assertStringContainsString('<span>not encoded too</span>', $html);
-    }
-
-    /**
-     * {@see https://github.com/yiisoft/yii2-bootstrap4/issues/108#issuecomment-465219339}
-     */
-    public function testIdRendering(): void
-    {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'paneOptions' => ['id' => 'pane1'],
-                    'label' => 'Tab 1',
-                    'content' => '<div>Content 1</div>',
-                ],
-                [
-                    'label' => 'Tab 2',
-                    'content' => '<div>Content 2</div>',
-                ],
-            ])
-            ->render();
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li>
-        <li class="nav-item"><a class="nav-link" href="#test-tab1" data-bs-toggle="tab" role="tab" aria-controls="test-tab1" aria-selected="false">Tab 2</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div>
-        <div id="test-tab1" class="tab-pane"><div>Content 2</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a id="tab-1" class="nav-link active" href="/link-1" aria-current="page">Link 1</a></li>
+        <li class="nav-item"><a id="tab-2" class="nav-link" href="/link-2">Link 2</a></li>
+        <li class="nav-item"><a id="tab-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
+        <div class="tab-content"></div>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testDropdownClass(): void
+    public function testSimpleTabs(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items(
-                [
-                    [
-                        'paneOptions' => ['id' => 'pane1'],
-                        'label' => 'Tab 1',
-                        'content' => '<div>Content 1</div>',
-                    ],
-                ],
-            )
-            ->dropdownClass(Dropdown::class)
-            ->render();
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                        ),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testHeaderOptions(): void
+    public function testActive(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items(
-                [
-                    [
-                        'paneOptions' => ['id' => 'pane1'],
-                        'label' => 'Tab 1',
-                        'content' => '<div>Content 1</div>',
-                    ],
-                ],
-            )
-            ->itemOptions(['class' => 'text-center'])
-            ->render();
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(0)
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                        ),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="text-center nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testPanes(): void
+    public function testRenderContent(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->panes(['content' => '<div>Content 1</div>'])
-            ->render();
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(0)
+                ->renderContent(false)
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                        ),
+                );
+        $html = $tabs->render();
+        $html .= 'some content here';
+        $html .= $tabs->renderTabContent();
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"></ul>
-        <div class="tab-content"><div>Content 1</div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        some content here
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, $html);
     }
 
-    public function testMissingLabel(): void
+    public function testFade(): void
     {
-        $this->expectException(RuntimeException::class);
-        Tabs::widget()
-            ->items([['content' => '<div>Content 1</div>']])
-            ->render();
-    }
+        $pane = TabPane::widget()->fade(true);
 
-    public static function navTypeDataProvider(): array
-    {
-        return [
-            [
-                'nav-lg',
-            ],
-            [
-                Tabs::NAV_TABS,
-            ],
-            [
-                Tabs::NAV_PILLS,
-            ],
-            [
-                Tabs::NAV_UNDERLINE,
-            ],
-        ];
-    }
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(0)
+                ->renderContent(false)
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            $pane->id('pane-1')
+                                 ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            $pane->id('pane-2')
+                                 ->content(Html::div('Pane 2'))
+                        ),
+                );
+        $html = $tabs->render();
+        $html .= 'some content here';
+        $html .= $tabs->renderTabContent();
 
-    /**
-     * @dataProvider navTypeDataProvider
-     * @param string $navType
-     */
-    public function testNavType(string $navType): void
-    {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType($navType)
-            ->render();
         $expected = <<<'HTML'
-        <ul id="test" class="nav [[navType]]" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        some content here
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane fade active show" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane fade" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
         HTML;
-        $this->assertSame(str_replace('[[navType]]', $navType, $expected), $html);
+
+        $this->assertEqualsHTML($expected, $html);
     }
 
     public function testPaneOptions(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType('nav-lg')
-            ->paneOptions([
-                'tag' => 'article',
-                'class' => 'custom-class',
-            ])
-            ->render();
+        $pane = TabPane::widget()->fade(true)
+                ->options([
+                    'class' => 'custom-pane-class',
+                ]);
+
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(0)
+                ->renderContent(false)
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            $pane->id('pane-1')
+                                 ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                                ->options([
+                                    'style' => 'margin: -1px',
+                                ])
+                        ),
+                );
+        $html = $tabs->render();
+        $html .= 'some content here';
+        $html .= $tabs->renderTabContent();
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><article id="pane1" class="custom-class tab-pane active"><div>Content 1</div></article></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        some content here
+        <div class="tab-content">
+        <div id="pane-1" class="custom-pane-class tab-pane fade active show" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" style="margin: -1px" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, $html);
     }
 
-    public function testNavOption(): void
+    public function testContentOptions(): void
     {
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType('nav-lg')
-            ->linkOptions([
-                'class' => 'custom-link-class',
-            ])
-            ->render();
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(0)
+                ->tabContentOptions([
+                    'class' => 'custom-content-class',
+                ])
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                        ),
+                    NavLink::widget()
+                        ->label('Link 3')
+                        ->id('tab-3')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-3')
+                                ->content('<span>Pane 3</span>')
+                        ),
+                );
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-3" class="nav-link" href="#pane-3" data-bs-toggle="tab" role="tab" aria-controls="pane-3" aria-selected="false">Link 3</a>
+        </li>
+        </ul>
+        <div class="custom-content-class tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        <div id="pane-3" class="tab-pane" tabindex="0" aria-labelledby="tab-3" role="tabpanel">&lt;span&gt;Pane 3&lt;/span&gt;</div>
+        </div>
         HTML;
-        $this->assertSame($expected, $html);
 
-        $html = Tabs::widget()
-            ->id('test')
-            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType('nav-lg')
-            ->withoutEncodeLabels()
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav nav-lg" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
-        HTML;
-        $this->assertSame($expected, $html);
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testNavOptions(): void
+    public function testPaneEncode(): void
     {
-        $widget = Tabs::widget()
-            ->id('test')
-            ->items([['paneOptions' => ['id' => 'pane1'], 'label' => 'Tab 1', 'content' => '<div>Content 1</div>']])
-            ->navType('nav-lg')
-            ->navDefinitions([
-                'linkOptions' => [
-                    'class' => 'custom-link-class',
-                ],
-                'itemOptions' => [
-                    'class' => 'custom-item-class',
-                ],
-            ]);
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->encode(true)
+                                ->content('<span>Encoded content</span>')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->encode(false)
+                                ->content('<span>Not encoded content</span>')
+                        ),
+                );
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-lg" role="tablist"><li class="custom-item-class nav-item"><a class="custom-link-class nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Tab 1</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active"><div>Content 1</div></div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">&lt;span&gt;Encoded content&lt;/span&gt;</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><span>Not encoded content</span></div>
+        </div>
         HTML;
 
-        $this->assertSame($expected, $widget->render());
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testNavFade(): void
+    public function testPaneTag(): void
     {
-        $widget = Tabs::widget()
-            ->id('test')
-            ->withFade()
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                    'paneOptions' => [
-                        'id' => 'pane1',
-                    ],
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                    'paneOptions' => [
-                        'id' => 'pane2',
-                    ],
-                ],
-            ]);
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->tag('section')
+                                ->encode(true)
+                                ->content('<span>Encoded content</span>')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->tag('article')
+                                ->encode(false)
+                                ->content('<span>Not encoded content</span>')
+                        ),
+                );
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
-        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane fade active show">Page1</div>
-        <div id="pane2" class="tab-pane fade">Page2</div></div>
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <section id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">&lt;span&gt;Encoded content&lt;/span&gt;</section>
+        <article id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><span>Not encoded content</span></article>
+        </div>
         HTML;
 
-        $this->assertSame($expected, $widget->render());
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 
-    public function testCustomFade(): void
+    public function testPills(): void
     {
-        $widget = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                    'paneOptions' => [
-                        'id' => 'pane1',
-                        'fade' => true,
-                    ],
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                    'paneOptions' => [
-                        'id' => 'pane2',
-                    ],
-                ],
-            ]);
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->pills()
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->encode(true)
+                                ->content('<span>Encoded content</span>')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->encode(false)
+                                ->content('<span>Not encoded content</span>')
+                        ),
+                );
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
-        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane fade active show">Page1</div>
-        <div id="pane2" class="tab-pane">Page2</div></div>
+        <ul id="test-tabs" class="nav nav-pills" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="pill" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="pill" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">&lt;span&gt;Encoded content&lt;/span&gt;</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><span>Not encoded content</span></div>
+        </div>
         HTML;
 
-        $this->assertSame($expected, $widget->render());
+        $this->assertEqualsHTML($expected, (string)$tabs);
+    }
 
-        $widget = Tabs::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                    'paneOptions' => [
-                        'id' => 'pane1',
-                    ],
-                ],
-                [
-                    'label' => 'Page2',
-                    'content' => 'Page2',
-                    'paneOptions' => [
-                        'id' => 'pane2',
-                        'fade' => true,
-                    ],
-                ],
-            ]);
+    public function testMultipleItems(): void
+    {
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->tag('nav')
+                ->defaultItem(false)
+                ->links(
+                    NavLink::widget()
+                           ->label('Link 1')
+                           ->id('tab-1')
+                           ->pane(
+                               TabPane::widget()
+                                   ->id('pane-1')
+                                   ->encode(true)
+                                   ->content('<span>Encoded content</span>')
+                           )
+                           ->item(
+                               NavItem::widget()->tag('div')
+                           ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->encode(false)
+                                ->content('<span>Not encoded content</span>')
+                        )
+                );
 
         $expected = <<<'HTML'
-        <ul id="test" class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link active" href="#pane1" data-bs-toggle="tab" role="tab" aria-controls="pane1" aria-selected="true">Page1</a></li>
-        <li class="nav-item"><a class="nav-link" href="#pane2" data-bs-toggle="tab" role="tab" aria-controls="pane2" aria-selected="false">Page2</a></li></ul>
-        <div class="tab-content"><div id="pane1" class="tab-pane active">Page1</div>
-        <div id="pane2" class="tab-pane fade">Page2</div></div>
+        <nav id="test-tabs" class="nav nav-tabs" role="tablist">
+        <div class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        </div>
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </nav>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">&lt;span&gt;Encoded content&lt;/span&gt;</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><span>Not encoded content</span></div>
+        </div>
         HTML;
 
-        $this->assertSame($expected, $widget->render());
+        $this->assertEqualsHTML($expected, (string)$tabs);
+    }
+
+    public function testWoActive(): void
+    {
+        $tabs = NavTabs::widget()
+                ->id('test-tabs')
+                ->activeItem(null)
+                ->links(
+                    NavLink::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        ),
+                    NavLink::widget()
+                        ->label('Link 2')
+                        ->id('tab-2')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-2')
+                                ->content(Html::div('Pane 2'))
+                        ),
+                );
+
+        $expected = <<<'HTML'
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="false">Link 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Pane 1</div>
+        <div id="pane-2" class="tab-pane" tabindex="0" aria-labelledby="tab-2" role="tabpanel"><div>Pane 2</div></div>
+        </div>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
     }
 }
