@@ -13,17 +13,17 @@ trait NavTrait
 
     abstract public function type(MenuType $type): static;
 
-    public function tabs(): self
+    public function tabs(): static
     {
         return $this->type(MenuType::Tabs);
     }
 
-    public function pills(): self
+    public function pills(): static
     {
         return $this->type(MenuType::Pills);
     }
 
-    public function underline(): self
+    public function underline(): static
     {
         return $this->type(MenuType::Underline);
     }
