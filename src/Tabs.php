@@ -8,6 +8,9 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
+/**
+ * @psalm-suppress MethodSignatureMismatch
+ */
 final class Tabs extends AbstractMenu
 {
     use NavTrait;

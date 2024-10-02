@@ -7,6 +7,9 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
+/**
+ * @psalm-suppress MethodSignatureMismatch
+ */
 final class Nav extends AbstractMenu
 {
     use NavTrait;
