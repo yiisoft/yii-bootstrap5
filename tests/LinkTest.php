@@ -6,21 +6,24 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Stringable;
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\NavItem;
-use Yiisoft\Yii\Bootstrap5\NavLink;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Item;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\TabPane;
 
-final class NavLinkTest extends TestCase
+use function array_map;
+
+final class LinkTest extends TestCase
 {
-    public function testSimpleNavLink(): void
+    public function testSimpleLink(): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->id('test-link')
             ->url('#')
             ->label('Simple nav link');
 
         $expected = <<<'HTML'
-        <a id="test-link" class="nav-link" href="#">Simple nav link</a>
+        <a id="test-link" href="#">Simple nav link</a>
         HTML;
 
         $this->assertSame($expected, (string)$link);
@@ -38,20 +41,20 @@ final class NavLinkTest extends TestCase
     /**
      * @dataProvider tagDataProvider
      */
-    public function testTagNavLink(string $tag): void
+    public function testTagLink(string $tag): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->id('test-link')
             ->tag($tag)
             ->label('Label ' . $tag);
 
         if ($tag === 'button') {
             $expected = <<<'HTML'
-            <button type="button" id="test-link" class="nav-link">Label button</button>
+            <button type="button" id="test-link">Label button</button>
             HTML;
         } else {
             $expected = <<<HTML
-            <{$tag} id="test-link" class="nav-link">Label {$tag}</{$tag}>
+            <{$tag} id="test-link">Label {$tag}</{$tag}>
             HTML;
         }
 
@@ -63,13 +66,13 @@ final class NavLinkTest extends TestCase
      */
     public function testActiveLink(string $tag): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->tag($tag)
             ->label('')
             ->active(true)
             ->render();
 
-        $this->assertStringContainsString('class="nav-link active"', $link);
+        $this->assertStringContainsString('class="active"', $link);
 
         if ($tag === 'a') {
             $this->assertStringContainsString('aria-current="page"', $link);
@@ -82,8 +85,8 @@ final class NavLinkTest extends TestCase
     {
         return [
             ['button', 'disabled'],
-            ['a', 'class="nav-link disabled"'],
-            ['span', 'class="nav-link disabled"'],
+            ['a', 'class="disabled"'],
+            ['span', 'class="disabled"'],
         ];
     }
 
@@ -92,7 +95,7 @@ final class NavLinkTest extends TestCase
      */
     public function testDisabledLink(string $tag, string $expected): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->tag($tag)
             ->label('')
             ->disabled(true)
@@ -121,11 +124,11 @@ final class NavLinkTest extends TestCase
      */
     public function testUrl(string $url): void
     {
-        $urlLink = NavLink::widget()
+        $urlLink = Link::widget()
             ->label('')
             ->url($url);
 
-        $hrefLink = NavLink::widget()
+        $hrefLink = Link::widget()
             ->label('')
             ->options([
                 'href' => $url,
@@ -147,7 +150,7 @@ final class NavLinkTest extends TestCase
                 ],
 
                 [
-                    'class="custom-class nav-link"',
+                    'class="custom-class"',
                     'style="margin: -1px;"',
                 ],
             ],
@@ -159,7 +162,7 @@ final class NavLinkTest extends TestCase
      */
     public function testOptions(array $options, array $expected): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->label('')
             ->options($options);
 
@@ -180,7 +183,7 @@ final class NavLinkTest extends TestCase
                 ],
 
                 [
-                    'class="custom-active-class nav-link active"',
+                    'class="custom-active-class active"',
                     'style="margin: -1px;"',
                 ],
             ],
@@ -192,7 +195,7 @@ final class NavLinkTest extends TestCase
      */
     public function testActiveOptions(array $options, array $expected): void
     {
-        $notActive = NavLink::widget()
+        $notActive = Link::widget()
             ->activeOptions($options)
             ->label('');
         $active = $notActive->active(true);
@@ -208,23 +211,23 @@ final class NavLinkTest extends TestCase
         return [
             [
                 Html::span('test'),
-                '<a id="test-link" class="nav-link"><span>test</span></a>',
-                '<a id="test-link" class="nav-link">' . Html::encode('<span>test</span>') . '</a>',
-                '<a id="test-link" class="nav-link"><span>test</span></a>',
+                '<a id="test-link"><span>test</span></a>',
+                '<a id="test-link">' . Html::encode('<span>test</span>') . '</a>',
+                '<a id="test-link"><span>test</span></a>',
             ],
 
             [
                 Html::div('test'),
-                '<a id="test-link" class="nav-link"><div>test</div></a>',
-                '<a id="test-link" class="nav-link">' . Html::encode('<div>test</div>') . '</a>',
-                '<a id="test-link" class="nav-link"><div>test</div></a>',
+                '<a id="test-link"><div>test</div></a>',
+                '<a id="test-link">' . Html::encode('<div>test</div>') . '</a>',
+                '<a id="test-link"><div>test</div></a>',
             ],
 
             [
                 '<b>bold</b>',
-                '<a id="test-link" class="nav-link">' . Html::encode('<b>bold</b>') . '</a>',
-                '<a id="test-link" class="nav-link">' . Html::encode('<b>bold</b>') . '</a>',
-                '<a id="test-link" class="nav-link"><b>bold</b></a>',
+                '<a id="test-link">' . Html::encode('<b>bold</b>') . '</a>',
+                '<a id="test-link">' . Html::encode('<b>bold</b>') . '</a>',
+                '<a id="test-link"><b>bold</b></a>',
             ],
         ];
     }
@@ -239,7 +242,7 @@ final class NavLinkTest extends TestCase
         string $expectedFalse
     ): void {
 
-        $null = NavLink::widget()->id('test-link')->label($label);
+        $null = Link::widget()->id('test-link')->label($label);
         $true = $null->encode(true);
         $false = $null->encode(false);
 
@@ -250,7 +253,7 @@ final class NavLinkTest extends TestCase
 
     public function testImmutable(): void
     {
-        $link = NavLink::widget();
+        $link = Link::widget();
 
         $this->assertNotSame($link, $link->tag('b'));
         $this->assertNotSame($link, $link->active(true));
@@ -262,8 +265,9 @@ final class NavLinkTest extends TestCase
         $this->assertNotSame($link, $link->visible(false));
         $this->assertNotSame($link, $link->label(''));
         $this->assertNotSame($link, $link->pane(null));
-        $this->assertNotSame($link, $link->item(NavItem::widget()));
+        $this->assertNotSame($link, $link->item(Item::widget()));
         $this->assertNotSame($link, $link->toggle(''));
+        $this->assertNotSame($link, $link->widgetClassName(''));
 
         $link = $link->activeOptions([]);
 
@@ -273,7 +277,7 @@ final class NavLinkTest extends TestCase
 
     public function testNotVisible(): void
     {
-        $this->assertEmpty(NavLink::widget()->visible(false)->render());
+        $this->assertEmpty(Link::widget()->visible(false)->render());
     }
 
     public static function bsTargetDataProvider(): array
@@ -283,25 +287,25 @@ final class NavLinkTest extends TestCase
                 'a',
                 '/test',
                 null,
-                '<a id="test-link" class="nav-link" href="/test"></a>',
+                '<a id="test-link" href="/test"></a>',
             ],
             [
                 'a',
                 '/test',
                 'test-pane',
-                '<a id="test-link" class="nav-link" href="/test" role="tab" aria-controls="test-pane" aria-selected="false" data-bs-target="#test-pane"></a>',
+                '<a id="test-link" href="/test" role="tab" aria-controls="test-pane" aria-selected="false" data-bs-target="#test-pane"></a>',
             ],
             [
                 'a',
                 null,
                 'test-pane',
-                '<a id="test-link" class="nav-link" href="#test-pane" role="tab" aria-controls="test-pane" aria-selected="false"></a>',
+                '<a id="test-link" href="#test-pane" role="tab" aria-controls="test-pane" aria-selected="false"></a>',
             ],
             [
                 'button',
                 null,
                 'test-pane',
-                '<button type="button" id="test-link" class="nav-link" role="tab" aria-controls="test-pane" aria-selected="false" data-bs-target="#test-pane"></button>',
+                '<button type="button" id="test-link" role="tab" aria-controls="test-pane" aria-selected="false" data-bs-target="#test-pane"></button>',
             ],
         ];
     }
@@ -311,7 +315,7 @@ final class NavLinkTest extends TestCase
      */
     public function testBsTarget(string $tag, ?string $url, ?string $paneId, string $expected): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
                 ->id('test-link')
                 ->label('')
                 ->url($url)
@@ -324,5 +328,23 @@ final class NavLinkTest extends TestCase
         }
 
         $this->assertSame($expected, (string)$link);
+    }
+
+    public static function menuTypeDataProvider(): array
+    {
+        return array_map(
+            static fn (MenuType $type) => [$type],
+            MenuType::cases()
+        );
+    }
+
+    /**
+     * @dataProvider menuTypeDataProvider
+     */
+    public function testWidgetClassName(MenuType $type): void
+    {
+        $link = Link::widget()->widgetClassName($type->linkClassName());
+
+        $this->assertStringContainsString('class="' . $type->linkClassName() . '"', (string)$link);
     }
 }

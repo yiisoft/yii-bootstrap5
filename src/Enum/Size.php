@@ -12,4 +12,13 @@ enum Size: string
     case Large = 'lg';
     case ExtraLarge = 'xl';
     case ExtraExtraLarge = 'xxl';
+
+    public function formatClassName(string $prefix, ?string $suffix = null): string
+    {
+        if ($this === self::ExtraSmall) {
+            return $prefix . ($suffix ? '-' . $suffix : '');
+        }
+
+        return $prefix . '-' . $this->value . ($suffix ? '-' . $suffix : '');
+    }
 }

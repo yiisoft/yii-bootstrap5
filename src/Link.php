@@ -12,17 +12,18 @@ use function parse_url;
 
 use const PHP_URL_PATH;
 
-final class NavLink extends Widget
+final class Link extends Widget
 {
     /**
      * @psalm-var non-empty-string $tag
      */
     private string $tag = 'a';
+    private ?string $widgetClassName = null;
     private bool $active = false;
     private bool $disabled = false;
     private string|Stringable $label = '';
     private ?TabPane $pane = null;
-    private ?NavItem $item = null;
+    private ?Item $item = null;
     private ?bool $encode = null;
     private ?string $url = null;
     private array $options = [];
@@ -60,6 +61,14 @@ final class NavLink extends Widget
     public function getTag(): string
     {
         return $this->tag;
+    }
+
+    public function widgetClassName(?string $name): self
+    {
+        $new = clone $this;
+        $new->widgetClassName = $name;
+
+        return $new;
     }
 
     public function active(bool $active): self
@@ -134,7 +143,7 @@ final class NavLink extends Widget
         return $this->pane;
     }
 
-    public function item(?NavItem $item): self
+    public function item(?Item $item): self
     {
         $new = clone $this;
         $new->item = $item?->link($new);
@@ -142,7 +151,7 @@ final class NavLink extends Widget
         return $new;
     }
 
-    public function getItem(): ?NavItem
+    public function getItem(): ?Item
     {
         return $this->item;
     }
@@ -225,7 +234,7 @@ final class NavLink extends Widget
         }
 
         $options = $this->options;
-        $classNames = ['widget' => 'nav-link'];
+        $classNames = $this->widgetClassName ? ['widget' => $this->widgetClassName] : [];
 
         if (!isset($options['id'])) {
             $options['id'] = parent::getId();

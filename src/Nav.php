@@ -4,6 +4,23 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-final class Nav extends AbstractNav
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+
+final class Nav extends AbstractMenu
 {
+    use NavTrait;
+
+    protected MenuType $type = MenuType::Nav;
+
+    protected function prepareNav(): Tag
+    {
+        $tag = parent::prepareNav();
+
+        if ($this->vertical) {
+            return $tag->addClass($this->vertical->formatClassName('flex', 'column'));
+        }
+
+        return $tag;
+    }
 }

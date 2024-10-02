@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\Enum\NavType;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
+use Yiisoft\Yii\Bootstrap5\Item;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
-use Yiisoft\Yii\Bootstrap5\NavItem;
-use Yiisoft\Yii\Bootstrap5\NavLink;
-
-use function array_map;
 
 final class NavTest extends TestCase
 {
@@ -20,9 +18,9 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->links(
-                    NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
-                    NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -43,9 +41,9 @@ final class NavTest extends TestCase
                 ->tag('nav')
                 ->defaultItem(false)
                 ->links(
-                    NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
-                    NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -66,17 +64,17 @@ final class NavTest extends TestCase
                 ->tag('nav')
                 ->defaultItem(false)
                 ->links(
-                    NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()
                         ->id('test-link-2')
                         ->label('Link 2')
                         ->url('/link-2')
                         ->item(
-                            NavItem::widget()
+                            Item::widget()
                                 ->tag('div')
                                 ->options(['class' => 'custom-item'])
                         ),
-                    NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -96,9 +94,9 @@ final class NavTest extends TestCase
                 ->id('test-nav')
                 ->activeItem('/link-2')
                 ->links(
-                    NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
-                    NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -115,9 +113,9 @@ final class NavTest extends TestCase
                 ->id('test-nav')
                 ->activeItem(2)
                 ->links(
-                    NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
-                    NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -135,18 +133,18 @@ final class NavTest extends TestCase
     {
         $dropdown = Dropdown::widget()->id('test-dropdown');
 
-        $toggle = NavLink::widget()
+        $toggle = Link::widget()
             ->id('test-toggle')
             ->url('#')
             ->label('toggler');
 
         $items = [
-            NavLink::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-            NavLink::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
-            NavLink::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+            Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+            Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
+            Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
         ];
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->dropdown($dropdown)
             ->items(...$items);
 
@@ -172,32 +170,33 @@ final class NavTest extends TestCase
 
     public static function typeDataProvider(): array
     {
-        return array_map(
-            static fn (NavType $type) => [$type],
-            NavType::cases()
-        );
+        return [
+            [MenuType::Tabs],
+            [MenuType::Pills],
+            [MenuType::Underline],
+        ];
     }
 
     /**
      * @dataProvider typeDataProvider
      */
-    public function testType(NavType $type): void
+    public function testType(MenuType $type): void
     {
         $nav = Nav::widget()
                 ->links(
-                    NavLink::widget()->label('Link 1')->url('/link-1')
+                    Link::widget()->label('Link 1')->url('/link-1')
                 );
 
         $withType = $nav->type($type);
 
         $withMethod = match ($type) {
-            NavType::Tabs => $nav->tabs(),
-            NavType::Pills => $nav->pills(),
-            NavType::Underline => $nav->underline(),
+            MenuType::Tabs => $nav->tabs(),
+            MenuType::Pills => $nav->pills(),
+            MenuType::Underline => $nav->underline(),
         };
 
-        $this->assertStringContainsString('class="nav ' . $type->value . '"', (string)$withType);
-        $this->assertStringContainsString('class="nav ' . $type->value . '"', (string)$withMethod);
+        $this->assertStringContainsString('class="' . $type->value . '"', (string)$withType);
+        $this->assertStringContainsString('class="' . $type->value . '"', (string)$withMethod);
     }
 
     public static function verticalDataProvider(): array
@@ -221,7 +220,7 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->vertical($value)
                 ->links(
-                    NavLink::widget()->label('Link 1')->url('/link-1'),
+                    Link::widget()->label('Link 1')->url('/link-1'),
                 );
 
         if ($expected === null) {
@@ -240,9 +239,9 @@ final class NavTest extends TestCase
                     'style' => 'margin: -1px',
                 ])
                 ->links(
-                    NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
-                    NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -264,7 +263,7 @@ final class NavTest extends TestCase
         $this->assertNotSame($nav, $nav->options([]));
         $this->assertNotSame($nav, $nav->defaultItem(false));
         $this->assertNotSame($nav, $nav->links());
-        $this->assertNotSame($nav, $nav->type(null));
+        $this->assertNotSame($nav, $nav->type(MenuType::Pills));
         $this->assertNotSame($nav, $nav->tabs());
         $this->assertNotSame($nav, $nav->pills());
         $this->assertNotSame($nav, $nav->underline());
@@ -278,9 +277,9 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->links(
-                    NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2')->visible(false),
-                    NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2')->visible(false),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'
@@ -303,15 +302,15 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->defaultItem(
-                    NavItem::widget()
+                    Item::widget()
                         ->options([
                             'class' => 'default-custom-item',
                         ])
                 )
                 ->links(
-                    NavLink::widget()->id('link-1')->label('Link 1')->url('/link-1'),
-                    NavLink::widget()->id('link-2')->label('Link 2')->url('/link-2'),
-                    NavLink::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
                 );
 
         $expected = <<<'HTML'

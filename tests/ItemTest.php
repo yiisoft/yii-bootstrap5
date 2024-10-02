@@ -6,24 +6,26 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
-use Yiisoft\Yii\Bootstrap5\NavItem;
-use Yiisoft\Yii\Bootstrap5\NavLink;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Item;
+use Yiisoft\Yii\Bootstrap5\Link;
 
+use function array_map;
 use function preg_replace;
 
-final class NavItemTest extends TestCase
+final class ItemTest extends TestCase
 {
-    public function testSimpleNavItem(): void
+    public function testSimpleItem(): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->id('test-link')
             ->label('Simple nav link');
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->link($link);
 
         $expected = <<<'HTML'
-        <li class="nav-item"><a id="test-link" class="nav-link">Simple nav link</a></li>
+        <li><a id="test-link">Simple nav link</a></li>
         HTML;
 
         $this->assertSame($expected, (string)$item);
@@ -40,19 +42,19 @@ final class NavItemTest extends TestCase
     /**
      * @dataProvider tagDataProvider
      */
-    public function testTagNavItem(string $tag): void
+    public function testTagItem(string $tag): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->id('test-link')
             ->url('#')
             ->label('Label for ' . $tag);
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->tag($tag)
             ->link($link);
 
         $expected = <<<HTML
-        <{$tag} class="nav-item"><a id="test-link" class="nav-link" href="#">Label for {$tag}</a></{$tag}>
+        <{$tag}><a id="test-link" href="#">Label for {$tag}</a></{$tag}>
         HTML;
 
         $this->assertSame($expected, (string)$item);
@@ -70,7 +72,7 @@ final class NavItemTest extends TestCase
                 ],
 
                 [
-                    'class="custom-class nav-item"',
+                    'class="custom-class"',
                     'style="margin: -1px;"',
                 ],
             ],
@@ -82,10 +84,10 @@ final class NavItemTest extends TestCase
      */
     public function testOptions(array $options, array $expected): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->label('');
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->options($options)
             ->link($link);
 
@@ -97,8 +99,8 @@ final class NavItemTest extends TestCase
 
     public function testImmutable(): void
     {
-        $item = NavItem::widget();
-        $link = NavLink::widget()->label('');
+        $item = Item::widget();
+        $link = Link::widget()->label('');
 
         $this->assertNotSame($item, $item->tag('b'));
         $this->assertNotSame($item, $item->options([]));
@@ -121,24 +123,24 @@ final class NavItemTest extends TestCase
     {
         $dropdown = Dropdown::widget()->id('test-dropdown');
 
-        $toggle = NavLink::widget()
+        $toggle = Link::widget()
             ->url('#')
             ->label('toggler');
 
         $items = [
-            NavLink::widget()->label('Link 1')->url('/link-1'),
-            NavLink::widget()->label('Link 2')->url('/link-2'),
-            NavItem::widget()
+            Link::widget()->label('Link 1')->url('/link-1'),
+            Link::widget()->label('Link 2')->url('/link-2'),
+            Item::widget()
                 ->link(
-                    NavLink::widget()->label('Child toggler')
+                    Link::widget()->label('Child toggler')
                 )->items(
-                    NavLink::widget()->label('Child link 1'),
-                    NavLink::widget()->label('Child link 2')
+                    Link::widget()->label('Child link 1'),
+                    Link::widget()->label('Child link 2')
                 ),
-            NavLink::widget()->label('Link 3')->url('/link-3'),
+            Link::widget()->label('Link 3')->url('/link-3'),
         ];
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->dropdown($dropdown)
             ->dropDirection($direction)
             ->link($toggle)
@@ -147,7 +149,7 @@ final class NavItemTest extends TestCase
         $html = preg_replace('/\sid="[^"]+"/', '', $item->render());
 
         $expected = <<<HTML
-        <li class="nav-item {$direction->value}"><a class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a><ul class="dropdown-menu">
+        <li class="{$direction->value}"><a class="dropdown-toggle" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a><ul class="dropdown-menu">
         <li><a class="dropdown-item" href="/link-1">Link 1</a></li>
         <li><a class="dropdown-item" href="/link-2">Link 2</a></li>
         <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Child toggler</a><ul class="dropdown-menu">
@@ -163,14 +165,38 @@ final class NavItemTest extends TestCase
 
     public function testVisible(): void
     {
-        $link = NavLink::widget()
+        $link = Link::widget()
             ->id('test-link')
             ->label('Simple nav link')
             ->visible(false);
 
-        $item = NavItem::widget()
+        $item = Item::widget()
             ->link($link);
 
         $this->assertEmpty((string)$item);
+    }
+
+    public static function menuTypeDataProvider(): array
+    {
+        return array_map(
+            static fn (MenuType $type) => [$type],
+            MenuType::cases()
+        );
+    }
+
+    /**
+     * @dataProvider menuTypeDataProvider
+     */
+    public function testWidgetClassName(MenuType $type): void
+    {
+        $item = Item::widget()
+                ->link(Link::widget())
+                ->widgetClassName($type->itemClassName());
+
+        if ($type->itemClassName()) {
+            $this->assertStringContainsString('class="' . $type->itemClassName() . '"', (string)$item);
+        } else {
+            $this->assertStringNotContainsString('class', (string)$item);
+        }
     }
 }

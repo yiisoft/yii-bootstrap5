@@ -12,7 +12,7 @@ use Yiisoft\Html\Html;
  */
 final class TabPane extends Widget
 {
-    private NavLink $link;
+    private Link $link;
     private string|Stringable $content = '';
 
     /**
@@ -66,7 +66,7 @@ final class TabPane extends Widget
         return $new;
     }
 
-    public function link(NavLink $link): self
+    public function link(Link $link): self
     {
         $new = clone $this;
         $new->link = $link;

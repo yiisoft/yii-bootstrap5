@@ -7,26 +7,24 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Generator;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
-use Yiisoft\Yii\Bootstrap5\Enum\NavType;
-use Yiisoft\Yii\Bootstrap5\Enum\Size;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
 use function iterator_count;
 
-abstract class AbstractNav extends Widget
+abstract class AbstractMenu extends Widget
 {
     /**
      * @psalm-var non-empty-string $tag
      */
     private string $tag = 'ul';
     private array $options = [];
-    private bool|NavItem $defaultItem = true;
-    protected ?NavType $type = null;
-    private ?Size $vertical = null;
+    private bool|Item $defaultItem = true;
+    protected MenuType $type;
     protected int|string|null $activeItem = null;
     private bool $activateParents = false;
 
     /**
-     * @var NavLink[]
+     * @var Link[]
      */
     private array $links = [];
 
@@ -49,7 +47,7 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    public function defaultItem(bool|NavItem $defaultItem): static
+    public function defaultItem(bool|Item $defaultItem): static
     {
         $new = clone $this;
         $new->defaultItem = $defaultItem;
@@ -57,7 +55,7 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    public function links(NavLink ...$links): static
+    public function links(Link ...$links): static
     {
         $new = clone $this;
         $new->links = $links;
@@ -69,7 +67,7 @@ abstract class AbstractNav extends Widget
     {
         $index = 0;
 
-        /** @var NavLink $link */
+        /** @var Link $link */
         foreach ($this->links as $link) {
             if ($link->isVisible()) {
                 yield $index++ => $link;
@@ -77,33 +75,10 @@ abstract class AbstractNav extends Widget
         }
     }
 
-    public function type(?NavType $type): static
+    public function type(MenuType $type): static
     {
         $new = clone $this;
         $new->type = $type;
-
-        return $new;
-    }
-
-    public function tabs(): static
-    {
-        return $this->type(NavType::Tabs);
-    }
-
-    public function pills(): static
-    {
-        return $this->type(NavType::Pills);
-    }
-
-    public function underline(): static
-    {
-        return $this->type(NavType::Underline);
-    }
-
-    public function vertical(?Size $vertical): static
-    {
-        $new = clone $this;
-        $new->vertical = $vertical;
 
         return $new;
     }
@@ -124,7 +99,7 @@ abstract class AbstractNav extends Widget
         return $new;
     }
 
-    private function activateTree(NavLink $link, NavLink ...$parents): void
+    private function activateTree(Link $link, Link ...$parents): void
     {
         if ($this->isLinkActive($link, null)) {
 
@@ -140,12 +115,12 @@ abstract class AbstractNav extends Widget
         $items = $link->getItem()?->getItems() ?? [];
 
         foreach ($items as $item) {
-            $child = $item instanceof NavItem ? $item->getLink() : $item;
+            $child = $item instanceof Item ? $item->getLink() : $item;
             $this->activateTree($child, $link, ...$parents);
         }
     }
 
-    private function isLinkActive(NavLink $link, ?int $index): bool
+    private function isLinkActive(Link $link, ?int $index): bool
     {
         if ($link->isActive() || $this->activeItem === null) {
             return $link->isActive();
@@ -162,20 +137,10 @@ abstract class AbstractNav extends Widget
     {
         $items = [];
         $options = $this->options;
-        $classNames = ['widget' => 'nav'];
+        $classNames = ['widget' => $this->type->value];
 
         if (!isset($options['id'])) {
             $options['id'] = $this->getId();
-        }
-
-        if ($this->type) {
-            $classNames['type'] = $this->type->value;
-        }
-
-        if ($this->vertical === Size::ExtraSmall) {
-            $classNames[] = 'flex-column';
-        } elseif ($this->vertical) {
-            $classNames[] = 'flex-' . $this->vertical->value . '-column';
         }
 
         Html::addCssClass($options, $classNames);
@@ -190,7 +155,7 @@ abstract class AbstractNav extends Widget
                 ->encode(false);
     }
 
-    protected function prepareLink(NavLink $link, int $index): NavLink
+    protected function prepareLink(Link $link, int $index): Link
     {
         if ($this->activateParents) {
             $this->activateTree($link);
@@ -198,10 +163,12 @@ abstract class AbstractNav extends Widget
             $link->activate();
         }
 
+        $link = $link->widgetClassName($this->type->linkClassName());
+
         if ($this->defaultItem && $link->getItem() === null) {
 
             if ($this->defaultItem === true) {
-                return $link->item(NavItem::widget());
+                return $link->item(Item::widget());
             }
 
             return $link->item($this->defaultItem);
@@ -219,10 +186,10 @@ abstract class AbstractNav extends Widget
         return $this->prepareNav()->render();
     }
 
-    protected function renderItem(NavLink $link, int $index): string
+    protected function renderItem(Link $link, int $index): string
     {
         $link = $this->prepareLink($link, $index);
 
-        return ($link->getItem() ?? $link)->render();
+        return ($link->getItem()?->widgetClassName($this->type->itemClassName()) ?? $link)->render();
     }
 }

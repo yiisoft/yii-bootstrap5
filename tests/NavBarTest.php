@@ -9,8 +9,8 @@ use Yiisoft\Yii\Bootstrap5\Collapse;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavBar;
-use Yiisoft\Yii\Bootstrap5\NavItem;
-use Yiisoft\Yii\Bootstrap5\NavLink;
+use Yiisoft\Yii\Bootstrap5\Item;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Offcanvas;
 
 use function call_user_func;
@@ -109,7 +109,7 @@ final class NavBarTest extends TestCase
 
     public function testNavAndForm(): void
     {
-        $link = NavLink::widget()->url('#')->id('');
+        $link = Link::widget()->url('#')->id('');
 
         $html = NavBar::widget()
             ->id('TEST_ID')
@@ -122,12 +122,12 @@ final class NavBarTest extends TestCase
             ->links(
                 $link->label('Home'),
                 $link->label('Link'),
-                NavLink::widget()
+                Link::widget()
                     ->label('Dropdown')
                     ->id('')
                     ->url('#')
                     ->item(
-                        NavItem::widget()
+                        Item::widget()
                             ->dropdown(
                                 Dropdown::widget()->id('D_ID')
                             )
@@ -340,7 +340,7 @@ final class NavBarTest extends TestCase
 
     public function testWithoutCollapse(): void
     {
-        $link = NavLink::widget()->url('#')->id('');
+        $link = Link::widget()->url('#')->id('');
 
         $html = NavBar::widget()
             ->id('TEST_ID')
@@ -353,12 +353,12 @@ final class NavBarTest extends TestCase
             ->links(
                 $link->label('Home'),
                 $link->label('Link'),
-                NavLink::widget()
+                Link::widget()
                     ->id('')
                     ->label('Dropdown')
                     ->url('#')
                     ->item(
-                        NavItem::widget()
+                        Item::widget()
                             ->dropdown(
                                 Dropdown::widget()->id('D_ID2')
                             )

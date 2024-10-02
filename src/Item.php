@@ -10,20 +10,21 @@ use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 /**
  * @psalm-suppress MissingConstructor
  */
-final class NavItem extends Widget
+final class Item extends Widget
 {
-    private NavLink $link;
+    private Link $link;
 
     /**
      * @psalm-var non-empty-string $tag
      */
     private string $tag = 'li';
     private array $options = [];
+    private ?string $widgetClassName = null;
     private ?Dropdown $dropdown = null;
     private DropDirection $dropDirection = DropDirection::Down;
 
     /**
-     * @var self[]|NavLink[]
+     * @var self[]|Link[]
      */
     private array $items = [];
 
@@ -46,7 +47,15 @@ final class NavItem extends Widget
         return $new;
     }
 
-    public function link(NavLink $link): self
+    public function widgetClassName(?string $name): self
+    {
+        $new = clone $this;
+        $new->widgetClassName = $name;
+
+        return $new;
+    }
+
+    public function link(Link $link): self
     {
         $new = clone $this;
         $new->link = $link;
@@ -54,12 +63,12 @@ final class NavItem extends Widget
         return $new;
     }
 
-    public function getLink(): NavLink
+    public function getLink(): Link
     {
         return $this->link;
     }
 
-    public function items(self|NavLink ...$items): self
+    public function items(self|Link ...$items): self
     {
         $new = clone $this;
         $new->items = $items;
@@ -69,7 +78,7 @@ final class NavItem extends Widget
 
     /**
      *
-     * @return self[]|NavLink[]
+     * @return self[]|Link[]
      */
     public function getItems(): array
     {
@@ -95,14 +104,14 @@ final class NavItem extends Widget
     /**
      * @psalm-suppress PossiblyUndefinedMethod
      */
-    private function prepareDropdownItems(self|NavLink ...$items): array
+    private function prepareDropdownItems(self|Link ...$items): array
     {
         $array = [];
 
         foreach ($items as $i => $item) {
 
             $isItem = $item instanceof self;
-            /** @var NavLink $link */
+            /** @var Link $link */
             $link = $isItem ? $item->getLink() : $item;
 
             $array[$i] = [
@@ -122,7 +131,7 @@ final class NavItem extends Widget
         return $array;
     }
 
-    private function prepareDropdown(self|NavLink ...$items): ?Dropdown
+    private function prepareDropdown(self|Link ...$items): ?Dropdown
     {
         $items = $this->prepareDropdownItems(...$items);
 
@@ -144,7 +153,7 @@ final class NavItem extends Widget
 
         $link = $this->link;
         $options = $this->options;
-        $classNames = ['widget' => 'nav-item'];
+        $classNames = $this->widgetClassName ? ['widget' => $this->widgetClassName] : [];
 
         if ($this->link->getPane() && !isset($options['role'])) {
             $options['role'] = 'presentation';
