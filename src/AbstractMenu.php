@@ -47,6 +47,9 @@ abstract class AbstractMenu extends Widget
         return $new;
     }
 
+    /**
+     * Set default `Item` for each `Link` if not preset
+     */
     public function defaultItem(bool|Item $defaultItem): static
     {
         $new = clone $this;

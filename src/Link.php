@@ -12,6 +12,9 @@ use function parse_url;
 
 use const PHP_URL_PATH;
 
+/**
+ * {@see AbstractMenu::links()} for details.
+ */
 final class Link extends Widget
 {
     /**

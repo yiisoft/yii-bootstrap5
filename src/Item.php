@@ -8,6 +8,10 @@ use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 
 /**
+ * Item renders item for Tabs|Nav.
+ *
+ * {@see Link::item()} for details
+ *
  * @psalm-suppress MissingConstructor
  */
 final class Item extends Widget
@@ -68,6 +72,9 @@ final class Item extends Widget
         return $this->link;
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs-with-dropdowns
+     */
     public function items(self|Link ...$items): self
     {
         $new = clone $this;

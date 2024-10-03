@@ -8,6 +8,11 @@ use Stringable;
 use Yiisoft\Html\Html;
 
 /**
+ * TabPane renders content for each tab.
+ *
+ * {@see Link::pane()} for details.
+ * {@see Tabs::renderTabContent()} for details.
+ *
  * @psalm-suppress MissingConstructor
  */
 final class TabPane extends Widget
@@ -50,6 +55,9 @@ final class TabPane extends Widget
         return $new;
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#fade-effect
+     */
     public function fade(bool $fade): self
     {
         $new = clone $this;

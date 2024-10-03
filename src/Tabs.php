@@ -9,6 +9,48 @@ use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
 /**
+ * Tabs renders an tabs, pills or underline bootstrap component.
+ *
+ * For example,
+ *
+ * ```php
+ * echo Tabs::widget()
+ *     ->links(
+ *          Link::widget()->url('/path-1')->label('Label 1'),
+ *          Link::widget()->url('/path-2')->label(Html::img('src.jpg'))->encode(false),
+ *          Link::widget()
+ *              ->item(
+ *                  Item::widget()->items(
+ *                      Link::widget()->label('Dropdown link 1'),
+ *                      Link::widget()->label('Dropdown link 2'),
+ *                  )
+ *              )
+ *     );
+ * ```
+ *
+ * or
+ *
+ * ```php
+ * $tabs = Tabs::widget()
+ *     ->renderContent(false)
+ *     ->links(
+ *          Link::widget()
+ *              ->label('Label 1')
+ *              ->pane(
+ *                  TabPane::widget()->content('Content for tab 1')
+ *              ),
+ *          Link::widget()
+ *              ->url('/some-url')
+ *              ->label(Html::img('src.jpg'))
+ *              ->encode(false),
+ *     );
+ *
+ * echo $tabs;
+ * echo Alert::widget()->body('Body');
+ * echo $tabs->renderTabContent();
+ *
+ * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/
+ *
  * @psalm-suppress MethodSignatureMismatch
  */
 final class Tabs extends AbstractMenu
