@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Html;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Tabs;
@@ -540,5 +541,40 @@ final class TabsTest extends TestCase
         HTML;
 
         $this->assertEqualsHTML($expected, (string)$tabs);
+    }
+
+    public static function sizeDataProvider(): array
+    {
+        return [
+            [Size::ExtraSmall, 'flex-column'],
+            [Size::Small, 'flex-sm-column'],
+            [Size::Medium, 'flex-md-column'],
+            [Size::Large, 'flex-lg-column'],
+            [Size::ExtraLarge, 'flex-xl-column'],
+            [Size::ExtraExtraLarge, 'flex-xxl-column'],
+        ];
+    }
+
+    /**
+     * @dataProvider sizeDataProvider
+     */
+    public function testVertical(Size $size, string $expected): void
+    {
+        $tabs = Tabs::widget()
+                ->id('test-tabs')
+                ->activeItem(null)
+                ->vertical($size)
+                ->links(
+                    Link::widget()
+                        ->label('Link 1')
+                        ->id('tab-1')
+                        ->pane(
+                            TabPane::widget()
+                                ->id('pane-1')
+                                ->content('Pane 1')
+                        )
+                );
+
+        $this->assertStringContainsString('class="nav nav-tabs ' . $expected . '"', (string)$tabs);
     }
 }
