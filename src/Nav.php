@@ -25,7 +25,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  *
  * @psalm-suppress MethodSignatureMismatch
  */
-final class Nav extends AbstractMenu
+final class Nav extends AbstractNav
 {
     use NavTrait;
 

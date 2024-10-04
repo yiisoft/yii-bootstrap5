@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Widget\WidgetFactory;
 use Yiisoft\Yii\Bootstrap5\Collapse;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\Nav;
-use Yiisoft\Yii\Bootstrap5\NavBar;
+use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
+use Yiisoft\Yii\Bootstrap5\Nav;
+use Yiisoft\Yii\Bootstrap5\NavBar;
 use Yiisoft\Yii\Bootstrap5\Offcanvas;
 
 use function call_user_func;
@@ -119,23 +119,18 @@ final class NavBarTest extends TestCase
             ->begin();
         $html .= Nav::widget()
             ->id('N_ID')
-            ->links(
+            ->items(
                 $link->label('Home'),
                 $link->label('Link'),
-                Link::widget()
-                    ->label('Dropdown')
-                    ->id('')
-                    ->url('#')
-                    ->item(
-                        Item::widget()
-                            ->dropdown(
-                                Dropdown::widget()->id('D_ID')
-                            )
-                            ->items(
-                                $link->label('Action'),
-                                $link->label('Another action'),
-                                $link->label('Something else here'),
-                            )
+                Dropdown::widget()
+                    ->id('D_ID')
+                    ->toggler(
+                        Link::widget()->id('')->label('Dropdown')->url('#')
+                    )
+                    ->items(
+                        $link->label('Action'),
+                        $link->label('Another action'),
+                        $link->label('Something else here'),
                     )
             )
             ->options(['class' => ['mr-auto']])
@@ -157,10 +152,10 @@ final class NavBarTest extends TestCase
         <div id="C_ID" class="collapse navbar-collapse">
         <ul id="N_ID" class="mr-auto nav"><li class="nav-item"><a id class="nav-link" href="#">Home</a></li>
         <li class="nav-item"><a id class="nav-link" href="#">Link</a></li>
-        <li class="nav-item dropdown"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li class="dropdown nav-item"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Action</a></li>
+        <li><a id class="dropdown-item" href="#">Another action</a></li>
+        <li><a id class="dropdown-item" href="#">Something else here</a></li>
         </ul></li></ul><form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -350,23 +345,18 @@ final class NavBarTest extends TestCase
             ->begin();
         $html .= Nav::widget()
             ->id('D_ID1')
-            ->links(
+            ->items(
                 $link->label('Home'),
                 $link->label('Link'),
-                Link::widget()
-                    ->id('')
-                    ->label('Dropdown')
-                    ->url('#')
-                    ->item(
-                        Item::widget()
-                            ->dropdown(
-                                Dropdown::widget()->id('D_ID2')
-                            )
-                            ->items(
-                                $link->label('Action'),
-                                $link->label('Another action'),
-                                $link->label('Something else here'),
-                            )
+                Dropdown::widget()
+                    ->id('D_ID2')
+                    ->toggler(
+                        Link::widget()->id('')->label('Dropdown')->url('#')
+                    )
+                    ->items(
+                        $link->label('Action'),
+                        $link->label('Another action'),
+                        $link->label('Something else here'),
                     )
             )
             ->options(['class' => ['mr-auto']])
@@ -379,10 +369,10 @@ final class NavBarTest extends TestCase
         <a class="navbar-brand" href="/">My Company</a>
         <ul id="D_ID1" class="mr-auto nav"><li class="nav-item"><a id class="nav-link" href="#">Home</a></li>
         <li class="nav-item"><a id class="nav-link" href="#">Link</a></li>
-        <li class="nav-item dropdown"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID2" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li class="dropdown nav-item"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID2" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Action</a></li>
+        <li><a id class="dropdown-item" href="#">Another action</a></li>
+        <li><a id class="dropdown-item" href="#">Something else here</a></li>
         </ul></li></ul></div>
         </nav>
         HTML;
@@ -582,7 +572,7 @@ final class NavBarTest extends TestCase
     {
         return [
             [
-                NavBar::THEME_LIGHT,
+                Theme::Light->value,
                 <<<HTML
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-light" data-bs-theme="light">
                 <div class="container">
@@ -595,7 +585,7 @@ final class NavBarTest extends TestCase
             ],
 
             [
-                NavBar::THEME_DARK,
+                Theme::Dark->value,
                 <<<HTML
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-dark" data-bs-theme="dark">
                 <div class="container">

@@ -53,7 +53,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  *
  * @psalm-suppress MethodSignatureMismatch
  */
-final class Tabs extends AbstractMenu
+final class Tabs extends AbstractNav
 {
     use NavTrait;
 
@@ -118,7 +118,8 @@ final class Tabs extends AbstractMenu
 
         Html::addCssClass($options, ['widget' => 'tab-content']);
 
-        foreach ($this->getVisibleLinks() as $link) {
+        /** @var Link $link */
+        foreach ($this->getVisibleItems() as $link) {
             $panes[] = (string)$link->getPane();
         }
 

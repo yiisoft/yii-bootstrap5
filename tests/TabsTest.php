@@ -17,7 +17,7 @@ final class TabsTest extends TestCase
     {
         $tabs = Tabs::widget()
                 ->id('test-tabs')
-                ->links(
+                ->items(
                     Link::widget()->id('tab-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('tab-2')->label('Link 2')->url('/link-2'),
                     Link::widget()->id('tab-3')->label('Link 3')->url('/link-3'),
@@ -39,10 +39,11 @@ final class TabsTest extends TestCase
     {
         $tabs = Tabs::widget()
                 ->id('test-tabs')
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -64,7 +65,7 @@ final class TabsTest extends TestCase
         <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
         </li>
         <li class="nav-item" role="presentation">
-        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        <button type="button" id="tab-2" class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false" data-bs-target="#pane-2">Link 2</button>
         </li>
         </ul>
         <div class="tab-content">
@@ -81,10 +82,11 @@ final class TabsTest extends TestCase
         $tabs = Tabs::widget()
                 ->id('test-tabs')
                 ->activeItem(0)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -93,6 +95,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -124,10 +127,11 @@ final class TabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -136,6 +140,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -173,10 +178,11 @@ final class TabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             $pane->id('pane-1')
                                  ->content('Pane 1')
@@ -184,6 +190,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             $pane->id('pane-2')
                                  ->content(Html::div('Pane 2'))
@@ -223,10 +230,11 @@ final class TabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(0)
                 ->renderContent(false)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             $pane->id('pane-1')
                                  ->content('Pane 1')
@@ -234,6 +242,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -274,10 +283,11 @@ final class TabsTest extends TestCase
                 ->tabContentOptions([
                     'class' => 'custom-content-class',
                 ])
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -286,6 +296,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -294,6 +305,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 3')
                         ->id('tab-3')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-3')
@@ -327,10 +339,11 @@ final class TabsTest extends TestCase
     {
         $tabs = Tabs::widget()
                 ->id('test-tabs')
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -340,6 +353,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -370,10 +384,11 @@ final class TabsTest extends TestCase
     {
         $tabs = Tabs::widget()
                 ->id('test-tabs')
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -384,6 +399,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -416,10 +432,11 @@ final class TabsTest extends TestCase
         $tabs = Tabs::widget()
                 ->id('test-tabs')
                 ->pills()
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-1')
@@ -429,6 +446,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -461,7 +479,7 @@ final class TabsTest extends TestCase
                 ->id('test-tabs')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->links(
+                ->items(
                     Link::widget()
                            ->label('Link 1')
                            ->id('tab-1')
@@ -477,6 +495,7 @@ final class TabsTest extends TestCase
                     Link::widget()
                         ->label('Link 2')
                         ->id('tab-2')
+                        ->tag('a')
                         ->pane(
                             TabPane::widget()
                                 ->id('pane-2')
@@ -488,7 +507,7 @@ final class TabsTest extends TestCase
         $expected = <<<'HTML'
         <nav id="test-tabs" class="nav nav-tabs" role="tablist">
         <div class="nav-item" role="presentation">
-        <a id="tab-1" class="nav-link active" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true">Link 1</a>
+        <button type="button" id="tab-1" class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true" data-bs-target="#pane-1">Link 1</button>
         </div>
         <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
         </nav>
@@ -506,7 +525,7 @@ final class TabsTest extends TestCase
         $tabs = Tabs::widget()
                 ->id('test-tabs')
                 ->activeItem(null)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')
@@ -528,10 +547,10 @@ final class TabsTest extends TestCase
         $expected = <<<'HTML'
         <ul id="test-tabs" class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-        <a id="tab-1" class="nav-link" href="#pane-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="false">Link 1</a>
+        <button type="button" id="tab-1" class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="false" data-bs-target="#pane-1">Link 1</button>
         </li>
         <li class="nav-item" role="presentation">
-        <a id="tab-2" class="nav-link" href="#pane-2" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false">Link 2</a>
+        <button type="button" id="tab-2" class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="pane-2" aria-selected="false" data-bs-target="#pane-2">Link 2</button>
         </li>
         </ul>
         <div class="tab-content">
@@ -564,7 +583,7 @@ final class TabsTest extends TestCase
                 ->id('test-tabs')
                 ->activeItem(null)
                 ->vertical($size)
-                ->links(
+                ->items(
                     Link::widget()
                         ->label('Link 1')
                         ->id('tab-1')

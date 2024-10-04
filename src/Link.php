@@ -20,7 +20,7 @@ final class Link extends Widget
     /**
      * @psalm-var non-empty-string $tag
      */
-    private string $tag = 'a';
+    private ?string $tag = null;
     private ?string $widgetClassName = null;
     private bool $active = false;
     private bool $disabled = false;
@@ -53,7 +53,7 @@ final class Link extends Widget
     /**
      * @psalm-param non-empty-string $tag
      */
-    public function tag(string $tag): self
+    public function tag(?string $tag): self
     {
         $new = clone $this;
         $new->tag = $tag;
@@ -63,11 +63,19 @@ final class Link extends Widget
 
     public function getTag(): string
     {
-        return $this->tag;
+        if ($this->tag) {
+            return $this->tag;
+        }
+
+        return $this->url ? 'a' : 'button';
     }
 
-    public function widgetClassName(?string $name): self
+    public function widgetClassName(?string $name, bool $replace = false): self
     {
+        if (!$replace && $this->widgetClassName) {
+            return $this;
+        }
+
         $new = clone $this;
         $new->widgetClassName = $name;
 
@@ -236,6 +244,7 @@ final class Link extends Widget
             return '';
         }
 
+        $tag = $this->getTag();
         $options = $this->options;
         $classNames = $this->widgetClassName ? ['widget' => $this->widgetClassName] : [];
 
@@ -243,9 +252,9 @@ final class Link extends Widget
             $options['id'] = parent::getId();
         }
 
-        if ($this->tag === 'a' && empty($options['href'])) {
+        if ($tag === 'a' && empty($options['href'])) {
             $options['href'] = $this->url;
-        } elseif ($this->tag === 'button' && !isset($options['type'])) {
+        } elseif ($tag === 'button' && !isset($options['type'])) {
             $options['type'] = 'button';
         }
 
@@ -258,7 +267,7 @@ final class Link extends Widget
             $options['aria-controls'] = $this->pane->getId();
             $options['aria-selected'] = $this->active ? 'true' : 'false';
 
-            if ($this->tag === 'a' && empty($options['href'])) {
+            if ($tag === 'a' && empty($options['href'])) {
                 $options['href'] = '#' . $this->pane->getId();
             } else {
                 $options['data-bs-target'] = '#' . $this->pane->getId();
@@ -268,7 +277,7 @@ final class Link extends Widget
         if ($this->active) {
             $classNames['active'] = 'active';
 
-            if ($this->tag === 'a' && $this->getPath()) {
+            if ($tag === 'a' && $this->getPath()) {
                 $options['aria']['current'] = 'page';
             }
 
@@ -283,7 +292,7 @@ final class Link extends Widget
             } else {
                 $classNames['disabled'] = 'disabled';
 
-                if ($this->tag === 'a') {
+                if ($tag === 'a') {
                     $options['aria']['disabled'] = 'true';
                 }
             }
@@ -291,7 +300,7 @@ final class Link extends Widget
 
         Html::addCssClass($options, $classNames);
 
-        return Html::tag($this->tag, $this->label, $options)
+        return Html::tag($tag, $this->label, $options)
                 ->encode($this->encode)
                 ->render();
     }

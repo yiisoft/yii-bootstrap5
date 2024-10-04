@@ -8,6 +8,7 @@ use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 
 use function array_merge;
 
@@ -203,9 +204,9 @@ final class NavBar extends AbstractToggleWidget
         if ($this->theme) {
             $options['data-bs-theme'] = $this->theme;
 
-            if ($this->theme === self::THEME_DARK) {
+            if ($this->theme === Theme::Dark->value) {
                 $classNames['theme'] = 'navbar-dark';
-            } elseif ($this->theme === self::THEME_LIGHT) {
+            } elseif ($this->theme === Theme::Light->value) {
                 $classNames['theme'] = 'navbar-light';
             }
         }

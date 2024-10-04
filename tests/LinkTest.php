@@ -211,23 +211,23 @@ final class LinkTest extends TestCase
         return [
             [
                 Html::span('test'),
-                '<a id="test-link"><span>test</span></a>',
-                '<a id="test-link">' . Html::encode('<span>test</span>') . '</a>',
-                '<a id="test-link"><span>test</span></a>',
+                '<button type="button" id="test-link"><span>test</span></button>',
+                '<button type="button" id="test-link">' . Html::encode('<span>test</span>') . '</button>',
+                '<button type="button" id="test-link"><span>test</span></button>',
             ],
 
             [
                 Html::div('test'),
-                '<a id="test-link"><div>test</div></a>',
-                '<a id="test-link">' . Html::encode('<div>test</div>') . '</a>',
-                '<a id="test-link"><div>test</div></a>',
+                '<button type="button" id="test-link"><div>test</div></button>',
+                '<button type="button" id="test-link">' . Html::encode('<div>test</div>') . '</button>',
+                '<button type="button" id="test-link"><div>test</div></button>',
             ],
 
             [
                 '<b>bold</b>',
-                '<a id="test-link">' . Html::encode('<b>bold</b>') . '</a>',
-                '<a id="test-link">' . Html::encode('<b>bold</b>') . '</a>',
-                '<a id="test-link"><b>bold</b></a>',
+                '<button type="button" id="test-link">' . Html::encode('<b>bold</b>') . '</button>',
+                '<button type="button" id="test-link">' . Html::encode('<b>bold</b>') . '</button>',
+                '<button type="button" id="test-link"><b>bold</b></button>',
             ],
         ];
     }
@@ -269,10 +269,12 @@ final class LinkTest extends TestCase
         $this->assertNotSame($link, $link->toggle(''));
         $this->assertNotSame($link, $link->widgetClassName(''));
 
-        $link = $link->activeOptions([]);
+        $withActiveOptions = $link->activeOptions([]);
+        $withWidgetClassName = $link->widgetClassName('test');
 
         $this->assertSame($link, $link->activate());
-        $this->assertSame($link, $link->activeOptions(['test' => 1], false));
+        $this->assertSame($withActiveOptions, $withActiveOptions->activeOptions(['test' => 1], false));
+        $this->assertSame($withWidgetClassName, $withWidgetClassName->widgetClassName('new-class'));
     }
 
     public function testNotVisible(): void

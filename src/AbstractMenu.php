@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Generator;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
-
-use function iterator_count;
 
 abstract class AbstractMenu extends Widget
 {
@@ -21,12 +18,12 @@ abstract class AbstractMenu extends Widget
     private bool|Item $defaultItem = true;
     protected MenuType $type;
     protected int|string|null $activeItem = null;
-    private bool $activateParents = false;
+    protected bool $activateParents = false;
+    private array $items = [];
 
-    /**
-     * @var Link[]
-     */
-    private array $links = [];
+    abstract protected function renderItem(mixed $item, int $index): string;
+
+    abstract protected function getVisibleItems(): iterable;
 
     /**
      * @psalm-param non-empty-string $tag
@@ -58,24 +55,17 @@ abstract class AbstractMenu extends Widget
         return $new;
     }
 
-    public function links(Link ...$links): static
+    public function items(mixed ...$items): static
     {
         $new = clone $this;
-        $new->links = $links;
+        $new->items = $items;
 
         return $new;
     }
 
-    final protected function getVisibleLinks(): Generator
+    final protected function getItems(): array
     {
-        $index = 0;
-
-        /** @var Link $link */
-        foreach ($this->links as $link) {
-            if ($link->isVisible()) {
-                yield $index++ => $link;
-            }
-        }
+        return $this->items;
     }
 
     public function type(MenuType $type): static
@@ -102,25 +92,28 @@ abstract class AbstractMenu extends Widget
         return $new;
     }
 
-    private function activateTree(Link $link, Link ...$parents): void
+    /**
+     *
+     * @param Link $link
+     * @param Link $parents
+     * @return Link[]|null
+     */
+    protected function activateTree(Link $link, Link ...$parents): ?array
     {
         if ($this->isLinkActive($link, null)) {
 
-            $link->activate();
+            $links = [
+                $link->activate(),
+            ];
 
             foreach ($parents as $link) {
-                $link->activate();
+                $links[] = $link->activate();
             }
 
-            return;
+            return $links;
         }
 
-        $items = $link->getItem()?->getItems() ?? [];
-
-        foreach ($items as $item) {
-            $child = $item instanceof Item ? $item->getLink() : $item;
-            $this->activateTree($child, $link, ...$parents);
-        }
+        return null;
     }
 
     private function isLinkActive(Link $link, ?int $index): bool
@@ -146,10 +139,14 @@ abstract class AbstractMenu extends Widget
             $options['id'] = $this->getId();
         }
 
+        if ($this->theme) {
+            $options['data-bs-theme'] = $this->theme;
+        }
+
         Html::addCssClass($options, $classNames);
 
-        foreach ($this->getVisibleLinks() as $index => $link) {
-            $items[] = $this->renderItem($link, $index);
+        foreach ($this->getVisibleItems() as $index => $item) {
+            $items[] = $this->renderItem($item, $index);
         }
 
         return Html::tag($this->tag)
@@ -171,7 +168,9 @@ abstract class AbstractMenu extends Widget
         if ($this->defaultItem && $link->getItem() === null) {
 
             if ($this->defaultItem === true) {
-                return $link->item(Item::widget());
+                return $link->item(
+                    Item::widget()->widgetClassName($this->type->itemClassName())
+                );
             }
 
             return $link->item($this->defaultItem);
@@ -182,17 +181,10 @@ abstract class AbstractMenu extends Widget
 
     public function render(): string
     {
-        if (iterator_count($this->getVisibleLinks()) === 0) {
+        if (iterator_count($this->getVisibleItems()) === 0) {
             return '';
         }
 
         return $this->prepareNav()->render();
-    }
-
-    protected function renderItem(Link $link, int $index): string
-    {
-        $link = $this->prepareLink($link, $index);
-
-        return ($link->getItem()?->widgetClassName($this->type->itemClassName()) ?? $link)->render();
     }
 }

@@ -11,6 +11,7 @@ enum MenuType: string
     case Pills = 'nav nav-pills';
     case Underline = 'nav nav-underline';
     case Dropdown = 'dropdown-menu';
+    case BtnGroup = 'btn-group';
 
     public function toggleComponent(): string
     {

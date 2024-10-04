@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 
 /**
  * Item renders item for Tabs|Nav.
@@ -16,21 +16,14 @@ use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
  */
 final class Item extends Widget
 {
-    private Link $link;
-
     /**
      * @psalm-var non-empty-string $tag
      */
     private string $tag = 'li';
+    private Link $link;
     private array $options = [];
     private ?string $widgetClassName = null;
-    private ?Dropdown $dropdown = null;
-    private DropDirection $dropDirection = DropDirection::Down;
-
-    /**
-     * @var self[]|Link[]
-     */
-    private array $items = [];
+    private ?string $started = null;
 
     public function options(array $options): self
     {
@@ -72,120 +65,50 @@ final class Item extends Widget
         return $this->link;
     }
 
-    /**
-     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs-with-dropdowns
-     */
-    public function items(self|Link ...$items): self
+    public function begin(array $options = []): ?string
     {
-        $new = clone $this;
-        $new->items = $items;
+        parent::begin();
 
-        return $new;
+        return $this->renderStart($options);
     }
 
-    /**
-     *
-     * @return self[]|Link[]
-     */
-    public function getItems(): array
+    private function renderStart(array $options = []): ?string
     {
-        return $this->items;
-    }
-
-    public function dropdown(?Dropdown $dropdown): self
-    {
-        $new = clone $this;
-        $new->dropdown = $dropdown;
-
-        return $new;
-    }
-
-    public function dropDirection(DropDirection $direction): self
-    {
-        $new = clone $this;
-        $new->dropDirection = $direction;
-
-        return $new;
-    }
-
-    /**
-     * @psalm-suppress PossiblyUndefinedMethod
-     */
-    private function prepareDropdownItems(self|Link ...$items): array
-    {
-        $array = [];
-
-        foreach ($items as $i => $item) {
-
-            $isItem = $item instanceof self;
-            /** @var Link $link */
-            $link = $isItem ? $item->getLink() : $item;
-
-            $array[$i] = [
-                'label' => $link->getLabel(),
-                'encode' => $link->isEncoded(),
-                'url' => $link->getUrl(),
-                'active' => $link->isActive(),
-                'disabled' => $link->isDisabled(),
-                'visible' => $link->isVisible(),
-            ];
-
-            if ($isItem) {
-                $array[$i]['items'] = $this->prepareDropdownItems(...$item->getItems());
-            }
-        }
-
-        return $array;
-    }
-
-    private function prepareDropdown(self|Link ...$items): ?Dropdown
-    {
-        $items = $this->prepareDropdownItems(...$items);
-
-        if ($items === []) {
+        if (!$this->link->isVisible()) {
             return null;
         }
 
-        /** @var Dropdown $dropdown */
-        $dropdown = $this->dropdown ?? Dropdown::widget();
-
-        return $dropdown->items($items);
-    }
-
-    public function render(): string
-    {
-        if (!$this->link->isVisible()) {
-            return '';
-        }
-
-        $link = $this->link;
-        $options = $this->options;
+        $options = ArrayHelper::merge($this->options, $options);
         $classNames = $this->widgetClassName ? ['widget' => $this->widgetClassName] : [];
 
         if ($this->link->getPane() && !isset($options['role'])) {
             $options['role'] = 'presentation';
         }
 
-        if ($dropdown = $this->prepareDropdown(...$this->items)) {
-
-            $classNames[] = $this->dropDirection->value;
-            $addOptions = [
-                'class' => 'dropdown-toggle',
-                'aria-expanded' => 'false',
-            ];
-
-            if ($link->getTag() !== 'button') {
-                $addOptions['role'] = 'button';
-            }
-
-            $link = $link->toggle('dropdown')
-                         ->addOptions($addOptions);
-        }
-
         Html::addCssClass($options, $classNames);
 
-        return Html::tag($this->tag, $link . $dropdown, $options)
-                ->encode(false)
-                ->render();
+        $this->started = Html::openTag($this->tag, $options);
+        $this->started .= $this->link;
+
+        return $this->started;
+    }
+
+    public function render(): string
+    {
+        if ($this->started) {
+
+            $this->started = null;
+
+            return Html::closeTag($this->tag);
+        }
+
+        if ($started = $this->renderStart()) {
+
+            $this->started = null;
+
+            return $started . Html::closeTag($this->tag);
+        }
+
+        return '';
     }
 }

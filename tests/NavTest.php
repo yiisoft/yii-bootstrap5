@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Item;
@@ -17,7 +18,7 @@ final class NavTest extends TestCase
     {
         $nav = Nav::widget()
                 ->id('test-nav')
-                ->links(
+                ->items(
                     Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -40,7 +41,7 @@ final class NavTest extends TestCase
                 ->id('test-nav')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->links(
+                ->items(
                     Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
                     Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -63,7 +64,7 @@ final class NavTest extends TestCase
                 ->id('test-nav')
                 ->tag('nav')
                 ->defaultItem(false)
-                ->links(
+                ->items(
                     Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()
                         ->id('test-link-2')
@@ -93,7 +94,7 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->activeItem('/link-2')
-                ->links(
+                ->items(
                     Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
                     Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -112,7 +113,7 @@ final class NavTest extends TestCase
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->activeItem(2)
-                ->links(
+                ->items(
                     Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
                     Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
@@ -131,37 +132,34 @@ final class NavTest extends TestCase
 
     public function testActivateParents(): void
     {
-        $dropdown = Dropdown::widget()->id('test-dropdown');
-
-        $toggle = Link::widget()
-            ->id('test-toggle')
-            ->url('#')
-            ->label('toggler');
-
-        $items = [
-            Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-            Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
-            Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
-        ];
-
-        $item = Item::widget()
-            ->dropdown($dropdown)
-            ->items(...$items);
+        $dropdown = Dropdown::widget()
+            ->id('test-dropdown')
+            ->toggler(
+                Link::widget()
+                    ->id('test-toggle')
+                    ->url('#')
+                    ->label('toggler')
+            )
+            ->items(
+                Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
+                Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+            );
 
         $nav = Nav::widget()
                 ->id('test-nav')
                 ->activeItem('/link-2')
                 ->activateParents(true)
-                ->links($toggle->item($item));
+                ->items($dropdown);
 
         $expected = <<<'HTML'
         <ul id="test-nav" class="nav">
-        <li class="nav-item dropdown">
+        <li class="dropdown nav-item">
         <a id="test-toggle" class="dropdown-toggle nav-link active" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a>
         <ul id="test-dropdown" class="dropdown-menu">
-        <li><a class="dropdown-item" href="/link-1">Link 1</a></li>
-        <li><a class="dropdown-item active" href="/link-2">Link 2</a></li>
-        <li><a class="dropdown-item" href="/link-3">Link 3</a></li>
+        <li><a id="test-link-1" class="dropdown-item" href="/link-1">Link 1</a></li>
+        <li><a id="test-link-2" class="dropdown-item active" href="/link-2" aria-current="page">Link 2</a></li>
+        <li><a id="test-link-3" class="dropdown-item" href="/link-3">Link 3</a></li>
         </ul></li></ul>
         HTML;
 
@@ -183,7 +181,7 @@ final class NavTest extends TestCase
     public function testType(MenuType $type): void
     {
         $nav = Nav::widget()
-                ->links(
+                ->items(
                     Link::widget()->label('Link 1')->url('/link-1')
                 );
 
@@ -219,7 +217,7 @@ final class NavTest extends TestCase
     {
         $nav = Nav::widget()
                 ->vertical($value)
-                ->links(
+                ->items(
                     Link::widget()->label('Link 1')->url('/link-1'),
                 );
 
@@ -238,7 +236,7 @@ final class NavTest extends TestCase
                     'class' => 'custom-nav',
                     'style' => 'margin: -1px',
                 ])
-                ->links(
+                ->items(
                     Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -262,7 +260,7 @@ final class NavTest extends TestCase
         $this->assertNotSame($nav, $nav->tag('nav'));
         $this->assertNotSame($nav, $nav->options([]));
         $this->assertNotSame($nav, $nav->defaultItem(false));
-        $this->assertNotSame($nav, $nav->links());
+        $this->assertNotSame($nav, $nav->items());
         $this->assertNotSame($nav, $nav->type(MenuType::Pills));
         $this->assertNotSame($nav, $nav->tabs());
         $this->assertNotSame($nav, $nav->pills());
@@ -276,7 +274,7 @@ final class NavTest extends TestCase
     {
         $nav = Nav::widget()
                 ->id('test-nav')
-                ->links(
+                ->items(
                     Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('link-2')->label('Link 2')->url('/link-2')->visible(false),
                     Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -307,7 +305,7 @@ final class NavTest extends TestCase
                             'class' => 'default-custom-item',
                         ])
                 )
-                ->links(
+                ->items(
                     Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
                     Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
                     Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
@@ -322,5 +320,70 @@ final class NavTest extends TestCase
         HTML;
 
         $this->assertEqualsHTML($expected, (string)$nav);
+    }
+
+    public static function dropdownDataProvider(): array
+    {
+        return array_map(
+            static fn (DropDirection $direction) => [$direction],
+            DropDirection::cases()
+        );
+    }
+
+    /**
+     * @dataProvider dropdownDataProvider
+     */
+    public function testDropdown(DropDirection $direction): void
+    {
+        $dropdown = Dropdown::widget()
+            ->id('test-dropdown')
+            ->direction($direction)
+            ->toggler(
+                Link::widget()
+                    ->url('#')
+                    ->label('toggler')
+            )
+            ->items(
+                Link::widget()->label('Dropdown Link 1')->url('/dropdown/link-1'),
+                Link::widget()->label('Dropdown Link 2')->url('/dropdown/link-2'),
+                Dropdown::widget()
+                    ->toggler(
+                        Link::widget()->label('Child toggler')
+                    )->items(
+                        Link::widget()->tag('h6')->label('Child 1'),
+                        Link::widget()->tag('h6')->label('Child 2')
+                    ),
+                Link::widget()->label('Dropdown Link 3')->url('/dropdown/link-3'),
+            );
+
+        $nav = Nav::widget()
+                ->items(
+                    Link::widget()->label('Link 1')->url('/link-1'),
+                    $dropdown,
+                    Link::widget()->label('Link 2')->url('/link-2'),
+                );
+
+        $html = \preg_replace('/\sid="[^"]+"/', '', $nav->render());
+
+        $expected = <<<HTML
+        <ul class="nav">
+        <li class="nav-item"><a class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="{$direction->value} nav-item">
+        <a class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a><ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/dropdown/link-1">Dropdown Link 1</a></li>
+        <li><a class="dropdown-item" href="/dropdown/link-2">Dropdown Link 2</a></li>
+        <li class="dropdown">
+        <button type="button" class="dropdown-item dropdown-toggle" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" data-bs-toggle="dropdown">Child toggler</button>
+        <ul class="dropdown-menu">
+        <li><h6 class="dropdown-header">Child 1</h6></li>
+        <li><h6 class="dropdown-header">Child 2</h6></li>
+        </ul></li>
+        <li><a class="dropdown-item" href="/dropdown/link-3">Dropdown Link 3</a></li>
+        </ul></li>
+        <li class="nav-item"><a class="nav-link" href="/link-2">Link 2</a></li>
+        </ul>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
     }
 }
