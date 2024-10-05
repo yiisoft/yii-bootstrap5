@@ -8,12 +8,15 @@ use Generator;
 use InvalidArgumentException;
 use LogicException;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
 use function get_debug_type;
 use function sprintf;
 
 abstract class AbstractNav extends AbstractMenu
 {
+    protected ?Size $vertical = null;
+
     /**
      *
      * @param Link|Dropdown $items
@@ -35,7 +38,7 @@ abstract class AbstractNav extends AbstractMenu
                 );
             }
 
-            if ($item instanceof Dropdown && $item->getToggler() === null) {
+            if ($item instanceof Dropdown && $item->getToggle() === null) {
                 throw new LogicException(
                     sprintf(
                         'Every "%s" $item must contains a "toggler" property.',
@@ -72,6 +75,17 @@ abstract class AbstractNav extends AbstractMenu
         return $this->type(MenuType::Underline);
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#vertical
+     */
+    public function vertical(?Size $vertical): static
+    {
+        $new = clone $this;
+        $new->vertical = $vertical;
+
+        return $new;
+    }
+
     final protected function getVisibleItems(): Generator
     {
         $index = 0;
@@ -79,7 +93,7 @@ abstract class AbstractNav extends AbstractMenu
         /** @var Link|Dropdown $item */
         foreach ($this->getItems() as $item) {
             /** @var Link $link */
-            $link = $item instanceof Dropdown ? $item->getToggler() : $item;
+            $link = $item instanceof Dropdown ? $item->getToggle() : $item;
 
             if ($link->isVisible()) {
                 yield $index++ => $item;
@@ -97,8 +111,8 @@ abstract class AbstractNav extends AbstractMenu
     {
         if ($item instanceof Dropdown) {
 
-            $dropdown = $item->toggler(
-                $this->prepareLink($item->getToggler(), $index),
+            $dropdown = $item->toggle(
+                $this->prepareLink($item->getToggle(), $index),
             );
 
             if ($this->activateParents && $this->activeItem !== null) {

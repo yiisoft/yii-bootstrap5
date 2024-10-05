@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
+use LogicException;
+use stdClass;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
@@ -11,6 +14,8 @@ use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
+
+use function is_string;
 
 final class NavTest extends TestCase
 {
@@ -134,7 +139,7 @@ final class NavTest extends TestCase
     {
         $dropdown = Dropdown::widget()
             ->id('test-dropdown')
-            ->toggler(
+            ->toggle(
                 Link::widget()
                     ->id('test-toggle')
                     ->url('#')
@@ -338,7 +343,7 @@ final class NavTest extends TestCase
         $dropdown = Dropdown::widget()
             ->id('test-dropdown')
             ->direction($direction)
-            ->toggler(
+            ->toggle(
                 Link::widget()
                     ->url('#')
                     ->label('toggler')
@@ -347,7 +352,7 @@ final class NavTest extends TestCase
                 Link::widget()->label('Dropdown Link 1')->url('/dropdown/link-1'),
                 Link::widget()->label('Dropdown Link 2')->url('/dropdown/link-2'),
                 Dropdown::widget()
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->label('Child toggler')
                     )->items(
                         Link::widget()->tag('h6')->label('Child 1'),
@@ -385,5 +390,26 @@ final class NavTest extends TestCase
         HTML;
 
         $this->assertEqualsHTML($expected, $html);
+    }
+
+    public static function itemExceptionProvider(): array
+    {
+        return [
+            [new stdClass(), InvalidArgumentException::class],
+            [null, LogicException::class],
+        ];
+    }
+
+    /**
+     * @dataProvider itemExceptionProvider
+     */
+    public function testItemsException(?object $item, string $exceptionClass): void
+    {
+        if ($item === null) {
+            $item = Dropdown::widget();
+        }
+
+        $this->expectException($exceptionClass);
+        Nav::widget()->items($item);
     }
 }

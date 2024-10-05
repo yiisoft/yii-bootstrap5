@@ -7,12 +7,14 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropAlignment;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 
+use function array_map;
 use function Safe\preg_replace;
 
 /**
@@ -29,7 +31,7 @@ final class DropdownTest extends TestCase
                 Link::widget()->label('Page2')->url('#')->active(true),
                 Dropdown::widget()
                     ->id('ID2')
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->url('#test')->label('Dropdown1')
                     )
                     ->items(
@@ -37,7 +39,7 @@ final class DropdownTest extends TestCase
                         Link::widget()->tag('h6')->label('Page3')
                     ),
                 Dropdown::widget()
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->label('Dropdown2')->visible(false)
                     )
                     ->items(
@@ -54,7 +56,7 @@ final class DropdownTest extends TestCase
         <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Page1</a></li>
         <li><a class="dropdown-item active" href="#">Page2</a></li>
         <li class="dropdown">
-        <a class="dropdown-item dropdown-toggle" href="#test" aria-expanded="false" role="button" data-bs-auto-close="outside" aria-haspopup="true" data-bs-toggle="dropdown">Dropdown1</a>
+        <a class="dropdown-item dropdown-toggle" href="#test" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" role="button" data-bs-toggle="dropdown">Dropdown1</a>
         <ul id="ID2" class="dropdown-menu">
         <li><h6 class="dropdown-header">Page2</h6></li>
         <li><h6 class="dropdown-header">Page3</h6></li>
@@ -174,7 +176,7 @@ final class DropdownTest extends TestCase
                     ->options([
                         'class' => 'submenu-list',
                     ])
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->label('Dropdown1')->tag('a')
                     )
                     ->items(
@@ -184,7 +186,7 @@ final class DropdownTest extends TestCase
                 Link::widget()->tag('hr'),
                 $subMenu
                     ->id('ID2')
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->label('Dropdown2')->tag('a')
                     )
                     ->items(
@@ -199,20 +201,21 @@ final class DropdownTest extends TestCase
         $expected = <<<'HTML'
         <ul id="TEST_ID" class="dropdown-menu">
         <li class="dropdown">
-        <a class="dropdown-item dropdown-toggle" aria-expanded="false" role="button" data-bs-auto-close="outside" aria-haspopup="true" data-bs-toggle="dropdown">Dropdown1</a>
+        <a class="dropdown-item dropdown-toggle" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" role="button" data-bs-toggle="dropdown">Dropdown1</a>
         <ul id="ID1" class="submenu-list dropdown-menu">
         <li><h6 class="dropdown-header">Page1</h6></li>
         <li><h6 class="dropdown-header">Page2</h6></li>
         </ul></li>
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown">
-        <a class="dropdown-item dropdown-toggle" aria-expanded="false" role="button" data-bs-auto-close="outside" aria-haspopup="true" data-bs-toggle="dropdown">Dropdown2</a>
+        <a class="dropdown-item dropdown-toggle" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" role="button" data-bs-toggle="dropdown">Dropdown2</a>
         <ul id="ID2" class="submenu-override dropdown-menu">
         <li><h6 class="dropdown-header">Page3</h6></li>
         <li><h6 class="dropdown-header">Page4</h6></li>
         </ul></li>
         </ul>
         HTML;
+
         $this->assertEqualsHTML($expected, $html);
     }
 
@@ -333,5 +336,99 @@ final class DropdownTest extends TestCase
         HTML;
 
         $this->assertEqualsHTML($expected, $html);
+    }
+
+    public static function directionDataProvider(): array
+    {
+        return array_map(
+            static fn (DropDirection $direction) => [$direction],
+            DropDirection::cases()
+        );
+    }
+
+    /**
+     * @dataProvider directionDataProvider
+     */
+    public function testDirection(DropDirection $direction): void
+    {
+        $html = Dropdown::widget()
+            ->tag('div')
+            ->id('test-menu')
+            ->direction($direction)
+            ->toggle(
+                Link::widget()->label('Toggler')
+                    ->id('')
+                    ->item(Item::widget()->tag('div'))
+            )
+            ->items('content')
+            ->render();
+
+        $expected = <<<HTML
+        <div class="{$direction->value}">
+        <button type="button" id class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Toggler</button>
+        <div id="test-menu" class="dropdown-menu">content</div>
+        </div>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public static function splitDataProvider(): array
+    {
+        return [
+            [null, '<div class="btn-group dropdown"><a id href="/link">Toggler</a><button type="button" id class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Split toggle button</button>'],
+            [true, '<div class="btn-group dropdown"><a id href="/link">Toggler</a><a id class="dropdown-toggle dropdown-toggle-split" href="/link" aria-expanded="false" role="button" data-bs-toggle="dropdown"><span class="visually-hidden">Toggle Dropdown</span></a>'],
+            [false, '<div class="dropdown"><a id class="dropdown-toggle" href="/link" aria-expanded="false" role="button" data-bs-toggle="dropdown">Toggler</a>'],
+        ];
+    }
+
+    /**
+     * @dataProvider splitDataProvider
+     */
+    public function testSplit(?bool $split, string $expected): void
+    {
+        if ($split === null) {
+            $split = Link::widget()
+                ->id('')
+                ->label('Split toggle button')
+                ->options([
+                    'class' => 'custom-toggle-class',
+                ]);
+        }
+
+        $html = Dropdown::widget()
+            ->tag('div')
+            ->id('')
+            ->split($split)
+            ->toggle(
+                Link::widget()->label('Toggler')
+                    ->id('')
+                    ->tag('a')
+                    ->url('/link')
+                    ->item(Item::widget()->tag('div'))
+            )
+            ->items('content')
+            ->render();
+
+        $this->assertStringStartsWith($expected, $html);
+    }
+
+    public function testEmptyMenu(): void
+    {
+        $this->assertEmpty((string)Dropdown::widget());
+    }
+
+    public function testHiddenToggle(): void
+    {
+        $html = Dropdown::widget()
+            ->tag('div')
+            ->id('')
+            ->toggle(
+                Link::widget()->label('Toggler')->visible(false)
+            )
+            ->items('content1', 'content2', 'content3')
+            ->render();
+
+        $this->assertEmpty($html);
     }
 }

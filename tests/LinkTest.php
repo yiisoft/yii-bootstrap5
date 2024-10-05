@@ -269,11 +269,9 @@ final class LinkTest extends TestCase
         $this->assertNotSame($link, $link->toggle(''));
         $this->assertNotSame($link, $link->widgetClassName(''));
 
-        $withActiveOptions = $link->activeOptions([]);
         $withWidgetClassName = $link->widgetClassName('test');
 
         $this->assertSame($link, $link->activate());
-        $this->assertSame($withActiveOptions, $withActiveOptions->activeOptions(['test' => 1], false));
         $this->assertSame($withWidgetClassName, $withWidgetClassName->widgetClassName('new-class'));
     }
 

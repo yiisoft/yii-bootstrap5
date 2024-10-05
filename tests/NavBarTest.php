@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use Yiisoft\Yii\Bootstrap5\Collapse;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\Theme;
-use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavBar;
@@ -124,7 +123,7 @@ final class NavBarTest extends TestCase
                 $link->label('Link'),
                 Dropdown::widget()
                     ->id('D_ID')
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->id('')->label('Dropdown')->url('#')
                     )
                     ->items(
@@ -350,7 +349,7 @@ final class NavBarTest extends TestCase
                 $link->label('Link'),
                 Dropdown::widget()
                     ->id('D_ID2')
-                    ->toggler(
+                    ->toggle(
                         Link::widget()->id('')->label('Dropdown')->url('#')
                     )
                     ->items(

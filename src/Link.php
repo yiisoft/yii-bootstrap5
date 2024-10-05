@@ -218,16 +218,12 @@ final class Link extends Widget
         return $new;
     }
 
-    public function activeOptions(array $options, bool $replace = true): self
+    public function activeOptions(array $options): self
     {
-        if ($this->activeOptions === null || $replace) {
-            $new = clone $this;
-            $new->activeOptions = $options;
+        $new = clone $this;
+        $new->activeOptions = $options;
 
-            return $new;
-        }
-
-        return $this;
+        return $new;
     }
 
     public function toggle(?string $toggle): self

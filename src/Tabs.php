@@ -55,8 +55,6 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  */
 final class Tabs extends AbstractNav
 {
-    use NavTrait;
-
     protected MenuType $type = MenuType::Tabs;
     private array $contentOptions = [];
     private bool $renderContent = true;
@@ -89,9 +87,9 @@ final class Tabs extends AbstractNav
         return $tabs;
     }
 
-    protected function prepareNav(): Tag
+    protected function prepareMenu(): Tag
     {
-        $tag = parent::prepareNav()->attribute('role', 'tablist');
+        $tag = parent::prepareMenu()->attribute('role', 'tablist');
 
         if ($this->vertical) {
             return $tag->addClass($this->vertical->formatClassName('flex', 'column'));

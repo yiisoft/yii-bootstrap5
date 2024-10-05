@@ -23,8 +23,8 @@ use function sprintf;
 final class Dropdown extends AbstractMenu
 {
     protected MenuType $type = MenuType::Dropdown;
-    private ?Link $toggler = null;
-    private bool $separate = false;
+    private ?Link $toggle = null;
+    private bool|Link $split = false;
     private DropDirection $direction = DropDirection::Down;
     private ?self $parent = null;
     private array $alignments = [];
@@ -58,23 +58,23 @@ final class Dropdown extends AbstractMenu
         return parent::items(...$items);
     }
 
-    public function toggler(?Link $toggler): self
+    public function toggle(?Link $toggle): self
     {
         $new = clone $this;
-        $new->toggler = $toggler;
+        $new->toggle = $toggle;
 
         return $new;
     }
 
-    public function getToggler(): ?Link
+    public function getToggle(): ?Link
     {
-        return $this->toggler;
+        return $this->toggle;
     }
 
-    public function separate(bool $sepatate): self
+    public function split(bool|Link $split): self
     {
         $new = clone $this;
-        $new->separate = $sepatate;
+        $new->split = $split;
 
         return $new;
     }
@@ -131,45 +131,56 @@ final class Dropdown extends AbstractMenu
     {
         $links = parent::activateTree($link, ...$parents);
 
-        if ($links && $this->toggler) {
-            array_unshift($links, $this->toggler->activate());
+        if ($links && $this->toggle) {
+            array_unshift($links, $this->toggle->activate());
         }
 
         return $links;
     }
 
-    private function prepareToggler(): ?link
+    private function prepareToggle(): ?link
     {
-        if ($this->toggler === null) {
+        if ($this->toggle === null) {
             return null;
+        }
+
+        if ($this->split === true) {
+            $toggle = $this->toggle
+                           ->encode(false)
+                           ->label(Html::span('Toggle Dropdown', ['class' => 'visually-hidden']))
+                           ->widgetClassName('dropdown-toggle-split');
+        } elseif ($this->split) {
+            $toggle = $this->split;
+        } else {
+            $toggle = $this->toggle;
         }
 
         $options = ['aria-expanded' => 'false'];
 
         if ($this->parent) {
-            $options['class'] = $this->type->linkClassName() . ' dropdown-toggle';
+            $options['class'] = 'dropdown-item dropdown-toggle';
+            $options['data-bs-auto-close'] = 'outside';
+            $options['aria-haspopup'] = 'true';
+
+            if (!$this->split) {
+                $toggle = $toggle->item($this->getDefaultItem());
+            }
+
         } else {
             $options['class'] = 'dropdown-toggle';
         }
 
-        if ($this->toggler->getTag() !== 'button') {
+        if ($toggle->getTag() !== 'button') {
             $options['role'] = 'button';
         }
 
-        if ($this->parent) {
-            $options['data-bs-auto-close'] = 'outside';
-            $options['aria-haspopup'] = 'true';
-        }
-
-        return parent::prepareLink($this->toggler, 0)
-                ->toggle($this->type->toggleComponent())
+        return $toggle->toggle($this->type->toggleComponent())
                 ->addOptions($options);
     }
 
     protected function prepareLink(Link $link, int $index): Link
     {
         $link = parent::prepareLink($link, $index);
-        $tag = $link->getTag();
 
         if ($link->getUrl() === null) {
 
@@ -183,10 +194,10 @@ final class Dropdown extends AbstractMenu
         return $link;
     }
 
-    protected function prepareNav(): Tag
+    protected function prepareMenu(): Tag
     {
         $classNames = [];
-        $tag = parent::prepareNav();
+        $tag = parent::prepareMenu();
         $prefix = MenuType::Dropdown->value;
 
         foreach ($this->alignments as $name => $sizes) {
@@ -206,23 +217,33 @@ final class Dropdown extends AbstractMenu
     public function render(): string
     {
         $menu = parent::render();
-        $link = $this->prepareToggler();
+        $toggleButton = $this->prepareToggle();
 
-        if ($menu === '' || $link === null) {
+        if ($menu === '' || $toggleButton === null) {
             return $menu;
         }
 
-        if ($link) {
+        if ($toggleButton) {
 
-            if (!$link->isVisible()) {
+            if (!$toggleButton->isVisible()) {
                 return '';
             }
 
-            if (($item = $link->getItem()) === null) {
-                return $link . $menu;
+            if ($this->split) {
+                $splitButton = $toggleButton;
+                $item = $this->toggle->getItem();
+                $itemClassName = MenuType::BtnGroup->value . ' ' . $this->direction->value;
+            } else {
+                $splitButton = null;
+                $item = $toggleButton->getItem();
+                $itemClassName = $this->direction->value;
             }
 
-            return $item->begin(['class' => $this->direction->value]) . $menu . $item::end();
+            if ($item === null) {
+                return $toggleButton . $splitButton . $menu;
+            }
+
+            return $item->begin(['class' => $itemClassName]) . $splitButton . $menu . $item::end();
         }
 
         return $menu;

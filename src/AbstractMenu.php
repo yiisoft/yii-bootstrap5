@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Traversable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+
+use function count;
+use function iterator_count;
 
 abstract class AbstractMenu extends Widget
 {
@@ -53,6 +57,15 @@ abstract class AbstractMenu extends Widget
         $new->defaultItem = $defaultItem;
 
         return $new;
+    }
+
+    protected function getDefaultItem(): ?Item
+    {
+        if ($this->defaultItem === true) {
+            return Item::widget()->widgetClassName($this->type->itemClassName());
+        }
+
+        return $this->defaultItem ? $this->defaultItem : null;
     }
 
     public function items(mixed ...$items): static
@@ -129,7 +142,7 @@ abstract class AbstractMenu extends Widget
         return $link->getUrl() === $this->activeItem || $link->getPath() === $this->activeItem;
     }
 
-    protected function prepareNav(): Tag
+    protected function prepareMenu(): Tag
     {
         $items = [];
         $options = $this->options;
@@ -165,15 +178,8 @@ abstract class AbstractMenu extends Widget
 
         $link = $link->widgetClassName($this->type->linkClassName());
 
-        if ($this->defaultItem && $link->getItem() === null) {
-
-            if ($this->defaultItem === true) {
-                return $link->item(
-                    Item::widget()->widgetClassName($this->type->itemClassName())
-                );
-            }
-
-            return $link->item($this->defaultItem);
+        if ($link->getItem() === null) {
+            return $link->item($this->getDefaultItem());
         }
 
         return $link;
@@ -181,10 +187,13 @@ abstract class AbstractMenu extends Widget
 
     public function render(): string
     {
-        if (iterator_count($this->getVisibleItems()) === 0) {
+        $iterator = $this->getVisibleItems();
+        $count = $iterator instanceof Traversable ? iterator_count($iterator) : count($iterator);
+
+        if ($count === 0) {
             return '';
         }
 
-        return $this->prepareNav()->render();
+        return $this->prepareMenu()->render();
     }
 }
