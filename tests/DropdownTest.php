@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use LogicException;
 use stdClass;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
@@ -476,6 +477,7 @@ final class DropdownTest extends TestCase
             ['string', null],
             [[1, 2, 3], InvalidArgumentException::class],
             [true, InvalidArgumentException::class],
+            [Dropdown::class, LogicException::class],
         ];
     }
 
@@ -487,6 +489,11 @@ final class DropdownTest extends TestCase
         if ($exception === null) {
             $this->expectNotToPerformAssertions();
         } else {
+
+            if ($item === Dropdown::class) {
+                $item = Dropdown::widget();
+            }
+
             $this->expectException($exception);
         }
 
