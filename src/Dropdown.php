@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Generator;
-use InvalidArgumentException;
-use LogicException;
+use RuntimeException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
@@ -16,8 +15,6 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 
-use function get_debug_type;
-use function is_string;
 use function sprintf;
 
 final class Dropdown extends AbstractMenu
@@ -31,17 +28,6 @@ final class Dropdown extends AbstractMenu
 
     public function items(string|Stringable ...$items): static
     {
-        foreach ($items as $item) {
-            if ($item instanceof self && $item->getToggle() === null) {
-                throw new LogicException(
-                    sprintf(
-                        'Every "%s" $item must contains a "toggle" property.',
-                        self::class
-                    )
-                );
-            }
-        }
-
         $new = clone $this;
         $new->items = $items;
 
@@ -229,6 +215,9 @@ final class Dropdown extends AbstractMenu
         return $menu;
     }
 
+    /**
+     * @param string|Stringable $item
+     */
     protected function renderItem(mixed $item, int $index): string
     {
         if ($item instanceof Link) {
@@ -238,6 +227,17 @@ final class Dropdown extends AbstractMenu
         }
 
         if ($item instanceof self) {
+
+            if ($item->getToggle() === null) {
+
+                throw new RuntimeException(
+                    sprintf(
+                        'Every "%s" $item must contains a "toggle" property.',
+                        self::class
+                    )
+                );
+            }
+
             return $item->setParent($this)->render();
         }
 

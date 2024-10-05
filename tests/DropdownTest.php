@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use InvalidArgumentException;
 use LogicException;
-use stdClass;
+use RuntimeException;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropAlignment;
@@ -472,7 +471,7 @@ final class DropdownTest extends TestCase
         return [
             [Html::span('test'), null],
             ['string', null],
-            [Dropdown::class, LogicException::class],
+            [Dropdown::class, RuntimeException::class],
         ];
     }
 
@@ -492,7 +491,7 @@ final class DropdownTest extends TestCase
             $this->expectException($exception);
         }
 
-        Dropdown::widget()->items($item);
+        Dropdown::widget()->items($item)->render();
     }
 
     public function testNoItem(): void

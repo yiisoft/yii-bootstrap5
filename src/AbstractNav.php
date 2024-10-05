@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Generator;
-use LogicException;
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
@@ -17,17 +17,6 @@ abstract class AbstractNav extends AbstractMenu
 
     public function items(Link|Dropdown ...$items): static
     {
-        foreach ($items as $item) {
-            if ($item instanceof Dropdown && $item->getToggle() === null) {
-                throw new LogicException(
-                    sprintf(
-                        'Every "%s" $item must contains a "toggle" property.',
-                        Dropdown::class
-                    )
-                );
-            }
-        }
-
         $new = clone $this;
         $new->items = $items;
 
@@ -90,6 +79,15 @@ abstract class AbstractNav extends AbstractMenu
             /** @var Link $link */
             $link = $item instanceof Dropdown ? $item->getToggle() : $item;
 
+            if ($link === null) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Every "%s" $item must contains a "toggle" property.',
+                        Dropdown::class
+                    )
+                );
+            }
+
             if ($link->isVisible()) {
                 yield $index++ => $item;
             }
@@ -97,20 +95,17 @@ abstract class AbstractNav extends AbstractMenu
     }
 
     /**
-     *
      * @param Link|Dropdown $item
-     * @param int $index
-     * @return string
      */
     protected function renderItem(mixed $item, int $index): string
     {
         if ($item instanceof Dropdown) {
 
-            $dropdown = $item->toggle(
+            return $item->toggle(
                 $this->prepareLink($item->getToggle(), $index),
-            );
-
-            return $dropdown->setParent($this)->render();
+            )
+            ->setParent($this)
+            ->render();
         }
 
         $link = $this->prepareLink($item, $index);

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use InvalidArgumentException;
 use LogicException;
-use stdClass;
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
@@ -406,23 +405,11 @@ final class NavTest extends TestCase
         $this->assertEqualsHTML($expected, $html);
     }
 
-    public static function itemExceptionProvider(): array
+    public function testItemsException(): void
     {
-        return [
-            [null, LogicException::class],
-        ];
-    }
-
-    /**
-     * @dataProvider itemExceptionProvider
-     */
-    public function testItemsException(?object $item, string $exceptionClass): void
-    {
-        if ($item === null) {
-            $item = Dropdown::widget();
-        }
-
-        $this->expectException($exceptionClass);
-        Nav::widget()->items($item);
+        $this->expectException(RuntimeException::class);
+        Nav::widget()
+            ->items(Dropdown::widget())
+            ->render();
     }
 }
