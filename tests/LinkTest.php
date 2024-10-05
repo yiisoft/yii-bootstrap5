@@ -275,6 +275,23 @@ final class LinkTest extends TestCase
         $this->assertSame($withWidgetClassName, $withWidgetClassName->widgetClassName('new-class'));
     }
 
+    public function testGetters(): void
+    {
+        $link = Link::widget();
+
+        $this->assertTrue($link->disabled(true)->isDisabled());
+        $this->assertFalse($link->disabled(false)->isDisabled());
+        $this->assertTrue($link->active(true)->isActive());
+        $this->assertFalse($link->active(false)->isActive());
+        $this->assertTrue($link->disabled(true)->isDisabled());
+        $this->assertFalse($link->disabled(false)->isDisabled());
+        $this->assertTrue($link->encode(true)->isEncoded());
+        $this->assertSame($link->encode(null)->isEncoded(), null);
+        $this->assertFalse($link->encode(false)->isEncoded());
+        $this->assertTrue($link->visible(true)->isVisible());
+        $this->assertFalse($link->visible(false)->isVisible());
+    }
+
     public function testNotVisible(): void
     {
         $this->assertEmpty(Link::widget()->visible(false)->render());

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
+use stdClass;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropAlignment;
@@ -151,14 +153,24 @@ final class DropdownTest extends TestCase
      */
     public function testTheme(string|Theme $theme, string $expected): void
     {
-        $html = Dropdown::widget()
+        $dropdown = Dropdown::widget()
             ->id('TEST_ID')
             ->tag('div')
             ->items('')
-            ->withTheme($theme)
-            ->render();
+            ->withTheme($theme);
 
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEqualsWithoutLE($expected, (string)$dropdown);
+
+        if ($theme instanceof Theme) {
+
+            if ($theme === Theme::Dark) {
+                $html = $dropdown->withDarkTheme()->render();
+            } else {
+                $html = $dropdown->withLightTheme()->render();
+            }
+
+            $this->assertEqualsWithoutLE($expected, $html);
+        }
     }
 
     public function testSubMenuOptions(): void
@@ -430,5 +442,73 @@ final class DropdownTest extends TestCase
             ->render();
 
         $this->assertEmpty($html);
+    }
+
+    public function testNoToggle(): void
+    {
+        $html = Dropdown::widget()
+            ->id('')
+            ->items(
+                Link::widget()->id('')->label('Item 1')->url('/link-1'),
+                Link::widget()->id('')->label('Item 2')->url('/link-2'),
+                Link::widget()->id('')->label('Item 3')->url('/link-3'),
+            )
+            ->render();
+
+        $expected = <<<'HTML'
+        <ul id class="dropdown-menu">
+        <li><a id class="dropdown-item" href="/link-1">Item 1</a></li>
+        <li><a id class="dropdown-item" href="/link-2">Item 2</a></li>
+        <li><a id class="dropdown-item" href="/link-3">Item 3</a></li>
+        </ul>
+        HTML;
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public static function exceptionDataProvider(): array
+    {
+        return [
+            [1, InvalidArgumentException::class],
+            [null, InvalidArgumentException::class],
+            [Html::span('test'), null],
+            [new stdClass(), InvalidArgumentException::class],
+            ['string', null],
+            [[1, 2, 3], InvalidArgumentException::class],
+            [true, InvalidArgumentException::class],
+        ];
+    }
+
+    /**
+     * @dataProvider exceptionDataProvider
+     */
+    public function testExceptions(mixed $item, ?string $exception): void
+    {
+        if ($exception === null) {
+            $this->expectNotToPerformAssertions();
+        } else {
+            $this->expectException($exception);
+        }
+
+        Dropdown::widget()->items($item);
+    }
+
+    public function testNoItem(): void
+    {
+        $html = Dropdown::widget()
+            ->id('')
+            ->tag('div')
+            ->defaultItem(false)
+            ->toggle(
+                Link::widget()->id('')->label('toggle')
+            )
+            ->items('content')
+            ->render();
+
+        $expected = <<<'HTML'
+        <button type="button" id class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">toggle</button><div id class="dropdown-menu">content</div>
+        HTML;
+
+        $this->assertSame($expected, $html);
     }
 }

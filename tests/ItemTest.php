@@ -102,6 +102,7 @@ final class ItemTest extends TestCase
         $this->assertNotSame($item, $item->tag('b'));
         $this->assertNotSame($item, $item->options([]));
         $this->assertNotSame($item, $item->link($link));
+        $this->assertSame($item->link($link)->getLink(), $link);
     }
 
     public function testVisible(): void
@@ -139,5 +140,32 @@ final class ItemTest extends TestCase
         } else {
             $this->assertStringNotContainsString('class', (string)$item);
         }
+    }
+
+    public function testOuterContent(): void
+    {
+        $html = Item::widget()
+                ->link(
+                    Link::widget()->id('')->label('Link'),
+                )
+                ->begin();
+        $html .= 'Content after link';
+        $html .= Item::end();
+
+        $expected = '<li><button type="button" id>Link</button>Content after link</li>';
+
+        $this->assertSame($expected, $html);
+
+        $html = Item::widget()
+                ->link(
+                    Link::widget()->id('')->label('Link'),
+                )
+                ->begin(['class' => 'custom-class']);
+        $html .= 'Content after link';
+        $html .= Item::end();
+
+        $expected = '<li class="custom-class"><button type="button" id>Link</button>Content after link</li>';
+
+        $this->assertSame($expected, $html);
     }
 }
