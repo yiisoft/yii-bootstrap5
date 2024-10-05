@@ -9,7 +9,6 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
-use function array_map;
 use function count;
 use function iterator_count;
 
@@ -24,7 +23,7 @@ abstract class AbstractMenu extends Widget
     protected MenuType $type;
     protected int|string|null $activeItem = null;
     private ?bool $activateParents = null;
-    private array $items = [];
+    protected array $items = [];
     private ?self $parent = null;
 
     abstract protected function renderItem(mixed $item, int $index): string;
@@ -70,14 +69,6 @@ abstract class AbstractMenu extends Widget
         }
 
         return $this->defaultItem ?: null;
-    }
-
-    public function items(mixed ...$items): static
-    {
-        $new = clone $this;
-        $new->items = array_map(fn ($item) => $item instanceof self ? $item->setParent($this) : $item, $items);
-
-        return $new;
     }
 
     final protected function getItems(): array

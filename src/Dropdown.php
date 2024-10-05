@@ -29,26 +29,9 @@ final class Dropdown extends AbstractMenu
     private array $alignments = [];
     private bool $encode = false;
 
-    /**
-     *
-     * @param string|Stringable $items
-     * @return static
-     * @throws InvalidArgumentException
-     */
-    public function items(mixed ...$items): static
+    public function items(string|Stringable ...$items): static
     {
         foreach ($items as $item) {
-
-            if (!is_string($item) && !$item instanceof Stringable) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        '"$item" must be instance of "%s" or string. "%s" given.',
-                        Stringable::class,
-                        get_debug_type($item)
-                    )
-                );
-            }
-
             if ($item instanceof self && $item->getToggle() === null) {
                 throw new LogicException(
                     sprintf(
@@ -59,7 +42,10 @@ final class Dropdown extends AbstractMenu
             }
         }
 
-        return parent::items(...$items);
+        $new = clone $this;
+        $new->items = $items;
+
+        return $new;
     }
 
     public function activateParent(): void

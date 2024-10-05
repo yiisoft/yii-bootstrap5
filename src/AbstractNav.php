@@ -5,39 +5,19 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Generator;
-use InvalidArgumentException;
 use LogicException;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
-use function get_debug_type;
 use function sprintf;
 
 abstract class AbstractNav extends AbstractMenu
 {
     protected ?Size $vertical = null;
 
-    /**
-     *
-     * @param Link|Dropdown $items
-     * @return static
-     * @throws InvalidArgumentException
-     * @throws LogicException
-     */
-    public function items(mixed ...$items): static
+    public function items(Link|Dropdown ...$items): static
     {
         foreach ($items as $item) {
-            if (!$item instanceof Link && !$item instanceof Dropdown) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        '"$item" must be instance of "%s" or "%s". "%s" given.',
-                        Link::class,
-                        Dropdown::class,
-                        get_debug_type($item),
-                    )
-                );
-            }
-
             if ($item instanceof Dropdown && $item->getToggle() === null) {
                 throw new LogicException(
                     sprintf(
@@ -48,9 +28,11 @@ abstract class AbstractNav extends AbstractMenu
             }
         }
 
-        return parent::items(...$items);
-    }
+        $new = clone $this;
+        $new->items = $items;
 
+        return $new;
+    }
 
     public function activateParent(): void
     {

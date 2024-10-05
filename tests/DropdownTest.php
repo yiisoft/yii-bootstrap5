@@ -470,13 +470,8 @@ final class DropdownTest extends TestCase
     public static function exceptionDataProvider(): array
     {
         return [
-            [1, InvalidArgumentException::class],
-            [null, InvalidArgumentException::class],
             [Html::span('test'), null],
-            [new stdClass(), InvalidArgumentException::class],
             ['string', null],
-            [[1, 2, 3], InvalidArgumentException::class],
-            [true, InvalidArgumentException::class],
             [Dropdown::class, LogicException::class],
         ];
     }

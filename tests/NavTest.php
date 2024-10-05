@@ -15,8 +15,6 @@ use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
 
-use function is_string;
-
 final class NavTest extends TestCase
 {
     public function testSimpleNav(): void
@@ -411,7 +409,6 @@ final class NavTest extends TestCase
     public static function itemExceptionProvider(): array
     {
         return [
-            [new stdClass(), InvalidArgumentException::class],
             [null, LogicException::class],
         ];
     }
