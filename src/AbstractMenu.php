@@ -65,7 +65,7 @@ abstract class AbstractMenu extends Widget
             return Item::widget()->widgetClassName($this->type->itemClassName());
         }
 
-        return $this->defaultItem ? $this->defaultItem : null;
+        return $this->defaultItem ?: null;
     }
 
     public function items(mixed ...$items): static
