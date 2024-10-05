@@ -17,7 +17,7 @@ use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
 
 use function array_map;
-use function Safe\preg_replace;
+use function preg_replace;
 
 /**
  * Tests for `Dropdown` widget.

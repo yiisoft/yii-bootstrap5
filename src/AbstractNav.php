@@ -26,7 +26,7 @@ abstract class AbstractNav extends AbstractMenu
      */
     public function items(mixed ...$items): static
     {
-        foreach ($items as $item) {
+        foreach ($items as $i => $item) {
             if (!$item instanceof Link && !$item instanceof Dropdown) {
                 throw new InvalidArgumentException(
                     sprintf(
@@ -41,7 +41,7 @@ abstract class AbstractNav extends AbstractMenu
             if ($item instanceof Dropdown && $item->getToggle() === null) {
                 throw new LogicException(
                     sprintf(
-                        'Every "%s" $item must contains a "toggler" property.',
+                        'Every "%s" $item must contains a "toggle" property.',
                         Dropdown::class
                     )
                 );
@@ -49,6 +49,19 @@ abstract class AbstractNav extends AbstractMenu
         }
 
         return parent::items(...$items);
+    }
+
+
+    public function activateParent(): void
+    {
+    }
+
+    public function type(MenuType $type): static
+    {
+        $new = clone $this;
+        $new->type = $type;
+
+        return $new;
     }
 
     /**
@@ -115,12 +128,7 @@ abstract class AbstractNav extends AbstractMenu
                 $this->prepareLink($item->getToggle(), $index),
             );
 
-            if ($this->activateParents && $this->activeItem !== null) {
-                $dropdown = $dropdown->activateParents($this->activateParents)
-                                     ->activeItem($this->activeItem);
-            }
-
-            return $dropdown->render();
+            return $dropdown->setParent($this)->render();
         }
 
         $link = $this->prepareLink($item, $index);

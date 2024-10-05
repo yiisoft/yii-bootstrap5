@@ -147,13 +147,22 @@ final class NavTest extends TestCase
             )
             ->items(
                 Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
-                Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
+                Dropdown::widget()
+                    ->id('')
+                    ->toggle(
+                        Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2')
+                    )
+                    ->items(
+                        Link::widget()->id('test-link-2-1')->label('Link 1')->url('/link-2/link-1'),
+                        Link::widget()->id('test-link-2-2')->label('Link 2')->url('/link-2/link-2'),
+                        Link::widget()->id('test-link-2-3')->label('Link 3')->url('/link-2/link-3')
+                    ),
                 Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
             );
 
         $nav = Nav::widget()
                 ->id('test-nav')
-                ->activeItem('/link-2')
+                ->activeItem('/link-2/link-2')
                 ->activateParents(true)
                 ->items($dropdown);
 
@@ -163,7 +172,14 @@ final class NavTest extends TestCase
         <a id="test-toggle" class="dropdown-toggle nav-link active" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a>
         <ul id="test-dropdown" class="dropdown-menu">
         <li><a id="test-link-1" class="dropdown-item" href="/link-1">Link 1</a></li>
-        <li><a id="test-link-2" class="dropdown-item active" href="/link-2" aria-current="page">Link 2</a></li>
+        <li class="dropdown">
+        <a id="test-link-2" class="dropdown-item dropdown-toggle active" href="/link-2" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" role="button" data-bs-toggle="dropdown" aria-current="page">Link 2</a>
+        <ul id class="dropdown-menu">
+        <li><a id="test-link-2-1" class="dropdown-item" href="/link-2/link-1">Link 1</a></li>
+        <li><a id="test-link-2-2" class="dropdown-item active" href="/link-2/link-2" aria-current="page">Link 2</a></li>
+        <li><a id="test-link-2-3" class="dropdown-item" href="/link-2/link-3">Link 3</a></li>
+        </ul>
+        </li>
         <li><a id="test-link-3" class="dropdown-item" href="/link-3">Link 3</a></li>
         </ul></li></ul>
         HTML;

@@ -30,7 +30,7 @@ final class Link extends Widget
     private ?bool $encode = null;
     private ?string $url = null;
     private array $options = [];
-    private ?array $activeOptions = null;
+    private array $activeOptions = [];
     private bool $visible = true;
     private ?string $toggle = null;
 
@@ -277,9 +277,7 @@ final class Link extends Widget
                 $options['aria']['current'] = 'page';
             }
 
-            if ($this->activeOptions) {
-                $options = ArrayHelper::merge($options, $this->activeOptions);
-            }
+            $options = ArrayHelper::merge($options, $this->activeOptions);
         }
 
         if ($this->disabled) {

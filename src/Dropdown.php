@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use Generator;
 use InvalidArgumentException;
+use LogicException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
@@ -15,7 +16,6 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 
-use function array_unshift;
 use function get_debug_type;
 use function is_string;
 use function sprintf;
@@ -26,7 +26,6 @@ final class Dropdown extends AbstractMenu
     private ?Link $toggle = null;
     private bool|Link $split = false;
     private DropDirection $direction = DropDirection::Down;
-    private ?self $parent = null;
     private array $alignments = [];
     private bool $encode = false;
 
@@ -50,12 +49,26 @@ final class Dropdown extends AbstractMenu
                 );
             }
 
-            if ($item instanceof self) {
-                $items[$i] = $item->parent($this);
+            if ($item instanceof self && $item->getToggle() === null) {
+                throw new LogicException(
+                    sprintf(
+                        'Every "%s" $item must contains a "toggle" property.',
+                        self::class
+                    )
+                );
             }
         }
 
         return parent::items(...$items);
+    }
+
+    public function activateParent(): void
+    {
+        $this->toggle?->activate();
+
+        if ($this->getActivateParents()) {
+            $this->getParent()?->activateParent();
+        }
     }
 
     public function toggle(?Link $toggle): self
@@ -87,14 +100,6 @@ final class Dropdown extends AbstractMenu
         return $new;
     }
 
-    public function parent(?self $parent): self
-    {
-        $new = clone $this;
-        $new->parent = $parent;
-
-        return $new;
-    }
-
     public function alignments(DropAlignment $alignment, Size ...$sizes): self
     {
         $new = clone $this;
@@ -116,7 +121,7 @@ final class Dropdown extends AbstractMenu
         return $new;
     }
 
-    final protected function getVisibleItems(): Generator
+    protected function getVisibleItems(): Generator
     {
         $index = 0;
 
@@ -127,18 +132,7 @@ final class Dropdown extends AbstractMenu
         }
     }
 
-    protected function activateTree(Link $link, Link ...$parents): ?array
-    {
-        $links = parent::activateTree($link, ...$parents);
-
-        if ($links && $this->toggle) {
-            array_unshift($links, $this->toggle->activate());
-        }
-
-        return $links;
-    }
-
-    private function prepareToggle(): ?link
+    private function prepareToggle(): ?Link
     {
         if ($this->toggle === null) {
             return null;
@@ -155,9 +149,10 @@ final class Dropdown extends AbstractMenu
             $toggle = $this->toggle;
         }
 
+        $parent = $this->getParent();
         $options = ['aria-expanded' => 'false'];
 
-        if ($this->parent) {
+        if ($parent instanceof self) {
             $options['class'] = 'dropdown-item dropdown-toggle';
             $options['data-bs-auto-close'] = 'outside';
             $options['aria-haspopup'] = 'true';
@@ -217,13 +212,12 @@ final class Dropdown extends AbstractMenu
     public function render(): string
     {
         $menu = parent::render();
-        $toggleButton = $this->prepareToggle();
 
-        if ($menu === '' || $toggleButton === null) {
+        if ($menu === '') {
             return $menu;
         }
 
-        if ($toggleButton) {
+        if ($toggleButton = $this->prepareToggle()) {
 
             if (!$toggleButton->isVisible()) {
                 return '';
@@ -255,6 +249,10 @@ final class Dropdown extends AbstractMenu
             $link = $this->prepareLink($item, $index);
 
             return ($link?->getItem() ?? $link)->render();
+        }
+
+        if ($item instanceof self) {
+            return $item->setParent($this)->render();
         }
 
         return $this->encode ? Html::encode($item) : (string)$item;
