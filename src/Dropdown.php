@@ -37,7 +37,7 @@ final class Dropdown extends AbstractMenu
      */
     public function items(mixed ...$items): static
     {
-        foreach ($items as $i => $item) {
+        foreach ($items as $item) {
 
             if (!is_string($item) && !$item instanceof Stringable) {
                 throw new InvalidArgumentException(
@@ -225,7 +225,7 @@ final class Dropdown extends AbstractMenu
 
             if ($this->split) {
                 $splitButton = $toggleButton;
-                $item = $this->toggle->getItem();
+                $item = $this->toggle?->getItem();
                 $itemClassName = MenuType::BtnGroup->value . ' ' . $this->direction->value;
             } else {
                 $splitButton = null;
@@ -248,7 +248,7 @@ final class Dropdown extends AbstractMenu
         if ($item instanceof Link) {
             $link = $this->prepareLink($item, $index);
 
-            return ($link?->getItem() ?? $link)->render();
+            return ($link->getItem() ?? $link)->render();
         }
 
         if ($item instanceof self) {

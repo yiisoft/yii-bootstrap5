@@ -26,7 +26,7 @@ abstract class AbstractNav extends AbstractMenu
      */
     public function items(mixed ...$items): static
     {
-        foreach ($items as $i => $item) {
+        foreach ($items as $item) {
             if (!$item instanceof Link && !$item instanceof Dropdown) {
                 throw new InvalidArgumentException(
                     sprintf(

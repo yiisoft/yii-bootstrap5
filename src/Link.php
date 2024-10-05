@@ -17,9 +17,6 @@ use const PHP_URL_PATH;
  */
 final class Link extends Widget
 {
-    /**
-     * @psalm-var non-empty-string $tag
-     */
     private ?string $tag = null;
     private ?string $widgetClassName = null;
     private bool $active = false;
@@ -50,9 +47,6 @@ final class Link extends Widget
         return $this->options['id'] ?? parent::getId();
     }
 
-    /**
-     * @psalm-param non-empty-string $tag
-     */
     public function tag(?string $tag): self
     {
         $new = clone $this;
@@ -294,6 +288,7 @@ final class Link extends Widget
 
         Html::addCssClass($options, $classNames);
 
+        /** @psalm-var non-empty-string $tag */
         return Html::tag($tag, $this->label, $options)
                 ->encode($this->encode)
                 ->render();
