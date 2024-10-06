@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Generator;
-use RuntimeException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
@@ -14,8 +12,6 @@ use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Enum\Theme;
-
-use function sprintf;
 
 final class Dropdown extends AbstractMenu
 {
@@ -206,6 +202,8 @@ final class Dropdown extends AbstractMenu
 
     /**
      * @param string|Stringable $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     protected function renderItem(mixed $item, int $index): string
     {
