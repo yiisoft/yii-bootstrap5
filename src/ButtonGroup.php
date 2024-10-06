@@ -99,6 +99,9 @@ final class ButtonGroup extends AbstractMenu
 
     public function activateParent(): void
     {
+        if ($this->getActivateParents()) {
+            $this->getParent()?->activateParent();
+        }
     }
 
     protected function prepareMenu(): Tag
@@ -131,8 +134,8 @@ final class ButtonGroup extends AbstractMenu
     {
         $toggle = $dropdown->getToggle();
 
-        /** @psalm-suppress PossiblyNullArgument */
         /** @var Item $item */
+        /** @psalm-suppress PossiblyNullReference */
         $item = $toggle->getItem() ?? Item::widget()->tag($this->tag);
 
         return $dropdown->toggle(
