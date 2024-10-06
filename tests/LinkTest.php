@@ -176,14 +176,14 @@ final class LinkTest extends TestCase
         return [
             [
                 [
-                    'class' => 'custom-active-class',
+                    'class' => 'custom-link-class custom-active-class',
                     'style' => [
                         'margin' => '-1px',
                     ],
                 ],
 
                 [
-                    'class="custom-active-class active"',
+                    'class="custom-link-class custom-active-class active"',
                     'style="margin: -1px;"',
                 ],
             ],
@@ -196,6 +196,9 @@ final class LinkTest extends TestCase
     public function testActiveOptions(array $options, array $expected): void
     {
         $notActive = Link::widget()
+            ->options([
+                'class' => 'custom-link-class',
+            ])
             ->activeOptions($options)
             ->label('');
         $active = $notActive->active(true);

@@ -15,7 +15,7 @@ abstract class AbstractNav extends AbstractMenu
 {
     protected ?Size $vertical = null;
 
-    public function items(Link|Dropdown ...$items): static
+    final public function items(Link|Dropdown ...$items): static
     {
         $new = clone $this;
         $new->items = $items;
@@ -75,8 +75,8 @@ abstract class AbstractNav extends AbstractMenu
         $index = 0;
 
         /** @var Link|Dropdown $item */
-        foreach ($this->getItems() as $item) {
-            /** @var Link $link */
+        foreach ($this->items as $item) {
+            /** @var Link|null $link */
             $link = $item instanceof Dropdown ? $item->getToggle() : $item;
 
             if ($link === null) {
@@ -100,7 +100,7 @@ abstract class AbstractNav extends AbstractMenu
     protected function renderItem(mixed $item, int $index): string
     {
         if ($item instanceof Dropdown) {
-
+            /** @psalm-suppress PossiblyNullArgument */
             return $item->toggle(
                 $this->prepareLink($item->getToggle(), $index),
             )

@@ -17,9 +17,9 @@ abstract class AbstractMenu extends Widget
     /**
      * @psalm-var non-empty-string $tag
      */
-    private string $tag = 'ul';
+    protected string $tag = 'ul';
     private array $options = [];
-    private bool|Item $defaultItem = true;
+    protected bool|Item $defaultItem = true;
     protected MenuType $type;
     protected int|string|null $activeItem = null;
     private ?bool $activateParents = null;
@@ -69,11 +69,6 @@ abstract class AbstractMenu extends Widget
         }
 
         return $this->defaultItem ?: null;
-    }
-
-    final protected function getItems(): array
-    {
-        return $this->items;
     }
 
     public function activeItem(int|string|null $activeItem): static

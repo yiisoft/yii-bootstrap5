@@ -207,7 +207,7 @@ final class Link extends Widget
     public function addOptions(array $options): self
     {
         $new = clone $this;
-        $new->options = ArrayHelper::merge($new->options, $options);
+        $new->options = self::mergeAttributes($new->options, $options);
 
         return $new;
     }
@@ -226,6 +226,23 @@ final class Link extends Widget
         $new->toggle = $toggle;
 
         return $new;
+    }
+
+    private static function mergeAttributes(array $old, array $new): array
+    {
+        $classes = ArrayHelper::remove($new, 'class');
+        $styles = ArrayHelper::remove($new, 'style');
+        $old = [...$old, ...$new];
+
+        if ($classes) {
+            Html::addCssClass($old, $classes);
+        }
+
+        if ($styles) {
+            Html::addCssStyle($old, $styles);
+        }
+
+        return $old;
     }
 
     public function render(): string
@@ -271,7 +288,7 @@ final class Link extends Widget
                 $options['aria']['current'] = 'page';
             }
 
-            $options = ArrayHelper::merge($options, $this->activeOptions);
+            $options = self::mergeAttributes($options, $this->activeOptions);
         }
 
         if ($this->disabled) {

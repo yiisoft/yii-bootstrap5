@@ -12,6 +12,8 @@ enum MenuType: string
     case Underline = 'nav nav-underline';
     case Dropdown = 'dropdown-menu';
     case BtnGroup = 'btn-group';
+    case BtnGroupVertical = 'btn-group-vertical';
+    case BtnToolbar = 'btn-toolbar';
 
     public function toggleComponent(): string
     {
@@ -26,6 +28,7 @@ enum MenuType: string
     {
         return match ($this) {
             self::Dropdown => null,
+            self::BtnGroup, self::BtnGroupVertical, self::BtnToolbar => 'btn-group',
             default => 'nav-item',
         };
     }
@@ -34,6 +37,7 @@ enum MenuType: string
     {
         return match ($this) {
             self::Dropdown => 'dropdown-item',
+            self::BtnGroup, self::BtnGroupVertical, self::BtnToolbar => 'btn',
             default => 'nav-link',
         };
     }

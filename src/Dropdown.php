@@ -26,7 +26,7 @@ final class Dropdown extends AbstractMenu
     private array $alignments = [];
     private bool $encode = false;
 
-    public function items(string|Stringable ...$items): static
+    public function items(string|Stringable ...$items): self
     {
         $new = clone $this;
         $new->items = $items;
@@ -97,7 +97,7 @@ final class Dropdown extends AbstractMenu
     {
         $index = 0;
 
-        foreach ($this->getItems() as $item) {
+        foreach ($this->items as $item) {
             if (!$item instanceof Link || $item->isVisible()) {
                 yield $index++ => $item;
             }

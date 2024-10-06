@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use LogicException;
 use RuntimeException;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
@@ -388,7 +387,7 @@ final class DropdownTest extends TestCase
     public static function splitDataProvider(): array
     {
         return [
-            [null, '<div class="btn-group dropdown"><a id href="/link">Toggler</a><button type="button" id class="dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Split toggle button</button>'],
+            [null, '<div class="btn-group dropdown"><a id href="/link">Toggler</a><button type="button" id class="custom-toggle-class dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Split toggle button</button>'],
             [true, '<div class="btn-group dropdown"><a id href="/link">Toggler</a><a id class="dropdown-toggle dropdown-toggle-split" href="/link" aria-expanded="false" role="button" data-bs-toggle="dropdown"><span class="visually-hidden">Toggle Dropdown</span></a>'],
             [false, '<div class="dropdown"><a id class="dropdown-toggle" href="/link" aria-expanded="false" role="button" data-bs-toggle="dropdown">Toggler</a>'],
         ];
