@@ -90,13 +90,7 @@ final class Tabs extends AbstractNav
 
     protected function prepareMenu(): Tag
     {
-        $tag = parent::prepareMenu()->attribute('role', 'tablist');
-
-        if ($this->vertical) {
-            return $tag->addClass($this->vertical->formatClassName('flex', 'column'));
-        }
-
-        return $tag;
+        return parent::prepareMenu()->attribute('role', 'tablist');
     }
 
     protected function prepareLink(Link $link, int $index): Link

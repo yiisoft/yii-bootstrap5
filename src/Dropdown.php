@@ -30,9 +30,11 @@ final class Dropdown extends AbstractMenu
         return $new;
     }
 
-    protected function activateParent(): void
+    public function activateParent(): void
     {
-        $this->toggle?->activate();
+        if ($this->getActivateParents()) {
+            $this->toggle?->activate();
+        }
 
         parent::activateParent();
     }

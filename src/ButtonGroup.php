@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Generator;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
@@ -125,6 +124,7 @@ final class ButtonGroup extends AbstractMenu
 
     private function renderDropdown(Dropdown $dropdown): string
     {
+        /** @var Link $toggle */
         $toggle = $dropdown->getToggle();
 
         /** @var Item $item */

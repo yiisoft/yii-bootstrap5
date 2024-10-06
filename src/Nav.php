@@ -36,15 +36,4 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 final class Nav extends AbstractNav
 {
     protected MenuType $type = MenuType::Nav;
-
-    protected function prepareMenu(): Tag
-    {
-        $tag = parent::prepareMenu();
-
-        if ($this->vertical) {
-            return $tag->addClass($this->vertical->formatClassName('flex', 'column'));
-        }
-
-        return $tag;
-    }
 }

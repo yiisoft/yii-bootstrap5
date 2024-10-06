@@ -95,7 +95,7 @@ abstract class AbstractMenu extends Widget
         return $this->activateParents ?? $this->parent?->getActivateParents() ?? false;
     }
 
-    protected function activateParent(): void
+    public function activateParent(): void
     {
         if ($this->getActivateParents()) {
             $this->parent?->activateParent();
@@ -120,9 +120,7 @@ abstract class AbstractMenu extends Widget
 
         foreach ($this->items as $item) {
             if ($item instanceof Link) {
-                if ($item->isVisible()) {
-                    yield $index++ => $item;
-                }
+                $visible = $item->isVisible();
             } elseif ($item instanceof Dropdown) {
 
                 if ($item->getToggle() === null) {
@@ -134,11 +132,13 @@ abstract class AbstractMenu extends Widget
                     );
                 }
 
-                if ($item->getToggle()->isVisible()) {
-                    yield $index++ => $item;
-                }
+                $visible = $item->getToggle()->isVisible();
 
             } else {
+                $visible = true;
+            }
+
+            if ($visible) {
                 yield $index++ => $item;
             }
         }
@@ -194,7 +194,7 @@ abstract class AbstractMenu extends Widget
 
         $link = $link->widgetClassName($this->type->linkClassName());
 
-        if ($link->getItem() === null) {
+        if ($link->getItem() === null && $this->defaultItem) {
             return $link->item($this->getDefaultItem());
         }
 

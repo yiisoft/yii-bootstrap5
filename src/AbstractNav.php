@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
@@ -65,6 +66,17 @@ abstract class AbstractNav extends AbstractMenu
         $new->vertical = $vertical;
 
         return $new;
+    }
+
+    protected function prepareMenu(): Tag
+    {
+        $tag = parent::prepareMenu();
+
+        if ($this->vertical) {
+            return $tag->addClass($this->vertical->formatClassName('flex', 'column'));
+        }
+
+        return $tag;
     }
 
     /**
