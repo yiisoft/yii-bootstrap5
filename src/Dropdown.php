@@ -34,9 +34,7 @@ final class Dropdown extends AbstractMenu
     {
         $this->toggle?->activate();
 
-        if ($this->getActivateParents()) {
-            $this->getParent()?->activateParent();
-        }
+        parent::activateParent();
     }
 
     public function toggle(?Link $toggle): self

@@ -30,8 +30,6 @@ abstract class AbstractMenu extends Widget
 
     abstract protected function renderItem(mixed $item, int $index): string;
 
-    abstract public function activateParent(): void;
-
     /**
      * @psalm-param non-empty-string $tag
      */
@@ -92,9 +90,16 @@ abstract class AbstractMenu extends Widget
         return $new;
     }
 
-    public function getActivateParents(): ?bool
+    public function getActivateParents(): bool
     {
-        return $this->activateParents ?? $this->parent?->getActivateParents();
+        return $this->activateParents ?? $this->parent?->getActivateParents() ?? false;
+    }
+
+    public function activateParent(): void
+    {
+        if ($this->getActivateParents()) {
+            $this->parent?->activateParent();
+        }
     }
 
     public function setParent(?self $parent): self
@@ -184,10 +189,7 @@ abstract class AbstractMenu extends Widget
     {
         if ($this->isLinkActive($link, $index)) {
             $link->activate();
-
-            if ($this->getActivateParents()) {
-                $this->activateParent();
-            }
+            $this->activateParent();
         }
 
         $link = $link->widgetClassName($this->type->linkClassName());

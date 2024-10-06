@@ -59,10 +59,6 @@ final class ButtonToolbar extends AbstractMenu
         return $new;
     }
 
-    public function activateParent(): void
-    {
-    }
-
     protected function prepareMenu(): Tag
     {
         return parent::prepareMenu()->attribute('role', 'toolbar');

@@ -19,10 +19,6 @@ abstract class AbstractNav extends AbstractMenu
         return $new;
     }
 
-    public function activateParent(): void
-    {
-    }
-
     private function type(MenuType $type): static
     {
         $new = clone $this;

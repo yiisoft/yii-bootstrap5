@@ -97,13 +97,6 @@ final class ButtonGroup extends AbstractMenu
         return $new;
     }
 
-    public function activateParent(): void
-    {
-        if ($this->getActivateParents()) {
-            $this->getParent()?->activateParent();
-        }
-    }
-
     protected function prepareMenu(): Tag
     {
         $tag = parent::prepareMenu()->attribute('role', 'group');
