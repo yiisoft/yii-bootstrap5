@@ -15,7 +15,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  * ```php
  * echo Nav::widget()
  *     ->activeItem('/path-2')
- *     ->links(
+ *     ->items(
  *          Link::widget()->url('/path-1')->label('Label 1'),
  *          Link::widget()->url('/path-2')->label(Html::img('src.jpg'))->encode(false),
  *          Dropdown::widget()

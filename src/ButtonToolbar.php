@@ -17,7 +17,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  * ```php
  * // a button toolbar with items configuration
  * echo ButtonToolbar::widget()
- *     ->items([
+ *     ->items(
  *         ButtonGroup::widget()
                 ->options([
                     'aria-label' => 'First group',
@@ -38,13 +38,16 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
                     Link::widget()->id('BTN6')->label('6'),
                     Link::widget()->id('BTN7')->label('7'),
                 ),
- *     ]);
+ *     );
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
 final class ButtonToolbar extends AbstractMenu
 {
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     protected string $tag = 'div';
     protected MenuType $type = MenuType::BtnToolbar;
 
@@ -65,11 +68,15 @@ final class ButtonToolbar extends AbstractMenu
         return parent::prepareMenu()->attribute('role', 'toolbar');
     }
 
+    /**
+     * @param string|Stringable $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
+     */
     protected function renderItem(mixed $item, int $index): string
     {
         return match (true) {
             $item instanceof AbstractMenu => $item->setParent($this)->render(),
-
             default => (string)$item
         };
     }

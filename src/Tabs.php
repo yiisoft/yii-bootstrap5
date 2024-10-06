@@ -15,15 +15,16 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  *
  * ```php
  * echo Tabs::widget()
- *     ->links(
+ *     ->items(
  *          Link::widget()->url('/path-1')->label('Label 1'),
  *          Link::widget()->url('/path-2')->label(Html::img('src.jpg'))->encode(false),
- *          Link::widget()
- *              ->item(
- *                  Item::widget()->items(
- *                      Link::widget()->label('Dropdown link 1'),
- *                      Link::widget()->label('Dropdown link 2'),
- *                  )
+ *          Dropdown::widget()
+ *              ->toggle(
+ *                  Link::widget()->label('Child Dropdown')
+ *              )
+ *              ->items(
+ *                  Link::widget()->url('/child-1')->label('Child 1'),
+ *                  Link::widget()->url('/child-2')->label('Child 2'),
  *              )
  *     );
  * ```
@@ -33,7 +34,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  * ```php
  * $tabs = Tabs::widget()
  *     ->renderContent(false)
- *     ->links(
+ *     ->items(
  *          Link::widget()
  *              ->label('Label 1')
  *              ->pane(

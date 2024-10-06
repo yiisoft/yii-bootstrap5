@@ -38,6 +38,9 @@ use Yiisoft\Yii\Bootstrap5\Enum\Size;
  */
 final class ButtonGroup extends AbstractMenu
 {
+    /**
+     * @psalm-var non-empty-string $tag
+     */
     protected string $tag = 'div';
     protected bool|Item $defaultItem = false;
     protected MenuType $type = MenuType::BtnGroup;
@@ -111,6 +114,8 @@ final class ButtonGroup extends AbstractMenu
 
     /**
      * @param Radio|Checkbox|Label|Dropdown|Link $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     protected function renderItem(mixed $item, int $index): string
     {

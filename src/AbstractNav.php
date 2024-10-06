@@ -73,6 +73,8 @@ abstract class AbstractNav extends AbstractMenu
 
     /**
      * @param Link|Dropdown $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     protected function renderItem(mixed $item, int $index): string
     {
