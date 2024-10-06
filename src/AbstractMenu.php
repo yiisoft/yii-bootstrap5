@@ -95,7 +95,7 @@ abstract class AbstractMenu extends Widget
         return $this->activateParents ?? $this->parent?->getActivateParents() ?? false;
     }
 
-    public function activateParent(): void
+    protected function activateParent(): void
     {
         if ($this->getActivateParents()) {
             $this->parent?->activateParent();
