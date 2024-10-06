@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
 use Yiisoft\Html\Tag\Label;
@@ -230,6 +231,42 @@ final class ButtonGroupTest extends TestCase
         $this->assertEqualsHTML($expected, $html);
     }
 
+    public function testActivateParents(): void
+    {
+        $html = ButtonGroup::widget()
+            ->id('TEST_ID')
+            ->activateParents(true)
+            ->items(
+                Link::widget()->id('')->options(['class' => 'btn-primary'])->label('1'),
+                Link::widget()->id('')->options(['class' => 'btn-primary'])->label('2'),
+                Dropdown::widget()
+                    ->id('test-dropdown')
+                    ->toggle(
+                        Link::widget()->id('')->label('Dropdown')->options(['class' => 'btn btn-primary'])
+                    )
+                    ->items(
+                        Link::widget()->id('')->url('#')->label('Dropdown link'),
+                        Link::widget()->id('')->url('#')->label('Dropdown link')->active(true),
+                    )
+            )
+            ->render();
+
+        $expected = <<<'HTML'
+        <div id="TEST_ID" class="btn-group" role="group">
+        <button type="button" id class="btn-primary btn">1</button>
+        <button type="button" id class="btn-primary btn">2</button>
+        <div class="dropdown btn-group">
+        <button type="button" id class="btn btn-primary dropdown-toggle active" aria-expanded="false" data-bs-toggle="dropdown">Dropdown</button>
+        <ul id="test-dropdown" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Dropdown link</a></li>
+        <li><a id class="dropdown-item active" href="#">Dropdown link</a></li>
+        </ul>
+        </div>
+        </div>
+        HTML;
+        $this->assertEqualsHTML($expected, $html);
+    }
+
     public function testImmutable(): void
     {
         $group = ButtonGroup::widget();
@@ -239,5 +276,23 @@ final class ButtonGroupTest extends TestCase
         $this->assertNotSame($group, $group->large());
         $this->assertNotSame($group, $group->normal());
         $this->assertNotSame($group, $group->items());
+    }
+
+    public function testException(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $html = ButtonGroup::widget()
+            ->id('TEST_ID')
+            ->activateParents(true)
+            ->items(
+                Dropdown::widget()
+                    ->id('test-dropdown')
+                    ->items(
+                        Link::widget()->id('')->url('#')->label('Dropdown link'),
+                        Link::widget()->id('')->url('#')->label('Dropdown link')->active(true),
+                    )
+            )
+            ->render();
     }
 }

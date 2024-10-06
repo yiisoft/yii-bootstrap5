@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use RuntimeException;
 use Traversable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
@@ -11,6 +12,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
 use function count;
 use function iterator_count;
+use function sprintf;
 
 abstract class AbstractMenu extends Widget
 {
@@ -27,8 +29,6 @@ abstract class AbstractMenu extends Widget
     private ?self $parent = null;
 
     abstract protected function renderItem(mixed $item, int $index): string;
-
-    abstract protected function getVisibleItems(): iterable;
 
     abstract public function activateParent(): void;
 
@@ -107,6 +107,36 @@ abstract class AbstractMenu extends Widget
     public function getParent(): ?self
     {
         return $this->parent;
+    }
+
+    protected function getVisibleItems(): iterable
+    {
+        $index = 0;
+
+        foreach ($this->items as $item) {
+            if ($item instanceof Link) {
+                if ($item->isVisible()) {
+                    yield $index++ => $item;
+                }
+            } elseif ($item instanceof Dropdown) {
+
+                if ($item->getToggle() === null) {
+                    throw new RuntimeException(
+                        sprintf(
+                            'Every child "%s" $item must contains a "toggle" property.',
+                            Dropdown::class
+                        )
+                    );
+                }
+
+                if ($item->getToggle()->isVisible()) {
+                    yield $index++ => $item;
+                }
+
+            } else {
+                yield $index++ => $item;
+            }
+        }
     }
 
     protected function isLinkActive(Link $link, ?int $index): bool

@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\ButtonGroup;
 use Yiisoft\Yii\Bootstrap5\ButtonToolbar;
+use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Link;
 
 /**
@@ -15,8 +16,6 @@ final class ButtonToolbarTest extends TestCase
 {
     public function testRender(): void
     {
-        $btn = Link::widget()->options(['class' => 'btn']);
-
         $html = ButtonToolbar::widget()
             ->id('TEST_ID')
             ->options([
@@ -30,10 +29,10 @@ final class ButtonToolbarTest extends TestCase
                         'class' => ['mr-2'],
                     ])
                     ->items(
-                        $btn->id('BTN1')->label('1'),
-                        $btn->id('BTN2')->label('2'),
-                        $btn->id('BTN3')->label('3'),
-                        $btn->id('BTN4')->label('4'),
+                        Link::widget()->id('BTN1')->label('1'),
+                        Link::widget()->id('BTN2')->label('2'),
+                        Link::widget()->id('BTN3')->label('3'),
+                        Link::widget()->id('BTN4')->label('4'),
                     ),
                 ButtonGroup::widget()
                     ->id('BG2')
@@ -41,9 +40,9 @@ final class ButtonToolbarTest extends TestCase
                         'aria-label' => 'Second group',
                     ])
                     ->items(
-                        $btn->id('BTN5')->label('5'),
-                        $btn->id('BTN6')->label('6'),
-                        $btn->id('BTN7')->label('7'),
+                        Link::widget()->id('BTN5')->label('5'),
+                        Link::widget()->id('BTN6')->label('6'),
+                        Link::widget()->id('BTN7')->label('7'),
                     ),
             )
             ->render();
@@ -77,8 +76,6 @@ final class ButtonToolbarTest extends TestCase
 
     public function testAdditionalContent(): void
     {
-        $btn = Link::widget()->options(['class' => 'btn']);
-
         $addHtml = <<<'HTML'
         <div class="input-group">
         <div class="input-group-prepend">
@@ -100,10 +97,10 @@ final class ButtonToolbarTest extends TestCase
                         'class' => ['mr-2'],
                     ])
                     ->items(
-                        $btn->id('BTN1')->label('1'),
-                        $btn->id('BTN2')->label('2'),
-                        $btn->id('BTN3')->label('3'),
-                        $btn->id('BTN4')->label('4'),
+                        Link::widget()->id('BTN1')->label('1'),
+                        Link::widget()->id('BTN2')->label('2'),
+                        Link::widget()->id('BTN3')->label('3'),
+                        Link::widget()->id('BTN4')->label('4'),
                     ),
                 $addHtml,
             )
@@ -128,5 +125,49 @@ final class ButtonToolbarTest extends TestCase
         $toolbar = ButtonToolbar::widget();
 
         $this->assertNotSame($toolbar, $toolbar->items());
+    }
+
+    public function testActivateParents(): void
+    {
+        $html = ButtonToolbar::widget()
+                    ->id('TEST_TOOLBAR')
+                    ->activateParents(true)
+                    ->items(
+                        ButtonGroup::widget()
+                            ->id('TEST_ID')
+                            ->activateParents(true)
+                            ->items(
+                                Link::widget()->id('')->options(['class' => 'btn-primary'])->label('1'),
+                                Link::widget()->id('')->options(['class' => 'btn-primary'])->label('2'),
+                                Dropdown::widget()
+                                    ->id('test-dropdown')
+                                    ->toggle(
+                                        Link::widget()->id('')->label('Dropdown')->options(['class' => 'btn btn-primary'])
+                                    )
+                                    ->items(
+                                        Link::widget()->id('')->url('#')->label('Dropdown link'),
+                                        Link::widget()->id('')->url('#')->label('Dropdown link')->active(true),
+                                    )
+                            )
+                    )
+                    ->render();
+
+        $expected = <<<'HTML'
+        <div id="TEST_TOOLBAR" class="btn-toolbar" role="toolbar">
+        <div id="TEST_ID" class="btn-group" role="group">
+        <button type="button" id class="btn-primary btn">1</button>
+        <button type="button" id class="btn-primary btn">2</button>
+        <div class="dropdown btn-group">
+        <button type="button" id class="btn btn-primary dropdown-toggle active" aria-expanded="false" data-bs-toggle="dropdown">Dropdown</button>
+        <ul id="test-dropdown" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Dropdown link</a></li>
+        <li><a id class="dropdown-item active" href="#">Dropdown link</a></li>
+        </ul>
+        </div>
+        </div>
+        </div>
+        HTML;
+        $this->assertEqualsHTML($expected, $html);
+
     }
 }

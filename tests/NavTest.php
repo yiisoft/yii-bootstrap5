@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use LogicException;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
@@ -190,6 +189,7 @@ final class NavTest extends TestCase
             [MenuType::Tabs],
             [MenuType::Pills],
             [MenuType::Underline],
+            [MenuType::Nav],
         ];
     }
 
@@ -203,16 +203,14 @@ final class NavTest extends TestCase
                     Link::widget()->label('Link 1')->url('/link-1')
                 );
 
-        $withType = $nav->type($type);
-
-        $withMethod = match ($type) {
+        $nav = match ($type) {
             MenuType::Tabs => $nav->tabs(),
             MenuType::Pills => $nav->pills(),
             MenuType::Underline => $nav->underline(),
+            MenuType::Nav => $nav->nav(),
         };
 
-        $this->assertStringContainsString('class="' . $type->value . '"', (string)$withType);
-        $this->assertStringContainsString('class="' . $type->value . '"', (string)$withMethod);
+        $this->assertStringContainsString('class="' . $type->value . '"', (string)$nav);
     }
 
     public static function verticalDataProvider(): array
@@ -279,7 +277,7 @@ final class NavTest extends TestCase
         $this->assertNotSame($nav, $nav->options([]));
         $this->assertNotSame($nav, $nav->defaultItem(false));
         $this->assertNotSame($nav, $nav->items());
-        $this->assertNotSame($nav, $nav->type(MenuType::Pills));
+        $this->assertNotSame($nav, $nav->nav());
         $this->assertNotSame($nav, $nav->tabs());
         $this->assertNotSame($nav, $nav->pills());
         $this->assertNotSame($nav, $nav->underline());

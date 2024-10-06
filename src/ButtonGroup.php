@@ -94,17 +94,6 @@ final class ButtonGroup extends AbstractMenu
         return $new;
     }
 
-    protected function getVisibleItems(): Generator
-    {
-        $index = 0;
-
-        foreach ($this->items as $item) {
-            if (!$item instanceof Link || $item->isVisible()) {
-                yield $index++ => $item;
-            }
-        }
-    }
-
     public function activateParent(): void
     {
     }
@@ -137,16 +126,7 @@ final class ButtonGroup extends AbstractMenu
     {
         $toggle = $dropdown->getToggle();
 
-        if ($toggle === null) {
-
-            throw new RuntimeException(
-                sprintf(
-                    'Every "%s" $item must contains a "toggle" property.',
-                    Dropdown::class
-                )
-            );
-        }
-
+        /** @psalm-suppress PossiblyNullArgument */
         /** @var Item $item */
         $item = $toggle->getItem() ?? Item::widget()->tag($this->tag);
 

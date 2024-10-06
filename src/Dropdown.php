@@ -93,17 +93,6 @@ final class Dropdown extends AbstractMenu
         return $new;
     }
 
-    protected function getVisibleItems(): Generator
-    {
-        $index = 0;
-
-        foreach ($this->items as $item) {
-            if (!$item instanceof Link || $item->isVisible()) {
-                yield $index++ => $item;
-            }
-        }
-    }
-
     private function prepareToggle(): ?Link
     {
         if ($this->toggle === null) {
@@ -227,17 +216,6 @@ final class Dropdown extends AbstractMenu
         }
 
         if ($item instanceof self) {
-
-            if ($item->getToggle() === null) {
-
-                throw new RuntimeException(
-                    sprintf(
-                        'Every "%s" $item must contains a "toggle" property.',
-                        self::class
-                    )
-                );
-            }
-
             return $item->setParent($this)->render();
         }
 

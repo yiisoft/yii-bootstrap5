@@ -484,7 +484,7 @@ final class DropdownTest extends TestCase
         } else {
 
             if ($item === Dropdown::class) {
-                $item = Dropdown::widget();
+                $item = Dropdown::widget()->items('');
             }
 
             $this->expectException($exception);

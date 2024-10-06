@@ -24,19 +24,19 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
                     'class' => ['mr-2'],
                 ])
                 ->items(
-                    Link::widget()->options(['class' => 'btn'])->id('BTN1')->label('1'),
-                    Link::widget()->options(['class' => 'btn'])->id('BTN2')->label('2'),
-                    Link::widget()->options(['class' => 'btn'])->id('BTN3')->label('3'),
-                    Link::widget()->options(['class' => 'btn'])->id('BTN4')->label('4'),
+                    Link::widget()->id('BTN1')->label('1'),
+                    Link::widget()->id('BTN2')->label('2'),
+                    Link::widget()->id('BTN3')->label('3'),
+                    Link::widget()->id('BTN4')->label('4'),
                 ),
             ButtonGroup::widget()
                 ->options([
                     'aria-label' => 'Second group',
                 ])
                 ->items(
-                    Link::widget()->options(['class' => 'btn'])->id('BTN5')->label('5'),
-                    Link::widget()->options(['class' => 'btn'])->id('BTN6')->label('6'),
-                    Link::widget()->options(['class' => 'btn'])->id('BTN7')->label('7'),
+                    Link::widget()->id('BTN5')->label('5'),
+                    Link::widget()->id('BTN6')->label('6'),
+                    Link::widget()->id('BTN7')->label('7'),
                 ),
  *     ]);
  * ```
@@ -54,11 +54,6 @@ final class ButtonToolbar extends AbstractMenu
         $new->items = $items;
 
         return $new;
-    }
-
-    protected function getVisibleItems(): array
-    {
-        return $this->items;
     }
 
     public function activateParent(): void

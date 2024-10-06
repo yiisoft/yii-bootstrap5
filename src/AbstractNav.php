@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Generator;
-use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
-
-use function sprintf;
 
 abstract class AbstractNav extends AbstractMenu
 {
@@ -27,12 +23,17 @@ abstract class AbstractNav extends AbstractMenu
     {
     }
 
-    public function type(MenuType $type): static
+    private function type(MenuType $type): static
     {
         $new = clone $this;
         $new->type = $type;
 
         return $new;
+    }
+
+    public function nav(): static
+    {
+        return $this->type(MenuType::Nav);
     }
 
     /**
@@ -68,30 +69,6 @@ abstract class AbstractNav extends AbstractMenu
         $new->vertical = $vertical;
 
         return $new;
-    }
-
-    final protected function getVisibleItems(): Generator
-    {
-        $index = 0;
-
-        /** @var Link|Dropdown $item */
-        foreach ($this->items as $item) {
-            /** @var Link|null $link */
-            $link = $item instanceof Dropdown ? $item->getToggle() : $item;
-
-            if ($link === null) {
-                throw new RuntimeException(
-                    sprintf(
-                        'Every "%s" $item must contains a "toggle" property.',
-                        Dropdown::class
-                    )
-                );
-            }
-
-            if ($link->isVisible()) {
-                yield $index++ => $item;
-            }
-        }
     }
 
     /**
