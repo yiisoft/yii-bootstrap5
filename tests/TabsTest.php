@@ -596,4 +596,49 @@ final class TabsTest extends TestCase
 
         $this->assertStringContainsString('class="nav nav-tabs ' . $expected . '"', (string)$tabs);
     }
+
+    public function testTabForm(): void
+    {
+        $tabs = Tabs::widget()
+                ->id('test-form')
+                ->contentTag('form')
+                ->tabContentOptions([
+                    'action' => '/',
+                ])
+                ->items(
+                    Link::widget()
+                        ->id('')
+                        ->label('Step 1')
+                        ->pane(
+                            TabPane::widget()->tag('fieldset')->id('step-1')->content('Step 1 content'),
+                        ),
+                    Link::widget()
+                        ->id('')
+                        ->label('Step 2')
+                        ->pane(
+                            TabPane::widget()->tag('fieldset')->id('step-2')->content('Step 2 content'),
+                        ),
+                    Link::widget()->id('')->options(['type' => 'submit'])->label('Submit')->widgetClassName('btn btn-primary')
+                );
+
+        $expected = <<<'HTML'
+        <ul id="test-form" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <button type="button" id class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="step-1" aria-selected="true" data-bs-target="#step-1">Step 1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+        <button type="button" id class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="step-2" aria-selected="false" data-bs-target="#step-2">Step 2</button>
+        </li>
+        <li class="nav-item">
+        <button type="submit" id class="btn btn-primary">Submit</button>
+        </li>
+        </ul>
+        <form class="tab-content" action="/">
+        <fieldset id="step-1" class="tab-pane active" tabindex="0" role="tabpanel">Step 1 content</fieldset>
+        <fieldset id="step-2" class="tab-pane" tabindex="0" role="tabpanel">Step 2 content</fieldset>
+        </form>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
+    }
 }

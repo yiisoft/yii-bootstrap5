@@ -85,6 +85,7 @@ final class TabPane extends Widget
     public function render(): string
     {
         $options = $this->options;
+        $linkId = $this->link->getId();
         $classNames = ['widget' => 'tab-pane'];
 
         if (!isset($options['id'])) {
@@ -95,8 +96,8 @@ final class TabPane extends Widget
             $options['tabindex'] = 0;
         }
 
-        if (!isset($options['aria-labelledby']) && !isset($options['aria']['labelledby'])) {
-            $options['aria-labelledby'] = $this->link->getId();
+        if ($linkId && !isset($options['aria-labelledby']) && !isset($options['aria']['labelledby'])) {
+            $options['aria-labelledby'] = $linkId;
         }
 
         if (!isset($options['role'])) {

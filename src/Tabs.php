@@ -56,6 +56,10 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  */
 final class Tabs extends AbstractNav
 {
+    /**
+     * @psalm-var non-empty-string $tag
+     */
+    private string $contentTag = 'div';
     protected MenuType $type = MenuType::Tabs;
     private array $contentOptions = [];
     private bool $renderContent = true;
@@ -73,6 +77,17 @@ final class Tabs extends AbstractNav
     {
         $new = clone $this;
         $new->renderContent = $render;
+
+        return $new;
+    }
+
+    /**
+     * @psalm-param non-empty-string $tag
+     */
+    public function contentTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->contentTag = $tag;
 
         return $new;
     }
@@ -116,7 +131,9 @@ final class Tabs extends AbstractNav
             $panes[] = (string)$link->getPane();
         }
 
-        return Html::div(implode('', $panes), $options)
+        return Html::tag($this->contentTag)
+                ->attributes($options)
+                ->content(...$panes)
                 ->encode(false)
                 ->render();
     }
