@@ -49,6 +49,7 @@ use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
  * echo $tabs;
  * echo Alert::widget()->body('Body');
  * echo $tabs->renderTabContent();
+ * ```
  *
  * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/
  *
@@ -65,6 +66,17 @@ final class Tabs extends AbstractNav
     private bool $renderContent = true;
     protected int|string|null $activeItem = 0;
 
+    /**
+     * @psalm-param non-empty-string $tag
+     */
+    public function contentTag(string $tag): self
+    {
+        $new = clone $this;
+        $new->contentTag = $tag;
+
+        return $new;
+    }
+
     public function tabContentOptions(array $options): self
     {
         $new = clone $this;
@@ -79,28 +91,6 @@ final class Tabs extends AbstractNav
         $new->renderContent = $render;
 
         return $new;
-    }
-
-    /**
-     * @psalm-param non-empty-string $tag
-     */
-    public function contentTag(string $tag): self
-    {
-        $new = clone $this;
-        $new->contentTag = $tag;
-
-        return $new;
-    }
-
-    public function render(): string
-    {
-        $tabs = parent::render();
-
-        if ($tabs !== '' && $this->renderContent) {
-            $tabs .= $this->renderTabContent();
-        }
-
-        return $tabs;
     }
 
     protected function prepareMenu(string $item, string ...$items): Tag
@@ -120,17 +110,38 @@ final class Tabs extends AbstractNav
         return $link->toggle($this->type->toggleComponent());
     }
 
+    public function render(): string
+    {
+        $tabs = parent::render();
+
+        if ($tabs !== '' && $this->renderContent) {
+            $tabs .= $this->renderTabContent();
+        }
+
+        return $tabs;
+    }
+
     public function renderTabContent(): string
     {
         $panes = [];
+
+        /** @var Link|Dropdown $item */
+        foreach ($this->getVisibleItems() as $item) {
+            /** @var Link $link */
+            $link = $item instanceof Dropdown ? $item->getToggle() : $item;
+
+            if ($pane = $link->getPane()) {
+                $panes[] = $pane->render();
+            }
+        }
+
+        if ($panes === []) {
+            return '';
+        }
+
         $options = $this->contentOptions;
 
         Html::addCssClass($options, ['widget' => 'tab-content']);
-
-        /** @var Link $link */
-        foreach ($this->getVisibleItems() as $link) {
-            $panes[] = (string)$link->getPane();
-        }
 
         return Html::tag($this->contentTag)
                 ->attributes($options)

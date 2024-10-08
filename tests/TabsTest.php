@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Html;
+use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\Enum\Size;
 use Yiisoft\Yii\Bootstrap5\Item;
 use Yiisoft\Yii\Bootstrap5\Link;
@@ -29,7 +30,6 @@ final class TabsTest extends TestCase
         <li class="nav-item"><a id="tab-2" class="nav-link" href="/link-2">Link 2</a></li>
         <li class="nav-item"><a id="tab-3" class="nav-link" href="/link-3">Link 3</a></li>
         </ul>
-        <div class="tab-content"></div>
         HTML;
 
         $this->assertEqualsHTML($expected, (string)$tabs);
@@ -637,6 +637,61 @@ final class TabsTest extends TestCase
         <fieldset id="step-1" class="tab-pane active" tabindex="0" role="tabpanel">Step 1 content</fieldset>
         <fieldset id="step-2" class="tab-pane" tabindex="0" role="tabpanel">Step 2 content</fieldset>
         </form>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$tabs);
+    }
+
+    public function testDropdown(): void
+    {
+        $tabs = Tabs::widget()
+                ->id('test-tabs')
+                ->items(
+                    Link::widget()
+                        ->id('tab-1')
+                        ->label('Link 1')
+                        ->url('/link-1')
+                        ->pane(
+                            TabPane::widget()->id('pane-1')->content('Content tab 1'),
+                        ),
+                    Dropdown::widget()
+                        ->id('nested-dropdown')
+                        ->toggle(
+                            Link::widget()->id('tab-2')->label('Link 2')->url('/link-2')
+                        )
+                        ->items(
+                            Link::widget()->id('')->label('Dropdown link 2')->url('/dropdown/link-1'),
+                            Link::widget()->id('')->label('Dropdown link 2')->url('/dropdown/link-2'),
+                        ),
+                    Link::widget()
+                        ->id('tab-3')
+                        ->label('Link 3')
+                        ->url('/link-3')
+                        ->pane(
+                            TabPane::widget()->id('pane-3')->content('Content tab 3'),
+                        ),
+                );
+
+        $expected = <<<'HTML'
+        <ul id="test-tabs" class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a id="tab-1" class="nav-link active" href="/link-1" data-bs-toggle="tab" role="tab" aria-controls="pane-1" aria-selected="true" data-bs-target="#pane-1" aria-current="page">Link 1</a>
+        </li>
+        <li class="dropdown nav-item">
+        <a id="tab-2" class="dropdown-toggle nav-link" href="/link-2" aria-expanded="false" role="button" data-bs-toggle="dropdown">Link 2</a>
+        <ul id="nested-dropdown" class="dropdown-menu">
+        <li><a id class="dropdown-item active" href="/dropdown/link-1" aria-current="page">Dropdown link 2</a></li>
+        <li><a id class="dropdown-item" href="/dropdown/link-2">Dropdown link 2</a></li>
+        </ul>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a id="tab-3" class="nav-link" href="/link-3" data-bs-toggle="tab" role="tab" aria-controls="pane-3" aria-selected="false" data-bs-target="#pane-3">Link 3</a>
+        </li>
+        </ul>
+        <div class="tab-content">
+        <div id="pane-1" class="tab-pane active" tabindex="0" aria-labelledby="tab-1" role="tabpanel">Content tab 1</div>
+        <div id="pane-3" class="tab-pane" tabindex="0" aria-labelledby="tab-3" role="tabpanel">Content tab 3</div>
+        </div>
         HTML;
 
         $this->assertEqualsHTML($expected, (string)$tabs);
