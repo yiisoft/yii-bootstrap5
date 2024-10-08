@@ -146,10 +146,10 @@ final class Dropdown extends AbstractMenu
         return $link;
     }
 
-    protected function prepareMenu(): Tag
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
         $classNames = [];
-        $tag = parent::prepareMenu();
+        $tag = parent::prepareMenu($item, ...$items);
         $prefix = MenuType::Dropdown->value;
 
         foreach ($this->alignments as $name => $sizes) {

@@ -96,9 +96,10 @@ final class ButtonGroup extends AbstractMenu
         return $new;
     }
 
-    protected function prepareMenu(): Tag
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        $tag = parent::prepareMenu()->attribute('role', 'group');
+        $tag = parent::prepareMenu($item, ...$items)
+                ->attribute('role', 'group');
 
         if ($this->size) {
             return $tag->addClass($this->size->formatClassName('btn-group'));

@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use RuntimeException;
-use Traversable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
-use function count;
-use function iterator_count;
 use function sprintf;
 
 abstract class AbstractMenu extends Widget
@@ -159,11 +156,9 @@ abstract class AbstractMenu extends Widget
         return $link->getUrl() === $active || $link->getPath() === $active;
     }
 
-    protected function prepareMenu(): Tag
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        $items = [];
         $options = $this->options;
-        $classNames = ['widget' => $this->type->value];
 
         if (!isset($options['id'])) {
             $options['id'] = $this->getId();
@@ -173,14 +168,10 @@ abstract class AbstractMenu extends Widget
             $options['data-bs-theme'] = $this->theme;
         }
 
-        Html::addCssClass($options, $classNames);
-
-        foreach ($this->getVisibleItems() as $index => $item) {
-            $items[] = $this->renderItem($item, $index);
-        }
+        Html::addCssClass($options, ['widget' => $this->type->value]);
 
         return Html::tag($this->tag)
-                ->content(...$items)
+                ->content($item, ...$items)
                 ->attributes($options)
                 ->encode(false);
     }
@@ -203,13 +194,12 @@ abstract class AbstractMenu extends Widget
 
     public function render(): string
     {
-        $iterator = $this->getVisibleItems();
-        $count = $iterator instanceof Traversable ? iterator_count($iterator) : count($iterator);
+        $items = [];
 
-        if ($count === 0) {
-            return '';
+        foreach ($this->getVisibleItems() as $index => $item) {
+            $items[] = $this->renderItem($item, $index);
         }
 
-        return $this->prepareMenu()->render();
+        return $items ? $this->prepareMenu(...$items)->render() : '';
     }
 }

@@ -68,9 +68,9 @@ abstract class AbstractNav extends AbstractMenu
         return $new;
     }
 
-    protected function prepareMenu(): Tag
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        $tag = parent::prepareMenu();
+        $tag = parent::prepareMenu($item, ...$items);
 
         if ($this->vertical) {
             return $tag->addClass($this->vertical->formatClassName('flex', 'column'));

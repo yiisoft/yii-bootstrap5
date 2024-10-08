@@ -103,9 +103,10 @@ final class Tabs extends AbstractNav
         return $tabs;
     }
 
-    protected function prepareMenu(): Tag
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        return parent::prepareMenu()->attribute('role', 'tablist');
+        return parent::prepareMenu($item, ...$items)
+                ->attribute('role', 'tablist');
     }
 
     protected function prepareLink(Link $link, int $index): Link
