@@ -4,359 +4,219 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use RuntimeException;
 use Stringable;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\CustomTag;
-use Yiisoft\Html\Tag\Li;
-use Yiisoft\Html\Tag\Ul;
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\DropAlignment;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
+use Yiisoft\Yii\Bootstrap5\Enum\Theme;
 
-use function array_key_exists;
-use function array_merge;
-use function array_merge_recursive;
-use function array_unique;
-use function is_array;
-use function is_string;
-
-/**
- * Dropdown renders a Bootstrap dropdown menu component.
- *
- * For example,
- *
- * ```php
- * <div class="dropdown">
- *     <?php
- *         echo Dropdown::widget()
- *             ->items([
- *                 ['label' => 'DropdownA', 'url' => '/'],
- *                 ['label' => 'DropdownB', 'url' => '#'],
- *             ]);
- *     ?>
- * </div>
- * ```
- */
-final class Dropdown extends Widget
+final class Dropdown extends AbstractMenu
 {
-    public const ALIGNMENT_END = 'dropdown-menu-end';
-    public const ALIGNMENT_SM_END = 'dropdown-menu-sm-end';
-    public const ALIGNMENT_MD_END = 'dropdown-menu-md-end';
-    public const ALIGNMENT_LG_END = 'dropdown-menu-lg-end';
-    public const ALIGNMENT_XL_END = 'dropdown-menu-xl-end';
-    public const ALIGNMENT_XXL_END = 'dropdown-menu-xxl-end';
-    public const ALIGNMENT_SM_START = 'dropdown-menu-sm-start';
-    public const ALIGNMENT_MD_START = 'dropdown-menu-md-start';
-    public const ALIGNMENT_LG_START = 'dropdown-menu-lg-start';
-    public const ALIGNMENT_XL_START = 'dropdown-menu-xl-start';
-    public const ALIGNMENT_XXL_START = 'dropdown-menu-xxl-start';
+    protected MenuType $type = MenuType::Dropdown;
+    private ?Link $toggle = null;
+    private bool|Link $split = false;
+    private DropDirection $direction = DropDirection::Down;
+    private array $alignments = [];
+    private bool $encode = false;
 
-    private array|string|Stringable|null $items = [];
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    private array $submenuOptions = [];
-    private array $options = [];
-    private array $itemOptions = [];
-    private array $linkOptions = [];
-    private array $alignment = [];
-
-    private ?string $tagName = null;
-
-    public function getId(?string $suffix = '-dropdown'): ?string
+    public function items(string|Stringable ...$items): self
     {
-        return $this->options['id'] ?? parent::getId($suffix);
+        $new = clone $this;
+        $new->items = $items;
+
+        return $new;
     }
 
-    private function prepareOptions(): array
+    public function activateParent(): void
     {
-        $options = $this->options;
-        $options['id'] = $this->getId();
-        $classNames = array_merge(['widget' => 'dropdown-menu'], $this->alignment);
+        if ($this->getActivateParents()) {
+            $this->toggle?->activate();
+        }
 
-        if ($this->theme) {
-            $options['data-bs-theme'] = $this->theme;
+        parent::activateParent();
+    }
 
-            if ($this->theme === self::THEME_DARK) {
-                $classNames[] = 'dropdown-menu-dark';
+    public function toggle(?Link $toggle): self
+    {
+        $new = clone $this;
+        $new->toggle = $toggle;
+
+        return $new;
+    }
+
+    public function getToggle(): ?Link
+    {
+        return $this->toggle;
+    }
+
+    public function split(bool|Link $split): self
+    {
+        $new = clone $this;
+        $new->split = $split;
+
+        return $new;
+    }
+
+    public function direction(DropDirection $direction): self
+    {
+        $new = clone $this;
+        $new->direction = $direction;
+
+        return $new;
+    }
+
+    public function alignments(DropAlignment $alignment, Size ...$sizes): self
+    {
+        $new = clone $this;
+
+        if ($sizes) {
+            $new->alignments[$alignment->value] = $sizes;
+        } else {
+            unset($new->alignments[$alignment->value]);
+        }
+
+        return $new;
+    }
+
+    public function encode(bool $encode): self
+    {
+        $new = clone $this;
+        $new->encode = $encode;
+
+        return $new;
+    }
+
+    private function prepareToggle(): ?Link
+    {
+        if ($this->toggle === null) {
+            return null;
+        }
+
+        if ($this->split === true) {
+            $toggle = $this->toggle
+                           ->encode(false)
+                           ->label(Html::span('Toggle Dropdown', ['class' => 'visually-hidden']))
+                           ->widgetClassName('dropdown-toggle-split');
+        } elseif ($this->split) {
+            $toggle = $this->split;
+        } else {
+            $toggle = $this->toggle;
+        }
+
+        $parent = $this->getParent();
+        $options = ['aria-expanded' => 'false'];
+
+        if ($parent instanceof self) {
+            $options['class'] = 'dropdown-item dropdown-toggle';
+            $options['data-bs-auto-close'] = 'outside';
+            $options['aria-haspopup'] = 'true';
+
+            if (!$this->split) {
+                $toggle = $toggle->item($this->getDefaultItem());
+            }
+
+        } else {
+            $options['class'] = 'dropdown-toggle';
+        }
+
+        if ($toggle->getTag() !== 'button') {
+            $options['role'] = 'button';
+        }
+
+        return $toggle->toggle($this->type->toggleComponent())
+                ->addOptions($options);
+    }
+
+    protected function prepareLink(Link $link, int $index): Link
+    {
+        $link = parent::prepareLink($link, $index);
+
+        if ($link->getUrl() === null) {
+
+            if (empty($link->getLabel())) {
+                return $link->widgetClassName('dropdown-divider', true);
+            }
+
+            return $link->widgetClassName('dropdown-header', true);
+        }
+
+        return $link;
+    }
+
+    protected function prepareMenu(string $item, string ...$items): Tag
+    {
+        $classNames = [];
+        $tag = parent::prepareMenu($item, ...$items);
+        $prefix = MenuType::Dropdown->value;
+
+        foreach ($this->alignments as $name => $sizes) {
+            /** @var Size $size */
+            foreach ($sizes as $size) {
+                $classNames[] = $size->formatClassName($prefix, $name);
             }
         }
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, $classNames);
-
-        return $options;
-    }
-
-    private function prepareDropdownLayout(): CustomTag|Ul
-    {
-        $options = $this->prepareOptions();
-
-        if (is_array($this->items)) {
-            return Html::ul()
-                ->attributes($options);
+        //BC with old version
+        if ($this->theme === Theme::Dark->value) {
+            $classNames[] = 'dropdown-menu-dark';
         }
 
-        $tagName = ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::tag($tagName, '', $options)
-            ->encode($this->encodeTags);
+        return $classNames ? $tag->addClass(...$classNames) : $tag;
     }
 
-    public function begin(): ?string
-    {
-        parent::begin();
-
-        $options = $this->prepareOptions();
-        $this->tagName = is_array($this->items) ? 'ul' : ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::openTag($this->tagName, $options);
-    }
-
-    /**
-     * @throws InvalidConfigException
-     * @throws JsonException
-     * @return string
-     */
     public function render(): string
     {
-        if ($this->tagName) {
-            return Html::closeTag($this->tagName);
+        $menu = parent::render();
+
+        if ($menu === '') {
+            return $menu;
         }
 
-        $layout = $this->prepareDropdownLayout();
+        if ($toggleButton = $this->prepareToggle()) {
 
-        if (is_array($this->items)) {
-            /** @var Ul $layout */
-            return $this->renderItems($layout, $this->items);
-        }
-        /** @var CustomTag $layout */
-        return $layout
-            ->content((string) $this->items)
-            ->render();
-    }
-
-    /**
-     * List of menu items in the dropdown. Each array element can be either an HTML string, or an array representing a
-     * single menu with the following structure:
-     *
-     * - label: string, required, the label of the item link.
-     * - encode: bool, optional, whether to HTML-encode item label.
-     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
-     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item link.
-     * - options: array, optional, the HTML attributes of the item.
-     * - items: array, optional, the submenu items. The structure is the same as this property.
-     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
-     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
-     *   merged with {@see submenuOptions}.
-     *
-     * To insert divider use `-`.
-     */
-    public function items(array|string|Stringable|null $value): self
-    {
-        $new = clone $this;
-        $new->items = $value;
-        $new->tagName = null;
-
-        return $new;
-    }
-
-    /**
-     * Set dropdown alignment
-     * @see https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-alignment
-     */
-    public function withAlignment(string ...$alignment): self
-    {
-        $new = clone $this;
-        $new->alignment = array_unique($alignment);
-
-        return $new;
-    }
-
-    /**
-     * When tags Labels HTML should not be encoded.
-     */
-    public function withoutEncodeLabels(): self
-    {
-        $new = clone $this;
-        $new->encodeLabels = false;
-
-        return $new;
-    }
-
-    public function withEncodeTags(bool $encode): self
-    {
-        $new = clone $this;
-        $new->encodeTags = $encode;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes for sub-menu container tags.
-     */
-    public function submenuOptions(array $value): self
-    {
-        $new = clone $this;
-        $new->submenuOptions = $value;
-
-        return $new;
-    }
-
-    /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
-     * recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $new = clone $this;
-        $new->options = $value;
-        $new->tagName = null;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item if not present in self
-     */
-    public function itemOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->itemOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item link if not present in current item
-     */
-    public function linkOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->linkOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Renders menu items.
-     *
-     * @param array $items the menu items to be rendered
-     *
-     * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
-     * items.
-     * @return string the rendering result.
-     */
-    private function renderItems(Ul $layout, array $items): string
-    {
-        $lines = [];
-
-        foreach ($items as $item) {
-            if (is_string($item)) {
-                $item = ['label' => $item, 'encode' => false, 'enclose' => false];
+            if (!$toggleButton->isVisible()) {
+                return '';
             }
 
-            if (isset($item['visible']) && !$item['visible']) {
-                continue;
-            }
-
-            if (!array_key_exists('label', $item)) {
-                throw new RuntimeException("The 'label' option is required.");
-            }
-
-            $lines[] = $this->renderItem($item);
-        }
-
-        return $layout
-            ->items(...$lines)
-            ->render();
-    }
-
-    /**
-     * Render current dropdown item
-     */
-    private function renderItem(array $item): Li
-    {
-        $url = $item['url'] ?? null;
-        $encodeLabel = $item['encode'] ?? $this->encodeLabels;
-        $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
-        $itemOptions = ArrayHelper::getValue($item, 'options', $this->itemOptions);
-        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', $this->linkOptions);
-        $active = ArrayHelper::getValue($item, 'active', false);
-        $disabled = ArrayHelper::getValue($item, 'disabled', false);
-        $enclose = ArrayHelper::getValue($item, 'enclose', true);
-
-        if ($url !== null) {
-            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
-
-            if ($disabled) {
-                ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-                ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-                Html::addCssClass($linkOptions, ['disable' => 'disabled']);
-            } elseif ($active) {
-                Html::addCssClass($linkOptions, ['active' => 'active']);
-            }
-        }
-
-        /** @psalm-suppress ConflictingReferenceConstraint */
-        if (empty($item['items'])) {
-            if ($url !== null) {
-                $content = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
-            } elseif ($label === '-') {
-                Html::addCssClass($linkOptions, ['widget' => 'dropdown-divider']);
-                $content = Html::tag('hr', '', $linkOptions);
-            } elseif ($enclose === false) {
-                $content = $label;
+            if ($this->split) {
+                $splitButton = $toggleButton;
+                $item = $this->toggle?->getItem();
+                $itemClassName = MenuType::BtnGroup->value . ' ' . $this->direction->value;
             } else {
-                Html::addCssClass($linkOptions, ['widget' => 'dropdown-header']);
-                $tag = ArrayHelper::remove($linkOptions, 'tag', 'h6');
-                $content = Html::tag($tag, $label, $linkOptions);
+                $splitButton = null;
+                $item = $toggleButton->getItem();
+                $itemClassName = $this->direction->value;
             }
 
-            return Li::tag()
-                ->content($content)
-                ->attributes($itemOptions)
-                ->encode(false);
+            if ($item === null) {
+                return $toggleButton . $splitButton . $menu;
+            }
+
+            return $item->begin(['class' => $itemClassName]) . $splitButton . $menu . $item::end();
         }
 
-        $submenuOptions = $this->submenuOptions;
+        return $menu;
+    }
 
-        if (isset($item['submenuOptions'])) {
-            $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
+    /**
+     * @param string|Stringable $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
+     */
+    protected function renderItem(mixed $item, int $index): string
+    {
+        if ($item instanceof Link) {
+            $link = $this->prepareLink($item, $index);
+
+            return ($link->getItem() ?? $link)->render();
         }
 
-        Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
-        Html::addCssClass($linkOptions, [
-            'widget' => 'dropdown-item',
-            'toggle' => 'dropdown-toggle',
-        ]);
-
-        $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
-
-        $dropdown = self::widget()
-            ->items($item['items'])
-            ->options($submenuOptions)
-            ->submenuOptions($submenuOptions);
-
-        if ($this->encodeLabels === false) {
-            $dropdown = $dropdown->withoutEncodeLabels();
+        if ($item instanceof self) {
+            return $item->setParent($this)->render();
         }
 
-        ArrayHelper::setValue($linkOptions, 'data-bs-toggle', 'dropdown');
-        ArrayHelper::setValue($linkOptions, 'data-bs-auto-close', 'outside');
-        ArrayHelper::setValue($linkOptions, 'aria-haspopup', 'true');
-        ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
-        ArrayHelper::setValue($linkOptions, 'role', 'button');
-
-        $toggle = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
-
-        return Li::tag()
-            ->content($toggle . $dropdown->render())
-            ->attributes($itemOptions)
-            ->encode(false);
+        return $this->encode ? Html::encode($item) : (string)$item;
     }
 }

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
-use Yiisoft\Html\Html;
-
-use function implode;
-use function is_array;
+use Stringable;
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.
@@ -20,114 +17,64 @@ use function is_array;
  * ```php
  * // a button toolbar with items configuration
  * echo ButtonToolbar::widget()
- *     ->buttonGroups([
- *         [
- *             'buttons' => [
- *                 ['label' => '1', 'class' => ['btn-secondary']],
- *                 ['label' => '2', 'class' => ['btn-secondary']],
- *                 ['label' => '3', 'class' => ['btn-secondary']],
- *                 ['label' => '4', 'class' => ['btn-secondary']]
- *             ],
- *              'class' => ['mr-2']
- *         ],
- *         [
- *             'buttons' => [
- *                 ['label' => '5', 'class' => ['btn-secondary']],
- *                 ['label' => '6', 'class' => ['btn-secondary']],
- *                 ['label' => '7', 'class' => ['btn-secondary']]
- *             ],
- *             'class' => ['mr-2']
- *         ],
- *         [
- *             'buttons' => [
- *                 ['label' => '8', 'class' => ['btn-secondary']]
- *             ]
- *         ]
- *     ]);
+ *     ->items(
+ *         ButtonGroup::widget()
+                ->options([
+                    'aria-label' => 'First group',
+                    'class' => ['mr-2'],
+                ])
+                ->items(
+                    Link::widget()->id('BTN1')->label('1'),
+                    Link::widget()->id('BTN2')->label('2'),
+                    Link::widget()->id('BTN3')->label('3'),
+                    Link::widget()->id('BTN4')->label('4'),
+                ),
+            ButtonGroup::widget()
+                ->options([
+                    'aria-label' => 'Second group',
+                ])
+                ->items(
+                    Link::widget()->id('BTN5')->label('5'),
+                    Link::widget()->id('BTN6')->label('6'),
+                    Link::widget()->id('BTN7')->label('7'),
+                ),
+ *     );
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
-final class ButtonToolbar extends Widget
+final class ButtonToolbar extends AbstractMenu
 {
-    private bool $encodeTags = false;
-    private array $buttonGroups = [];
-    private array $options = [];
-
-    public function render(): string
-    {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
-
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'toolbar';
-        }
-
-        return Html::div($this->renderButtonGroups(), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
-    }
-
     /**
-     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
-     * array of the following structure:
-     *
-     * - buttons: array list of buttons. Either as array or string representation
-     * - options: array optional, the HTML attributes of the button group.
-     * - encodeLabels: bool whether to HTML-encode the button labels.
+     * @psalm-var non-empty-string $tag
      */
-    public function buttonGroups(array $value): self
+    protected string $tag = 'div';
+    protected MenuType $type = MenuType::BtnToolbar;
+
+    public function items(string|Stringable ...$items): self
     {
         $new = clone $this;
-        $new->buttonGroups = $value;
+        $new->items = $items;
 
         return $new;
     }
 
-    /**
-     * The HTML attributes for the container tag. The following special options are recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        $new = clone $this;
-        $new->options = $value;
-
-        return $new;
+        return parent::prepareMenu($item, ...$items)
+                ->attribute('role', 'toolbar');
     }
 
     /**
-     * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
+     * @param string|Stringable $item
      *
-     * @throws InvalidConfigException
-     *
-     * @return string the rendering result.
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    private function renderButtonGroups(): string
+    protected function renderItem(mixed $item, int $index): string
     {
-        $buttonGroups = [];
-
-        foreach ($this->buttonGroups as $group) {
-            if (is_array($group)) {
-                if (!isset($group['buttons'])) {
-                    continue;
-                }
-
-                $options = ArrayHelper::getValue($group, 'options', []);
-                $buttonGroups[] = ButtonGroup::widget()
-                    ->buttons($group['buttons'])
-                    ->options($options)
-                    ->render();
-            } else {
-                $buttonGroups[] = $group;
-            }
-        }
-
-        return implode("\n", $buttonGroups);
+        return match (true) {
+            $item instanceof AbstractMenu => $item->setParent($this)->render(),
+            default => (string)$item
+        };
     }
 }

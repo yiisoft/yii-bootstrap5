@@ -6,611 +6,408 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\Enum\DropDirection;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
+use Yiisoft\Yii\Bootstrap5\Item;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
 
-/**
- * Tests for `Nav` widget.
- */
 final class NavTest extends TestCase
 {
-    public function testRender(): void
+    public function testSimpleNav(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                    'disabled' => true,
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'dropdownOptions' => ['id' => 'testDd1'],
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-                [
-                    'label' => 'Dropdown2',
-                    'visible' => false,
-                    'items' => [
-                        ['label' => 'Page4', 'content' => 'Page4'],
-                        ['label' => 'Page5', 'content' => 'Page5'],
-                    ],
-                ],
-                '<li class="dropdown-divider"></li>',
-            ])
-            ->render();
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->items(
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="testDd1" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li>
-        <li class="dropdown-divider"></li></ul>
+        <ul id="test-nav" class="nav">
+        <li class="nav-item"><a id="link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="nav-item"><a id="link-2" class="nav-link" href="/link-2">Link 2</a></li>
+        <li class="nav-item"><a id="link-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$nav);
     }
 
-    public function testMissingLabel(): void
+    public function testNavWithoutItems(): void
     {
-        $this->expectException(RuntimeException::class);
-        Nav::widget()
-            ->items([['content' => 'Page1']])
-            ->render();
-    }
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->tag('nav')
+                ->defaultItem(false)
+                ->items(
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                );
 
-    public function testRenderDropdownWithDropdownOptions(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'dropdownOptions' => ['class' => 'test', 'data-id' => 't1', 'id' => 'test1'],
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3'],
-                    ],
-                ],
-                [
-                    'label' => 'Dropdown2',
-                    'visible' => false,
-                    'items' => [
-                        ['label' => 'Page4', 'content' => 'Page4'],
-                        ['label' => 'Page5', 'content' => 'Page5'],
-                    ],
-                ],
-            ])
-            ->render();
         $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="test1" class="test dropdown-menu" data-id="t1">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
+        <nav id="test-nav" class="nav">
+        <a id="test-link-1" class="nav-link" href="/link-1">Link 1</a>
+        <a id="test-link-2" class="nav-link" href="/link-2">Link 2</a>
+        <a id="test-link-3" class="nav-link" href="/link-3">Link 3</a>
+        </nav>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$nav);
+    }
+
+    public function testNavWithCustomItems(): void
+    {
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->tag('nav')
+                ->defaultItem(false)
+                ->items(
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()
+                        ->id('test-link-2')
+                        ->label('Link 2')
+                        ->url('/link-2')
+                        ->item(
+                            Item::widget()
+                                ->tag('div')
+                                ->options(['class' => 'custom-item'])
+                        ),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                );
+
+        $expected = <<<'HTML'
+        <nav id="test-nav" class="nav">
+        <a id="test-link-1" class="nav-link" href="/link-1">Link 1</a>
+        <div class="custom-item nav-item"><a id="test-link-2" class="nav-link" href="/link-2">Link 2</a></div>
+        <a id="test-link-3" class="nav-link" href="/link-3">Link 3</a>
+        </nav>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$nav);
+    }
+
+    public function testActive(): void
+    {
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->activeItem('/link-2')
+                ->items(
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                );
+
+        $expected = <<<'HTML'
+        <ul id="test-nav" class="nav">
+        <li class="nav-item"><a id="test-link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="nav-item"><a id="test-link-2" class="nav-link active" href="/link-2?foo=bar" aria-current="page">Link 2</a></li>
+        <li class="nav-item"><a id="test-link-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$nav);
+
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->activeItem(2)
+                ->items(
+                    Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2?foo=bar'),
+                    Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+                );
+
+        $expected = <<<'HTML'
+        <ul id="test-nav" class="nav">
+        <li class="nav-item"><a id="test-link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="nav-item"><a id="test-link-2" class="nav-link" href="/link-2?foo=bar">Link 2</a></li>
+        <li class="nav-item"><a id="test-link-3" class="nav-link active" href="/link-3" aria-current="page">Link 3</a></li>
+        </ul>
+        HTML;
+
+        $this->assertEqualsHTML($expected, (string)$nav);
+    }
+
+    public function testActivateParents(): void
+    {
+        $dropdown = Dropdown::widget()
+            ->id('test-dropdown')
+            ->toggle(
+                Link::widget()
+                    ->id('test-toggle')
+                    ->url('#')
+                    ->label('toggler')
+            )
+            ->items(
+                Link::widget()->id('test-link-1')->label('Link 1')->url('/link-1'),
+                Dropdown::widget()
+                    ->id('')
+                    ->toggle(
+                        Link::widget()->id('test-link-2')->label('Link 2')->url('/link-2')
+                    )
+                    ->items(
+                        Link::widget()->id('test-link-2-1')->label('Link 1')->url('/link-2/link-1'),
+                        Link::widget()->id('test-link-2-2')->label('Link 2')->url('/link-2/link-2'),
+                        Link::widget()->id('test-link-2-3')->label('Link 3')->url('/link-2/link-3')
+                    ),
+                Link::widget()->id('test-link-3')->label('Link 3')->url('/link-3'),
+            );
+
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->activeItem('/link-2/link-2')
+                ->activateParents(true)
+                ->items($dropdown);
+
+        $expected = <<<'HTML'
+        <ul id="test-nav" class="nav">
+        <li class="dropdown nav-item">
+        <a id="test-toggle" class="dropdown-toggle nav-link active" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a>
+        <ul id="test-dropdown" class="dropdown-menu">
+        <li><a id="test-link-1" class="dropdown-item" href="/link-1">Link 1</a></li>
+        <li class="dropdown">
+        <a id="test-link-2" class="dropdown-item dropdown-toggle active" href="/link-2" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" role="button" data-bs-toggle="dropdown" aria-current="page">Link 2</a>
+        <ul id class="dropdown-menu">
+        <li><a id="test-link-2-1" class="dropdown-item" href="/link-2/link-1">Link 1</a></li>
+        <li><a id="test-link-2-2" class="dropdown-item active" href="/link-2/link-2" aria-current="page">Link 2</a></li>
+        <li><a id="test-link-2-3" class="dropdown-item" href="/link-2/link-3">Link 3</a></li>
+        </ul>
+        </li>
+        <li><a id="test-link-3" class="dropdown-item" href="/link-3">Link 3</a></li>
         </ul></li></ul>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$nav);
     }
 
-    public function testEmptyItems(): void
+    public static function typeDataProvider(): array
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'items' => null,
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'dropdownOptions' => ['id' => 'TEST_DD'],
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3'],
-                    ],
-                ],
-                [
-                    'label' => 'Page4',
-                    'items' => [],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown1</a><ul id="TEST_DD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li>
-        <li class="nav-item"><a class="nav-link" href="#">Page4</a></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
+        return [
+            [MenuType::Tabs],
+            [MenuType::Pills],
+            [MenuType::Underline],
+            [MenuType::Nav],
+        ];
     }
 
     /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
+     * @dataProvider typeDataProvider
      */
-    public function testExplicitActive(): void
+    public function testType(MenuType $type): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->withoutActivateItems()
-            ->items([
-                [
-                    'label' => 'Item1',
-                    'active' => true,
-                ],
-                [
-                    'label' => 'Item2',
-                    'url' => '/site/index',
-                ],
-            ])
-            ->render();
+        $nav = Nav::widget()
+                ->items(
+                    Link::widget()->label('Link 1')->url('/link-1')
+                );
 
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="nav-item"><a class="nav-link" href="/site/index">Item2</a></li></ul>
-        HTML;
+        $nav = match ($type) {
+            MenuType::Tabs => $nav->tabs(),
+            MenuType::Pills => $nav->pills(),
+            MenuType::Underline => $nav->underline(),
+            MenuType::Nav => $nav->nav(),
+        };
 
-        $this->assertSame($expected, $html);
+        $this->assertStringContainsString('class="' . $type->value . '"', (string)$nav);
+    }
+
+    public static function verticalDataProvider(): array
+    {
+        return [
+            [null, null],
+            [Size::ExtraSmall, 'flex-column'],
+            [Size::Small, 'flex-sm-column'],
+            [Size::Medium, 'flex-md-column'],
+            [Size::Large, 'flex-lg-column'],
+            [Size::ExtraLarge, 'flex-xl-column'],
+            [Size::ExtraExtraLarge, 'flex-xxl-column'],
+        ];
     }
 
     /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
+     * @dataProvider verticalDataProvider
      */
-    public function testImplicitActive(): void
+    public function testVertical(?Size $value, ?string $expected): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->currentPath('/site/index')
-            ->items([
-                [
-                    'label' => 'Item1',
-                    'active' => true,
-                ],
-                [
-                    'label' => 'Item2',
-                    'url' => '/site/index',
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="#">Item1</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/site/index">Item2</a></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
+        $nav = Nav::widget()
+                ->vertical($value)
+                ->items(
+                    Link::widget()->label('Link 1')->url('/link-1'),
+                );
 
-    /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
-     */
-    public function testExplicitActiveSubitems(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->withoutActivateItems()
-            ->currentPath('/site/index')
-            ->items([
-                [
-                    'label' => 'Item1',
-                ],
-                [
-                    'label' => 'Item2',
-                    'dropdownOptions' => ['id' => 'TEST_DROPDOWN'],
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2', 'url' => 'site/index'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="TEST_DROPDOWN" class="dropdown-menu">
-        <li><a class="dropdown-item" href="site/index">Page2</a></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
-     */
-    public function testImplicitActiveSubitems(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Item1',
-                ],
-                [
-                    'label' => 'Item2',
-                    'dropdownOptions' => ['id' => 'TEST_DROPDOWN'],
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2', 'url' => '/site/index'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'active' => true],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Item2</a><ul id="TEST_DROPDOWN" class="dropdown-menu">
-        <li><a class="dropdown-item" href="/site/index">Page2</a></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/96
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/157
-     */
-    public function testDeepActivateParents(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->activateParents()
-            ->items([
-                [
-                    'label' => 'Dropdown',
-                    'dropdownOptions' => ['id' => 'DD_ID'],
-                    'items' => [
-                        [
-                            'label' => 'Sub-dropdown',
-                            'submenuOptions' => ['id' => 'SUB_ID'],
-                            'items' => [
-                                ['label' => 'Page', 'content' => 'Page', 'active' => true],
-                            ],
-                        ],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="DD_ID" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="active dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Sub-dropdown</a><ul id="SUB_ID" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page</h6></li>
-        </ul></li>
-        </ul></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    public function testEncodeLabel(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Page1</span>',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Page1&lt;/span&gt;</a></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Page1</span>',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->withoutEncodeLabels()
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#"><span><i class=fas fas-test></i>Page1</span></a></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
-    }
-
-    public function testDropdownClass(): void
-    {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->dropdownClass(Dropdown::class)
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
+        if ($expected === null) {
+            $this->assertStringContainsString('class="nav"', (string)$nav);
+        } else {
+            $this->assertStringContainsString('class="nav ' . $expected . '"', (string)$nav);
+        }
     }
 
     public function testOptions(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'content' => 'Page1',
-                ],
-            ])
-            ->options(['class' => 'text-link'])
-            ->render();
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->options([
+                    'class' => 'custom-nav',
+                    'style' => 'margin: -1px',
+                ])
+                ->items(
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="text-link nav"><li class="nav-item"><a class="nav-link" href="#">Page1</a></li></ul>
+        <ul id="test-nav" class="custom-nav nav" style="margin: -1px">
+        <li class="nav-item"><a id="link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="nav-item"><a id="link-2" class="nav-link" href="/link-2">Link 2</a></li>
+        <li class="nav-item"><a id="link-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
         HTML;
-        $this->assertSame($expected, $html);
+
+        $this->assertEqualsHTML($expected, (string)$nav);
     }
 
-    public function testDropdownEncodeLabels(): void
+    public function testImmutable(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions(['id' => 'testDD'])
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-                '<li class="dropdown-divider"></li>',
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li>
-        <li class="dropdown-divider"></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
+        $nav = Nav::widget();
 
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions(['id' => 'testDD'])
-            ->withoutEncodeLabels()
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-                '<li class="dropdown-divider"></li>',
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown"><span><i class=fas fas-test></i>Dropdown1</span></a><ul id="testDD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li>
-        <li class="dropdown-divider"></li></ul>
-        HTML;
-        $this->assertSame($expected, $html);
+        $this->assertNotSame($nav, $nav->tag('nav'));
+        $this->assertNotSame($nav, $nav->options([]));
+        $this->assertNotSame($nav, $nav->defaultItem(false));
+        $this->assertNotSame($nav, $nav->items());
+        $this->assertNotSame($nav, $nav->nav());
+        $this->assertNotSame($nav, $nav->tabs());
+        $this->assertNotSame($nav, $nav->pills());
+        $this->assertNotSame($nav, $nav->underline());
+        $this->assertNotSame($nav, $nav->vertical(null));
+        $this->assertNotSame($nav, $nav->activeItem(1));
+        $this->assertNotSame($nav, $nav->activateParents(true));
     }
 
-    public function testMainOptions(): void
+    public function testVisible(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions(['id' => 'testDD'])
-            ->itemOptions([
-                'class' => 'custom-item-class',
-            ])
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-            ])
-            ->render();
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->items(
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2')->visible(false),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="custom-item-class dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
+        <ul id="test-nav" class="nav">
+        <li class="nav-item"><a id="link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="nav-item"><a id="link-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
         HTML;
 
-        $this->assertSame($expected, $html);
+        $this->assertEqualsHTML($expected, (string)$nav);
     }
 
-    public function testMainLinkOptions(): void
+    public function testEmpty(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions(['id' => 'testDD'])
-            ->linkOptions([
-                'class' => 'custom-link-class',
-            ])
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="custom-link-class dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
-        HTML;
-
-        $this->assertSame($expected, $html);
+        $this->assertEmpty((string)Nav::widget());
     }
 
-    public function testMainDropdownOptions(): void
+    public function testDefaultCustomItem(): void
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions([
-                'id' => 'testDD',
-                'class' => 'dropdown-menu-dark',
-            ])
-            ->items([
-                [
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-            ])
-            ->render();
+        $nav = Nav::widget()
+                ->id('test-nav')
+                ->defaultItem(
+                    Item::widget()
+                        ->options([
+                            'class' => 'default-custom-item',
+                        ])
+                )
+                ->items(
+                    Link::widget()->id('link-1')->label('Link 1')->url('/link-1'),
+                    Link::widget()->id('link-2')->label('Link 2')->url('/link-2'),
+                    Link::widget()->id('link-3')->label('Link 3')->url('/link-3'),
+                );
+
         $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu-dark dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
+        <ul id="test-nav" class="nav">
+        <li class="default-custom-item nav-item"><a id="link-1" class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="default-custom-item nav-item"><a id="link-2" class="nav-link" href="/link-2">Link 2</a></li>
+        <li class="default-custom-item nav-item"><a id="link-3" class="nav-link" href="/link-3">Link 3</a></li>
+        </ul>
         HTML;
 
-        $this->assertSame($expected, $html);
+        $this->assertEqualsHTML($expected, (string)$nav);
     }
 
-    public function testAdditionalActiveClass(): void
+    public static function dropdownDataProvider(): array
     {
-        $html = Nav::widget()
-            ->id('test')
-            ->dropdownOptions(['id' => 'testDD'])
-            ->activeClass('custom-active-class')
-            ->items([
-                [
-                    'active' => true,
-                    'label' => '<span><i class=fas fas-test></i>Dropdown1</span>',
-                    'items' => [
-                        ['label' => 'Page2', 'content' => 'Page2'],
-                        ['label' => 'Page3', 'content' => 'Page3', 'visible' => true],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="test" class="nav"><li class="dropdown nav-item"><a class="dropdown-toggle nav-link active custom-active-class" href="#" data-bs-toggle="dropdown">&lt;span&gt;&lt;i class=fas fas-test&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="testDD" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li></ul>
-        HTML;
-
-        $this->assertSame($expected, $html);
+        return array_map(
+            static fn (DropDirection $direction) => [$direction],
+            DropDirection::cases()
+        );
     }
 
     /**
-     * @see https://github.com/yiisoft/yii2-bootstrap/issues/162
+     * @dataProvider dropdownDataProvider
      */
-    public function testHomeLink(): void
+    public function testDropdown(DropDirection $direction): void
     {
-        // Home link is active.
-        $expected = <<<HTML
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
-        HTML;
-        $this->assertSame(
-            $expected,
-            Nav::widget()
-                ->id('test')
-                ->currentPath('/home')
-                ->items([
-                    [
-                        'label' => 'Home',
-                        'url' => '/home',
-                    ],
-                    [
-                        'label' => 'Item1',
-                        'url' => '/item1',
-                    ],
-                ])
-                ->render()
-        );
+        $dropdown = Dropdown::widget()
+            ->id('test-dropdown')
+            ->direction($direction)
+            ->toggle(
+                Link::widget()
+                    ->url('#')
+                    ->label('toggler')
+            )
+            ->items(
+                Link::widget()->label('Dropdown Link 1')->url('/dropdown/link-1'),
+                Link::widget()->label('Dropdown Link 2')->url('/dropdown/link-2'),
+                Dropdown::widget()
+                    ->toggle(
+                        Link::widget()->label('Child toggler')
+                    )->items(
+                        Link::widget()->tag('h6')->label('Child 1'),
+                        Link::widget()->tag('h6')->label('Child 2')
+                    ),
+                Link::widget()->label('Dropdown Link 3')->url('/dropdown/link-3'),
+            );
 
-        // Home link is not active.
-        $expected = <<<HTML
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
-        HTML;
-        $this->assertSame(
-            $expected,
-            Nav::widget()
-                ->id('test')
-                ->currentPath('/home')
-                ->items([
-                    [
-                        'label' => 'Home',
-                        'url' => '/home',
-                        'active' => false,
-                    ],
-                    [
-                        'label' => 'Item1',
-                        'url' => '/item1',
-                    ],
-                ])
-                ->render()
-        );
+        $nav = Nav::widget()
+                ->items(
+                    Link::widget()->label('Link 1')->url('/link-1'),
+                    $dropdown,
+                    Link::widget()->label('Link 2')->url('/link-2'),
+                );
 
-        // Home link and item1 is active.
-        $expected = <<<HTML
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
-        HTML;
-        $this->assertSame(
-            $expected,
-            Nav::widget()
-                ->id('test')
-                ->currentPath('/home')
-                ->items([
-                    [
-                        'label' => 'Home',
-                        'url' => '/home',
-                    ],
-                    [
-                        'label' => 'Item1',
-                        'url' => '/item1',
-                        'active' => true,
-                    ],
-                ])
-                ->render()
-        );
+        $html = \preg_replace('/\sid="[^"]+"/', '', $nav->render());
 
-        // Home link is not active and item1 is active.
         $expected = <<<HTML
-        <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
+        <ul class="nav">
+        <li class="nav-item"><a class="nav-link" href="/link-1">Link 1</a></li>
+        <li class="{$direction->value} nav-item">
+        <a class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">toggler</a><ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/dropdown/link-1">Dropdown Link 1</a></li>
+        <li><a class="dropdown-item" href="/dropdown/link-2">Dropdown Link 2</a></li>
+        <li class="dropdown">
+        <button type="button" class="dropdown-item dropdown-toggle" aria-expanded="false" data-bs-auto-close="outside" aria-haspopup="true" data-bs-toggle="dropdown">Child toggler</button>
+        <ul class="dropdown-menu">
+        <li><h6 class="dropdown-header">Child 1</h6></li>
+        <li><h6 class="dropdown-header">Child 2</h6></li>
+        </ul></li>
+        <li><a class="dropdown-item" href="/dropdown/link-3">Dropdown Link 3</a></li>
+        </ul></li>
+        <li class="nav-item"><a class="nav-link" href="/link-2">Link 2</a></li>
+        </ul>
         HTML;
-        $this->assertSame(
-            $expected,
-            Nav::widget()
-                ->id('test')
-                ->currentPath('/item1')
-                ->items([
-                    [
-                        'label' => 'Home',
-                        'url' => '/home',
-                    ],
-                    [
-                        'label' => 'Item1',
-                        'url' => '/item1',
-                    ],
-                ])
-                ->render()
-        );
+
+        $this->assertEqualsHTML($expected, $html);
+    }
+
+    public function testItemsException(): void
+    {
+        $this->expectException(RuntimeException::class);
+        Nav::widget()
+            ->items(Dropdown::widget())
+            ->render();
     }
 }

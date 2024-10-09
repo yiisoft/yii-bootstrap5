@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
-use Yiisoft\Html\Html;
-
-use function implode;
-use function is_array;
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Html\Tag\Input\Checkbox;
+use Yiisoft\Html\Tag\Input\Radio;
+use Yiisoft\Html\Tag\Label;
+use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
+use Yiisoft\Yii\Bootstrap5\Enum\Size;
 
 /**
  * ButtonGroup renders a button group bootstrap component.
@@ -17,130 +17,127 @@ use function is_array;
  * For example,
  *
  * ```php
- * // a button group with items configuration
  * echo ButtonGroup::widget()
- *     ->buttons([
- *         ['label' => 'A'],
- *         ['label' => 'B'],
- *         ['label' => 'C', 'visible' => false],
+ *     ->item([
+ *         Link::widget()->label('button-A'),
+           Link::widget()->label('button-B'),
+           Link::widget()->label('button-C')->visible(false),
+           Link::widget()->label('button-D')
  *     ]);
  *
- * // button group with an item as a string
+ *
  * echo ButtonGroup::widget()
- *     ->buttons([
- *         Button::widget()->label('A'),
- *         ['label' => 'B'],
+ *     ->items([
+ *         Checkbox::tag()->id('btncheck1')->sideLabel('Checkbox 1', ['class' => 'btn btn-outline-primary']),
+ *         Checkbox::tag()->id('btncheck2')->sideLabel('Checkbox 2', ['class' => 'btn btn-outline-primary']),
  *     ]);
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  */
-final class ButtonGroup extends Widget
+final class ButtonGroup extends AbstractMenu
 {
-    private array $buttons = [];
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    private array $options = [];
-
-    public function render(): string
-    {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'btn-group']);
-
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'group';
-        }
-
-        return Html::div($this->renderButtons(), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
-    }
-
     /**
-     * List of buttons. Each array element represents a single button which can be specified as a string or an array of
-     * the following structure:
-     *
-     * - label: string, required, the button label.
-     * - options: array, optional, the HTML attributes of the button.
-     * - visible: bool, optional, whether this button is visible. Defaults to true.
+     * @psalm-var non-empty-string $tag
      */
-    public function buttons(array $value): self
+    protected string $tag = 'div';
+    protected bool|Item $defaultItem = false;
+    protected MenuType $type = MenuType::BtnGroup;
+    private ?Size $size = null;
+
+    public function items(Radio|Checkbox|Label|Dropdown|Link ...$items): self
     {
         $new = clone $this;
-        $new->buttons = $value;
+        $new->items = $items;
 
         return $new;
     }
 
     /**
-     * When tags Labels HTML should not be encoded.
+     * @link https://getbootstrap.com/docs/5.3/components/button-group/#vertical-variation
      */
-    public function withoutEncodeLabels(): self
+    public function vertical(bool $vertical): self
     {
         $new = clone $this;
-        $new->encodeLabels = false;
+        $new->type = $vertical ? MenuType::BtnGroupVertical : MenuType::BtnGroup;
 
         return $new;
     }
 
     /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @link https://getbootstrap.com/docs/5.3/components/button-group/#sizing
      */
-    public function options(array $value): self
+    public function small(): self
+    {
+        return $this->size(Size::Small);
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/button-group/#sizing
+     */
+    public function large(): self
+    {
+        return $this->size(Size::Large);
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/button-group/#sizing
+     */
+    public function normal(): self
+    {
+        return $this->size(null);
+    }
+
+    private function size(?Size $size): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->size = $size;
 
         return $new;
     }
 
-    /**
-     * Generates the buttons that compound the group as specified on {@see buttons}.
-     *
-     * @throws InvalidConfigException
-     *
-     * @return string the rendering result.
-     */
-    private function renderButtons(): string
+    protected function prepareMenu(string $item, string ...$items): Tag
     {
-        $buttons = [];
+        $tag = parent::prepareMenu($item, ...$items)
+                ->attribute('role', 'group');
 
-        foreach ($this->buttons as $button) {
-            if (is_array($button)) {
-                $visible = ArrayHelper::remove($button, 'visible', true);
-
-                if ($visible === false) {
-                    continue;
-                }
-
-                if (!isset($button['encodeLabel'])) {
-                    $button['encodeLabel'] = $this->encodeLabels;
-                }
-
-                if (!isset($button['options']['type'])) {
-                    ArrayHelper::setValueByPath($button, 'options.type', 'button');
-                }
-
-                $buttonWidget = Button::widget()
-                    ->label($button['label'])
-                    ->options($button['options']);
-
-                if ($button['encodeLabel'] === false) {
-                    $buttonWidget = $buttonWidget->withoutEncodeLabels();
-                }
-
-                $buttons[] = $buttonWidget->render();
-            } else {
-                $buttons[] = $button;
-            }
+        if ($this->size) {
+            return $tag->addClass($this->size->formatClassName('btn-group'));
         }
 
-        return implode("\n", $buttons);
+        return $tag;
+    }
+
+    /**
+     * @param Radio|Checkbox|Label|Dropdown|Link $item
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
+     */
+    protected function renderItem(mixed $item, int $index): string
+    {
+        return match (true) {
+            $item instanceof Checkbox || $item instanceof Radio => $item->addClass('btn-check')->render(),
+            $item instanceof Label => $item->render(),
+            $item instanceof Dropdown => $this->renderDropdown($item),
+            default => $this->prepareLink($item, $index)->render()
+        };
+    }
+
+    private function renderDropdown(Dropdown $dropdown): string
+    {
+        /** @var Link $toggle */
+        $toggle = $dropdown->getToggle();
+
+        /** @var Item $item */
+        /** @psalm-suppress PossiblyNullReference */
+        $item = $toggle->getItem() ?? Item::widget()->tag($this->tag);
+
+        return $dropdown->toggle(
+            $toggle->item(
+                $item->widgetClassName($this->type->itemClassName())
+            )
+        )
+        ->setParent($this)
+        ->render();
     }
 }

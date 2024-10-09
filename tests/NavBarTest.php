@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Collapse;
+use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\Enum\Theme;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavBar;
 use Yiisoft\Yii\Bootstrap5\Offcanvas;
+
+use function call_user_func;
+use function is_callable;
 
 /**
  * Tests for `NavBar` widget.
@@ -102,6 +108,8 @@ final class NavBarTest extends TestCase
 
     public function testNavAndForm(): void
     {
+        $link = Link::widget()->url('#')->id('');
+
         $html = NavBar::widget()
             ->id('TEST_ID')
             ->collapseOptions(['id' => 'C_ID'])
@@ -110,20 +118,20 @@ final class NavBarTest extends TestCase
             ->begin();
         $html .= Nav::widget()
             ->id('N_ID')
-            ->items([
-                ['label' => 'Home', 'url' => '#'],
-                ['label' => 'Link', 'url' => '#'],
-                [
-                    'label' => 'Dropdown',
-                    'dropdownOptions' => ['id' => 'D_ID'],
-                    'items' => [
-                        ['label' => 'Action', 'url' => '#'],
-                        ['label' => 'Another action', 'url' => '#'],
-                        '-',
-                        ['label' => 'Something else here', 'url' => '#'],
-                    ],
-                ],
-            ])
+            ->items(
+                $link->label('Home'),
+                $link->label('Link'),
+                Dropdown::widget()
+                    ->id('D_ID')
+                    ->toggle(
+                        Link::widget()->id('')->label('Dropdown')->url('#')
+                    )
+                    ->items(
+                        $link->label('Action'),
+                        $link->label('Another action'),
+                        $link->label('Something else here'),
+                    )
+            )
             ->options(['class' => ['mr-auto']])
             ->render();
 
@@ -141,13 +149,12 @@ final class NavBarTest extends TestCase
         <a class="navbar-brand" href="/">My Company</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
         <div id="C_ID" class="collapse navbar-collapse">
-        <ul id="N_ID" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <ul id="N_ID" class="mr-auto nav"><li class="nav-item"><a id class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a id class="nav-link" href="#">Link</a></li>
+        <li class="dropdown nav-item"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Action</a></li>
+        <li><a id class="dropdown-item" href="#">Another action</a></li>
+        <li><a id class="dropdown-item" href="#">Something else here</a></li>
         </ul></li></ul><form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -327,6 +334,8 @@ final class NavBarTest extends TestCase
 
     public function testWithoutCollapse(): void
     {
+        $link = Link::widget()->url('#')->id('');
+
         $html = NavBar::widget()
             ->id('TEST_ID')
             ->brandText('My Company')
@@ -335,20 +344,20 @@ final class NavBarTest extends TestCase
             ->begin();
         $html .= Nav::widget()
             ->id('D_ID1')
-            ->items([
-                ['label' => 'Home', 'url' => '#'],
-                ['label' => 'Link', 'url' => '#'],
-                [
-                    'label' => 'Dropdown',
-                    'dropdownOptions' => ['id' => 'D_ID2'],
-                    'items' => [
-                        ['label' => 'Action', 'url' => '#'],
-                        ['label' => 'Another action', 'url' => '#'],
-                        '-',
-                        ['label' => 'Something else here', 'url' => '#'],
-                    ],
-                ],
-            ])
+            ->items(
+                $link->label('Home'),
+                $link->label('Link'),
+                Dropdown::widget()
+                    ->id('D_ID2')
+                    ->toggle(
+                        Link::widget()->id('')->label('Dropdown')->url('#')
+                    )
+                    ->items(
+                        $link->label('Action'),
+                        $link->label('Another action'),
+                        $link->label('Something else here'),
+                    )
+            )
             ->options(['class' => ['mr-auto']])
             ->render();
         $html .= NavBar::end();
@@ -357,13 +366,12 @@ final class NavBarTest extends TestCase
         <nav id="TEST_ID" class="navbar">
         <div class="container">
         <a class="navbar-brand" href="/">My Company</a>
-        <ul id="D_ID1" class="mr-auto nav"><li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-        <li class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID2" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <ul id="D_ID1" class="mr-auto nav"><li class="nav-item"><a id class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a id class="nav-link" href="#">Link</a></li>
+        <li class="dropdown nav-item"><a id class="dropdown-toggle nav-link" href="#" aria-expanded="false" role="button" data-bs-toggle="dropdown">Dropdown</a><ul id="D_ID2" class="dropdown-menu">
+        <li><a id class="dropdown-item" href="#">Action</a></li>
+        <li><a id class="dropdown-item" href="#">Another action</a></li>
+        <li><a id class="dropdown-item" href="#">Something else here</a></li>
         </ul></li></ul></div>
         </nav>
         HTML;
@@ -563,7 +571,7 @@ final class NavBarTest extends TestCase
     {
         return [
             [
-                NavBar::THEME_LIGHT,
+                Theme::Light->value,
                 <<<HTML
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-light" data-bs-theme="light">
                 <div class="container">
@@ -576,7 +584,7 @@ final class NavBarTest extends TestCase
             ],
 
             [
-                NavBar::THEME_DARK,
+                Theme::Dark->value,
                 <<<HTML
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-dark" data-bs-theme="dark">
                 <div class="container">
@@ -611,12 +619,12 @@ final class NavBarTest extends TestCase
     {
         return [
             [
-                Collapse::widget()->id('T_ID'),
+                static fn () => Collapse::widget()->id('T_ID'),
                 '<button type="button" data-bs-toggle="collapse" aria-controls="T_ID" data-bs-target="#T_ID" aria-expanded="false"></button>',
             ],
 
             [
-                Offcanvas::widget()->id('T_ID'),
+                static fn () => Offcanvas::widget()->id('T_ID'),
                 '<button type="button" data-bs-toggle="offcanvas" aria-controls="T_ID" data-bs-target="#T_ID"></button>',
             ],
 
@@ -635,8 +643,12 @@ final class NavBarTest extends TestCase
     /**
      * @dataProvider toggleWidgetDataProvider
      */
-    public function testToggle(Collapse|Offcanvas|null $widget, string $expected): void
+    public function testToggle(?callable $widget, string $expected): void
     {
+        if (is_callable($widget)) {
+            $widget = call_user_func($widget);
+        }
+
         $navBar = NavBar::widget()
             ->id('TEST_ID')
             ->withWidget($widget);

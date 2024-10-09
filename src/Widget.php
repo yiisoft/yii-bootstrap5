@@ -6,19 +6,12 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\Html;
 use Yiisoft\Widget\Widget as YiiWidget;
+use Yiisoft\Yii\Bootstrap5\Enum\Theme;
+
+use function is_object;
 
 abstract class Widget extends YiiWidget
 {
-    /**
-     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
-     */
-    final public const THEME_DARK = 'dark';
-
-    /**
-     * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
-     */
-    final public const THEME_LIGHT = 'light';
-
     private ?string $id = null;
     private bool $autoGenerate = true;
     private string $autoIdPrefix = 'bp5w';
@@ -66,21 +59,21 @@ abstract class Widget extends YiiWidget
         return $new;
     }
 
-    public function withTheme(?string $theme): static
+    public function withTheme(string|Theme|null $theme): static
     {
         $new = clone $this;
-        $new->theme = $theme;
+        $new->theme = is_object($theme) ? $theme->value : $theme;
 
         return $new;
     }
 
     public function withDarkTheme(): static
     {
-        return $this->withTheme(self::THEME_DARK);
+        return $this->withTheme(Theme::Dark);
     }
 
     public function withLightTheme(): static
     {
-        return $this->withTheme(self::THEME_LIGHT);
+        return $this->withTheme(Theme::Light);
     }
 }
