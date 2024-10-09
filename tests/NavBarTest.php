@@ -12,7 +12,6 @@ use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavBar;
 use Yiisoft\Yii\Bootstrap5\Offcanvas;
 
-use function call_user_func;
 use function is_callable;
 
 /**
@@ -646,7 +645,7 @@ final class NavBarTest extends TestCase
     public function testToggle(?callable $widget, string $expected): void
     {
         if (is_callable($widget)) {
-            $widget = call_user_func($widget);
+            $widget = $widget();
         }
 
         $navBar = NavBar::widget()

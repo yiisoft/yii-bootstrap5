@@ -119,7 +119,6 @@ abstract class AbstractMenu extends Widget
             if ($item instanceof Link) {
                 $visible = $item->isVisible();
             } elseif ($item instanceof Dropdown) {
-
                 if ($item->getToggle() === null) {
                     throw new RuntimeException(
                         sprintf(
@@ -130,7 +129,6 @@ abstract class AbstractMenu extends Widget
                 }
 
                 $visible = $item->getToggle()->isVisible();
-
             } else {
                 $visible = true;
             }

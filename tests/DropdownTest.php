@@ -161,7 +161,6 @@ final class DropdownTest extends TestCase
         $this->assertEqualsWithoutLE($expected, (string)$dropdown);
 
         if ($theme instanceof Theme) {
-
             if ($theme === Theme::Dark) {
                 $html = $dropdown->withDarkTheme()->render();
             } else {
@@ -332,7 +331,7 @@ final class DropdownTest extends TestCase
                             ])
                      )
                      ->options([
-                         'class' => 'custom-link-class'
+                         'class' => 'custom-link-class',
                      ])
             )
             ->render();
@@ -482,7 +481,6 @@ final class DropdownTest extends TestCase
         if ($exception === null) {
             $this->expectNotToPerformAssertions();
         } else {
-
             if ($item === Dropdown::class) {
                 $item = Dropdown::widget()->items('');
             }

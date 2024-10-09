@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Yii\Bootstrap5\Enum\MenuType;
 
 /**

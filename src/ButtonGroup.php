@@ -109,7 +109,7 @@ final class ButtonGroup extends AbstractMenu
     }
 
     /**
-     * @param Radio|Checkbox|Label|Dropdown|Link $item
+     * @param Checkbox|Dropdown|Label|Link|Radio $item
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */

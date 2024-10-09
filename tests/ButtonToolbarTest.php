@@ -168,6 +168,5 @@ final class ButtonToolbarTest extends TestCase
         </div>
         HTML;
         $this->assertEqualsHTML($expected, $html);
-
     }
 }

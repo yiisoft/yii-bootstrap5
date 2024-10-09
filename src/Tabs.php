@@ -125,7 +125,7 @@ final class Tabs extends AbstractNav
     {
         $panes = [];
 
-        /** @var Link|Dropdown $item */
+        /** @var Dropdown|Link $item */
         foreach ($this->getVisibleItems() as $item) {
             /** @var Link $link */
             $link = $item instanceof Dropdown ? $item->getToggle() : $item;

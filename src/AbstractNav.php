@@ -80,7 +80,7 @@ abstract class AbstractNav extends AbstractMenu
     }
 
     /**
-     * @param Link|Dropdown $item
+     * @param Dropdown|Link $item
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */

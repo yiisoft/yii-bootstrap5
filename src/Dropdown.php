@@ -117,7 +117,6 @@ final class Dropdown extends AbstractMenu
             if (!$this->split) {
                 $toggle = $toggle->item($this->getDefaultItem());
             }
-
         } else {
             $options['class'] = 'dropdown-toggle';
         }
@@ -135,7 +134,6 @@ final class Dropdown extends AbstractMenu
         $link = parent::prepareLink($link, $index);
 
         if ($link->getUrl() === null) {
-
             if (empty($link->getLabel())) {
                 return $link->widgetClassName('dropdown-divider', true);
             }
@@ -175,7 +173,6 @@ final class Dropdown extends AbstractMenu
         }
 
         if ($toggleButton = $this->prepareToggle()) {
-
             if (!$toggleButton->isVisible()) {
                 return '';
             }

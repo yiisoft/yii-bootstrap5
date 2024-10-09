@@ -244,7 +244,6 @@ final class LinkTest extends TestCase
         string $expectedTrue,
         string $expectedFalse
     ): void {
-
         $null = Link::widget()->id('test-link')->label($label);
         $true = $null->encode(true);
         $false = $null->encode(false);

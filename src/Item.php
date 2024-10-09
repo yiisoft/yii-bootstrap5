@@ -96,14 +96,12 @@ final class Item extends Widget
     public function render(): string
     {
         if ($this->started) {
-
             $this->started = null;
 
             return Html::closeTag($this->tag);
         }
 
         if ($started = $this->renderStart()) {
-
             $this->started = null;
 
             return $started . Html::closeTag($this->tag);
