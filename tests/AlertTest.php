@@ -161,18 +161,64 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         Alert::widget()->header('Header')->headerTag('')->render();
     }
 
+    public function testHeaderWithEncode(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            <h5 class="header-class alert-heading">&amp;lt;header&amp;gt;</h5>
+            Body
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->generateId(false)
+                ->header('<header>', true)
+                ->headerTag('h5')
+                ->headerAttributes(['class' => 'header-class'])
+                ->render(),
+        );
+    }
+
+    public function testId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->id('test')->body('Body')->render(),
+        );
+    }
+
+    public function testIdWithNull(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->id(null)->body('Body')->render(),
+        );
+    }
+
     public function testInmutable(): void
     {
         $alert = Alert::widget();
 
+        $this->assertNotSame($alert, $alert->attributes([]));
         $this->assertNotSame($alert, $alert->body(''));
         $this->assertNotSame($alert, $alert->class(''));
         $this->assertNotSame($alert, $alert->dismissing());
         $this->assertNotSame($alert, $alert->fade());
+        $this->assertNotSame($alert, $alert->generateId(false));
         $this->assertNotSame($alert, $alert->header(''));
         $this->assertNotSame($alert, $alert->headerAttributes([]));
         $this->assertNotSame($alert, $alert->headerTag('div'));
         $this->assertNotSame($alert, $alert->template(''));
+        $this->assertNotSame($alert, $alert->templateContent(''));
         $this->assertNotSame($alert, $alert->toggleAttributes([]));
         $this->assertNotSame($alert, $alert->toggleLink());
         $this->assertNotSame($alert, $alert->type(Type::PRIMARY));
