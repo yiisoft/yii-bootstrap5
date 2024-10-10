@@ -356,6 +356,6 @@ final class Alert extends \Yiisoft\Widget\Widget
             throw new InvalidArgumentException(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
         }
 
-        return Html::tag($this->headerTag, $this->header, $headerAttributes)->render();
+        return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();
     }
 }

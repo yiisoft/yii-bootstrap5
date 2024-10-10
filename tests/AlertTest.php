@@ -27,6 +27,18 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testBodyWithEncodeFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            <body>
+            </div>
+            HTML,
+            Alert::widget()->body('<body>', false)->render(),
+        );
+    }
+
     public function testBodyWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
@@ -173,12 +185,31 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         Alert::widget()->header('Header')->headerTag('')->render();
     }
 
+    public function testHeaderWithEncodeFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            <h5 class="header-class alert-heading"><header></h5>
+            Body
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->generateId(false)
+                ->header('<header>', false)
+                ->headerTag('h5')
+                ->headerAttributes(['class' => 'header-class'])
+                ->render(),
+        );
+    }
+
     public function testHeaderWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="alert" role="alert">
-            <h5 class="header-class alert-heading">&amp;lt;header&amp;gt;</h5>
+            <h5 class="header-class alert-heading">&lt;header&gt;</h5>
             Body
             </div>
             HTML,
@@ -221,14 +252,15 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $alert = Alert::widget();
 
         $this->assertNotSame($alert, $alert->attributes([]));
-        $this->assertNotSame($alert, $alert->body(''));
+        $this->assertNotSame($alert, $alert->body('', true));
         $this->assertNotSame($alert, $alert->class(''));
         $this->assertNotSame($alert, $alert->dismissing());
         $this->assertNotSame($alert, $alert->fade());
         $this->assertNotSame($alert, $alert->generateId(false));
-        $this->assertNotSame($alert, $alert->header(''));
+        $this->assertNotSame($alert, $alert->header('', false));
         $this->assertNotSame($alert, $alert->headerAttributes([]));
         $this->assertNotSame($alert, $alert->headerTag('div'));
+        $this->assertNotSame($alert, $alert->id(null));
         $this->assertNotSame($alert, $alert->template(''));
         $this->assertNotSame($alert, $alert->templateContent(''));
         $this->assertNotSame($alert, $alert->toggleAttributes([]));
