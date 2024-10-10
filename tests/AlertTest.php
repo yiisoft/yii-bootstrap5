@@ -158,7 +158,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
 
-        Alert::widget()->headerTag('');
+        Alert::widget()->header('Header')->headerTag('')->render();
     }
 
     public function testInmutable(): void

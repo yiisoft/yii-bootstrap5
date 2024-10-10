@@ -32,7 +32,6 @@ final class Alert extends \Yiisoft\Widget\Widget
     private bool $generateId = true;
     private string|null $header = null;
     private array $headerAttributes = [];
-    /** @psalm-var non-empty-string */
     private string $headerTag = 'h4';
     private string|null $id = null;
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
@@ -181,16 +180,10 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param string $value The HTML tag name for the header.
      *
-     * @throws InvalidArgumentException if the tag name is an empty string.
-     *
      * @return self A new instance of the current class with the specified header tag.
      */
     public function headerTag(string $value): self
     {
-        if ($value === '') {
-            throw new InvalidArgumentException(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
-        }
-
         $new = clone $this;
         $new->headerTag = $value;
 
@@ -345,6 +338,8 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Render header tag.
      *
+     * @throws InvalidArgumentException if the header tag is an empty string.
+     *
      * @return string The rendered header tag. Empty string if header is not set.
      */
     private function renderHeader(): string
@@ -356,6 +351,10 @@ final class Alert extends \Yiisoft\Widget\Widget
         $headerAttributes = $this->headerAttributes;
 
         Html::addCssClass($headerAttributes, ['alert-heading']);
+
+        if ($this->headerTag === '') {
+            throw new InvalidArgumentException(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
+        }
 
         return Html::tag($this->headerTag, $this->header, $headerAttributes)->render();
     }
