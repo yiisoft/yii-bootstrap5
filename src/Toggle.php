@@ -14,6 +14,7 @@ final class Toggle extends \Yiisoft\Widget\Widget
 {
     private array $attributes = [];
     private ToggleType|null $toggleType = null;
+    /** @psalm-var non-empty-string */
     private string $tagName = 'button';
 
     /**
@@ -25,7 +26,7 @@ final class Toggle extends \Yiisoft\Widget\Widget
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): static
+    public function attributes(array $values): self
     {
         $new = clone $this;
         $new->attributes = $values;

@@ -29,6 +29,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     private bool $generateId = true;
     private string|null $header = null;
     private array $headerAttributes = [];
+    /** @psalm-var non-empty-string */
     private string $headerTag = 'h4';
     private string|null $id = null;
     private string $templateContent = '';
@@ -178,6 +179,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * @param string $value The HTML tag name for the header.
      *
      * @throws InvalidArgumentException if the tag name is an empty string.
+     *
      * @return self A new instance of the current class with the specified header tag.
      */
     public function headerTag(string $value): self
@@ -199,7 +201,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance of the current class with the specified ID.
      */
-    public function id(string|null $value): static
+    public function id(string|null $value): self
     {
         $new = clone $this;
         $new->id = $value;
@@ -214,7 +216,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance of the current class with the specified template.
      */
-    public function template(string $value): static
+    public function template(string $value): self
     {
         $new = clone $this;
         $new->template = $value;
@@ -356,7 +358,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Render header tag.
      *
-     * @return string|null The rendered header tag. Empty string if header is not set.
+     * @return string The rendered header tag. Empty string if header is not set.
      */
     private function renderHeader(): string
     {
