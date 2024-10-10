@@ -27,6 +27,18 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testBodyWithEncodeTrue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            &lt;body&gt;
+            </div>
+            HTML,
+            Alert::widget()->body('<body>', true)->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.0/components/alerts/#dismissing
      */
@@ -161,7 +173,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         Alert::widget()->header('Header')->headerTag('')->render();
     }
 
-    public function testHeaderWithEncode(): void
+    public function testHeaderWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
