@@ -65,6 +65,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                 ->fade()
                 ->generateId(false)
                 ->template("{widget}\n{toggle}")
+                ->templateContent("\n{header}\n{body}\n")
                 ->render(),
         );
     }
@@ -85,6 +86,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                 ->fade()
                 ->generateId(false)
                 ->template("{toggle}\n{widget}")
+                ->templateContent("\n{header}\n{body}\n")
                 ->render(),
         );
     }

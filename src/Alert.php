@@ -9,6 +9,9 @@ use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Enum\{ErrorMessage, ToggleType, Type};
 
+use function preg_replace;
+use function strtr;
+
 /**
  * Alert renders an alert bootstrap component.
  *
@@ -32,7 +35,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     /** @psalm-var non-empty-string */
     private string $headerTag = 'h4';
     private string|null $id = null;
-    private string $templateContent = '';
+    private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
     private string $template = '{widget}';
     private array $toggleAttributes = [];
     private bool $toggleLink = false;
@@ -301,20 +304,9 @@ final class Alert extends \Yiisoft\Widget\Widget
         $attributes['role'] = 'alert';
         $content = '';
         $id = $this->id;
-        $templateContent = $this->templateContent;
         $toggle = '';
 
         Html::addCssClass($attributes, ['persistent' => 'alert']);
-
-        $header = $this->renderHeader();
-
-        if ($this->templateContent === '' && $header !== '') {
-            $templateContent .= PHP_EOL . '{header}';
-        }
-
-        if ($this->templateContent === '' && $this->body !== '') {
-            $templateContent .= PHP_EOL . '{body}' . PHP_EOL;
-        }
 
         if ($this->dismissing) {
             $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISING);
@@ -322,14 +314,10 @@ final class Alert extends \Yiisoft\Widget\Widget
             if ($this->toggleLink) {
                 $toggle = $toggle->link();
             }
-
-            if (stripos($this->template, '{toggle}') === false && stripos($templateContent, '{toggle}') === false) {
-                $templateContent .= '{toggle}' . PHP_EOL;
-            }
         }
 
         $content = strtr(
-            $templateContent,
+            $this->templateContent,
             [
                 '{header}' => $this->renderHeader(),
                 '{body}' => $this->body,
@@ -337,10 +325,9 @@ final class Alert extends \Yiisoft\Widget\Widget
             ]
         );
 
-        $alert = Html::normalTag('div', $content, $attributes)
-            ->encode(false)
-            ->id($id)
-            ->render();
+        $content = preg_replace("/\n{2}/", "\n", $content);
+
+        $alert = Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
 
         if ($this->generateId) {
             $id = $this->id ?? Html::generateId('alert-');

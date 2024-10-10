@@ -7,6 +7,8 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Html;
 use Yiisoft\Yii\Bootstrap5\Enum\ToggleType;
 
+use function array_merge;
+
 /**
  * Toggle class serves as a base for implementing various types of toggle components.
  */
