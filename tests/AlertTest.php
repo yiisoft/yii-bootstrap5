@@ -5,117 +5,26 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\Alert;
+use Yiisoft\Yii\Bootstrap5\Enum\{ErrorMessage, Type};
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
- * Tests for `Alert` widget
+ * Tests for `Alert` widget.
+ *
+ * @group alert
  */
-final class AlertTest extends TestCase
+final class AlertTest extends \PHPUnit\Framework\TestCase
 {
-    public function typeDataProvider(): array
+    public function testAttributes(): void
     {
-        return [
-            [
-                'primary',
-                '<div id="test" class="alert alert-primary" role="alert">primary</div>',
-            ],
-            [
-                'secondary',
-                '<div id="test" class="alert alert-secondary" role="alert">secondary</div>',
-            ],
-            [
-                'success',
-                '<div id="test" class="alert alert-success" role="alert">success</div>',
-            ],
-            [
-                'danger',
-                '<div id="test" class="alert alert-danger" role="alert">danger</div>',
-            ],
-            [
-                'warning',
-                '<div id="test" class="alert alert-warning" role="alert">warning</div>',
-            ],
-            [
-                'info',
-                '<div id="test" class="alert alert-info" role="alert">info</div>',
-            ],
-            [
-                'light',
-                '<div id="test" class="alert alert-light" role="alert">light</div>',
-            ],
-            [
-                'dark',
-                '<div id="test" class="alert alert-dark" role="alert">dark</div>',
-            ],
-            [
-                'custom',
-                '<div id="test" class="alert custom" role="alert">custom</div>',
-            ],
-        ];
-    }
-
-    /**
-     * @link https://getbootstrap.com/docs/5.0/components/alerts/#examples
-     */
-    public function testRender(): void
-    {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
-            ->options([
-                'class' => ['alert-warning'],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert-warning alert alert-dismissible" role="alert"><strong>Holy guacamole!</strong> You should check in on some of those fields below.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    /**
-     * @link https://getbootstrap.com/docs/5.0/components/alerts/#link-color
-     */
-    public function testRenderLink(): void
-    {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('A simple primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.')
-            ->options([
-                'class' => ['alert-warning'],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert-warning alert alert-dismissible" role="alert">A simple primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    /**
-     * @link https://getbootstrap.com/docs/5.0/components/alerts/#icons
-     */
-    public function testRenderIcon(): void
-    {
-        $html = Alert::widget()
-            ->id('test')
-            ->body(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">' .
-                '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' .
-                '</svg>' .
-                '<div>An example alert with an icon</div>'
-            )
-            ->options([
-                'class' => ['alert-warning d-flex align-items-center'],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert-warning d-flex align-items-center alert alert-dismissible" role="alert"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg><div>An example alert with an icon</div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-warning" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->attributes(['class' => 'alert alert-warning'])->body('Body')->render(),
+        );
     }
 
     /**
@@ -123,156 +32,227 @@ final class AlertTest extends TestCase
      */
     public function testDismissing(): void
     {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible" role="alert">Message1
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
+                ->class('alert-warning')
+                ->dismissing()
+                ->fade()
+                ->generateId(false)
+                ->render(),
+        );
     }
 
-    public function testDismissingDisable(): void
+    public function testDismissingWithPositionAfterContainer(): void
     {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->withoutCloseButton()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert" role="alert">Message1
-
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            HTML,
+            Alert::widget()
+                ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
+                ->class('alert-warning')
+                ->dismissing()
+                ->fade()
+                ->generateId(false)
+                ->template("{widget}\n{toggle}")
+                ->render(),
+        );
     }
 
-    public function testCloseButtonOptions(): void
+    public function testDismissingWithPositionBeforeContainer(): void
     {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->withCloseButtonOptions(['class' => 'btn-lg'])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible" role="alert">Message1
-        <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.')
+                ->class('alert-warning')
+                ->dismissing()
+                ->fade()
+                ->generateId(false)
+                ->template("{toggle}\n{widget}")
+                ->render(),
+        );
+    }
 
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->withCloseButtonOptions([
-                'tag' => 'a',
-                'href' => '/',
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible" role="alert">Message1
-        <a class="btn-close" href="/" data-bs-dismiss="alert" aria-label="Close" role="button"></a>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
+    public function testDismisingWithToggleAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close btn-lg" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->id('test')
+                ->body('Body')
+                ->dismissing()
+                ->toggleAttributes(['class' => 'btn-lg'])
+                ->render(),
+        );
+    }
+
+    public function testDismisingWithToggleLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-dismissible" role="alert">
+            Body
+            <a type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+            </div>
+            HTML,
+            Alert::widget()->body('Body')->dismissing()->toggleLink()->render(),
+        );
     }
 
     public function testFade(): void
     {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->fade()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible fade show" role="alert">Message1
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    /**
-     * @dataProvider typeDataProvider
-     */
-    public function testTypes(string $type, string $expected): void
-    {
-        if ($type === 'custom') {
-            $alert = Alert::widget()->addClassNames($type);
-        } else {
-            $alert = Alert::widget()->{$type}();
-        }
-
-        $html = $alert
-            ->id('test')
-            ->body($type)
-            ->withoutCloseButton()
-            ->render();
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert fade show" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->body('Body')->fade()->generateId(false)->render(),
+        );
     }
 
     public function testHeader(): void
     {
-        $html = Alert::widget()
-            ->id('test')
-            ->body('Message1')
-            ->header('Alert header')
-            ->headerTag('h5')
-            ->headerOptions([
-                'class' => 'header-class',
-            ])
-            ->fade()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible fade show" role="alert">
-        <h5 class="header-class alert-heading">Alert header</h5>
-        Message1
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert" role="alert">
+            <h5 class="header-class alert-heading">Alert header</h5>
+            Body
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->generateId(false)
+                ->header('Alert header')
+                ->headerTag('h5')
+                ->headerAttributes(['class' => 'header-class'])
+                ->render(),
+        );
     }
 
-    public function testOutsideCloseButton(): void
+    public function testHeaderTagException(): void
     {
-        $widget = Alert::widget()
-            ->id('test')
-            ->withCloseButton()
-            ->body('Message1');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
 
-        $html = $widget->render();
-        $html .= $widget->renderCloseButton();
+        Alert::widget()->headerTag('');
+    }
 
-        $expected = <<<'HTML'
-        <div id="test" class="alert alert-dismissible" role="alert">
-        Message1
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" data-bs-target="#test" aria-label="Close"></button>
-        HTML;
+    public function testInmutable(): void
+    {
+        $alert = Alert::widget();
 
-        $this->assertEqualsHTML($expected, $html);
+        $this->assertNotSame($alert, $alert->body(''));
+        $this->assertNotSame($alert, $alert->class(''));
+        $this->assertNotSame($alert, $alert->dismissing());
+        $this->assertNotSame($alert, $alert->fade());
+        $this->assertNotSame($alert, $alert->header(''));
+        $this->assertNotSame($alert, $alert->headerAttributes([]));
+        $this->assertNotSame($alert, $alert->headerTag('div'));
+        $this->assertNotSame($alert, $alert->template(''));
+        $this->assertNotSame($alert, $alert->toggleAttributes([]));
+        $this->assertNotSame($alert, $alert->toggleLink());
+        $this->assertNotSame($alert, $alert->type(Type::PRIMARY));
+    }
 
-        $widget = Alert::widget()
-            ->id('test')
-            ->withoutCloseButton()
-            ->body('Message2');
+    /**
+     * @link https://getbootstrap.com/docs/5.0/components/alerts/#link-color
+     */
+    public function testRenderLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-warning" role="alert">
+            A simple warning alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+            </div>
+            HTML,
+            Alert::widget()
+                ->body(
+                    'A simple warning alert with ' .
+                    '<a href="#" class="alert-link">an example link</a>. Give it a click if you like.'
+                )
+                ->generateId(false)
+                ->type(Type::WARNING)
+                ->render(),
+        );
+    }
 
-        $html = $widget->render();
-        $html .= $widget->renderCloseButton();
+    /**
+     * @link https://getbootstrap.com/docs/5.0/components/alerts/#icons
+     */
+    public function testRenderIcon(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+            <div>An example alert with an icon</div>
+            </div>
+            HTML,
+            Alert::widget()
+                ->class('alert-warning d-flex align-items-center')
+                ->body(
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">' .
+                    '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' .
+                    '</svg>' . PHP_EOL .
+                    '<div>An example alert with an icon</div>'
+                )
+                ->generateId(false)
+                ->render(),
+        );
+    }
 
-        $expected = <<<'HTML'
-        <div id="test" class="alert" role="alert">
-        Message2
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" data-bs-target="#test" aria-label="Close"></button>
-        HTML;
+    public function testTemplateContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-dismissible" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Body
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->dismissing()
+                ->generateId(false)
+                ->templateContent("\n{toggle}\n{body}\n")
+                ->render(),
+        );
+    }
 
-        $this->assertEqualsHTML($expected, $html);
+    /**
+     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider::type()
+     */
+    public function testType(Type $type, string $expected): void
+    {
+        Assert::equalsWithoutLE(
+            $expected,
+            Alert::widget()
+                ->body('A simple ' . $type->value . ' alert—check it out!')
+                ->generateId(false)
+                ->type($type)
+                ->render(),
+        );
     }
 }
