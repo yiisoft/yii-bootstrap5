@@ -177,9 +177,8 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param string $value The HTML tag name for the header.
      *
-     * @return self A new instance of the current class with the specified header tag.
-     *
      * @throws InvalidArgumentException if the tag name is an empty string.
+     * @return self A new instance of the current class with the specified header tag.
      */
     public function headerTag(string $value): self
     {
