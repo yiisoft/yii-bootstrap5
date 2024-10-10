@@ -35,7 +35,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             <body>
             </div>
             HTML,
-            Alert::widget()->body('<body>', false)->render(),
+            Alert::widget()->body('<body>')->render(),
         );
     }
 
@@ -197,7 +197,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             Alert::widget()
                 ->body('Body')
                 ->generateId(false)
-                ->header('<header>', false)
+                ->header('<header>')
                 ->headerTag('h5')
                 ->headerAttributes(['class' => 'header-class'])
                 ->render(),
