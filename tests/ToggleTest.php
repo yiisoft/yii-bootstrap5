@@ -25,23 +25,23 @@ final class ToggleTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDismissing(): void
+    public function testDismissable(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             HTML,
-            Toggle::widget()->type(ToggleType::TYPE_DISMISING)->render(),
+            Toggle::widget()->type(ToggleType::TYPE_DISMISS)->render(),
         );
     }
 
-    public function testInmutable(): void
+    public function testImmutability(): void
     {
         $toggle = Toggle::widget();
 
         $this->assertNotSame($toggle, $toggle->attributes([]));
         $this->assertNotSame($toggle, $toggle->link());
-        $this->assertNotSame($toggle, $toggle->type(ToggleType::TYPE_DISMISING));
+        $this->assertNotSame($toggle, $toggle->type(ToggleType::TYPE_DISMISS));
     }
 
     public function testLink(): void

@@ -28,7 +28,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     private const CLASS_COMPONENT = 'alert';
     private array $attributes = [];
     private string|Stringable $body = '';
-    private bool $dismissing = false;
+    private bool $dismissable = false;
     private bool $generateId = true;
     private string|null $header = null;
     private array $headerAttributes = [];
@@ -38,6 +38,23 @@ final class Alert extends \Yiisoft\Widget\Widget
     private string $template = '{widget}';
     private array $toggleAttributes = [];
     private bool $toggleLink = false;
+
+    /**
+     * Sets the CSS class attribute for the alert component.
+     *
+     * @param string $value The CSS class for the alert component (e.g., 'alert-primary', 'alert-danger').
+     *
+     * @return self A new instance of the current class with the specified class value.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string $value): self
+    {
+        $new = clone $this;
+        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, $value]);
+
+        return $new;
+    }
 
     /**
      * Sets the HTML attributes for the alert component.
@@ -65,7 +82,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance of the current class with the specified body content.
      */
-    public function body(string|Stringable $value, bool $encode = false): self
+    public function body(string|Stringable $value, bool $encode = true): self
     {
         if ($encode === true) {
             $value = Html::encode($value);
@@ -78,33 +95,16 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the CSS class attribute for the alert component.
-     *
-     * @param string $value The CSS class for the alert component (e.g., 'alert-primary', 'alert-danger').
-     *
-     * @return self A new instance of the current class with the specified class value.
-     *
-     * @link https://html.spec.whatwg.org/#classes
-     */
-    public function class(string $value): self
-    {
-        $new = clone $this;
-        Html::addCssClass($new->attributes, ['persistent' => self::CLASS_COMPONENT, $value]);
-
-        return $new;
-    }
-
-    /**
      * Makes the alert dismissible by adding a close button.
      *
      * @return self A new instance of the current class with dismissible added.
      */
-    public function dismissing(): self
+    public function dismissable(): self
     {
         $new = clone $this;
-        $new->dismissing = true;
+        $new->dismissable = true;
 
-        Html::addCssClass($new->attributes, ['persistent' => self::CLASS_COMPONENT, 'alert-dismissible']);
+        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'alert-dismissible']);
 
         return $new;
     }
@@ -117,7 +117,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function fade(): self
     {
         $new = clone $this;
-        Html::addCssClass($new->attributes, ['persistent' => self::CLASS_COMPONENT, 'fade show']);
+        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'fade show']);
 
         return $new;
     }
@@ -146,7 +146,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance of the current class with the specified header content.
      */
-    public function header(string|null $value, bool $encode = false): self
+    public function header(string|null $value, bool $encode = true): self
     {
         if ($encode === true) {
             $value = Html::encode($value);
@@ -281,7 +281,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function type(Type $type): self
     {
         $new = clone $this;
-        Html::addCssClass($new->attributes, ['persistent' => self::CLASS_COMPONENT, 'alert-' . $type->value]);
+        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'alert-' . $type->value]);
 
         return $new;
     }
@@ -299,10 +299,10 @@ final class Alert extends \Yiisoft\Widget\Widget
         $id = $this->id;
         $toggle = '';
 
-        Html::addCssClass($attributes, ['persistent' => 'alert']);
+        Html::addCssClass($attributes, ['widget' => 'alert']);
 
-        if ($this->dismissing) {
-            $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISING);
+        if ($this->dismissable) {
+            $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISS);
 
             if ($this->toggleLink) {
                 $toggle = $toggle->link();

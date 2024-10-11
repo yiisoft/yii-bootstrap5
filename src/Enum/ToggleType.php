@@ -9,12 +9,12 @@ namespace Yiisoft\Yii\Bootstrap5\Enum;
  */
 enum ToggleType: string
 {
-    case TYPE_DISMISING = 'dismising';
+    case TYPE_DISMISS = 'dismising';
 
-    public function buildAttibutes(): array
+    public function attributes(): array
     {
         return match ($this) {
-            self::TYPE_DISMISING => [
+            self::TYPE_DISMISS => [
                 'type' => 'button',
                 'class' => 'btn-close',
                 'data-bs-dismiss' => 'alert',

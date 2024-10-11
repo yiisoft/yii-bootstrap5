@@ -77,7 +77,7 @@ final class Toggle extends \Yiisoft\Widget\Widget
         $class = $this->attributes['class'] ?? null;
 
         if ($this->toggleType !== null) {
-            $buildAttributes = $this->toggleType->buildAttibutes();
+            $buildAttributes = $this->toggleType->attributes();
 
             Html::addCssClass($buildAttributes, $class);
             unset($attributes['class']);
