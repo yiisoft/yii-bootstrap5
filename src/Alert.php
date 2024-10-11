@@ -26,6 +26,7 @@ use function strtr;
 final class Alert extends \Yiisoft\Widget\Widget
 {
     private const CLASS_COMPONENT = 'alert';
+    private array $addClasses = [];
     private array $attributes = [];
     private string|Stringable $body = '';
     private bool $dismissable = false;
@@ -51,7 +52,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function addClass(string $value): self
     {
         $new = clone $this;
-        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, $value]);
+        $new->addClasses[] = $value;
 
         return $new;
     }
@@ -103,8 +104,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->dismissable = true;
-
-        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'alert-dismissible']);
+        $new->addClasses[] = 'alert-dismissible';
 
         return $new;
     }
@@ -117,7 +117,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function fade(): self
     {
         $new = clone $this;
-        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'fade show']);
+        $new->addClasses[] = 'fade show';
 
         return $new;
     }
@@ -276,12 +276,14 @@ final class Alert extends \Yiisoft\Widget\Widget
      * - `Type::LIGHT`: Light alert.
      * - `Type::DARK`: Dark alert.
      *
+     * @param Type $value The alert type.
+     *
      * @return self A new instance of the current class with the specified alert type.
      */
-    public function type(Type $type): self
+    public function type(Type $value): self
     {
         $new = clone $this;
-        Html::addCssClass($new->attributes, ['widget' => self::CLASS_COMPONENT, 'alert-' . $type->value]);
+        $new->addClasses[] = 'alert-' . $value->value;
 
         return $new;
     }
@@ -299,7 +301,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $id = $this->id;
         $toggle = '';
 
-        Html::addCssClass($attributes, ['widget' => 'alert']);
+        Html::addCssClass($attributes, ['widget' => self::CLASS_COMPONENT] + $this->addClasses);
 
         if ($this->dismissable) {
             $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISS);
@@ -350,7 +352,7 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $headerAttributes = $this->headerAttributes;
 
-        Html::addCssClass($headerAttributes, ['alert-heading']);
+        Html::addCssClass($headerAttributes, 'alert-heading');
 
         if ($this->headerTag === '') {
             throw new InvalidArgumentException(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
