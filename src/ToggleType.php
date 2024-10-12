@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Enum;
+namespace Yiisoft\Yii\Bootstrap5;
 
 /**
  * Is an enumeration of toggle types.

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Enum\ToggleType;
+use Yiisoft\Yii\Bootstrap5\{Toggle, ToggleType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Toggle;
 
 /**
  * Tests for `Toggle` widget.

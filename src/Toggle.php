@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Enum\ToggleType;
 
 use function array_merge;
 

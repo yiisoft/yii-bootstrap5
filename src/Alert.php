@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
-use Yiisoft\Yii\Bootstrap5\Enum\{ErrorMessage, ToggleType, Type};
 
 use function preg_replace;
 use function strtr;
@@ -276,14 +275,14 @@ final class Alert extends \Yiisoft\Widget\Widget
      * - `Type::LIGHT`: Light alert.
      * - `Type::DARK`: Dark alert.
      *
-     * @param Type $value The alert type.
+     * @param AlertType $value The alert type.
      *
      * @return self A new instance of the current class with the specified alert type.
      */
-    public function type(Type $value): self
+    public function type(AlertType $value): self
     {
         $new = clone $this;
-        $new->addClasses[] = self::CLASS_COMPONENT . '-' . $value->value;
+        $new->addClasses[] = $value->value;
 
         return $new;
     }
@@ -355,7 +354,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         Html::addCssClass($headerAttributes, 'alert-heading');
 
         if ($this->headerTag === '') {
-            throw new InvalidArgumentException(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
+            throw new InvalidArgumentException('Tag cannot be empty string.');
         }
 
         return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();

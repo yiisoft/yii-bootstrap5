@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests\Provider;
 
-use Yiisoft\Yii\Bootstrap5\Enum\Type;
+use Yiisoft\Yii\Bootstrap5\AlertType;
 
 final class AlertProvider
 {
@@ -12,66 +12,66 @@ final class AlertProvider
     {
         return [
             [
-                Type::PRIMARY,
+                AlertType::PRIMARY,
                 <<<HTML
                 <div class="alert alert-primary" role="alert">
-                A simple primary alert—check it out!
+                A simple alert-primary check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::SECONDARY,
+                AlertType::SECONDARY,
                 <<<HTML
                 <div class="alert alert-secondary" role="alert">
-                A simple secondary alert—check it out!
+                A simple alert-secondary check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::SUCCESS,
+                AlertType::SUCCESS,
                 <<<HTML
                 <div class="alert alert-success" role="alert">
-                A simple success alert—check it out!
+                A simple alert-success check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::DANGER,
+                AlertType::DANGER,
                 <<<HTML
                 <div class="alert alert-danger" role="alert">
-                A simple danger alert—check it out!
+                A simple alert-danger check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::WARNING,
+                AlertType::WARNING,
                 <<<HTML
                 <div class="alert alert-warning" role="alert">
-                A simple warning alert—check it out!
+                A simple alert-warning check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::INFO,
+                AlertType::INFO,
                 <<<HTML
                 <div class="alert alert-info" role="alert">
-                A simple info alert—check it out!
+                A simple alert-info check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::LIGHT,
+                AlertType::LIGHT,
                 <<<HTML
                 <div class="alert alert-light" role="alert">
-                A simple light alert—check it out!
+                A simple alert-light check it out!
                 </div>
                 HTML,
             ],
             [
-                Type::DARK,
+                AlertType::DARK,
                 <<<HTML
                 <div class="alert alert-dark" role="alert">
-                A simple dark alert—check it out!
+                A simple alert-dark check it out!
                 </div>
                 HTML,
             ],

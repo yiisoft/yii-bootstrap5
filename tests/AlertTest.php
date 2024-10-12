@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Alert;
-use Yiisoft\Yii\Bootstrap5\Enum\{ErrorMessage, Type};
+use Yiisoft\Yii\Bootstrap5\{Alert, AlertType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
@@ -180,7 +179,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeaderTagException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(ErrorMessage::TAG_NOT_EMPTY_STRING->value);
+        $this->expectExceptionMessage('Tag cannot be empty string.');
 
         Alert::widget()->header('Header')->headerTag('')->render();
     }
@@ -265,7 +264,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->templateContent(''));
         $this->assertNotSame($alert, $alert->toggleAttributes([]));
         $this->assertNotSame($alert, $alert->toggleLink());
-        $this->assertNotSame($alert, $alert->type(Type::PRIMARY));
+        $this->assertNotSame($alert, $alert->type(AlertType::PRIMARY));
     }
 
     /**
@@ -286,7 +285,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                     false,
                 )
                 ->generateId(false)
-                ->type(Type::WARNING)
+                ->type(AlertType::WARNING)
                 ->render(),
         );
     }
@@ -338,14 +337,14 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider::type()
      */
-    public function testType(Type $type, string $expected): void
+    public function testType(AlertType $alertType, string $expected): void
     {
         Assert::equalsWithoutLE(
             $expected,
             Alert::widget()
-                ->body('A simple ' . $type->value . ' alert—check it out!')
+                ->body('A simple ' . $alertType->value . ' check it out!')
                 ->generateId(false)
-                ->type($type)
+                ->type($alertType)
                 ->render(),
         );
     }
