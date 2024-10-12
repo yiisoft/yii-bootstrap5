@@ -283,7 +283,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function type(Type $value): self
     {
         $new = clone $this;
-        $new->addClasses[] = 'alert-' . $value->value;
+        $new->addClasses[] = self::CLASS_COMPONENT . '-' . $value->value;
 
         return $new;
     }
@@ -296,7 +296,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $attributes['role'] = 'alert';
+        $attributes['role'] = self::CLASS_COMPONENT;
         $content = '';
         $id = $this->id;
         $toggle = '';
@@ -325,7 +325,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $alert = Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
 
         if ($this->generateId) {
-            $id = $this->id ?? Html::generateId('alert-');
+            $id = $this->id ?? Html::generateId(self::CLASS_COMPONENT . '-');
         }
 
         return strtr(
