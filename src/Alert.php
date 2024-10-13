@@ -24,7 +24,7 @@ use function strtr;
  */
 final class Alert extends \Yiisoft\Widget\Widget
 {
-    private const CLASS_COMPONENT = 'alert';
+    private const NAME = 'alert';
     private array $addClasses = [];
     private array $attributes = [];
     private string|Stringable $body = '';
@@ -295,12 +295,12 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $attributes['role'] = self::CLASS_COMPONENT;
+        $attributes['role'] = self::NAME;
         $content = '';
         $id = $this->id;
         $toggle = '';
 
-        Html::addCssClass($attributes, ['widget' => self::CLASS_COMPONENT] + $this->addClasses);
+        Html::addCssClass($attributes, ['widget' => self::NAME] + $this->addClasses);
 
         if ($this->dismissable) {
             $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISS);
@@ -324,7 +324,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $alert = Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
 
         if ($this->generateId) {
-            $id = $this->id ?? Html::generateId(self::CLASS_COMPONENT . '-');
+            $id = $this->id ?? Html::generateId(self::NAME . '-');
         }
 
         return strtr(
