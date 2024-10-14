@@ -25,7 +25,7 @@ use function strtr;
 final class Alert extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'alert';
-    private string $addClasses = '';
+    private string|null $cssClass = null;
     private AlertType $alertType = AlertType::SECONDARY;
     private array $attributes = [];
     private string|Stringable $body = '';
@@ -41,7 +41,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Sets the CSS class attribute for the alert component.
      *
-     * @param string $value The CSS class for the alert component (e.g., 'alert-primary', 'alert-danger').
+     * @param string $value The CSS class for the alert component (e.g., 'test-class').
      *
      * @return self A new instance of the current class with the specified class value.
      *
@@ -50,7 +50,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->addClasses = $value;
+        $new->cssClass = $value;
 
         return $new;
     }
@@ -261,7 +261,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, $this->addClasses]);
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, $this->cssClass]);
 
         if ($this->dismissable) {
             Html::addCssClass($attributes, 'alert-dismissible');
