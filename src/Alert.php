@@ -25,7 +25,7 @@ use function strtr;
 final class Alert extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'alert';
-    private array $addClasses = [];
+    private string $addClasses = '';
     private AlertType $alertType = AlertType::SECONDARY;
     private array $attributes = [];
     private string|Stringable $body = '';
@@ -50,7 +50,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->addClasses[] = $value;
+        $new->addClasses = $value;
 
         return $new;
     }
@@ -261,7 +261,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->addClasses]);
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, $this->addClasses]);
 
         if ($this->dismissable) {
             Html::addCssClass($attributes, 'alert-dismissible');
