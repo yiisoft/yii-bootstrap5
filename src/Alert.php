@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use InvalidArgumentException;
 use Stringable;
-use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
-use function array_merge;
+use function preg_replace;
+use function strtr;
 
 /**
  * Alert renders an alert bootstrap component.
@@ -16,60 +17,76 @@ use function array_merge;
  * For example,
  *
  * ```php
- * echo Alert::widget()
- *     ->options([
- *         'class' => 'alert-info',
- *     ])
- *     ->body('Say hello...');
+ * echo Alert::widget()->body('Say hello...')->type(Type::PRIMARY)->render();
  * ```
  *
  * @link https://getbootstrap.com/docs/5.0/components/alerts/
  */
-final class Alert extends Widget
+final class Alert extends \Yiisoft\Widget\Widget
 {
-    use CloseButtonTrait;
-
+    private const NAME = 'alert';
+    private string|null $cssClass = null;
+    private AlertType $alertType = AlertType::SECONDARY;
+    private array $attributes = [];
     private string|Stringable $body = '';
-    private ?string $header = null;
-    private array $headerOptions = [];
-    /** @psalm-var non-empty-string */
-    private string $headerTag = 'h4';
-    private bool $encode = false;
-    private array $options = [];
-    private array $classNames = [];
+    private array $closeButtonAttributes = [];
+    private bool $dismissable = false;
     private bool $fade = false;
+    private string|null $header = null;
+    private array $headerAttributes = [];
+    private string $headerTag = 'h4';
+    private bool|string $id = true;
+    private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
-    public function getId(?string $suffix = '-alert'): ?string
+    /**
+     * Sets the CSS class attribute for the alert component.
+     *
+     * @param string $value The CSS class for the alert component (e.g., 'test-class').
+     *
+     * @return self A new instance of the current class with the specified class value.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string $value): self
     {
-        return $this->options['id'] ?? parent::getId($suffix);
-    }
+        $new = clone $this;
+        $new->cssClass = $value;
 
-    protected function toggleComponent(): string
-    {
-        return 'alert';
-    }
-
-    public function render(): string
-    {
-        $options = $this->prepareOptions();
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::tag($tag, '', $options)
-            ->encode(false)
-            ->content(
-                (string) $this->renderHeader(),
-                $this->encode ? Html::encode($this->body) : $this->body,
-                (string) $this->renderCloseButton(true)
-            )
-            ->render();
+        return $new;
     }
 
     /**
-     * The body content in the alert component. Alert widget will also be treated as the body content, and will be
-     * rendered before this.
+     * Sets the HTML attributes for the alert component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance of the current class with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function body(string|Stringable $value): self
+    public function attributes(array $values): self
     {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets the body content of the alert component.
+     *
+     * @param string|Stringable $value The body content of the alert component.
+     * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
+     * to prevent XSS attacks.
+     *
+     * @return self A new instance of the current class with the specified body content.
+     */
+    public function body(string|Stringable $value, bool $encode = true): self
+    {
+        if ($encode === true) {
+            $value = Html::encode($value);
+        }
+
         $new = clone $this;
         $new->body = $value;
 
@@ -77,196 +94,241 @@ final class Alert extends Widget
     }
 
     /**
-     * The header content in alert component
-     */
-    public function header(?string $header): self
-    {
-        $new = clone $this;
-        $new->header = $header;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes for the widget header tag. The following special options are recognized.
+     * Sets the HTML attributes for the close button in the alert component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function headerOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->headerOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Set tag name for header
+     * @param array $value Attribute values indexed by attribute names.
      *
-     * @psalm-param non-empty-string $tag
-     */
-    public function headerTag(string $tag): self
-    {
-        $new = clone $this;
-        $new->headerTag = $tag;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
+     * @return self A new instance of the current class with the specified close button attributes.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function closeButtonAttributes(array $value): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->closeButtonAttributes = $value;
 
         return $new;
     }
 
     /**
-     * Enable/Disable encode body
+     * Makes the alert dismissible by adding a close button.
+     *
+     * @param bool $value Whether to make the alert dismissible.
+     *
+     * @return self A new instance of the current class with the specified dismissable value.
      */
-    public function encode(bool $encode = true): self
+    public function dismissable(bool $value): self
     {
         $new = clone $this;
-        $new->encode = $encode;
+        $new->dismissable = $value;
 
         return $new;
     }
 
     /**
-     * Enable/Disable dissmiss animation
+     * Adds a fade effect to the alert.
+     *
+     * @param bool $value Whether to add a fade effect to the alert.
+     *
+     * @return self A new instance of the current class with the specified fade value.
      */
-    public function fade(bool $fade = true): self
+    public function fade(bool $value): self
     {
         $new = clone $this;
-        $new->fade = $fade;
+        $new->fade = $value;
 
         return $new;
     }
 
     /**
-     * Set type of alert, 'alert-success', 'alert-danger', 'custom-alert' etc
+     * Sets the header content of the alert component.
+     *
+     * @param string|null $value The header content of the alert component.
+     * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
+     * to prevent XSS attacks.
+     *
+     * @return self A new instance of the current class with the specified header content.
      */
-    public function addClassNames(string ...$classNames): self
+    public function header(string|null $value, bool $encode = true): self
     {
-        $new = clone $this;
-        $new->classNames = array_filter($classNames, static fn ($name) => $name !== '');
-
-        return $new;
-    }
-
-    /**
-     * Short method for primary alert type
-     */
-    public function primary(): self
-    {
-        return $this->addClassNames('alert-primary');
-    }
-
-    /**
-     * Short method for secondary alert type
-     */
-    public function secondary(): self
-    {
-        return $this->addClassNames('alert-secondary');
-    }
-
-    /**
-     * Short method for success alert type
-     */
-    public function success(): self
-    {
-        return $this->addClassNames('alert-success');
-    }
-
-    /**
-     * Short method for danger alert type
-     */
-    public function danger(): self
-    {
-        return $this->addClassNames('alert-danger');
-    }
-
-    /**
-     * Short method for warning alert type
-     */
-    public function warning(): self
-    {
-        return $this->addClassNames('alert-warning');
-    }
-
-    /**
-     * Short method for info alert type
-     */
-    public function info(): self
-    {
-        return $this->addClassNames('alert-info');
-    }
-
-    /**
-     * Short method for light alert type
-     */
-    public function light(): self
-    {
-        return $this->addClassNames('alert-light');
-    }
-
-    /**
-     * Short method for dark alert type
-     */
-    public function dark(): self
-    {
-        return $this->addClassNames('alert-dark');
-    }
-
-    /**
-     * Render header tag
-     */
-    private function renderHeader(): ?string
-    {
-        if ($this->header === null) {
-            return null;
+        if ($encode === true) {
+            $value = Html::encode($value);
         }
 
-        $options = $this->headerOptions;
-        $encode = ArrayHelper::remove($options, 'encode', true);
+        $new = clone $this;
+        $new->header = $value;
 
-        Html::addCssClass($options, ['alert-heading']);
-
-        return Html::tag($this->headerTag, $this->header, $options)
-            ->encode($encode)
-            ->render();
+        return $new;
     }
 
     /**
-     * Prepare the widget options.
+     * Sets the HTML attributes for the header tag in the alert component.
      *
-     * This method returns the default values for various options.
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance of the current class with the specified header attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    private function prepareOptions(): array
+    public function headerAttributes(array $values): self
     {
-        $options = $this->options;
-        $options['id'] = $this->getId();
-        $classNames = array_merge(['alert'], $this->classNames);
+        $new = clone $this;
+        $new->headerAttributes = $values;
 
-        if ($this->showCloseButton) {
-            $classNames[] = 'alert-dismissible';
+        return $new;
+    }
+
+    /**
+     * Sets the HTML tag to be used for the header.
+     *
+     * @param string $value The HTML tag name for the header.
+     *
+     * @return self A new instance of the current class with the specified header tag.
+     */
+    public function headerTag(string $value): self
+    {
+        $new = clone $this;
+        $new->headerTag = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the alert component.
+     *
+     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance of the current class with the specified ID.
+     */
+    public function id(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->id = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the template content to be used for rendering the alert component.
+     *
+     * @param string $value The template content string.
+     *
+     * @return self A new instance of the current class with the specified template content.
+     */
+    public function templateContent(string $value): self
+    {
+        $new = clone $this;
+        $new->templateContent = $value;
+
+        return $new;
+    }
+
+    /**
+     * Set the alert type. The following options are allowed:
+     * - `Type::PRIMARY`: Primary alert.
+     * - `Type::SECONDARY`: Secondary alert.
+     * - `Type::SUCCESS`: Success alert.
+     * - `Type::DANGER`: Danger alert.
+     * - `Type::WARNING`: Warning alert.
+     * - `Type::INFO`: Info alert.
+     * - `Type::LIGHT`: Light alert.
+     * - `Type::DARK`: Dark alert.
+     *
+     * @param AlertType $value The alert type.
+     *
+     * @return self A new instance of the current class with the specified alert type.
+     */
+    public function type(AlertType $value): self
+    {
+        $new = clone $this;
+        $new->alertType = $value;
+
+        return $new;
+    }
+
+    /**
+     * Run the alert widget.
+     *
+     * @return string The HTML representation of the element.
+     */
+    public function render(): string
+    {
+        $attributes = $this->attributes;
+        $attributes['role'] = self::NAME;
+        $content = '';
+        $id = is_string($this->id) ? $this->id : null;
+        $toggle = '';
+        $classes = $attributes['class'] ?? null;
+        unset($attributes['class']);
+
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, $this->cssClass]);
+
+        if ($this->dismissable) {
+            Html::addCssClass($attributes, 'alert-dismissible');
+            $toggle = $this->renderToggle();
         }
 
         if ($this->fade) {
-            $classNames[] = 'fade show';
+            Html::addCssClass($attributes, 'fade show');
         }
 
-        Html::addCssClass($options, $classNames);
+        $content = strtr(
+            $this->templateContent,
+            [
+                '{header}' => $this->renderHeader(),
+                '{body}' => $this->body,
+                '{toggle}' => $toggle,
+            ]
+        );
 
-        if (!isset($options['role'])) {
-            $options['role'] = 'alert';
+        $content = preg_replace("/\n{2}/", "\n", $content);
+
+        if ($this->id === true) {
+            $id = Html::generateId(self::NAME . '-');
         }
 
-        return $options;
+        return Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
+    }
+
+    /**
+     * Render header tag.
+     *
+     * @throws InvalidArgumentException if the header tag is an empty string.
+     *
+     * @return string The rendered header tag. Empty string if header is not set.
+     */
+    private function renderHeader(): string
+    {
+        if ($this->header === null) {
+            return '';
+        }
+
+        $headerAttributes = $this->headerAttributes;
+
+        Html::addCssClass($headerAttributes, 'alert-heading');
+
+        if ($this->headerTag === '') {
+            throw new InvalidArgumentException('Tag cannot be empty string.');
+        }
+
+        return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();
+    }
+
+    /**
+     * Render toggle component.
+     *
+     * @return string The rendered toggle component.
+     */
+    private function renderToggle(): string
+    {
+        $closeButtonAttributes = $this->closeButtonAttributes;
+
+        $closeButtonAttributes['type'] = 'button';
+        $closeButtonAttributes['data-bs-dismiss'] = self::NAME;
+        $closeButtonAttributes['aria-label'] = 'Close';
+
+        Html::addCssClass($closeButtonAttributes, 'btn-close');
+
+        return Html::tag('button', '', $closeButtonAttributes)->encode(false)->render();
     }
 }
