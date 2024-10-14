@@ -26,18 +26,17 @@ final class Alert extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'alert';
     private array $addClasses = [];
+    private AlertType $alertType = AlertType::SECONDARY;
     private array $attributes = [];
     private string|Stringable $body = '';
+    private array $closeButtonAttributes = [];
     private bool $dismissable = false;
-    private bool $generateId = true;
+    private bool $fade = false;
     private string|null $header = null;
     private array $headerAttributes = [];
     private string $headerTag = 'h4';
-    private string|null $id = null;
+    private bool|string $id = true;
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
-    private string $template = '{widget}';
-    private array $toggleAttributes = [];
-    private string $toggleTagName = 'button';
 
     /**
      * Sets the CSS class attribute for the alert component.
@@ -95,15 +94,33 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Makes the alert dismissible by adding a close button.
+     * Sets the HTML attributes for the close button in the alert component.
      *
-     * @return self A new instance of the current class with dismissible added.
+     * @param array $value Attribute values indexed by attribute names.
+     *
+     * @return self A new instance of the current class with the specified close button attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function dismissable(): self
+    public function closeButtonAttributes(array $value): self
     {
         $new = clone $this;
-        $new->dismissable = true;
-        $new->addClasses[] = 'alert-dismissible';
+        $new->closeButtonAttributes = $value;
+
+        return $new;
+    }
+
+    /**
+     * Makes the alert dismissible by adding a close button.
+     *
+     * @param bool $value Whether to make the alert dismissible.
+     *
+     * @return self A new instance of the current class with the specified dismissable value.
+     */
+    public function dismissable(bool $value): self
+    {
+        $new = clone $this;
+        $new->dismissable = $value;
 
         return $new;
     }
@@ -111,27 +128,14 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Adds a fade effect to the alert.
      *
-     * @return self A new instance of the current class with the fade effect added.
+     * @param bool $value Whether to add a fade effect to the alert.
+     *
+     * @return self A new instance of the current class with the specified fade value.
      */
-    public function fade(): self
+    public function fade(bool $value): self
     {
         $new = clone $this;
-        $new->addClasses[] = 'fade show';
-
-        return $new;
-    }
-
-    /**
-     * Sets whether to generate an ID for the alert component.
-     *
-     * @param bool $value If true, an ID will be automatically generated for the widget.
-     *
-     * @return self A new instance of the current class with the specified generate ID setting.
-     */
-    public function generateId(bool $value): self
-    {
-        $new = clone $this;
-        $new->generateId = $value;
+        $new->fade = $value;
 
         return $new;
     }
@@ -192,29 +196,14 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Sets the ID of the alert component.
      *
-     * @param string|null $value The ID to be set.
+     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance of the current class with the specified ID.
      */
-    public function id(string|null $value): self
+    public function id(bool|string $value): self
     {
         $new = clone $this;
         $new->id = $value;
-
-        return $new;
-    }
-
-    /**
-     * Sets the template to be used for rendering the alert component.
-     *
-     * @param string $value The template string.
-     *
-     * @return self A new instance of the current class with the specified template.
-     */
-    public function template(string $value): self
-    {
-        $new = clone $this;
-        $new->template = $value;
 
         return $new;
     }
@@ -230,38 +219,6 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->templateContent = $value;
-
-        return $new;
-    }
-
-    /**
-     * Sets the HTML attributes for the toggle dismissable in the alert component.
-     *
-     * @param array $value Attribute values indexed by attribute names.
-     *
-     * @return self A new instance of the current class with the specified toggle attributes.
-     *
-     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function toggleAttributes(array $value): self
-    {
-        $new = clone $this;
-        $new->toggleAttributes = $value;
-
-        return $new;
-    }
-
-    /**
-     * Sets the tag name for the toggle dismissable in the alert component.
-     *
-     * @param string $value The tag name for the toggle dismissable in the alert component.
-     *
-     * @return self A new instance of the current class with the specified toggle tag name.
-     */
-    public function toggleTagName(string $value): self
-    {
-        $new = clone $this;
-        $new->toggleTagName = $value;
 
         return $new;
     }
@@ -284,7 +241,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function type(AlertType $value): self
     {
         $new = clone $this;
-        $new->addClasses[] = $value->value;
+        $new->alertType = $value;
 
         return $new;
     }
@@ -299,13 +256,20 @@ final class Alert extends \Yiisoft\Widget\Widget
         $attributes = $this->attributes;
         $attributes['role'] = self::NAME;
         $content = '';
-        $id = $this->id;
+        $id = is_string($this->id) ? $this->id : null;
         $toggle = '';
+        $classes = $attributes['class'] ?? null;
+        unset($attributes['class']);
 
-        Html::addCssClass($attributes, ['widget' => self::NAME] + $this->addClasses);
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->addClasses]);
 
         if ($this->dismissable) {
+            Html::addCssClass($attributes, 'alert-dismissible');
             $toggle = $this->renderToggle();
+        }
+
+        if ($this->fade) {
+            Html::addCssClass($attributes, 'fade show');
         }
 
         $content = strtr(
@@ -319,19 +283,11 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $content = preg_replace("/\n{2}/", "\n", $content);
 
-        $alert = Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
-
-        if ($this->generateId) {
-            $id = $this->id ?? Html::generateId(self::NAME . '-');
+        if ($this->id === true) {
+            $id = Html::generateId(self::NAME . '-');
         }
 
-        return strtr(
-            $this->template,
-            [
-                '{toggle}' => $toggle,
-                '{widget}' => $alert,
-            ]
-        );
+        return Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
     }
 
     /**
@@ -365,18 +321,14 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     private function renderToggle(): string
     {
-        $toggleAttributes = $this->toggleAttributes;
+        $closeButtonAttributes = $this->closeButtonAttributes;
 
-        $toggleAttributes['type'] = 'button';
-        $toggleAttributes['data-bs-dismiss'] = self::NAME;
-        $toggleAttributes['aria-label'] = 'Close';
+        $closeButtonAttributes['type'] = 'button';
+        $closeButtonAttributes['data-bs-dismiss'] = self::NAME;
+        $closeButtonAttributes['aria-label'] = 'Close';
 
-        Html::addCssClass($toggleAttributes, 'btn-close');
+        Html::addCssClass($closeButtonAttributes, 'btn-close');
 
-        if ($this->toggleTagName === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
-        }
-
-        return Html::tag($this->toggleTagName, '', $toggleAttributes)->encode(false)->render();
+        return Html::tag('button', '', $closeButtonAttributes)->encode(false)->render();
     }
 }

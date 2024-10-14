@@ -18,11 +18,11 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-secondary test-class" role="alert">
             Body
             </div>
             HTML,
-            Alert::widget()->attributes(['class' => 'alert alert-warning'])->body('Body')->render(),
+            Alert::widget()->attributes(['class' => 'test-class'])->body('Body')->id(false)->render(),
         );
     }
 
@@ -30,11 +30,11 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             <body>
             </div>
             HTML,
-            Alert::widget()->body('<body>', false)->render(),
+            Alert::widget()->body('<body>', false)->id(false)->render(),
         );
     }
 
@@ -42,11 +42,11 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             &lt;body&gt;
             </div>
             HTML,
-            Alert::widget()->body('<body>')->render(),
+            Alert::widget()->body('<body>')->id(false)->render(),
         );
     }
 
@@ -57,111 +57,35 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
             <strong>Holy guacamole!</strong> You should check in on some of those fields below.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             HTML,
             Alert::widget()
-                ->addClass('alert-warning')
                 ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.', false)
-                ->dismissable()
-                ->fade()
-                ->generateId(false)
+                ->dismissable(true)
+                ->fade(true)
+                ->id(false)
                 ->render(),
         );
     }
 
-    public function testDismissableWithPositionAfterContainer(): void
+    public function testDismissableWithCloseButtonAttributes(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            HTML,
-            Alert::widget()
-                ->addClass('alert-warning')
-                ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.', false)
-                ->dismissable()
-                ->fade()
-                ->generateId(false)
-                ->template("{widget}\n{toggle}")
-                ->templateContent("\n{header}\n{body}\n")
-                ->render(),
-        );
-    }
-
-    public function testDismissableWithPositionBeforeContainer(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            </div>
-            HTML,
-            Alert::widget()
-                ->addClass('alert-warning')
-                ->body('<strong>Holy guacamole!</strong> You should check in on some of those fields below.', false)
-                ->dismissable()
-                ->fade()
-                ->generateId(false)
-                ->template("{toggle}\n{widget}")
-                ->templateContent("\n{header}\n{body}\n")
-                ->render(),
-        );
-    }
-
-    public function testDismissableWithToggleAttributes(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div id="test" class="alert alert-dismissible" role="alert">
+            <div id="test" class="alert alert-secondary alert-dismissible" role="alert">
             Body
             <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             HTML,
             Alert::widget()
-                ->id('test')
                 ->body('Body')
-                ->dismissable()
-                ->toggleAttributes(['class' => 'btn-lg'])
+                ->closeButtonAttributes(['class' => 'btn-lg'])
+                ->dismissable(true)
+                ->id('test')
                 ->render(),
-        );
-    }
-
-    public function testDismissableWithToggleTagName(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="alert alert-dismissible" role="alert">
-            Body
-            <a type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
-            </div>
-            HTML,
-            Alert::widget()->body('Body')->dismissable()->toggleTagName('a')->render(),
-        );
-    }
-
-    public function testDismissableWithToggleTagNameException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tag cannot be empty string.');
-
-        Alert::widget()->dismissable()->toggleTagName('')->render();
-    }
-
-    public function testFade(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="alert fade show" role="alert">
-            Body
-            </div>
-            HTML,
-            Alert::widget()->body('Body')->fade()->generateId(false)->render(),
         );
     }
 
@@ -169,14 +93,14 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading">Alert header</h5>
             Body
             </div>
             HTML,
             Alert::widget()
                 ->body('Body')
-                ->generateId(false)
+                ->id(false)
                 ->header('Alert header')
                 ->headerTag('h5')
                 ->headerAttributes(['class' => 'header-class'])
@@ -196,14 +120,14 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading"><header></h5>
             Body
             </div>
             HTML,
             Alert::widget()
                 ->body('Body')
-                ->generateId(false)
+                ->id(false)
                 ->header('<header>', false)
                 ->headerTag('h5')
                 ->headerAttributes(['class' => 'header-class'])
@@ -215,14 +139,14 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading">&lt;header&gt;</h5>
             Body
             </div>
             HTML,
             Alert::widget()
                 ->body('Body')
-                ->generateId(false)
+                ->id(false)
                 ->header('<header>')
                 ->headerTag('h5')
                 ->headerAttributes(['class' => 'header-class'])
@@ -234,7 +158,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="alert" role="alert">
+            <div id="test" class="alert alert-secondary" role="alert">
             Body
             </div>
             HTML,
@@ -246,11 +170,11 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert" role="alert">
+            <div class="alert alert-secondary" role="alert">
             Body
             </div>
             HTML,
-            Alert::widget()->id(null)->body('Body')->render(),
+            Alert::widget()->id(false)->body('Body')->render(),
         );
     }
 
@@ -261,17 +185,15 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->addClass(''));
         $this->assertNotSame($alert, $alert->attributes([]));
         $this->assertNotSame($alert, $alert->body('', true));
-        $this->assertNotSame($alert, $alert->dismissable());
-        $this->assertNotSame($alert, $alert->fade());
-        $this->assertNotSame($alert, $alert->generateId(false));
+        $this->assertNotSame($alert, $alert->closeButtonAttributes([]));
+        $this->assertNotSame($alert, $alert->dismissable(false));
+        $this->assertNotSame($alert, $alert->fade(false));
+        $this->assertNotSame($alert, $alert->id(false));
         $this->assertNotSame($alert, $alert->header('', false));
         $this->assertNotSame($alert, $alert->headerAttributes([]));
         $this->assertNotSame($alert, $alert->headerTag('div'));
-        $this->assertNotSame($alert, $alert->id(null));
-        $this->assertNotSame($alert, $alert->template(''));
+        $this->assertNotSame($alert, $alert->id(false));
         $this->assertNotSame($alert, $alert->templateContent(''));
-        $this->assertNotSame($alert, $alert->toggleAttributes([]));
-        $this->assertNotSame($alert, $alert->toggleTagName('button'));
         $this->assertNotSame($alert, $alert->type(AlertType::PRIMARY));
     }
 
@@ -292,7 +214,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                     '<a href="#" class="alert-link">an example link</a>. Give it a click if you like.',
                     false,
                 )
-                ->generateId(false)
+                ->id(false)
                 ->type(AlertType::WARNING)
                 ->render(),
         );
@@ -305,13 +227,13 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <div class="alert alert-secondary d-flex align-items-center" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
             <div>An example alert with an icon</div>
             </div>
             HTML,
             Alert::widget()
-                ->addClass('alert-warning d-flex align-items-center')
+                ->addClass('d-flex align-items-center')
                 ->body(
                     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">' .
                     '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' .
@@ -319,7 +241,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                     '<div>An example alert with an icon</div>',
                     false,
                 )
-                ->generateId(false)
+                ->id(false)
                 ->render(),
         );
     }
@@ -328,15 +250,15 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-dismissible" role="alert">
+            <div class="alert alert-secondary alert-dismissible" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             Body
             </div>
             HTML,
             Alert::widget()
                 ->body('Body')
-                ->dismissable()
-                ->generateId(false)
+                ->dismissable(true)
+                ->id(false)
                 ->templateContent("\n{toggle}\n{body}\n")
                 ->render(),
         );
@@ -351,7 +273,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             $expected,
             Alert::widget()
                 ->body('A simple ' . $alertType->value . ' check it out!')
-                ->generateId(false)
+                ->id(false)
                 ->type($alertType)
                 ->render(),
         );
