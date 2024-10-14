@@ -37,7 +37,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
     private string $template = '{widget}';
     private array $toggleAttributes = [];
-    private bool $toggleLink = false;
+    private string $toggleTagName = 'button';
 
     /**
      * Sets the CSS class attribute for the alert component.
@@ -235,7 +235,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the HTML attributes for the toggle component in the alert.
+     * Sets the HTML attributes for the toggle dismissable in the alert component.
      *
      * @param array $value Attribute values indexed by attribute names.
      *
@@ -252,14 +252,16 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the toggle component to be rendered as a link instead of a button.
+     * Sets the tag name for the toggle dismissable in the alert component.
      *
-     * @return self A new instance of the current class with the toggle set as a link.
+     * @param string $value The tag name for the toggle dismissable in the alert component.
+     *
+     * @return self A new instance of the current class with the specified toggle tag name.
      */
-    public function toggleLink(): self
+    public function toggleTagName(string $value): self
     {
         $new = clone $this;
-        $new->toggleLink = true;
+        $new->toggleTagName = $value;
 
         return $new;
     }
@@ -303,11 +305,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         Html::addCssClass($attributes, ['widget' => self::NAME] + $this->addClasses);
 
         if ($this->dismissable) {
-            $toggle = Toggle::widget()->attributes($this->toggleAttributes)->type(ToggleType::TYPE_DISMISS);
-
-            if ($this->toggleLink) {
-                $toggle = $toggle->link();
-            }
+            $toggle = $this->renderToggle();
         }
 
         $content = strtr(
@@ -358,5 +356,27 @@ final class Alert extends \Yiisoft\Widget\Widget
         }
 
         return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();
+    }
+
+    /**
+     * Render toggle component.
+     *
+     * @return string The rendered toggle component.
+     */
+    private function renderToggle(): string
+    {
+        $toggleAttributes = $this->toggleAttributes;
+
+        $toggleAttributes['type'] = 'button';
+        $toggleAttributes['data-bs-dismiss'] = self::NAME;
+        $toggleAttributes['aria-label'] = 'Close';
+
+        Html::addCssClass($toggleAttributes, 'btn-close');
+
+        if ($this->toggleTagName === '') {
+            throw new InvalidArgumentException('Tag cannot be empty string.');
+        }
+
+        return Html::tag($this->toggleTagName, '', $toggleAttributes)->encode(false)->render();
     }
 }

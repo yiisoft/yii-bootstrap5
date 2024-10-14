@@ -120,7 +120,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="test" class="alert alert-dismissible" role="alert">
             Body
-            <button type="button" class="btn-close btn-lg" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             HTML,
             Alert::widget()
@@ -132,7 +132,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDismissableWithToggleLink(): void
+    public function testDismissableWithToggleTagName(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -141,8 +141,16 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             <a type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
             </div>
             HTML,
-            Alert::widget()->body('Body')->dismissable()->toggleLink()->render(),
+            Alert::widget()->body('Body')->dismissable()->toggleTagName('a')->render(),
         );
+    }
+
+    public function testDismissableWithToggleTagNameException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Tag cannot be empty string.');
+
+        Alert::widget()->dismissable()->toggleTagName('')->render();
     }
 
     public function testFade(): void
@@ -263,7 +271,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->template(''));
         $this->assertNotSame($alert, $alert->templateContent(''));
         $this->assertNotSame($alert, $alert->toggleAttributes([]));
-        $this->assertNotSame($alert, $alert->toggleLink());
+        $this->assertNotSame($alert, $alert->toggleTagName('button'));
         $this->assertNotSame($alert, $alert->type(AlertType::PRIMARY));
     }
 
