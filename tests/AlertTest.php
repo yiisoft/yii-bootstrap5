@@ -166,7 +166,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testIdWithNull(): void
+    public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
