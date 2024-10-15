@@ -248,7 +248,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $id = is_string($this->id) ? $this->id : null;
+        $id = is_string($this->id) && $this->id !== '' ? $this->id : null;
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 

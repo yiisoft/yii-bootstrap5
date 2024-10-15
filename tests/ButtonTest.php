@@ -110,6 +110,16 @@ final class ButtonTest extends TestCase
         );
     }
 
+    public function testIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary">Label</button>
+            HTML,
+            Button::widget()->id('')->label('Label')->render(),
+        );
+    }
+
     public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
