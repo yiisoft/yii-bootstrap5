@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\{Html, Tag\Div};
 
 use function implode;
+use function is_string;
 
 /**
  * ButtonGroup renders a button group bootstrap component.
@@ -15,20 +15,15 @@ use function implode;
  * For example,
  *
  * ```php
- * // a button group with items configuration
  * echo ButtonGroup::widget()
- *     ->buttons([
- *         ['label' => 'A'],
- *         ['label' => 'B'],
- *         ['label' => 'C', 'visible' => false],
- *     ]);
- *
- * // button group with an item as a string
- * echo ButtonGroup::widget()
- *     ->buttons([
- *         Button::widget()->label('A'),
- *         ['label' => 'B'],
- *     ]);
+ *     ->addClass('btn-lg')
+ *     ->ariaLabel('Basic example')
+ *     ->buttons(
+ *         Button::widget()->label('Left')->id(false)->type(ButtonType::PRIMARY),
+ *         Button::widget()->label('Middle')->id(false)->type(ButtonType::PRIMARY),
+ *         Button::widget()->label('Right')->id(false)->type(ButtonType::PRIMARY),
+ *     )
+ *     ->render();
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
