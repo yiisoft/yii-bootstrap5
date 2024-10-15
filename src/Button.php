@@ -268,7 +268,7 @@ final class Button extends \Yiisoft\Widget\Widget
                 $attributes['role'] = 'button';
 
                 if (isset($attributes['disabled'])) {
-                    $attributes['aria-disabled'] = "true";
+                    $attributes['aria-disabled'] = 'true';
                     $attributes['disabled'] = null;
                     $classes .= 'disabled';
                 }
