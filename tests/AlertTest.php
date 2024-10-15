@@ -166,7 +166,19 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testIdWithNull(): void
+    public function testIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->id('')->body('Body')->render(),
+        );
+    }
+
+    public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML

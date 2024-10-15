@@ -256,7 +256,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $attributes = $this->attributes;
         $attributes['role'] = self::NAME;
         $content = '';
-        $id = is_string($this->id) ? $this->id : null;
+        $id = is_string($this->id) && $this->id !== '' ? $this->id : null;
         $toggle = '';
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
