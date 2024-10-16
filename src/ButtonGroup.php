@@ -174,7 +174,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
         Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 
         $buttons = implode("\n", $this->buttons);
-        $buttons = $buttons === '' ? null : PHP_EOL . $buttons . PHP_EOL;
+        $buttons = $buttons === '' ? null : "\n" . $buttons . "\n";
 
         return Div::tag()->attributes($attributes)->content($buttons)->encode(false)->id($id)->render();
     }
