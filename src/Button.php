@@ -21,9 +21,11 @@ use Yiisoft\Html\Html;
 final class Button extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn';
+    private bool $active = false;
     private array $attributes = [];
     private ButtonType $buttonType = ButtonType::SECONDARY;
     private string|null $cssClass = null;
+    private bool $disabled = false;
     private bool|string $id = true;
     private string $label = 'Button';
     private string $tagName = 'button';
@@ -31,14 +33,14 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the button to be active.
      *
+     * @param bool $value Whether the button should be active.
+     *
      * @return self A new instance of the current class with the button active.
      */
-    public function active(): self
+    public function active(bool $value = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-pressed'] = 'true';
-        $new->attributes['data-bs-toggle'] = 'button';
-        $new->cssClass = 'active';
+        $new->active = $value;
 
         return $new;
     }
@@ -101,12 +103,8 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function disabled(bool $value = true): self
     {
-        if ($value === false) {
-            $value = null;
-        }
-
         $new = clone $this;
-        $new->attributes['disabled'] = $value;
+        $new->disabled = $value;
 
         return $new;
     }
@@ -264,30 +262,47 @@ final class Button extends \Yiisoft\Widget\Widget
             $id = Html::generateId(self::NAME . '-');
         }
 
-        switch ($this->tagName) {
-            case 'button':
-                $attributes['type'] ??= 'button';
-                break;
-            case 'input':
-                $attributes['type'] ??= 'button';
-                $attributes['value'] = $this->label;
-                break;
-            case 'a':
-                $attributes['role'] = 'button';
-
-                if (isset($attributes['disabled'])) {
-                    $attributes['aria-disabled'] = 'true';
-                    $attributes['disabled'] = null;
-                    $classes .= 'disabled';
-                }
-
-                break;
-            default:
-                throw new InvalidArgumentException('Invalid tag name, use "button", "input", or "a".');
-        }
-
         Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, $this->cssClass]);
 
+        $attributes = $this->setAttributes($attributes);
+
+        if ($this->tagName === '' || in_array($this->tagName, ['button', 'input', 'a'], true) === false) {
+            throw new InvalidArgumentException('Invalid tag name, use "button", "input", or "a".');
+        }
+
         return Html::tag($this->tagName, $this->label, $attributes)->encode(false)->id($id)->render();
+    }
+
+    public function setAttributes(array $attributes): array
+    {
+        $attributes['type'] ??= ($this->tagName === 'button' || $this->tagName === 'input' ? 'button' : null);
+
+        if ($this->active) {
+            $attributes['aria-pressed'] = 'true';
+            $attributes['data-bs-toggle'] = 'button';
+
+            Html::addCssClass($attributes, 'active');
+        }
+
+        if ($this->disabled) {
+            $attributes['disabled'] = true;
+
+            if ($this->tagName === 'a') {
+                $attributes['aria-disabled'] = 'true';
+
+                unset($attributes['disabled']);
+                Html::addCssClass($attributes, 'disabled');
+            }
+        }
+
+        if ($this->tagName === 'input') {
+            $attributes['value'] ??= $this->label;
+        }
+
+        if ($this->tagName === 'a') {
+            $attributes['role'] ??= 'button';
+        }
+
+        return $attributes;
     }
 }

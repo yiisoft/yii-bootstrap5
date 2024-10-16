@@ -21,11 +21,22 @@ final class ButtonTest extends TestCase
      */
     public function testActive(): void
     {
+        $buttonWidget = Button::widget()->active()->label('Active toggle button')->id(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary active" aria-pressed="true" data-bs-toggle="button">Active toggle button</button>
             HTML,
-            Button::widget()->active()->label('Active toggle button')->id(false)->render(),
+            $buttonWidget->render(),
+        );
+
+        $buttonWidget = $buttonWidget->active(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary">Active toggle button</button>
+            HTML,
+            $buttonWidget->render(),
         );
     }
 
@@ -92,24 +103,22 @@ final class ButtonTest extends TestCase
      */
     public function testDisabled(): void
     {
+        $buttonWidget = Button::widget()->disabled()->label('Label')->id(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary" disabled>Label</button>
             HTML,
-            Button::widget()->disabled()->label('Label')->id(false)->render(),
+            $buttonWidget->render(),
         );
-    }
 
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#disabled-state
-     */
-    public function testDisableWithFalse(): void
-    {
+        $buttonWidget = $buttonWidget->disabled(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
-            Button::widget()->disabled(false)->label('Label')->id(false)->render(),
+            $buttonWidget->render(),
         );
     }
 
@@ -214,11 +223,22 @@ final class ButtonTest extends TestCase
      */
     public function testLinkWithActive(): void
     {
+        $buttonWidget = Button::widget()->active()->label('Active toggle link')->id(false)->link();
+
         Assert::equalsWithoutLE(
             <<<HTML
             <a class="btn btn-secondary active" aria-pressed="true" data-bs-toggle="button" role="button">Active toggle link</a>
             HTML,
-            Button::widget()->active()->label('Active toggle link')->id(false)->link()->render(),
+            $buttonWidget->render(),
+        );
+
+        $buttonWidget = $buttonWidget->active(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" role="button">Active toggle link</a>
+            HTML,
+            $buttonWidget->render(),
         );
     }
 
@@ -240,11 +260,22 @@ final class ButtonTest extends TestCase
      */
     public function testLinkWithDisabled(): void
     {
+        $buttonWidget = Button::widget()->disabled()->label('Label')->id(false)->link();
+
         Assert::equalsWithoutLE(
             <<<HTML
-            <a class="btn btn-secondary disabled" role="button" aria-disabled="true">Label</a>
+            <a class="btn btn-secondary disabled" aria-disabled="true" role="button">Label</a>
             HTML,
-            Button::widget()->disabled()->label('Label')->id(false)->link()->render(),
+            $buttonWidget->render(),
+        );
+
+        $buttonWidget = $buttonWidget->disabled(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" role="button">Label</a>
+            HTML,
+            $buttonWidget->render(),
         );
     }
 
