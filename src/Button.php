@@ -253,6 +253,11 @@ final class Button extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Run the button widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -276,6 +281,13 @@ final class Button extends \Yiisoft\Widget\Widget
         return Html::tag($this->tagName, $this->label, $attributes)->encode(false)->id($id)->render();
     }
 
+    /**
+     * Sets the attributes for the button.
+     *
+     * @param array $attributes The attributes to set.
+     *
+     * @return array The updated attributes.
+     */
     public function setAttributes(array $attributes): array
     {
         $attributes['type'] ??= ($this->tagName === 'button' || $this->tagName === 'input' ? 'button' : null);

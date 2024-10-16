@@ -4,138 +4,264 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\ButtonGroup;
-use Yiisoft\Yii\Bootstrap5\ButtonToolbar;
+use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonToolbar, ButtonType};
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `ButtonToolbar` widget.
+ *
+ * @group button-toolbar
  */
 final class ButtonToolbarTest extends TestCase
 {
+    public function testAddClass(): void
+    {
+        $buttonToolbar = ButtonToolbar::widget()
+            ->addClass('test-class')
+            ->ariaLabel('Toolbar with button groups')
+            ->buttonGroups(
+                ButtonGroup::widget()
+                    ->addClass('me-2')
+                    ->ariaLabel('First group')
+                    ->buttons(
+                        Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                        Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                        Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                        Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                    )
+                    ->id(false),
+            )
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar test-class" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            $buttonToolbar->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar test-class test-class-1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            $buttonToolbar->addClass('test-class-1')->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->attributes(['data-id' => '1'])
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id('test')
+                ->render(),
+        );
+    }
+
+    public function testIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id('')
+                ->render(),
+        );
+    }
+
+    public function testIdWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testImmutability(): void
+    {
+        $buttonToolbar = ButtonToolbar::widget();
+
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->addClass(''));
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->ariaLabel(''));
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->attributes([]));
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->buttonGroups());
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->id(false));
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.2/components/button-group/#button-toolbar
+     */
     public function testRender(): void
     {
-        $html = ButtonToolbar::widget()
-            ->id('TEST_ID')
-            ->options([
-                'aria-label' => 'Toolbar with button groups',
-            ])
-            ->buttonGroups([
-                ButtonGroup::widget()
-                    ->id('BG1')
-                    ->options([
-                        'aria-label' => 'First group',
-                        'class' => ['mr-2'],
-                    ])
-                    ->buttons([
-                        ['label' => '1', 'options' => ['id' => 'BTN1']],
-                        ['label' => '2', 'options' => ['id' => 'BTN2']],
-                        ['label' => '3', 'options' => ['id' => 'BTN3']],
-                        ['label' => '4', 'options' => ['id' => 'BTN4']],
-                    ])
-                    ->render(),
-                [
-                    'options' => [
-                        'id' => 'BG2',
-                        'aria-label' => 'Second group',
-                    ],
-                    'buttons' => [
-                        ['label' => '5', 'options' => ['id' => 'BTN5']],
-                        ['label' => '6', 'options' => ['id' => 'BTN6']],
-                        ['label' => '7', 'options' => ['id' => 'BTN7']],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="BG1" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="BTN1" class="btn">1</button>
-        <button type="button" id="BTN2" class="btn">2</button>
-        <button type="button" id="BTN3" class="btn">3</button>
-        <button type="button" id="BTN4" class="btn">4</button></div>
-        <div id="BG2" class="btn-group" aria-label="Second group" role="group"><button type="button" id="BTN5" class="btn">5</button>
-        <button type="button" id="BTN6" class="btn">6</button>
-        <button type="button" id="BTN7" class="btn">7</button></div></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            <div class="btn-group me-2" aria-label="Second group" role="group">
+            <button type="button" class="btn btn-secondary">5</button>
+            <button type="button" class="btn btn-secondary">6</button>
+            <button type="button" class="btn btn-secondary">7</button>
+            </div>
+            <div class="btn-group" aria-label="Third group" role="group">
+            <button type="button" class="btn btn-info">8</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('Second group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('5'),
+                            Button::widget()->id(false)->label('6'),
+                            Button::widget()->id(false)->label('7'),
+                        )
+                        ->id(false),
+                    ButtonGroup::widget()
+                        ->ariaLabel('Third group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('8')->type(ButtonType::INFO),
+                        )
+                        ->id(false),
+                )
+                ->id(false)
+                ->render(),
+        );
     }
 
-    public function testButtonGroupEmpty(): void
+    public function testRenderWithEmptyButtonGroups(): void
     {
-        $html = ButtonToolbar::widget()
-            ->id('TEST_ID')
-            ->buttonGroups([[]])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="btn-toolbar" role="toolbar"></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testButtonOptions(): void
-    {
-        $html = ButtonToolbar::widget()
-            ->id('TEST_ID')
-            ->buttonGroups([
-                [
-                    'options' => ['id' => 'BG1'],
-                    'buttons' => [
-                        ['label' => '1', 'options' => ['id' => 'BTN1', 'class' => 'btn-secondary', 'tabindex' => 2, 'type' => 'reset']],
-                        ['label' => '2', 'options' => ['id' => 'BTN2', 'class' => 'btn-primary', 'tabindex' => 1, 'type' => 'submit']],
-                    ],
-                    'class' => ['mr-2'],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="btn-toolbar" role="toolbar"><div id="BG1" class="btn-group" role="group"><button type="reset" id="BTN1" class="btn-secondary btn" tabindex="2">1</button>
-        <button type="submit" id="BTN2" class="btn-primary btn" tabindex="1">2</button></div></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testAdditionalContent(): void
-    {
-        $addHtml = <<<'HTML'
-        <div class="input-group">
-        <div class="input-group-prepend">
-        <div class="input-group-text" id="btnGroupAddon">@</div>
-        </div>
-        <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-        </div>
-        HTML;
-        $html = ButtonToolbar::widget()
-            ->id('TEST_ID')
-            ->options([
-                'aria-label' => 'Toolbar with button groups',
-            ])
-            ->buttonGroups([
-                [
-                    'options' => [
-                        'id' => 'BG1',
-                        'aria-label' => 'First group',
-                        'class' => ['mr-2'],
-                    ],
-                    'buttons' => [
-                        ['label' => '1', 'options' => ['id' => 'BTN1']],
-                        ['label' => '2', 'options' => ['id' => 'BTN2']],
-                        ['label' => '3', 'options' => ['id' => 'BTN3']],
-                        ['label' => '4', 'options' => ['id' => 'BTN4']],
-                    ],
-                ],
-                $addHtml,
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar"><div id="BG1" class="mr-2 btn-group" aria-label="First group" role="group"><button type="button" id="BTN1" class="btn">1</button>
-        <button type="button" id="BTN2" class="btn">2</button>
-        <button type="button" id="BTN3" class="btn">3</button>
-        <button type="button" id="BTN4" class="btn">4</button></div>
-        <div class="input-group">
-        <div class="input-group-prepend">
-        <div class="input-group-text" id="btnGroupAddon">@</div>
-        </div>
-        <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-        </div></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEmpty(ButtonToolbar::widget()->render());
     }
 }

@@ -158,6 +158,11 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Run the button group widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -173,8 +178,12 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
 
         Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 
-        $buttons = implode("\n", $this->buttons);
-        $buttons = $buttons === '' ? null : "\n" . $buttons . "\n";
+        $button = implode("\n", $this->buttons);
+        $buttons = $button === '' ? '' : "\n" . $button . "\n";
+
+        if ($buttons === '') {
+            return '';
+        }
 
         return Div::tag()->attributes($attributes)->content($buttons)->encode(false)->id($id)->render();
     }

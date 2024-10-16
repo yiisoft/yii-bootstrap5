@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
-use Yiisoft\Html\Html;
+use Yiisoft\Html\{Html, Tag\Div};
 
 use function implode;
-use function is_array;
 
 /**
  * ButtonToolbar Combines sets of button groups into button toolbars for more complex components.
@@ -18,69 +15,105 @@ use function is_array;
  * For example,
  *
  * ```php
- * // a button toolbar with items configuration
  * echo ButtonToolbar::widget()
- *     ->buttonGroups([
- *         [
- *             'buttons' => [
- *                 ['label' => '1', 'class' => ['btn-secondary']],
- *                 ['label' => '2', 'class' => ['btn-secondary']],
- *                 ['label' => '3', 'class' => ['btn-secondary']],
- *                 ['label' => '4', 'class' => ['btn-secondary']]
- *             ],
- *              'class' => ['mr-2']
- *         ],
- *         [
- *             'buttons' => [
- *                 ['label' => '5', 'class' => ['btn-secondary']],
- *                 ['label' => '6', 'class' => ['btn-secondary']],
- *                 ['label' => '7', 'class' => ['btn-secondary']]
- *             ],
- *             'class' => ['mr-2']
- *         ],
- *         [
- *             'buttons' => [
- *                 ['label' => '8', 'class' => ['btn-secondary']]
- *             ]
- *         ]
- *     ]);
+ *     ->ariaLabel('Toolbar with button groups')
+ *     ->buttonGroups(
+ *         ButtonGroup::widget()
+ *             ->addClass('me-2')
+ *             ->ariaLabel('First group')
+ *             ->buttons(
+ *                 Button::widget()->label('1')->type(ButtonType::PRIMARY),
+ *                 Button::widget()->label('2')->type(ButtonType::PRIMARY),
+ *                 Button::widget()->label('3')->type(ButtonType::PRIMARY),
+ *                 Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+ *             ),
+ *         ButtonGroup::widget()
+ *             ->addClass('me-2')
+ *             ->ariaLabel('Second group')
+ *             ->buttons(
+ *                 Button::widget()->label('5'),
+ *                 Button::widget()->label('6'),
+ *                 Button::widget()->id(false)->label('7'),
+ *             ),
+ *         ButtonGroup::widget()
+ *             ->ariaLabel('Third group')
+ *             ->buttons(
+ *                 Button::widget()->id(false)->label('8')->type(ButtonType::INFO),
+ *             )
+ *     )
+ *     ->render();
  * ```
  *
- * Pressing on the button should be handled via JavaScript. See the following for details:
+ * @link https://getbootstrap.com/docs/5.2/components/button-group/#button-toolbar
  */
-final class ButtonToolbar extends Widget
+final class ButtonToolbar extends \Yiisoft\Widget\Widget
 {
-    private bool $encodeTags = false;
+    private const NAME = 'btn-toolbar';
+    private array $attributes = [];
+    /** @psalm-var ButtonGroup[] $buttonGroups */
     private array $buttonGroups = [];
-    private array $options = [];
+    private array $cssClass = [];
+    private bool|string $id = true;
 
-    public function render(): string
+    /**
+     * Adds a CSS class for the button toolbar component.
+     *
+     * @param string $value The CSS class for the button toolbar component (e.g., 'test-class').
+     *
+     * @return self A new instance with the specified class value added.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string $value): self
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
+        $new = clone $this;
+        $new->cssClass[] = $value;
 
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'btn-toolbar']);
-
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'toolbar';
-        }
-
-        return Html::div($this->renderButtonGroups(), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
+        return $new;
     }
 
     /**
-     * List of buttons groups. Each array element represents a single group which can be specified as a string or an
-     * array of the following structure:
+     * Sets the ARIA label for the button toolbar component.
      *
-     * - buttons: array list of buttons. Either as array or string representation
-     * - options: array optional, the HTML attributes of the button group.
-     * - encodeLabels: bool whether to HTML-encode the button labels.
+     * @param string $value The ARIA label for the button toolbar component.
+     *
+     * @return self A new instance with the specified ARIA label.
+     *
+     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
      */
-    public function buttonGroups(array $value): self
+    public function ariaLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->attributes['aria-label'] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the button toolbar component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * List of buttons groups.
+     *
+     * @param ButtonGroup ...$value The button group configuration.
+     *
+     * @return self A new instance with the specified buttons groups.
+     */
+    public function buttonGroups(ButtonGroup ...$value): self
     {
         $new = clone $this;
         $new->buttonGroups = $value;
@@ -89,45 +122,48 @@ final class ButtonToolbar extends Widget
     }
 
     /**
-     * The HTML attributes for the container tag. The following special options are recognized.
+     * Sets the ID of the button toolbar component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @param bool|string $value The ID of the button toolbar component. If `true`, an ID will be generated
+     * automatically.
+     *
+     * @return self A new instance with the specified ID.
      */
-    public function options(array $value): self
+    public function id(bool|string $value): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->id = $value;
 
         return $new;
     }
 
     /**
-     * Generates the button groups that compound the toolbar as specified on {@see buttonGroups}.
+     * Run the button toolbar widget.
      *
-     * @throws InvalidConfigException
-     *
-     * @return string the rendering result.
+     * @return string The HTML representation of the element.
      */
-    private function renderButtonGroups(): string
+    public function render(): string
     {
-        $buttonGroups = [];
+        $attributes = $this->attributes;
+        $attributes['role'] = 'toolbar';
+        $classes = $attributes['class'] ?? null;
+        unset($attributes['class']);
 
-        foreach ($this->buttonGroups as $group) {
-            if (is_array($group)) {
-                if (!isset($group['buttons'])) {
-                    continue;
-                }
+        $id = match ($this->id) {
+            true => Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
 
-                $options = ArrayHelper::getValue($group, 'options', []);
-                $buttonGroups[] = ButtonGroup::widget()
-                    ->buttons($group['buttons'])
-                    ->options($options)
-                    ->render();
-            } else {
-                $buttonGroups[] = $group;
-            }
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+
+        $buttonGroup = implode("\n", $this->buttonGroups);
+        $buttonsGroups = $buttonGroup === '' ? '' : "\n" . $buttonGroup . "\n";
+
+        if ($buttonsGroups === '') {
+            return '';
         }
 
-        return implode("\n", $buttonGroups);
+        return Div::tag()->attributes($attributes)->content($buttonsGroups)->encode(false)->id($id)->render();
     }
 }

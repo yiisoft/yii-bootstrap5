@@ -188,6 +188,11 @@ final class ButtonGroupTest extends TestCase
         );
     }
 
+    public function testRenderWithEmptyButtons(): void
+    {
+        $this->assertEmpty(ButtonGroup::widget()->render());
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.2/components/button-group/#mixed-styles
      */
