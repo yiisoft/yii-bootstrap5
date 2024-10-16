@@ -40,11 +40,11 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
 
     /**
-     * Sets the CSS class attribute for the button group component.
+     * Adds a CSS class for the button group component.
      *
      * @param string $value The CSS class for the button group component (e.g., 'test-class').
      *
-     * @return self A new instance of the current class with the specified class value.
+     * @return self A new instance with the specified class value added.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
@@ -61,7 +61,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @param string $value The ARIA label for the button group component.
      *
-     * @return self A new instance of the current class with the specified ARIA label.
+     * @return self A new instance with the specified ARIA label.
      *
      * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
      */
@@ -78,7 +78,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self A new instance of the current class with the specified attributes.
+     * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -95,7 +95,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @param Button ...$value The button configuration.
      *
-     * @return self A new instance of the current class with the specified buttons.
+     * @return self A new instance with the specified buttons.
      */
     public function buttons(Button ...$value): self
     {
@@ -110,7 +110,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @param bool|string $value The ID of the button group component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance of the current class with the specified ID.
+     * @return self A new instance with the specified ID.
      */
     public function id(bool|string $value): self
     {
@@ -123,12 +123,12 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     /**
      * Sets the button group size to be large.
      *
-     * @return self A new instance of the current class with the button as a large button.
+     * @return self A new instance with the button as a large button.
      */
     public function large(): self
     {
         $new = clone $this;
-        $new->cssClass[] = 'btn-lg';
+        $new->cssClass['size'] = 'btn-lg';
 
         return $new;
     }
@@ -136,12 +136,12 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     /**
      * Sets the button group size to be small.
      *
-     * @return self A new instance of the current class with the button as a small button.
+     * @return self A new instance with the button as a small button.
      */
     public function small(): self
     {
         $new = clone $this;
-        $new->cssClass[] = 'btn-sm';
+        $new->cssClass['size'] = 'btn-sm';
 
         return $new;
     }
@@ -163,15 +163,16 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     {
         $attributes = $this->attributes;
         $attributes['role'] = 'group';
-        $id = is_string($this->id) && $this->id !== '' ? $this->id : null;
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+        $id = match ($this->id) {
+            true => Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
 
-        if ($this->id === true) {
-            $id = Html::generateId(self::NAME . '-');
-        }
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 
         $buttons = implode("\n", $this->buttons);
         $buttons = $buttons === '' ? null : PHP_EOL . $buttons . PHP_EOL;

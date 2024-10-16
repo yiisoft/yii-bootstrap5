@@ -35,7 +35,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether the button should be active.
      *
-     * @return self A new instance of the current class with the button active.
+     * @return self A new instance with the button active.
      */
     public function active(bool $value = true): self
     {
@@ -46,11 +46,11 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the CSS class attribute for the button component.
+     * Adds a CSS class for the button group component.
      *
      * @param string $value The CSS class for the button component (e.g., 'test-class').
      *
-     * @return self A new instance of the current class with the specified class value.
+     * @return self A new instance with the specified class value added.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
@@ -67,7 +67,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self A new instance of the current class with the specified attributes.
+     * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -84,7 +84,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param string $value The value to set for the 'data-bs-toggle' attribute.
      *
-     * @return self A new instance of the current class with the specified 'data-bs-toggle' value.
+     * @return self A new instance with the specified 'data-bs-toggle' value.
      */
     public function dataBsToggle(string $value): self
     {
@@ -99,7 +99,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether the button should be disabled.
      *
-     * @return self A new instance of the current class with the button disabled.
+     * @return self A new instance with the button disabled.
      */
     public function disabled(bool $value = true): self
     {
@@ -114,7 +114,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param bool|string $value The ID of the button component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance of the current class with the specified ID.
+     * @return self A new instance with the specified ID.
      */
     public function id(bool|string $value): self
     {
@@ -128,9 +128,10 @@ final class Button extends \Yiisoft\Widget\Widget
      * The button label.
      *
      * @param string $value The label to display on the button.
-     * @param bool $encode Whether to encode the label.
+     * @param bool $encode Whether the label value should be HTML-encoded. Use this when rendering user-generated
+     * content to prevent XSS attacks.
      *
-     * @return self A new instance of the current class with the specified label value.
+     * @return self A new instance with the specified label value.
      */
     public function label(string $value, bool $encode = true): self
     {
@@ -147,12 +148,12 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the button size to be large.
      *
-     * @return self A new instance of the current class with the button as a large button.
+     * @return @return self A new instance with the button as a large button.
      */
     public function large(): self
     {
         $new = clone $this;
-        $new->cssClass[] = 'btn-lg';
+        $new->cssClass['size'] = 'btn-lg';
 
         return $new;
     }
@@ -160,7 +161,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a link.
      *
-     * @return self A new instance of the current class with the button as a link.
+     * @return self A new instance with the button as a link.
      */
     public function link(): self
     {
@@ -173,7 +174,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a reset button.
      *
-     * @return self A new instance of the current class with the button as a reset button.
+     * @return self A new instance with the button as a reset button.
      */
     public function reset(): self
     {
@@ -188,12 +189,12 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the button size to be small.
      *
-     * @return self A new instance of the current class with the button as a small button.
+     * @return self A new instance with the button as a small button.
      */
     public function small(): self
     {
         $new = clone $this;
-        $new->cssClass[] = 'btn-sm';
+        $new->cssClass['size'] = 'btn-sm';
 
         return $new;
     }
@@ -201,7 +202,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a submit button.
      *
-     * @return self A new instance of the current class with the button as a submit button.
+     * @return self A new instance with the button as a submit button.
      */
     public function submit(): self
     {
@@ -218,7 +219,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param string $value The tag to use to render the button.
      *
-     * @return self A new instance of the current class with the specified tag name.
+     * @return self A new instance with the specified tag name.
      */
     public function tagName(string $value): self
     {
@@ -230,6 +231,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
     /**
      * Set the button type. The following options are allowed:
+     *
      * - `Type::PRIMARY`: Primary button.
      * - `Type::SECONDARY`: Secondary button.
      * - `Type::SUCCESS`: Success button.
@@ -241,7 +243,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @param ButtonType $value The type of the button.
      *
-     * @return self A new instance of the current class with the specified button type.
+     * @return self A new instance with the specified button type.
      */
     public function type(ButtonType $value): self
     {
@@ -254,13 +256,14 @@ final class Button extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $id = is_string($this->id) && $this->id !== '' ? $this->id : null;
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 
-        if ($this->id === true) {
-            $id = Html::generateId(self::NAME . '-');
-        }
+        $id = match ($this->id) {
+            true => Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
 
         Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, ...$this->cssClass]);
 

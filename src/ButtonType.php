@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Is an enumeration of types for the alert component.
+ * Types for the button component.
  *
  * @see https://getbootstrap.com/docs/5.2/components/buttons/#examples
  */
