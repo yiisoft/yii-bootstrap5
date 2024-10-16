@@ -42,11 +42,22 @@ final class ButtonTest extends TestCase
 
     public function testAddClass(): void
     {
+        $buttonWidget = Button::widget()->addClass('test-class')->label('Label')->id(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary test-class">Label</button>
             HTML,
-            Button::widget()->addClass('test-class')->label('Label')->id(false)->render(),
+            $buttonWidget->render(),
+        );
+
+        $buttonWidget = $buttonWidget->addClass('test-class-1');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary test-class test-class-1">Label</button>
+            HTML,
+            $buttonWidget->render(),
         );
     }
 

@@ -24,7 +24,7 @@ final class Button extends \Yiisoft\Widget\Widget
     private bool $active = false;
     private array $attributes = [];
     private ButtonType $buttonType = ButtonType::SECONDARY;
-    private string|null $cssClass = null;
+    private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
     private string $label = 'Button';
@@ -57,7 +57,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClass[] = $value;
 
         return $new;
     }
@@ -152,7 +152,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function large(): self
     {
         $new = clone $this;
-        $new->cssClass = 'btn-lg';
+        $new->cssClass[] = 'btn-lg';
 
         return $new;
     }
@@ -193,7 +193,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function small(): self
     {
         $new = clone $this;
-        $new->cssClass = 'btn-sm';
+        $new->cssClass[] = 'btn-sm';
 
         return $new;
     }
@@ -262,7 +262,7 @@ final class Button extends \Yiisoft\Widget\Widget
             $id = Html::generateId(self::NAME . '-');
         }
 
-        Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, $this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, ...$this->cssClass]);
 
         $attributes = $this->setAttributes($attributes);
 
