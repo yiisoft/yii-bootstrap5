@@ -15,6 +15,8 @@ use Yiisoft\Html\Html;
  * ```php
  * echo Button::widget()->label('Block button')->large()->type(ButtonType::PRIMARY)->render();
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.2/components/buttons/
  */
 final class Button extends \Yiisoft\Widget\Widget
 {
