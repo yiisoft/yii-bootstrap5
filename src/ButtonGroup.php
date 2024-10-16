@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\{Html, Tag\Div};
 
 use function implode;
-use function is_string;
 
 /**
  * ButtonGroup renders a button group bootstrap component.
