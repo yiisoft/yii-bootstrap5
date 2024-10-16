@@ -16,6 +16,14 @@ final class ButtonGroupTest extends TestCase
 {
     public function testAddClass(): void
     {
+        $buttonGroupWidget = ButtonGroup::widget()
+            ->addClass('test-class')
+            ->buttons(
+                Button::widget()->id(false)->label('Button B'),
+                Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+            )
+            ->id(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="btn-group test-class" role="group">
@@ -23,14 +31,17 @@ final class ButtonGroupTest extends TestCase
             <button type="button" class="btn btn-primary">Button A</button>
             </div>
             HTML,
-            ButtonGroup::widget()
-                ->addClass('test-class')
-                ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
-                )
-                ->id(false)
-                ->render(),
+            $buttonGroupWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group test-class test-class-1" role="group">
+            <button type="button" class="btn btn-secondary">Button B</button>
+            <button type="button" class="btn btn-primary">Button A</button>
+            </div>
+            HTML,
+            $buttonGroupWidget->addClass('test-class-1')->render(),
         );
     }
 

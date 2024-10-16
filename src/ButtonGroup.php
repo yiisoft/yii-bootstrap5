@@ -27,6 +27,8 @@ use function is_string;
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
+ *
+ * @link https://getbootstrap.com/docs/5.2/components/button-group/
  */
 final class ButtonGroup extends \Yiisoft\Widget\Widget
 {
@@ -34,7 +36,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     /** psalm-var Button[] $buttons */
     private array $buttons = [];
-    private string|null $cssClass = null;
+    private array $cssClass = [];
     private bool|string $id = true;
 
     /**
@@ -49,7 +51,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClass[] = $value;
 
         return $new;
     }
@@ -126,7 +128,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function large(): self
     {
         $new = clone $this;
-        $new->cssClass = 'btn-lg';
+        $new->cssClass[] = 'btn-lg';
 
         return $new;
     }
@@ -139,7 +141,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function small(): self
     {
         $new = clone $this;
-        $new->cssClass = 'btn-sm';
+        $new->cssClass[] = 'btn-sm';
 
         return $new;
     }
@@ -152,7 +154,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function vertical(): self
     {
         $new = clone $this;
-        $new->cssClass = 'btn-group-vertical';
+        $new->cssClass[] = 'btn-group-vertical';
 
         return $new;
     }
@@ -165,13 +167,13 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
         $classes = $attributes['class'] ?? null;
         unset($attributes['class']);
 
-        Html::addCssClass($attributes, [self::NAME, $classes, $this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 
         if ($this->id === true) {
             $id = Html::generateId(self::NAME . '-');
         }
 
-        $buttons = implode(PHP_EOL, $this->buttons);
+        $buttons = implode("\n", $this->buttons);
         $buttons = $buttons === '' ? null : PHP_EOL . $buttons . PHP_EOL;
 
         return Div::tag()->attributes($attributes)->content($buttons)->encode(false)->id($id)->render();

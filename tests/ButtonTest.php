@@ -30,13 +30,11 @@ final class ButtonTest extends TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget = $buttonWidget->active(false);
-
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary">Active toggle button</button>
             HTML,
-            $buttonWidget->render(),
+            $buttonWidget->active(false)->render(),
         );
     }
 
@@ -51,13 +49,11 @@ final class ButtonTest extends TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget = $buttonWidget->addClass('test-class-1');
-
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary test-class test-class-1">Label</button>
             HTML,
-            $buttonWidget->render(),
+            $buttonWidget->addClass('test-class-1')->render(),
         );
     }
 
@@ -123,13 +119,11 @@ final class ButtonTest extends TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget = $buttonWidget->disabled(false);
-
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
-            $buttonWidget->render(),
+            $buttonWidget->disabled(false)->render(),
         );
     }
 
@@ -243,13 +237,11 @@ final class ButtonTest extends TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget = $buttonWidget->active(false);
-
         Assert::equalsWithoutLE(
             <<<HTML
             <a class="btn btn-secondary" role="button">Active toggle link</a>
             HTML,
-            $buttonWidget->render(),
+            $buttonWidget->active(false)->render(),
         );
     }
 
@@ -280,13 +272,11 @@ final class ButtonTest extends TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget = $buttonWidget->disabled(false);
-
         Assert::equalsWithoutLE(
             <<<HTML
             <a class="btn btn-secondary" role="button">Label</a>
             HTML,
-            $buttonWidget->render(),
+            $buttonWidget->disabled(false)->render(),
         );
     }
 
