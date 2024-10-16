@@ -95,12 +95,18 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the button to be disabled.
      *
+     * @param bool $value Whether the button should be disabled.
+     *
      * @return self A new instance of the current class with the button disabled.
      */
-    public function disabled(): self
+    public function disabled(bool $value = true): self
     {
+        if ($value === false) {
+            $value = null;
+        }
+
         $new = clone $this;
-        $new->attributes['disabled'] = true;
+        $new->attributes['disabled'] = $value;
 
         return $new;
     }

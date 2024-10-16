@@ -100,6 +100,19 @@ final class ButtonTest extends TestCase
         );
     }
 
+    /**
+     * @see https://getbootstrap.com/docs/5.2/components/buttons/#disabled-state
+     */
+    public function testDisableWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary">Label</button>
+            HTML,
+            Button::widget()->disabled(false)->label('Label')->id(false)->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(
