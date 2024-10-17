@@ -75,7 +75,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function ariaExpanded(bool $value = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-expanded'] = $value;
+        $new->attributes['aria-expanded'] = $value === true ? 'true' : 'false';
 
         return $new;
     }
