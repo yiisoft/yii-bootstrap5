@@ -283,13 +283,14 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         $attributes = $this->attributes;
         $classes = $attributes['class'] ?? null;
-        unset($attributes['class']);
 
         $id = match ($this->id) {
-            true => Html::generateId(self::NAME . '-'),
-            '', false => $attributes['id'] ?? null,
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
             default => $this->id,
         };
+
+        unset($attributes['class'], $attributes['id']);
 
         Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, ...$this->cssClass]);
 

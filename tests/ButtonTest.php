@@ -110,7 +110,6 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             Button::widget()
                 ->attributes(['class' => 'test-class', 'id' => 'test-id'])
                 ->label('Label')
-                ->id(false)
                 ->render(),
         );
     }
