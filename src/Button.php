@@ -169,7 +169,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the button size to be large.
      *
-     * @return @return self A new instance with the button as a large button.
+     * @return self A new instance with the button as a large button.
      */
     public function large(): self
     {
