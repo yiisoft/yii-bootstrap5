@@ -95,6 +95,71 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAttributesWithDefinition(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar test-class-definition" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->attributes(['data-id' => '1'])
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testAttributesWithId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="btn-toolbar" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->attributes(['data-id' => '1', 'id' => 'test-id'])
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(

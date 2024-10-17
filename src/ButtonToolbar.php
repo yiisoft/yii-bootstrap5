@@ -101,7 +101,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = array_merge($new->attributes, $values);
 
         return $new;
     }
@@ -147,13 +147,14 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
         $attributes = $this->attributes;
         $attributes['role'] = 'toolbar';
         $classes = $attributes['class'] ?? null;
-        unset($attributes['class']);
 
         $id = match ($this->id) {
-            true => Html::generateId(self::NAME . '-'),
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
             default => $this->id,
         };
+
+        unset($attributes['class'], $attributes['id']);
 
         Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 

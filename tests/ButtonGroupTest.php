@@ -89,13 +89,13 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="btn-group test" data-test="test" role="group">
+            <div id="test-id" class="btn-group test" data-test="test" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
             </div>
             HTML,
             ButtonGroup::widget()
-                ->attributes(['class' => 'test', 'data-test' => 'test', 'id' => 'test'])
+                ->attributes(['class' => 'test', 'data-test' => 'test', 'id' => 'test-id'])
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
                     Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
