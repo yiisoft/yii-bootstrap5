@@ -4,322 +4,284 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\ButtonDropdown;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\{ButtonDropdown, Dropdown};
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `ButtonDropdown` widget
+ *
+ * @group button-dropdown
  */
-final class ButtonDropdownTest extends TestCase
+final class ButtonDropdownTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown test-class">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->addClass('test-class')
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown test-class">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->attributes(['class' => 'test-class'])
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testButtonId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" id="button-test-id" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->buttonId('button-test-id')
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id('test-id')
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id('')
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testIdWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testImmutability(): void
+    {
+        $buttonDropdown = ButtonDropdown::widget();
+
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->addClass(''));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->attributes([]));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->buttonId(''));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->dropdownAttributes([]));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->id(''));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->items([]));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->label(''));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->labelAttributes([]));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->labelContainer(false));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->labelEncode(false));
+        $this->assertNotSame($buttonDropdown, $buttonDropdown->labelTagName('span'));
+    }
+
+    public function testLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->label('Dropdown')
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testLabelAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown"><span class="label-test-class">Dropdown</span></button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->label('Dropdown')
+                ->labelAttributes(['class' => 'label-test-class'])
+                ->labelContainer(true)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testLabelEncode(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">&lt;span&gt;Dropdown&lt;/span&gt;</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->label('<span>Dropdown</span>')
+                ->labelEncode(true)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testLabelEncodeWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown"><span>Dropdown</span></button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->label('<span>Dropdown</span>')
+                ->labelEncode(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
+    public function testLabelTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown"><i>Dropdown</i></button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->label('Dropdown')
+                ->labelContainer(true)
+                ->labelTagName('i')
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
+    }
+
     public function testRender(): void
     {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testMissingDropdownItems(): void
-    {
-        $html = ButtonDropdown::widget()->render();
-        $this->assertEmpty($html);
-    }
-
-    public function testDirection(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->direction(ButtonDropdown::DIRECTION_LEFT)
-            ->label('Action')
-            ->items([
-                ['label' => 'ItemA', 'url' => '#'],
-                ['label' => 'ItemB', 'url' => '#'],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropleft btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testSplit(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->direction(ButtonDropdown::DIRECTION_DOWN)
-            ->label('Split dropdown')
-            ->split()
-            ->items([
-                ['label' => 'ItemA', 'url' => '#'],
-                ['label' => 'ItemB', 'url' => '#'],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn">Split dropdown</button>
-        <button id="B_ID" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testButtonOptions(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->items([
-                ['label' => 'ItemA', 'url' => '#'],
-                ['label' => 'ItemB', 'url' => '#'],
-            ])
-            ->buttonOptions(['class' => 'btn-lg', 'id' => 'B_ID'])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn-lg btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testDropdownClass(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([
-                ['label' => 'ItemA', 'url' => '#'],
-                ['label' => 'ItemB', 'url' => '#'],
-            ])
-            ->dropdownClass(Dropdown::class)
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testEncodeLabels(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items(
-                [
-                    ['label' => 'ItemA', 'url' => '#'],
-                    ['label' => '<span><i class=fas fas-tests>ItemB></i></span>', 'url' => '#'],
-                ]
-            )
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">&lt;span&gt;&lt;i class=fas fas-tests&gt;ItemB&gt;&lt;/i&gt;&lt;/span&gt;</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items(
-                [
-                    ['label' => 'ItemA', 'url' => '#'],
-                    ['label' => '<span><i class=fas fas-tests>ItemB></i></span>', 'url' => '#'],
-                ]
-            )
-            ->withoutEncodeLabels()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#"><span><i class=fas fas-tests>ItemB></i></span></a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testOptions(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
-            ->options(['class' => 'testMe'])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="testMe dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testRenderContainer(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
-            ->withoutRenderContainer()
-            ->render();
-        $expected = <<<'HTML'
-        <button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testTagName(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
-            ->tagName('a')
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><a id="B_ID" class="btn dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Button</a>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><h6 class="dropdown-header">ItemB</h6></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testLabelOptions(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
-            ->label('Custom label')
-            ->withLabelOptions([
-                'class' => 'd-none d-lg-inline-block',
-            ])
-            ->withoutEncodeLabels()
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="d-none d-lg-inline-block">Custom label</span></button>
-
-        <ul id="D_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><h6 class="dropdown-header">ItemB</h6></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testCustomDropdown(): void
-    {
-        $dropdown = Dropdown::widget()
-            ->withAlignment(Dropdown::ALIGNMENT_END);
-
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->dropdownOptions(['id' => 'D_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB']])
-            ->dropdownClass($dropdown)
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="D_ID" class="dropdown-menu dropdown-menu-end">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><h6 class="dropdown-header">ItemB</h6></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-    }
-
-    public function testTheme(): void
-    {
-        $html = ButtonDropdown::widget()
-            ->dropdownOptions(['id' => 'DD_ID'])
-            ->buttonOptions(['id' => 'B_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
-            ->withoutRenderContainer()
-            ->withDarkTheme()
-            ->render();
-        $expected = <<<'HTML'
-        <button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-theme="dark">Button</button>
-
-        <ul id="DD_ID" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = ButtonDropdown::widget()
-            ->id('TEST_ID')
-            ->buttonOptions(['id' => 'B_ID'])
-            ->dropdownOptions(['id' => 'DD_ID'])
-            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
-            ->withLightTheme()
-            ->render();
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown btn-group" data-bs-theme="light"><button id="B_ID" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Button</button>
-
-        <ul id="DD_ID" class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">ItemA</a></li>
-        <li><a class="dropdown-item" href="#">ItemB</a></li>
-        </ul></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown">Dropdown button</button>
+            <ul id="dropdown-test-id" class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">ItemA</a></li>
+            <li><a class="dropdown-item" href="#">ItemB</a></li>
+            </ul>
+            </div>
+            HTML,
+            ButtonDropdown::widget()
+                ->dropdownAttributes(['id' => 'dropdown-test-id'])
+                ->id(false)
+                ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+                ->render(),
+        );
     }
 }

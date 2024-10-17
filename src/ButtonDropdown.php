@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Stringable;
-use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Definitions\Exception\InvalidConfigException;
-use Yiisoft\Html\Html;
+use Yiisoft\Html\{Html, Tag\Div};
+
+use function array_merge;
 
 /**
  * ButtonDropdown renders a group or split button dropdown bootstrap component.
@@ -24,108 +25,130 @@ use Yiisoft\Html\Html;
  *     ]);
  * ```
  */
-final class ButtonDropdown extends Widget
+final class ButtonDropdown extends \Yiisoft\Widget\Widget
 {
-    /**
-     * The css class part of dropdown
-     */
-    public const DIRECTION_DOWN = 'down';
-
-    /**
-     * The css class part of dropleft
-     */
-    public const DIRECTION_LEFT = 'left';
-
-    /**
-     * The css class part of dropright
-     */
-    public const DIRECTION_RIGHT = 'right';
-
-    /**
-     * The css class part of dropup
-     */
-    public const DIRECTION_UP = 'up';
-
-    private string $label = 'Button';
-    private ?array $labelOptions = null;
-    private array $options = [];
-    private array $buttonOptions = [];
+    private const NAME = 'dropdown';
+    private array $attributes = [];
+    private array $buttonAttributes = [];
+    private bool|string $buttonId = false;
+    private array $cssClass = [];
+    private array $dropdownAttributes = [];
+    private bool|string $id = true;
+    private string $label = 'Dropdown button';
+    private array $labelAttributes = [];
+    private bool $labelContainer = false;
+    private bool $labelEncode = true;
+    private string $labelTagName = 'span';
     private array|string|Stringable $items = [];
-    private string $direction = self::DIRECTION_DOWN;
-    private bool $split = false;
-    /** @psalm-var non-empty-string */
-    private string $tagName = 'button';
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    /** @psalm-var class-string|Dropdown */
-    private string|Dropdown $dropdownClass = Dropdown::class;
-    private ?array $dropdownOptions = null;
     private bool $renderContainer = true;
 
-    public function getId(?string $suffix = '-button-dropdown'): ?string
-    {
-        return $this->options['id'] ?? parent::getId($suffix);
-    }
-
-    public function render(): string
-    {
-        if (empty($this->items)) {
-            return '';
-        }
-
-        if ($this->renderContainer) {
-            $options = $this->options;
-            $options['id'] = $this->getId();
-
-            /** @psalm-suppress InvalidArgument */
-            Html::addCssClass($options, ['widget' => 'drop' . $this->direction, 'btn-group']);
-
-            if ($this->theme) {
-                $options['data-bs-theme'] = $this->theme;
-            }
-
-            $tag = ArrayHelper::remove($options, 'tag', 'div');
-            return Html::tag($tag, $this->renderButton() . "\n" . $this->renderDropdown(), $options)
-                ->encode($this->encodeTags)
-                ->render();
-        }
-
-        return $this->renderButton() . "\n" . $this->renderDropdown();
-    }
-
     /**
-     * The HTML attributes of the button.
+     * Adds a CSS class for the button dropdown component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @param string $value The CSS class for the button dropdown component (e.g., 'test-class').
+     *
+     * @return self A new instance with the specified class value added.
+     *
+     * @link https://html.spec.whatwg.org/#classes
      */
-    public function buttonOptions(array $value): self
+    public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->buttonOptions = $value;
+        $new->cssClass[] = $value;
 
         return $new;
     }
 
     /**
-     * The drop-direction of the widget.
+     * Sets the HTML attributes for the button dropdown component.
      *
-     * Possible values are 'left', 'right', 'up', or 'down' (default)
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function direction(string $value): self
+    public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->direction = $value;
+        $new->attributes = array_merge($new->attributes, $values);
 
         return $new;
     }
 
     /**
+     * Sets the HTML attributes for the button component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function buttonAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->buttonAttributes = array_merge($new->buttonAttributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the button component.
+     *
+     * @param bool|string $value The ID of the button component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID.
+     */
+    public function buttonId(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->buttonId = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the dropdown component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function dropdownAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->dropdownAttributes = array_merge($new->dropdownAttributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the button dropdown component.
+     *
+     * @param bool|string $value The ID of the button component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID.
+     */
+    public function id(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->id = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the items for the dropdown component.
+     *
      * The configuration array for example:
      *
      * ```php
      *    [
-     *            ['label' => 'DropdownA', 'url' => '/'],
-     *            ['label' => 'DropdownB', 'url' => '#'],
+     *        ['label' => 'DropdownA', 'url' => '/'],
+     *        ['label' => 'DropdownB', 'url' => '#'],
      *    ]
      * ```
      *
@@ -140,38 +163,11 @@ final class ButtonDropdown extends Widget
     }
 
     /**
-     * Name of a class to use for rendering dropdowns withing this widget. Defaults to {@see Dropdown}.
+     * Set the content of the label tag for the button component.
      *
-     * @psalm-param class-string $value
-     */
-    public function dropdownClass(string|Dropdown $value): self
-    {
-        $new = clone $this;
-        $new->dropdownClass = $value;
-
-        return $new;
-    }
-
-    public function dropdownOptions(?array $options): self
-    {
-        $new = clone $this;
-        $new->dropdownOptions = $options;
-        return $new;
-    }
-
-    /**
-     * When tags Labels HTML should not be encoded.
-     */
-    public function withoutEncodeLabels(): self
-    {
-        $new = clone $this;
-        $new->encodeLabels = false;
-
-        return $new;
-    }
-
-    /**
-     * The button label.
+     * @param string $value The label to display on the button.
+     *
+     * @return self A new instance with the specified label value.
      */
     public function label(string $value): self
     {
@@ -181,86 +177,94 @@ final class ButtonDropdown extends Widget
         return $new;
     }
 
-    public function withLabelOptions(?array $options): self
-    {
-        $new = clone $this;
-        $new->labelOptions = $options;
-
-        return $new;
-    }
-
     /**
-     * The HTML attributes for the container tag. The following special options are recognized.
+     * Sets the HTML attributes for the label tag of the button component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $new = clone $this;
-        $new->options = $value;
-
-        return $new;
-    }
-
-    /**
-     * Whether to render the container using the {@see options} as HTML attributes. If set to `false`, the container
-     * element enclosing the button and dropdown will NOT be rendered.
-     */
-    public function withoutRenderContainer(): self
-    {
-        $new = clone $this;
-        $new->renderContainer = false;
-
-        return $new;
-    }
-
-    /**
-     * Whether to display a group of split-styled button group.
-     */
-    public function split(): self
-    {
-        $new = clone $this;
-        $new->split = true;
-
-        return $new;
-    }
-
-    /**
-     * The tag to use to render the button.
+     * @param array $value Attribute values indexed by attribute names.
      *
-     * @psalm-param non-empty-string $value
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function tagName(string $value): self
+    public function labelAttributes(array $value): self
     {
         $new = clone $this;
-        $new->tagName = $value;
+        $new->labelAttributes = $value;
 
         return $new;
     }
 
-    private function prepareButtonOptions(bool $toggle): array
+    /**
+     * Whether the label content should be rendered inside a container tag.
+     *
+     * @param bool $value If `true`, the label content will be rendered inside a container tag.
+     *
+     * @return self A new instance with the specified the label container value.
+     */
+    public function labelContainer(bool $value): self
     {
-        $options = $this->buttonOptions;
-        $classNames = ['button' => 'btn'];
+        $new = clone $this;
+        $new->labelContainer = $value;
 
-        if ($toggle) {
-            $options['data-bs-toggle'] = 'dropdown';
-            $options['aria-haspopup'] = 'true';
-            $options['aria-expanded'] = 'false';
-            $classNames['toggle'] = 'dropdown-toggle';
+        return $new;
+    }
+
+    /**
+     * Whether the label tag should be encoded.
+     *
+     * @param bool $value Whether the label tag should be encoded.
+     *
+     * @return self A new instance with the specified the label encode value.
+     */
+    public function labelEncode(bool $value): self
+    {
+        $new = clone $this;
+        $new->labelEncode = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the tag name for the label tag of the button component.
+     *
+     * @param string $value The tag name for the label tag of the button component.
+     *
+     * @return self A new instance with the specified label tag name.
+     */
+    public function labelTagName(string $value): self
+    {
+        $new = clone $this;
+        $new->labelTagName = $value;
+
+        return $new;
+    }
+
+    public function render(): string
+    {
+        if (empty($this->items)) {
+            return '';
         }
 
-        Html::addCssClass($options, $classNames);
+        if ($this->renderContainer) {
+            $attributes = $this->attributes;
+            $classes = $attributes['class'] ?? null;
 
-        if ($this->tagName !== 'button') {
-            $options['role'] = 'button';
+            $id = match ($this->id) {
+                true => Html::generateId(self::NAME . '-'),
+                '', false => $attributes['id'] ?? null,
+                default => $this->id,
+            };
 
-            if ($this->tagName === 'a' && !isset($options['href'])) {
-                $options['href'] = '#';
-            }
+            unset($attributes['class'], $attributes['id']);
+
+            Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+
+            $content = "\n" . $this->renderButton() . "\n" . $this->renderDropdown() . "\n";
+
+            return Div::tag()->attributes($attributes)->content($content)->encode(false)->id($id)->render();
         }
 
-        return $options;
+        return $this->renderButton() . "\n" . $this->renderDropdown();
     }
 
     /**
@@ -272,85 +276,50 @@ final class ButtonDropdown extends Widget
      */
     private function renderButton(): string
     {
-        $splitButton = $this->renderSplitButton();
-        $options = $this->prepareButtonOptions($splitButton === null);
-        $button = Button::widget()
-            ->options($options)
-            ->label($this->renderLabel())
-            ->withTheme($this->renderContainer ? null : $this->theme)
-            ->tagName($this->tagName);
-
-        if ($this->encodeLabels === false) {
-            $button = $button->withoutEncodeLabels();
-        }
-
-        return $button->render() . "\n" . $splitButton;
-    }
-
-    private function renderSplitButton(): ?string
-    {
-        if ($this->split === false) {
-            return null;
-        }
-
-        $options = $this->prepareButtonOptions(true);
-        Html::addCssClass($options, 'dropdown-toggle-split');
+        $labelEncode = match ($this->labelContainer) {
+            true => false,
+            default => $this->labelEncode,
+        };
 
         return Button::widget()
-            ->options($options)
-            ->label('<span class="visually-hidden">Toggle Dropdown</span>')
-            ->tagName($this->tagName)
-            ->withoutEncodeLabels()
-            ->withTheme($this->renderContainer ? null : $this->theme)
+            ->ariaExpanded(false)
+            ->attributes($this->buttonAttributes)
+            ->addClass('dropdown-toggle')
+            ->dataBsToggle('dropdown')
+            ->label($this->renderLabel(), $labelEncode)
+            ->id($this->buttonId)
             ->render();
     }
 
+    /**
+     * Renders the label.
+     *
+     * @return string the rendering result.
+     */
     private function renderLabel(): string
     {
-        if ($this->labelOptions === null) {
-            return $this->encodeLabels ? Html::encode($this->label) : $this->label;
+        if ($this->labelContainer === false) {
+            return $this->label;
         }
 
-        $options = $this->labelOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'span');
-        $encode = ArrayHelper::remove($options, 'encode', $this->encodeLabels);
+        if ($this->labelTagName === '') {
+            throw new InvalidConfigException('LabelTagName cannot be empty string.');
+        }
 
-        return Html::tag($tag, $this->label, $options)
-            ->encode($encode)
-            ->render();
+        return Html::tag($this->labelTagName, $this->label, $this->labelAttributes)->encode(false)->render();
     }
 
     /**
      * Generates the dropdown menu.
      *
-     * @throws InvalidConfigException
-     * @throws \Yiisoft\Definitions\Exception\CircularReferenceException
-     * @throws \Yiisoft\Definitions\Exception\NotInstantiableException
-     * @throws \Yiisoft\Factory\NotFoundException
-     * @return string
+     * @return string the rendering result.
      */
     private function renderDropdown(): string
     {
-        if (is_string($this->dropdownClass)) {
-            $dropdownClass = $this->dropdownClass;
-            /** @var Dropdown $dropdownClass */
-            $dropdown = $dropdownClass::widget()->items($this->items);
-        } else {
-            $dropdown = $this->dropdownClass->items($this->items);
-        }
-
-        if ($this->dropdownOptions !== null) {
-            $dropdown = $dropdown->options($this->dropdownOptions);
-        }
-
-        if ($this->theme && !$this->renderContainer) {
-            $dropdown = $dropdown->withTheme($this->theme);
-        }
-
-        if ($this->encodeLabels === false) {
-            $dropdown = $dropdown->withoutEncodeLabels();
-        }
-
-        return $dropdown->render();
+        return Dropdown::widget()
+            ->items($this->items)
+            ->options($this->dropdownAttributes)
+            ->withoutEncodeLabels()
+            ->render();
     }
 }
