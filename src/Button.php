@@ -63,6 +63,24 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the 'aria-expanded' attribute for the button, indicating whether the element is currently expanded or
+     * collapsed.
+     *
+     * @param bool $value The value to set for the 'aria-expanded' attribute.
+     *
+     * @return self A new instance with the specified 'aria-expanded' value.
+     *
+     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-expanded
+     */
+    public function ariaExpanded(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->attributes['aria-expanded'] = $value;
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the button component.
      *
      * @param array $values Attribute values indexed by attribute names.

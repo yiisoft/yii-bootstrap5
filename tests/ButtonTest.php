@@ -14,7 +14,7 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  *
  * @group button
  */
-final class ButtonTest extends TestCase
+final class ButtonTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
@@ -54,6 +54,26 @@ final class ButtonTest extends TestCase
             <button type="button" class="btn btn-secondary test-class test-class-1">Label</button>
             HTML,
             $buttonWidget->addClass('test-class-1')->render(),
+        );
+    }
+
+    public function testAriaExpanded(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" aria-expanded="true">Label</button>
+            HTML,
+            Button::widget()->ariaExpanded()->label('Label')->id(false)->render(),
+        );
+    }
+
+    public function testAriaExpandedWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" aria-expanded="false">Label</button>
+            HTML,
+            Button::widget()->ariaExpanded(false)->label('Label')->id(false)->render(),
         );
     }
 
