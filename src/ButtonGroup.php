@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\{Html, Tag\Div};
 
+use function array_merge;
 use function implode;
 
 /**
@@ -84,7 +85,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = array_merge($new->attributes, $values);
 
         return $new;
     }
@@ -168,13 +169,14 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
         $attributes = $this->attributes;
         $attributes['role'] = 'group';
         $classes = $attributes['class'] ?? null;
-        unset($attributes['class']);
 
         $id = match ($this->id) {
-            true => Html::generateId(self::NAME . '-'),
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
             default => $this->id,
         };
+
+        unset($attributes['class'], $attributes['id']);
 
         Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
 

@@ -65,6 +65,45 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAttributesWithDefinition(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group test-class-definition" data-test="test" role="group">
+            <button type="button" class="btn btn-secondary">Button B</button>
+            <button type="button" class="btn btn-primary">Button A</button>
+            </div>
+            HTML,
+            ButtonGroup::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->attributes(['data-test' => 'test'])
+                ->buttons(
+                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testAttributesWithId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="btn-group test" data-test="test" role="group">
+            <button type="button" class="btn btn-secondary">Button B</button>
+            <button type="button" class="btn btn-primary">Button A</button>
+            </div>
+            HTML,
+            ButtonGroup::widget()
+                ->attributes(['class' => 'test', 'data-test' => 'test', 'id' => 'test'])
+                ->buttons(
+                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                )
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(
