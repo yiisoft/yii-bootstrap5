@@ -12,7 +12,7 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  *
  * @group button-toolbar
  */
-final class ButtonToolbarTest extends TestCase
+final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddClass(): void
     {

@@ -12,7 +12,7 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  *
  * @group button-group
  */
-final class ButtonGroupTest extends TestCase
+final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddClass(): void
     {
