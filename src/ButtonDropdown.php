@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use InvalidArgumentException;
 use Stringable;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\{Html, Tag\Div};
 
 use function array_merge;
@@ -270,8 +270,6 @@ final class ButtonDropdown extends \Yiisoft\Widget\Widget
     /**
      * Generates the button dropdown.
      *
-     * @throws InvalidConfigException
-     *
      * @return string the rendering result.
      */
     private function renderButton(): string
@@ -303,7 +301,7 @@ final class ButtonDropdown extends \Yiisoft\Widget\Widget
         }
 
         if ($this->labelTagName === '') {
-            throw new InvalidConfigException('LabelTagName cannot be empty string.');
+            throw new InvalidArgumentException('The label tag name cannot be empty string.');
         }
 
         return Html::tag($this->labelTagName, $this->label, $this->labelAttributes)->encode(false)->render();

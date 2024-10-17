@@ -265,6 +265,18 @@ final class ButtonDropdownTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testLabelTagNameWithException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The label tag name cannot be empty string.');
+
+        ButtonDropdown::widget()
+            ->labelContainer(true)
+            ->labelTagName('')
+            ->items([['label' => 'ItemA', 'url' => '#'], ['label' => 'ItemB', 'url' => '#']])
+            ->render();
+    }
+
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
