@@ -87,6 +87,34 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAttributesWithDefinition(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary test-class-definition" data-test="test">Label</button>
+            HTML,
+            Button::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->attributes(['data-test' => 'test'])
+                ->label('Label')
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testAttributesWithId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" id="test-id" class="btn btn-secondary test-class">Label</button>
+            HTML,
+            Button::widget()
+                ->attributes(['class' => 'test-class', 'id' => 'test-id'])
+                ->label('Label')
+                ->id(false)
+                ->render(),
+        );
+    }
+
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#block-buttons
      */

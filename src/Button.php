@@ -7,6 +7,9 @@ namespace Yiisoft\Yii\Bootstrap5;
 use InvalidArgumentException;
 use Yiisoft\Html\Html;
 
+use function array_merge;
+use function in_array;
+
 /**
  * Button renders a bootstrap button.
  *
@@ -92,7 +95,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = array_merge($new->attributes, $values);
 
         return $new;
     }
@@ -284,7 +287,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         $id = match ($this->id) {
             true => Html::generateId(self::NAME . '-'),
-            '', false => null,
+            '', false => $attributes['id'] ?? null,
             default => $this->id,
         };
 
