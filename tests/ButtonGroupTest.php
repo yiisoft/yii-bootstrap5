@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Html\Tag\{Input\Checkbox, Input\Radio};
 use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
@@ -100,6 +101,80 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                     Button::widget()->id(false)->label('Button B'),
                     Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
                 )
+                ->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.2/components/button-group/#checkbox-and-radio-button-groups
+     */
+    public function testButtonsWithCheckbox(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="btn-group" aria-label="Basic checkbox toggle button group" role="group">
+            <input type="checkbox" id="btncheck1" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
+            <input type="checkbox" id="btncheck2" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label>
+            <input type="checkbox" id="btncheck3" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btncheck3">Checkbox 3</label>
+            </div>
+            HTML,
+            ButtonGroup::widget()
+                ->ariaLabel('Basic checkbox toggle button group')
+                ->buttons(
+                    Checkbox::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btncheck1')
+                        ->sideLabel('Checkbox 1', ['class' => 'btn btn-outline-primary']),
+                    Checkbox::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btncheck2')
+                        ->sideLabel('Checkbox 2', ['class' => 'btn btn-outline-primary']),
+                    Checkbox::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btncheck3')
+                        ->sideLabel('Checkbox 3', ['class' => 'btn btn-outline-primary']),
+                )
+                ->id('test')
+                ->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.2/components/button-group/#checkbox-and-radio-button-groups
+     */
+    public function testButtonsWithRadio(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="btn-group" aria-label="Basic radio toggle button group" role="group">
+            <input type="radio" id="btnradio1" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+            <input type="radio" id="btnradio2" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
+            <input type="radio" id="btnradio3" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
+            </div>
+            HTML,
+            ButtonGroup::widget()
+                ->ariaLabel('Basic radio toggle button group')
+                ->buttons(
+                    Radio::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btnradio1')
+                        ->sideLabel('Radio 1', ['class' => 'btn btn-outline-primary']),
+                    Radio::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btnradio2')
+                        ->sideLabel('Radio 2', ['class' => 'btn btn-outline-primary']),
+                    Radio::tag()
+                        ->attributes(['autocomplete' => 'off'])
+                        ->class('btn-check')
+                        ->id('btnradio3')
+                        ->sideLabel('Radio 3', ['class' => 'btn btn-outline-primary']),
+                )
+                ->id('test')
                 ->render(),
         );
     }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Html\{Html, Tag\Div};
+use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\{Div, Input\Checkbox, Input\Radio};
 
 use function array_merge;
 use function implode;
@@ -34,7 +35,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn-group';
     private array $attributes = [];
-    /** psalm-var Button[] $buttons */
+    /** psalm-var Button[]|Checkbox[]|Radio[] $buttons */
     private array $buttons = [];
     private array $cssClass = [];
     private bool|string $id = true;
@@ -93,11 +94,11 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     /**
      * List of buttons.
      *
-     * @param Button ...$value The button configuration.
+     * @param Button|Checkbox|Radio ...$value The button configuration.
      *
      * @return self A new instance with the specified buttons.
      */
-    public function buttons(Button ...$value): self
+    public function buttons(Button|Checkbox|Radio ...$value): self
     {
         $new = clone $this;
         $new->buttons = $value;
