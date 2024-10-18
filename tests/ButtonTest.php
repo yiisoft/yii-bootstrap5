@@ -38,9 +38,9 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testAddClass(): void
+    public function testAddCssClass(): void
     {
-        $buttonWidget = Button::widget()->addClass('test-class')->label('Label')->id(false);
+        $buttonWidget = Button::widget()->addCssClass('test-class')->label('Label')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -53,7 +53,63 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <button type="button" class="btn btn-secondary test-class test-class-1">Label</button>
             HTML,
-            $buttonWidget->addClass('test-class-1')->render(),
+            $buttonWidget->addCssClass('test-class-1')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $buttonWidget = Button::widget()
+            ->addCssStyle(
+                [
+                    '--bs-btn-padding-y' => '.25rem',
+                    '--bs-btn-padding-x' => '.5rem',
+                    '--bs-btn-font-size' => '.75rem',
+                ]
+            )
+            ->label('Label')
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            HTML,
+            $buttonWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 12px;">Label</button>
+            HTML,
+            $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $buttonWidget = Button::widget()
+            ->addCssStyle(
+                [
+                    '--bs-btn-padding-y' => '.25rem',
+                    '--bs-btn-padding-x' => '.5rem',
+                    '--bs-btn-font-size' => '.75rem',
+                ]
+            )
+            ->label('Label')
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            HTML,
+            $buttonWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            HTML,
+            $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;', false)->render(),
         );
     }
 
@@ -209,7 +265,8 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $button = Button::widget();
 
         $this->assertNotSame($button, $button->active());
-        $this->assertNotSame($button, $button->addClass(''));
+        $this->assertNotSame($button, $button->addCssClass(''));
+        $this->assertNotSame($button, $button->addCssStyle(''));
         $this->assertNotSame($button, $button->attributes([]));
         $this->assertNotSame($button, $button->dataBsToggle(''));
         $this->assertNotSame($button, $button->disabled());

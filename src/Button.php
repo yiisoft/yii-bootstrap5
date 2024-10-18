@@ -57,10 +57,30 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string $value): self
+    public function addCssClass(string $value): self
     {
         $new = clone $this;
         $new->cssClass[] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Adds a style class for the button component.
+     *
+     * @param array|string $value The style class for the button component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified style class value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
 
         return $new;
     }
