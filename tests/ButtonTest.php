@@ -456,7 +456,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="button" class="btn btn-secondary" value="Input">
+            <input type="button" class="btn btn-secondary">
             HTML,
             Button::widget()->id(false)->label('Input')->tagName('input')->render(),
         );

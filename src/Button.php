@@ -352,7 +352,7 @@ final class Button extends \Yiisoft\Widget\Widget
             }
         }
 
-        if ($this->tagName === 'input') {
+        if ($this->tagName === 'input' && ($attributes['type'] === 'submit' || $attributes['type'] === 'reset')) {
             $attributes['value'] ??= $this->label;
         }
 
