@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\{Div, Input\Checkbox, Input\Radio};
 
+use function array_merge;
 use function implode;
-use function is_array;
 
 /**
  * ButtonGroup renders a button group bootstrap component.
@@ -17,58 +16,89 @@ use function is_array;
  * For example,
  *
  * ```php
- * // a button group with items configuration
  * echo ButtonGroup::widget()
- *     ->buttons([
- *         ['label' => 'A'],
- *         ['label' => 'B'],
- *         ['label' => 'C', 'visible' => false],
- *     ]);
- *
- * // button group with an item as a string
- * echo ButtonGroup::widget()
- *     ->buttons([
- *         Button::widget()->label('A'),
- *         ['label' => 'B'],
- *     ]);
+ *     ->addClass('btn-lg')
+ *     ->ariaLabel('Basic example')
+ *     ->buttons(
+ *         Button::widget()->label('Left')->id(false)->type(ButtonType::PRIMARY),
+ *         Button::widget()->label('Middle')->id(false)->type(ButtonType::PRIMARY),
+ *         Button::widget()->label('Right')->id(false)->type(ButtonType::PRIMARY),
+ *     )
+ *     ->render();
  * ```
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
+ *
+ * @link https://getbootstrap.com/docs/5.2/components/button-group/
  */
-final class ButtonGroup extends Widget
+final class ButtonGroup extends \Yiisoft\Widget\Widget
 {
+    private const NAME = 'btn-group';
+    private array $attributes = [];
+    /** psalm-var Button[]|Checkbox[]|Radio[] $buttons */
     private array $buttons = [];
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    private array $options = [];
+    private array $cssClass = [];
+    private bool|string $id = true;
 
-    public function render(): string
+    /**
+     * Adds a CSS class for the button group component.
+     *
+     * @param string $value The CSS class for the button group component (e.g., 'test-class').
+     *
+     * @return self A new instance with the specified class value added.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string $value): self
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
+        $new = clone $this;
+        $new->cssClass[] = $value;
 
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'btn-group']);
-
-        if (!isset($this->options['role'])) {
-            $this->options['role'] = 'group';
-        }
-
-        return Html::div($this->renderButtons(), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
+        return $new;
     }
 
     /**
-     * List of buttons. Each array element represents a single button which can be specified as a string or an array of
-     * the following structure:
+     * Sets the ARIA label for the button group component.
      *
-     * - label: string, required, the button label.
-     * - options: array, optional, the HTML attributes of the button.
-     * - visible: bool, optional, whether this button is visible. Defaults to true.
+     * @param string $value The ARIA label for the button group component.
+     *
+     * @return self A new instance with the specified ARIA label.
+     *
+     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
      */
-    public function buttons(array $value): self
+    public function ariaLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->attributes['aria-label'] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the button group component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($new->attributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * List of buttons.
+     *
+     * @param Button|Checkbox|Radio ...$value The button configuration.
+     *
+     * @return self A new instance with the specified buttons.
+     */
+    public function buttons(Button|Checkbox|Radio ...$value): self
     {
         $new = clone $this;
         $new->buttons = $value;
@@ -77,70 +107,87 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * When tags Labels HTML should not be encoded.
+     * Sets the ID of the button group component.
+     *
+     * @param bool|string $value The ID of the button group component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID.
      */
-    public function withoutEncodeLabels(): self
+    public function id(bool|string $value): self
     {
         $new = clone $this;
-        $new->encodeLabels = false;
+        $new->id = $value;
 
         return $new;
     }
 
     /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
+     * Sets the button group size to be large.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @return self A new instance with the button as a large button.
      */
-    public function options(array $value): self
+    public function large(): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->cssClass['size'] = 'btn-lg';
 
         return $new;
     }
 
     /**
-     * Generates the buttons that compound the group as specified on {@see buttons}.
+     * Sets the button group size to be small.
      *
-     * @throws InvalidConfigException
-     *
-     * @return string the rendering result.
+     * @return self A new instance with the button as a small button.
      */
-    private function renderButtons(): string
+    public function small(): self
     {
-        $buttons = [];
+        $new = clone $this;
+        $new->cssClass['size'] = 'btn-sm';
 
-        foreach ($this->buttons as $button) {
-            if (is_array($button)) {
-                $visible = ArrayHelper::remove($button, 'visible', true);
+        return $new;
+    }
 
-                if ($visible === false) {
-                    continue;
-                }
+    /**
+     * Sets the button group to be vertical.
+     *
+     * @return self A new instance of the current class with the button group as vertical.
+     */
+    public function vertical(): self
+    {
+        $new = clone $this;
+        $new->cssClass[] = 'btn-group-vertical';
 
-                if (!isset($button['encodeLabel'])) {
-                    $button['encodeLabel'] = $this->encodeLabels;
-                }
+        return $new;
+    }
 
-                if (!isset($button['options']['type'])) {
-                    ArrayHelper::setValueByPath($button, 'options.type', 'button');
-                }
+    /**
+     * Run the button group widget.
+     *
+     * @return string The HTML representation of the element.
+     */
+    public function render(): string
+    {
+        $attributes = $this->attributes;
+        $attributes['role'] = 'group';
+        $classes = $attributes['class'] ?? null;
 
-                $buttonWidget = Button::widget()
-                    ->label($button['label'])
-                    ->options($button['options']);
+        $id = match ($this->id) {
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
 
-                if ($button['encodeLabel'] === false) {
-                    $buttonWidget = $buttonWidget->withoutEncodeLabels();
-                }
+        unset($attributes['class'], $attributes['id']);
 
-                $buttons[] = $buttonWidget->render();
-            } else {
-                $buttons[] = $button;
-            }
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+
+        $button = implode("\n", $this->buttons);
+        $buttons = $button === '' ? '' : "\n" . $button . "\n";
+
+        if ($buttons === '') {
+            return '';
         }
 
-        return implode("\n", $buttons);
+        return Div::tag()->attributes($attributes)->content($buttons)->encode(false)->id($id)->render();
     }
 }
