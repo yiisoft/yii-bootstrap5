@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Html\Tag\{Div, Input};
 use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonToolbar, ButtonType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
@@ -328,5 +329,61 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithEmptyButtonGroups(): void
     {
         $this->assertEmpty(ButtonToolbar::widget()->render());
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.2/components/button-group/#button-toolbar
+     */
+    public function testTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            <div class="input-group">
+            <div id="btnGroupAddon" class="input-group-text">@</div>
+            <input class="form-control" aria-label="Input group example" aria-describedby="btnGroupAddon" placeholder="Input group example">
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        )
+                        ->id(false),
+                    Div::tag()
+                        ->addClass('input-group')
+                        ->content(
+                            "\n",
+                            Div::tag()->class('input-group-text')->content('@')->id('btnGroupAddon'),
+                            "\n",
+                            Input::text()
+                                ->attributes(
+                                    [
+                                        'aria-label' => 'Input group example',
+                                        'aria-describedby' => 'btnGroupAddon',
+                                        'placeholder' => 'Input group example',
+                                    ]
+                                )
+                                ->class('form-control'),
+                            "\n",
+                        ),
+                )
+                ->id(false)
+                ->render(),
+        );
     }
 }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Html\{Html, Tag\Div};
+use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\{Div, Base\Tag};
 
 use function implode;
 
@@ -50,7 +51,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn-toolbar';
     private array $attributes = [];
-    /** @psalm-var ButtonGroup[] $buttonGroups */
+    /** @psalm-var ButtonGroup[]|Tag[] $buttonGroups */
     private array $buttonGroups = [];
     private array $cssClass = [];
     private bool|string $id = true;
@@ -109,11 +110,11 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     /**
      * List of buttons groups.
      *
-     * @param ButtonGroup ...$value The button group configuration.
+     * @param ButtonGroup|Tag ...$value The button group configuration.
      *
      * @return self A new instance with the specified buttons groups.
      */
-    public function buttonGroups(ButtonGroup ...$value): self
+    public function buttonGroups(ButtonGroup|Tag ...$value): self
     {
         $new = clone $this;
         $new->buttonGroups = $value;
