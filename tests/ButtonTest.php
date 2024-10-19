@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use InvalidArgumentException;
 use Yiisoft\Html\Tag\{Div, Span};
 use Yiisoft\Yii\Bootstrap5\{Button, ButtonType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
