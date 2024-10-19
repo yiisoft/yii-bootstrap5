@@ -330,7 +330,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @return array The updated attributes.
      */
-    public function setAttributes(array $attributes): array
+    private function setAttributes(array $attributes): array
     {
         $attributes['type'] ??= ($this->tagName === 'button' || $this->tagName === 'input' ? 'button' : null);
 
