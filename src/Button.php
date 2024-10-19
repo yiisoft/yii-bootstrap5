@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use InvalidArgumentException;
-use Yiisoft\Html\Html;
+use Stringable;
+use Yiisoft\Html\{Html, Tag\A,  Tag\Button as ButtonTag, Tag\Input};
 
 use function array_merge;
-use function in_array;
 
 /**
  * Button renders a bootstrap button.
@@ -30,8 +29,8 @@ final class Button extends \Yiisoft\Widget\Widget
     private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
-    private string $label = 'Button';
-    private string $tagName = 'button';
+    private string|Stringable $label = '';
+    private A|ButtonTag|Input|null $tag = null;
 
     /**
      * Sets the button to be active.
@@ -174,7 +173,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified label value.
      */
-    public function label(string $value, bool $encode = true): self
+    public function label(string|Stringable $value, bool $encode = true): self
     {
         if ($encode) {
             $value = Html::encode($value);
@@ -202,12 +201,14 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a link.
      *
+     * @param string|null $url The URL of the link.
+     *
      * @return self A new instance with the button as a link.
      */
-    public function link(): self
+    public function link(string|null $url = null): self
     {
         $new = clone $this;
-        $new->tagName = 'a';
+        $new->tag = A::tag()->url($url);
 
         return $new;
     }
@@ -215,14 +216,14 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a reset button.
      *
+     * @param string|null $value The content of the button. For default, it is 'Reset'.
+     *
      * @return self A new instance with the button as a reset button.
      */
-    public function reset(): self
+    public function reset(string|null $value = 'Reset'): self
     {
         $new = clone $this;
-        $new->tagName = 'input';
-        $new->attributes['type'] = 'reset';
-        $new->label = 'Reset';
+        $new->tag = Input::resetButton($value);
 
         return $new;
     }
@@ -243,29 +244,14 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a submit button.
      *
+     * @param string|null $value The content of the button. For default, it is 'Submit'.
+     *
      * @return self A new instance with the button as a submit button.
      */
-    public function submit(): self
+    public function submit(string|null $value = 'Submit'): self
     {
         $new = clone $this;
-        $new->tagName = 'input';
-        $new->attributes['type'] = 'submit';
-        $new->label = 'Submit';
-
-        return $new;
-    }
-
-    /**
-     * The tag to use to render the button.
-     *
-     * @param string $value The tag to use to render the button.
-     *
-     * @return self A new instance with the specified tag name.
-     */
-    public function tagName(string $value): self
-    {
-        $new = clone $this;
-        $new->tagName = $value;
+        $new->tag = Input::submitButton($value);
 
         return $new;
     }
@@ -303,6 +289,7 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         $attributes = $this->attributes;
         $classes = $attributes['class'] ?? null;
+        $tag = $this->tag ?? ButtonTag::tag()->button('');
 
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
@@ -316,11 +303,15 @@ final class Button extends \Yiisoft\Widget\Widget
 
         $attributes = $this->setAttributes($attributes);
 
-        if ($this->tagName === '' || in_array($this->tagName, ['button', 'input', 'a'], true) === false) {
-            throw new InvalidArgumentException('Invalid tag name, use "button", "input", or "a".');
+        if ($tag instanceof Input) {
+            if ($this->label !== '') {
+                $tag = $tag->value($this->label);
+            }
+
+            return $tag->addAttributes($attributes)->id($id)->render();
         }
 
-        return Html::tag($this->tagName, $this->label, $attributes)->encode(false)->id($id)->render();
+        return $tag->addAttributes($attributes)->addContent($this->label)->id($id)->encode(false)->render();
     }
 
     /**
@@ -332,8 +323,6 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     private function setAttributes(array $attributes): array
     {
-        $attributes['type'] ??= ($this->tagName === 'button' || $this->tagName === 'input' ? 'button' : null);
-
         if ($this->active) {
             $attributes['aria-pressed'] = 'true';
             $attributes['data-bs-toggle'] = 'button';
@@ -344,7 +333,7 @@ final class Button extends \Yiisoft\Widget\Widget
         if ($this->disabled) {
             $attributes['disabled'] = true;
 
-            if ($this->tagName === 'a') {
+            if ($this->tag instanceof A) {
                 $attributes['aria-disabled'] = 'true';
 
                 unset($attributes['disabled']);
@@ -352,11 +341,7 @@ final class Button extends \Yiisoft\Widget\Widget
             }
         }
 
-        if ($this->tagName === 'input' && ($attributes['type'] === 'submit' || $attributes['type'] === 'reset')) {
-            $attributes['value'] ??= $this->label;
-        }
-
-        if ($this->tagName === 'a') {
+        if ($this->tag instanceof A) {
             $attributes['role'] ??= 'button';
         }
 

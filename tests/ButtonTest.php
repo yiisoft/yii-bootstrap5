@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
-use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\{Div, Span};
 use Yiisoft\Yii\Bootstrap5\{Button, ButtonType};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
@@ -273,11 +273,10 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
         $this->assertNotSame($button, $button->large());
-        $this->assertNotSame($button, $button->link());
+        $this->assertNotSame($button, $button->link(null));
         $this->assertNotSame($button, $button->reset());
         $this->assertNotSame($button, $button->small());
         $this->assertNotSame($button, $button->submit());
-        $this->assertNotSame($button, $button->tagName('a'));
         $this->assertNotSame($button, $button->type(ButtonType::PRIMARY));
     }
 
@@ -298,6 +297,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <button type="button" class="btn btn-secondary">&lt;Label&gt;</button>
             HTML,
             Button::widget()->label('<Label>')->id(false)->render(),
+        );
+    }
+
+    public function testLabelWithStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary"><span>Stringable</span></button>
+            HTML,
+            Button::widget()->label(Span::tag()->content('Stringable'), false)->id(false)->render(),
         );
     }
 
@@ -324,6 +333,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <a class="btn btn-secondary" role="button">Label</a>
             HTML,
             Button::widget()->label('Label')->id(false)->link()->render(),
+        );
+    }
+
+    public function testLinkWithUrl(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" href="/test" role="button">Label</a>
+            HTML,
+            Button::widget()->label('Label')->id(false)->link('/test')->render(),
         );
     }
 
@@ -410,6 +429,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testResetWithValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="reset" class="btn btn-secondary" value="Clear">
+            HTML,
+            Button::widget()->id(false)->reset('Clear')->render(),
+        );
+    }
+
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
      */
@@ -452,30 +481,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
      */
-    public function testTagName(): void
+    public function testSubmitwithValue(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="button" class="btn btn-secondary">
+            <input type="submit" class="btn btn-secondary" value="Send">
             HTML,
-            Button::widget()->id(false)->label('Input')->tagName('input')->render(),
+            Button::widget()->id(false)->submit('Send')->render(),
         );
-    }
-
-    public function testTagNameWithEmptyValue(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid tag name, use "button", "input", or "a".');
-
-        Button::widget()->tagName('')->render();
-    }
-
-    public function testTagNameWithInvalidValue(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid tag name, use "button", "input", or "a".');
-
-        Button::widget()->tagName('test')->render();
     }
 
     /**
