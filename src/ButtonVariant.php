@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Types for the button component.
+ * Variants for the button component.
  *
  * @see https://getbootstrap.com/docs/5.2/components/buttons/#examples
  */
-enum ButtonType: string
+enum ButtonVariant: string
 {
     case PRIMARY = 'btn-primary';
     case SECONDARY = 'btn-secondary';

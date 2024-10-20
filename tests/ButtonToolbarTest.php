@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Tag\{Div, Input};
-use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonToolbar, ButtonType};
+use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonToolbar, ButtonVariant};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
@@ -25,10 +25,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                     ->addClass('me-2')
                     ->ariaLabel('First group')
                     ->buttons(
-                        Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                        Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                        Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                        Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                        Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                        Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                        Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                        Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                     )
                     ->id(false),
             )
@@ -84,10 +84,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -117,10 +117,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -150,10 +150,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -181,10 +181,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -213,10 +213,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -245,10 +245,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                 )
@@ -299,10 +299,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                     ButtonGroup::widget()
@@ -317,7 +317,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                     ButtonGroup::widget()
                         ->ariaLabel('Third group')
                         ->buttons(
-                            Button::widget()->id(false)->label('8')->type(ButtonType::INFO),
+                            Button::widget()->id(false)->label('8')->variant(ButtonVariant::INFO),
                         )
                         ->id(false),
                 )
@@ -358,10 +358,10 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('First group')
                         ->buttons(
-                            Button::widget()->id(false)->label('1')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('2')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('3')->type(ButtonType::PRIMARY),
-                            Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
                         )
                         ->id(false),
                     Div::tag()

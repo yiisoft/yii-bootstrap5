@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Tag\{Input\Checkbox, Input\Radio};
-use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonType};
+use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonVariant};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
@@ -21,7 +21,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ->addClass('test-class')
             ->buttons(
                 Button::widget()->id(false)->label('Button B'),
-                Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
             )
             ->id(false);
 
@@ -59,7 +59,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                 ->attributes(['class' => 'test', 'data-test' => 'test'])
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
                 ->render(),
@@ -79,7 +79,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                 ->attributes(['data-test' => 'test'])
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
                 ->render(),
@@ -99,7 +99,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                 ->attributes(['class' => 'test', 'data-test' => 'test', 'id' => 'test-id'])
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->render(),
         );
@@ -191,7 +191,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id('test')
                 ->render(),
@@ -210,7 +210,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id('')
                 ->render(),
@@ -229,7 +229,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->type(ButtonType::PRIMARY),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
                 ->render(),
@@ -245,15 +245,16 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($buttonGroup, $buttonGroup->attributes([]));
         $this->assertNotSame($buttonGroup, $buttonGroup->buttons(Button::widget()));
         $this->assertNotSame($buttonGroup, $buttonGroup->id(false));
-        $this->assertNotSame($buttonGroup, $buttonGroup->large());
-        $this->assertNotSame($buttonGroup, $buttonGroup->small());
+        $this->assertNotSame($buttonGroup, $buttonGroup->largeSize());
+        $this->assertNotSame($buttonGroup, $buttonGroup->normalSize());
+        $this->assertNotSame($buttonGroup, $buttonGroup->smallSize());
         $this->assertNotSame($buttonGroup, $buttonGroup->vertical());
     }
 
     /**
      * @see https://getbootstrap.com/docs/5.2/components/button-group/#sizing
      */
-    public function testLarge(): void
+    public function testLargeSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -266,13 +267,40 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->ariaLabel('Large button group')
                 ->buttons(
-                    Button::widget()->id(false)->label('Left')->type(ButtonType::OUTLINE_DARK),
-                    Button::widget()->id(false)->label('Middle')->type(ButtonType::OUTLINE_DARK),
-                    Button::widget()->id(false)->label('Right')->type(ButtonType::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Left')->variant(ButtonVariant::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Middle')->variant(ButtonVariant::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Right')->variant(ButtonVariant::OUTLINE_DARK),
                 )
-                ->large()
+                ->largeSize()
                 ->id(false)
                 ->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.2/components/button-group/#sizing
+     */
+    public function testNormalSize(): void
+    {
+        $buttonGroup = ButtonGroup::widget()
+            ->ariaLabel('Normal button group')
+            ->buttons(
+                Button::widget()->id(false)->label('Left')->variant(ButtonVariant::OUTLINE_LIGHT),
+                Button::widget()->id(false)->label('Middle')->variant(ButtonVariant::OUTLINE_LIGHT),
+                Button::widget()->id(false)->label('Right')->variant(ButtonVariant::OUTLINE_LIGHT),
+            )
+            ->largeSize()
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group" aria-label="Normal button group" role="group">
+            <button type="button" class="btn btn-outline-light">Left</button>
+            <button type="button" class="btn btn-outline-light">Middle</button>
+            <button type="button" class="btn btn-outline-light">Right</button>
+            </div>
+            HTML,
+            $buttonGroup->normalSize()->render(),
         );
     }
 
@@ -293,9 +321,9 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                 ->addClass('btn-lg')
                 ->ariaLabel('Basic example')
                 ->buttons(
-                    Button::widget()->label('Left')->id(false)->type(ButtonType::PRIMARY),
-                    Button::widget()->label('Middle')->id(false)->type(ButtonType::PRIMARY),
-                    Button::widget()->label('Right')->id(false)->type(ButtonType::PRIMARY),
+                    Button::widget()->label('Left')->id(false)->variant(ButtonVariant::PRIMARY),
+                    Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::PRIMARY),
+                    Button::widget()->label('Right')->id(false)->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
                 ->render(),
@@ -323,9 +351,9 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->ariaLabel('Basic mixed styles example')
                 ->buttons(
-                    Button::widget()->label('Left')->id(false)->type(ButtonType::DANGER),
-                    Button::widget()->label('Middle')->id(false)->type(ButtonType::WARNING),
-                    Button::widget()->label('Rigth')->id(false)->type(ButtonType::SUCCESS),
+                    Button::widget()->label('Left')->id(false)->variant(ButtonVariant::DANGER),
+                    Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::WARNING),
+                    Button::widget()->label('Rigth')->id(false)->variant(ButtonVariant::SUCCESS),
                 )
                 ->id(false)
                 ->render(),
@@ -348,9 +376,9 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->ariaLabel('Basic outlined styles example')
                 ->buttons(
-                    Button::widget()->label('Left')->id(false)->type(ButtonType::OUTLINE_PRIMARY),
-                    Button::widget()->label('Middle')->id(false)->type(ButtonType::OUTLINE_SECONDARY),
-                    Button::widget()->label('Right')->id(false)->type(ButtonType::OUTLINE_SUCCESS),
+                    Button::widget()->label('Left')->id(false)->variant(ButtonVariant::OUTLINE_PRIMARY),
+                    Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::OUTLINE_SECONDARY),
+                    Button::widget()->label('Right')->id(false)->variant(ButtonVariant::OUTLINE_SUCCESS),
                 )
                 ->id(false)
                 ->render(),
@@ -360,7 +388,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     /**
      * @see https://getbootstrap.com/docs/5.2/components/button-group/#sizing
      */
-    public function testSmall(): void
+    public function testSmallSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -373,11 +401,11 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->ariaLabel('Small button group')
                 ->buttons(
-                    Button::widget()->id(false)->label('Left')->type(ButtonType::OUTLINE_DARK),
-                    Button::widget()->id(false)->label('Middle')->type(ButtonType::OUTLINE_DARK),
-                    Button::widget()->id(false)->label('Right')->type(ButtonType::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Left')->variant(ButtonVariant::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Middle')->variant(ButtonVariant::OUTLINE_DARK),
+                    Button::widget()->id(false)->label('Right')->variant(ButtonVariant::OUTLINE_DARK),
                 )
-                ->small()
+                ->smallSize()
                 ->id(false)
                 ->render(),
         );
@@ -399,9 +427,9 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->ariaLabel('Vertical button group')
                 ->buttons(
-                    Button::widget()->id(false)->label('Top')->type(ButtonType::DARK),
-                    Button::widget()->id(false)->label('Middle')->type(ButtonType::DARK),
-                    Button::widget()->id(false)->label('Bottom')->type(ButtonType::DARK),
+                    Button::widget()->id(false)->label('Top')->variant(ButtonVariant::DARK),
+                    Button::widget()->id(false)->label('Middle')->variant(ButtonVariant::DARK),
+                    Button::widget()->id(false)->label('Bottom')->variant(ButtonVariant::DARK),
                 )
                 ->id(false)
                 ->vertical()

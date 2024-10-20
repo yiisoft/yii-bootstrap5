@@ -23,10 +23,10 @@ use function implode;
  *             ->addClass('me-2')
  *             ->ariaLabel('First group')
  *             ->buttons(
- *                 Button::widget()->label('1')->type(ButtonType::PRIMARY),
- *                 Button::widget()->label('2')->type(ButtonType::PRIMARY),
- *                 Button::widget()->label('3')->type(ButtonType::PRIMARY),
- *                 Button::widget()->id(false)->label('4')->type(ButtonType::PRIMARY),
+ *                 Button::widget()->label('1')->variant(ButtonVariant::PRIMARY),
+ *                 Button::widget()->label('2')->variant(ButtonVariant::PRIMARY),
+ *                 Button::widget()->label('3')->variant(ButtonVariant::PRIMARY),
+ *                 Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
  *             ),
  *         ButtonGroup::widget()
  *             ->addClass('me-2')
@@ -39,7 +39,7 @@ use function implode;
  *         ButtonGroup::widget()
  *             ->ariaLabel('Third group')
  *             ->buttons(
- *                 Button::widget()->id(false)->label('8')->type(ButtonType::INFO),
+ *                 Button::widget()->id(false)->label('8')->variant(ButtonVariant::INFO),
  *             )
  *     )
  *     ->render();

@@ -20,9 +20,9 @@ use function implode;
  *     ->addClass('btn-lg')
  *     ->ariaLabel('Basic example')
  *     ->buttons(
- *         Button::widget()->label('Left')->id(false)->type(ButtonType::PRIMARY),
- *         Button::widget()->label('Middle')->id(false)->type(ButtonType::PRIMARY),
- *         Button::widget()->label('Right')->id(false)->type(ButtonType::PRIMARY),
+ *         Button::widget()->label('Left')->id(false)->variant(ButtonVariant::PRIMARY),
+ *         Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::PRIMARY),
+ *         Button::widget()->label('Right')->id(false)->variant(ButtonVariant::PRIMARY),
  *     )
  *     ->render();
  * ```
@@ -126,10 +126,23 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the button as a large button.
      */
-    public function large(): self
+    public function largeSize(): self
     {
         $new = clone $this;
         $new->cssClass['size'] = 'btn-lg';
+
+        return $new;
+    }
+
+    /**
+     * Sets the button group size to be normal.
+     *
+     * @return self A new instance with the button as a normal button.
+     */
+    public function normalSize(): self
+    {
+        $new = clone $this;
+        $new->cssClass['size'] = null;
 
         return $new;
     }
@@ -139,7 +152,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the button as a small button.
      */
-    public function small(): self
+    public function smallSize(): self
     {
         $new = clone $this;
         $new->cssClass['size'] = 'btn-sm';

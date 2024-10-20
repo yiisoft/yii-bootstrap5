@@ -15,7 +15,7 @@ use function array_merge;
  * For example,
  *
  * ```php
- * echo Button::widget()->label('Block button')->large()->type(ButtonType::PRIMARY)->render();
+ * echo Button::widget()->label('Block button')->large()->variant(ButtonVariant::PRIMARY)->render();
  * ```
  *
  * @link https://getbootstrap.com/docs/5.2/components/buttons/
@@ -25,7 +25,7 @@ final class Button extends \Yiisoft\Widget\Widget
     private const NAME = 'btn';
     private bool $active = false;
     private array $attributes = [];
-    private ButtonType $buttonType = ButtonType::SECONDARY;
+    private ButtonVariant $buttonVariant = ButtonVariant::SECONDARY;
     private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
@@ -190,7 +190,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the button as a large button.
      */
-    public function large(): self
+    public function largeSize(): self
     {
         $new = clone $this;
         $new->cssClass['size'] = 'btn-lg';
@@ -209,6 +209,19 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->tag = A::tag()->url($url);
+
+        return $new;
+    }
+
+    /**
+     * Sets the button size to be normal.
+     *
+     * @return self A new instance with the button as a normal button.
+     */
+    public function normalSize(): self
+    {
+        $new = clone $this;
+        $new->cssClass['size'] = null;
 
         return $new;
     }
@@ -233,7 +246,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the button as a small button.
      */
-    public function small(): self
+    public function smallSize(): self
     {
         $new = clone $this;
         $new->cssClass['size'] = 'btn-sm';
@@ -257,25 +270,25 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the button type. The following options are allowed:
+     * Set the button variant. The following options are allowed:
      *
-     * - `Type::PRIMARY`: Primary button.
-     * - `Type::SECONDARY`: Secondary button.
-     * - `Type::SUCCESS`: Success button.
-     * - `Type::DANGER`: Danger button.
-     * - `Type::WARNING`: Warning button.
-     * - `Type::INFO`: Info button.
-     * - `Type::LIGHT`: Light button.
-     * - `Type::DARK`: Dark button.
+     * - `ButtonVariant::PRIMARY`: Primary button.
+     * - `ButtonVariant::SECONDARY`: Secondary button.
+     * - `ButtonVariant::SUCCESS`: Success button.
+     * - `ButtonVariant::DANGER`: Danger button.
+     * - `ButtonVariant::WARNING`: Warning button.
+     * - `ButtonVariant::INFO`: Info button.
+     * - `ButtonVariant::LIGHT`: Light button.
+     * - `ButtonVariant::DARK`: Dark button.
      *
-     * @param ButtonType $value The type of the button.
+     * @param ButtonVariant $value The button variant.
      *
-     * @return self A new instance with the specified button type.
+     * @return self A new instance with the specified button variant.
      */
-    public function type(ButtonType $value): self
+    public function variant(ButtonVariant $value): self
     {
         $new = clone $this;
-        $new->buttonType = $value;
+        $new->buttonVariant = $value;
 
         return $new;
     }
@@ -299,7 +312,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->buttonType->value, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes, ...$this->cssClass]);
 
         $attributes = $this->setAttributes($attributes);
 

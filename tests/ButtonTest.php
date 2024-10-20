@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Tag\{Div, Span};
-use Yiisoft\Yii\Bootstrap5\{Button, ButtonType};
+use Yiisoft\Yii\Bootstrap5\{Button, ButtonVariant};
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
@@ -185,7 +185,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
                 ->class('d-grid gap-2')
                 ->content(
                     PHP_EOL,
-                    Button::widget()->label('Block button')->id(false)->type(ButtonType::PRIMARY),
+                    Button::widget()->label('Block button')->id(false)->variant(ButtonVariant::PRIMARY),
                     PHP_EOL,
                     Button::widget()->label('Block button')->id(false),
                     PHP_EOL,
@@ -271,12 +271,13 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($button, $button->disabled());
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
-        $this->assertNotSame($button, $button->large());
+        $this->assertNotSame($button, $button->largeSize());
         $this->assertNotSame($button, $button->link(null));
+        $this->assertNotSame($button, $button->normalSize());
         $this->assertNotSame($button, $button->reset());
-        $this->assertNotSame($button, $button->small());
+        $this->assertNotSame($button, $button->smallSize());
         $this->assertNotSame($button, $button->submit());
-        $this->assertNotSame($button, $button->type(ButtonType::PRIMARY));
+        $this->assertNotSame($button, $button->variant(ButtonVariant::PRIMARY));
     }
 
     public function testLabelWithEncodeFalse(): void
@@ -312,13 +313,13 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
      */
-    public function testLarge(): void
+    public function testLargeSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary btn-lg">Label</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->large()->render(),
+            Button::widget()->label('Label')->id(false)->largeSize()->render(),
         );
     }
 
@@ -403,6 +404,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
+     */
+    public function testNormalSize(): void
+    {
+        $button = Button::widget()->label('Label')->id(false)->largeSize();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary">Label</button>
+            HTML,
+            $button->normalSize()->render(),
+        );
+    }
+
+    /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
      */
     public function testReset(): void
@@ -441,13 +457,13 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     /**
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
      */
-    public function testSmall(): void
+    public function testSmallSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary btn-sm">Label</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->small()->render(),
+            Button::widget()->label('Label')->id(false)->smallSize()->render(),
         );
     }
 
@@ -491,19 +507,19 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider::type()
+     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider::variant
      *
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#examples
      * @see https://getbootstrap.com/docs/5.2/components/buttons/#outline-buttons
      */
-    public function testType(ButtonType $buttonType, string $expected): void
+    public function testVariant(ButtonVariant $buttonVariant, string $expected): void
     {
         Assert::equalsWithoutLE(
             $expected,
             Button::widget()
-                ->label('A simple ' . $buttonType->value . ' check it out!')
+                ->label('A simple ' . $buttonVariant->value . ' check it out!')
                 ->id(false)
-                ->type($buttonType)
+                ->variant($buttonVariant)
                 ->render(),
         );
     }
