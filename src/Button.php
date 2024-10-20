@@ -18,7 +18,7 @@ use function array_merge;
  * For example,
  *
  * ```php
- * echo Button::widget()->label('Block button')->largeSize()->variant(ButtonVariant::PRIMARY)->render();
+ * echo Button::widget()->label('Button')->largeSize()->variant(ButtonVariant::PRIMARY)->render();
  * ```
  *
  * @link https://getbootstrap.com/docs/5.2/components/buttons/
