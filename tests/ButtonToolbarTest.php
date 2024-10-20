@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Html\Tag\{Div, Input};
-use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonToolbar, ButtonVariant};
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Input;
+use Yiisoft\Yii\Bootstrap5\Button;
+use Yiisoft\Yii\Bootstrap5\ButtonGroup;
+use Yiisoft\Yii\Bootstrap5\ButtonToolbar;
+use Yiisoft\Yii\Bootstrap5\ButtonVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**

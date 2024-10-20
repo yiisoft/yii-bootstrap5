@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\{Div, Input\Checkbox, Input\Radio};
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Input\Checkbox;
+use Yiisoft\Html\Tag\Input\Radio;
 
 use function array_merge;
 use function implode;
@@ -20,9 +22,9 @@ use function implode;
  *     ->addClass('btn-lg')
  *     ->ariaLabel('Basic example')
  *     ->buttons(
- *         Button::widget()->label('Left')->id(false)->variant(ButtonVariant::PRIMARY),
- *         Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::PRIMARY),
- *         Button::widget()->label('Right')->id(false)->variant(ButtonVariant::PRIMARY),
+ *         Button::widget()->label('Left')->variant(ButtonVariant::PRIMARY),
+ *         Button::widget()->label('Middle')->variant(ButtonVariant::PRIMARY),
+ *         Button::widget()->label('Right')->variant(ButtonVariant::PRIMARY),
  *     )
  *     ->render();
  * ```

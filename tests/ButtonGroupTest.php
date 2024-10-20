@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Html\Tag\{Input\Checkbox, Input\Radio};
-use Yiisoft\Yii\Bootstrap5\{Button, ButtonGroup, ButtonVariant};
+use Yiisoft\Html\Tag\Input\Checkbox;
+use Yiisoft\Html\Tag\Input\Radio;
+use Yiisoft\Yii\Bootstrap5\Button;
+use Yiisoft\Yii\Bootstrap5\ButtonGroup;
+use Yiisoft\Yii\Bootstrap5\ButtonVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**

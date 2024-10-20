@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\{Div, Base\Tag};
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Html\Tag\Div;
 
 use function implode;
 
@@ -26,7 +27,7 @@ use function implode;
  *                 Button::widget()->label('1')->variant(ButtonVariant::PRIMARY),
  *                 Button::widget()->label('2')->variant(ButtonVariant::PRIMARY),
  *                 Button::widget()->label('3')->variant(ButtonVariant::PRIMARY),
- *                 Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
+ *                 Button::widget()->label('4')->variant(ButtonVariant::PRIMARY),
  *             ),
  *         ButtonGroup::widget()
  *             ->addClass('me-2')
@@ -34,12 +35,12 @@ use function implode;
  *             ->buttons(
  *                 Button::widget()->label('5'),
  *                 Button::widget()->label('6'),
- *                 Button::widget()->id(false)->label('7'),
+ *                 Button::widget()->label('7'),
  *             ),
  *         ButtonGroup::widget()
  *             ->ariaLabel('Third group')
  *             ->buttons(
- *                 Button::widget()->id(false)->label('8')->variant(ButtonVariant::INFO),
+ *                 Button::widget()->label('8')->variant(ButtonVariant::INFO),
  *             )
  *     )
  *     ->render();

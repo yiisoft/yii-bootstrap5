@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use Stringable;
-use Yiisoft\Html\{Html, Tag\A,  Tag\Button as ButtonTag, Tag\Input};
+use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Button as ButtonTag;
+use Yiisoft\Html\Tag\Input;
 
 use function array_merge;
 
@@ -15,7 +18,7 @@ use function array_merge;
  * For example,
  *
  * ```php
- * echo Button::widget()->label('Block button')->large()->variant(ButtonVariant::PRIMARY)->render();
+ * echo Button::widget()->label('Block button')->largeSize()->variant(ButtonVariant::PRIMARY)->render();
  * ```
  *
  * @link https://getbootstrap.com/docs/5.2/components/buttons/
