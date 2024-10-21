@@ -16,9 +16,52 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 {
-    public function testLinksWithEmpty(): void
+    public function testAriaLabel(): void
     {
-        $this->assertEmpty(Breadcrumbs::widget()->render());
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->ariaLabel('Basic example of breadcrumbs')
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="test-class" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->attributes(['class' => 'test-class'])
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId(false)
+                ->render(),
+        );
     }
 
     public function testLabelWithEmpty(): void
@@ -29,11 +72,103 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         Breadcrumbs::widget()->links(new BreadcrumbLink())->render();
     }
 
+    public function testListId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol id="test-id" class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId('test-id')
+                ->render(),
+        );
+    }
+
+    public function testListIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId('')
+                ->render(),
+        );
+    }
+
+    public function testListIdWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testListIdWithSetAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol id="test-id" class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listAttributes(['id' => 'test-id'])
+                ->render(),
+        );
+    }
+
     public function testListTagName(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <nav id="test" class="breadcrumb">
+            <nav aria-label="breadcrumb">
             <footer class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Library</a></li>
@@ -47,10 +182,15 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                     new BreadcrumbLink('Library', '#'),
                     new BreadcrumbLink('Data'),
                 )
-                ->id('test')
+                ->listId(false)
                 ->listTagName('footer')
                 ->render(),
         );
+    }
+
+    public function testLinksWithEmpty(): void
+    {
+        $this->assertEmpty(Breadcrumbs::widget()->render());
     }
 
     /**
@@ -60,7 +200,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <nav class="breadcrumb">
+            <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Library</a></li>
@@ -74,7 +214,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                     new BreadcrumbLink('Library', '#'),
                     new BreadcrumbLink('Data'),
                 )
-                ->id(false)
+                ->listId(false)
                 ->render(),
         );
     }

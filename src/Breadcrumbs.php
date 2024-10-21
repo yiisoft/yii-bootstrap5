@@ -26,9 +26,10 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private const NAME = 'breadcrumb';
     private array $attributes = [];
     private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
-    private bool|string $id = true;
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
     private array $links = [];
+    private array $listAttributes = [];
+    private bool|string $listId = true;
     private string $listTagName = 'ol';
 
     /**
@@ -43,6 +44,23 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->activeItemTemplate = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ARIA label for the breacrump component.
+     *
+     * @param string $value The ARIA label for the breacrumb component.
+     *
+     * @return self A new instance with the specified ARIA label.
+     *
+     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
+     */
+    public function ariaLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->attributes['aria-label'] = $value;
 
         return $new;
     }
@@ -65,21 +83,6 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the ID of the breadcrumb component.
-     *
-     * @param bool|string $value The ID of the breadcrumb component. If `true`, an ID will be generated automatically.
-     *
-     * @return self A new instance with the specified ID.
-     */
-    public function id(bool|string $value): self
-    {
-        $new = clone $this;
-        $new->id = $value;
-
-        return $new;
-    }
-
-    /**
      * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything.
      *
      * @param array $value The links to appear in the breadcrumbs.
@@ -92,6 +95,38 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->links = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the list of items in the breadcrumbs.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the list of items in the breadcrumbs.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function listAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->listAttributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the list of items in the breadcrumbs.
+     *
+     * @param bool|string $value The ID of the breadcrumb component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID for the list of items in the breadcrumbs.
+     */
+    public function listId(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->listId = $value;
 
         return $new;
     }
@@ -114,20 +149,22 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
+        $attributes['aria-label'] ??= 'breadcrumb';
+        $listAttributes = $this->listAttributes;
 
-        $id = match ($this->id) {
-            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+        $listId = match ($this->listId) {
+            true => $listAttributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
-            default => $this->id,
+            default => $this->listId,
         };
 
-        unset($attributes['id']);
+        unset($listAttributes['id']);
 
         if ($this->links === []) {
             return '';
         }
 
-        Html::addCssClass($attributes, [self::NAME]);
+        Html::addCssClass($listAttributes, [self::NAME]);
 
         $links = [];
 
@@ -145,9 +182,9 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             throw new InvalidArgumentException('Tag cannot be empty string.');
         }
 
-        $items = "\n" . Html::tag($this->listTagName, "\n" . $links, $attributes)->encode(false) . "\n";
+        $items = Html::tag($this->listTagName, "\n" . $links, $listAttributes)->encode(false)->id($listId);
 
-        return Nav::tag()->addAttributes($attributes)->content($items)->id($id)->encode(false)->render();
+        return Nav::tag()->addAttributes($attributes)->content("\n", $items, "\n")->encode(false)->render();
     }
 
     private function renderItem(BreadcrumbLink $breadcrumbLink): string
