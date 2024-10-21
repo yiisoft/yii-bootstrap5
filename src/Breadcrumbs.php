@@ -29,7 +29,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
     private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
     private array $links = [];
-    private string $tagName = 'ol';
+    private string $listTagName = 'ol';
 
     /**
      * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
@@ -127,13 +127,13 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        if ($this->tagName === '') {
+        if ($this->listTagName === '') {
             throw new InvalidArgumentException('Tag cannot be empty string.');
         }
 
-        $menuLinks = "\n" . Html::tag($this->tagName, "\n" . $links, $attributes)->encode(false) . "\n";
+        $items = "\n" . Html::tag($this->listTagName, "\n" . $links, $attributes)->encode(false) . "\n";
 
-        return Nav::tag()->addAttributes($attributes)->content($menuLinks)->id($id)->encode(false)->render();
+        return Nav::tag()->addAttributes($attributes)->content($items)->id($id)->encode(false)->render();
     }
 
     private function renderItem(BreadcrumbLink $breadcrumbLink): string

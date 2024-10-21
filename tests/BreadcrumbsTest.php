@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
@@ -15,6 +16,19 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 {
+    public function testLinksWithEmpty(): void
+    {
+        $this->assertEmpty(Breadcrumbs::widget()->render());
+    }
+
+    public function testLabelWithEmpty(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The "label" element is required for each link.');
+
+        Breadcrumbs::widget()->links(new BreadcrumbLink())->render();
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.2/components/breadcrumb/#example
      */
