@@ -136,7 +136,6 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         return Nav::tag()->addAttributes($attributes)->content($menuLinks)->id($id)->encode(false)->render();
     }
 
-
     private function renderItem(BreadcrumbLink $breadcrumbLink): string
     {
         if ($breadcrumbLink->label === '') {
