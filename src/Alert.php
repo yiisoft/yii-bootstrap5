@@ -7,6 +7,8 @@ namespace Yiisoft\Yii\Bootstrap5;
 use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\Div;
 
 use function preg_replace;
 use function strtr;
@@ -17,7 +19,7 @@ use function strtr;
  * For example,
  *
  * ```php
- * echo Alert::widget()->body('Say hello...')->type(Type::PRIMARY)->render();
+ * echo Alert::widget()->body('Say hello...')->variant(AlertVariant::PRIMARY)->render();
  * ```
  *
  * @link https://getbootstrap.com/docs/5.0/components/alerts/
@@ -25,10 +27,10 @@ use function strtr;
 final class Alert extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'alert';
-    private string|null $cssClass = null;
-    private AlertType $alertType = AlertType::SECONDARY;
     private array $attributes = [];
+    private AlertVariant $alertType = AlertVariant::SECONDARY;
     private string|Stringable $body = '';
+    private array $cssClass = [];
     private array $closeButtonAttributes = [];
     private bool $dismissable = false;
     private bool $fade = false;
@@ -38,19 +40,19 @@ final class Alert extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
-    /**
-     * Sets the CSS class attribute for the alert component.
+     /**
+     * Adds a CSS class for the alert component.
      *
      * @param string $value The CSS class for the alert component (e.g., 'test-class').
      *
-     * @return self A new instance of the current class with the specified class value.
+     * @return self A new instance with the specified class value added.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
     public function addClass(string $value): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClass[] = $value;
 
         return $new;
     }
@@ -60,14 +62,14 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self A new instance of the current class with the specified attributes.
+     * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = array_merge($new->attributes, $values);
 
         return $new;
     }
@@ -79,7 +81,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
      * to prevent XSS attacks.
      *
-     * @return self A new instance of the current class with the specified body content.
+     * @return self A new instance with the specified body content.
      */
     public function body(string|Stringable $value, bool $encode = true): self
     {
@@ -98,7 +100,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param array $value Attribute values indexed by attribute names.
      *
-     * @return self A new instance of the current class with the specified close button attributes.
+     * @return self A new instance with the specified close button attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -115,7 +117,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether to make the alert dismissible.
      *
-     * @return self A new instance of the current class with the specified dismissable value.
+     * @return self A new instance with the specified dismissable value.
      */
     public function dismissable(bool $value): self
     {
@@ -130,7 +132,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether to add a fade effect to the alert.
      *
-     * @return self A new instance of the current class with the specified fade value.
+     * @return self A new instance with the specified fade value.
      */
     public function fade(bool $value): self
     {
@@ -147,7 +149,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
      * to prevent XSS attacks.
      *
-     * @return self A new instance of the current class with the specified header content.
+     * @return self A new instance with the specified header content.
      */
     public function header(string|null $value, bool $encode = true): self
     {
@@ -166,7 +168,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self A new instance of the current class with the specified header attributes.
+     * @return self A new instance with the specified header attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
@@ -183,7 +185,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param string $value The HTML tag name for the header.
      *
-     * @return self A new instance of the current class with the specified header tag.
+     * @return self A new instance with the specified header tag.
      */
     public function headerTag(string $value): self
     {
@@ -198,7 +200,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance of the current class with the specified ID.
+     * @return self A new instance with the specified ID.
      */
     public function id(bool|string $value): self
     {
@@ -213,7 +215,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      *
      * @param string $value The template content string.
      *
-     * @return self A new instance of the current class with the specified template content.
+     * @return self A new instance with the specified template content.
      */
     public function templateContent(string $value): self
     {
@@ -224,21 +226,21 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the alert type. The following options are allowed:
-     * - `Type::PRIMARY`: Primary alert.
-     * - `Type::SECONDARY`: Secondary alert.
-     * - `Type::SUCCESS`: Success alert.
-     * - `Type::DANGER`: Danger alert.
-     * - `Type::WARNING`: Warning alert.
-     * - `Type::INFO`: Info alert.
-     * - `Type::LIGHT`: Light alert.
-     * - `Type::DARK`: Dark alert.
+     * Set the alert variant. The following options are allowed:
+     * - `AlertVariant::PRIMARY`: Primary alert.
+     * - `AlertVariant::SECONDARY`: Secondary alert.
+     * - `AlertVariant::SUCCESS`: Success alert.
+     * - `AlertVariant::DANGER`: Danger alert.
+     * - `AlertVariant::WARNING`: Warning alert.
+     * - `AlertVariant::INFO`: Info alert.
+     * - `AlertVariant::LIGHT`: Light alert.
+     * - `AlertVariant::DARK`: Dark alert.
      *
-     * @param AlertType $value The alert type.
+     * @param AlertVariant $value The alert variant.
      *
-     * @return self A new instance of the current class with the specified alert type.
+     * @return self A new instance with the specified alert variant.
      */
-    public function type(AlertType $value): self
+    public function variant(AlertVariant $value): self
     {
         $new = clone $this;
         $new->alertType = $value;
@@ -256,12 +258,18 @@ final class Alert extends \Yiisoft\Widget\Widget
         $attributes = $this->attributes;
         $attributes['role'] = self::NAME;
         $content = '';
-        $id = is_string($this->id) && $this->id !== '' ? $this->id : null;
         $toggle = '';
         $classes = $attributes['class'] ?? null;
-        unset($attributes['class']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, $this->cssClass]);
+        $id = match ($this->id) {
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
+
+        unset($attributes['class'], $attributes['id']);
+
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->cssClass]);
 
         if ($this->dismissable) {
             Html::addCssClass($attributes, 'alert-dismissible');
@@ -283,11 +291,7 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $content = preg_replace("/\n{2}/", "\n", $content);
 
-        if ($this->id === true) {
-            $id = Html::generateId(self::NAME . '-');
-        }
-
-        return Html::normalTag('div', $content, $attributes)->encode(false)->id($id)->render();
+        return Div::tag()->addAttributes($attributes)->content($content)->encode(false)->id($id)->render();
     }
 
     /**
@@ -323,12 +327,11 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $closeButtonAttributes = $this->closeButtonAttributes;
 
-        $closeButtonAttributes['type'] = 'button';
         $closeButtonAttributes['data-bs-dismiss'] = self::NAME;
         $closeButtonAttributes['aria-label'] = 'Close';
 
         Html::addCssClass($closeButtonAttributes, 'btn-close');
 
-        return Html::tag('button', '', $closeButtonAttributes)->encode(false)->render();
+        return Button::tag()->button('')->addAttributes($closeButtonAttributes)->encode(false)->render();
     }
 }
