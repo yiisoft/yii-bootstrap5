@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
@@ -86,7 +87,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified links.
      *
-     * @psalm-param BreadCrumbLink[] $value The links to appear in the breadcrumbs.
+     * @psalm-param BreadcrumbLink[] $value The links to appear in the breadcrumbs.
      */
     public function links(BreadcrumbLink ...$value): self
     {
@@ -120,11 +121,17 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             $links[] = $this->renderItem($link);
         }
 
-        $menuLinks = Html::tag($this->tagName, "\n" . implode('', $links), $attributes)->encode(false);
+        $links = implode('', $links);
 
-        if ($menuLinks !== '') {
-            $menuLinks = "\n" . $menuLinks . "\n";
+        if ($links === '') {
+            return '';
         }
+
+        if ($this->tagName === '') {
+            throw new InvalidArgumentException('Tag cannot be empty string.');
+        }
+
+        $menuLinks = "\n" . Html::tag($this->tagName, "\n" . $links, $attributes)->encode(false) . "\n";
 
         return Nav::tag()->addAttributes($attributes)->content($menuLinks)->id($id)->encode(false)->render();
     }
