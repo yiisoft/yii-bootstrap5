@@ -27,6 +27,21 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAttributesWithDefinition(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert alert-secondary test-class-definition" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->attributes(['id' => 'test'])
+                ->body('Body')
+                ->render(),
+        );
+    }
+
     public function testAddCssClass(): void
     {
         $alert = Alert::widget()->addClass('test-class')->body('Body')->id(false);
