@@ -29,6 +29,30 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         Breadcrumbs::widget()->links(new BreadcrumbLink())->render();
     }
 
+    public function testListTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav id="test" class="breadcrumb">
+            <footer class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </footer>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->id('test')
+                ->listTagName('footer')
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.2/components/breadcrumb/#example
      */

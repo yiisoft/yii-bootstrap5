@@ -80,12 +80,11 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything. Each
-     * array element represents a single link in the breadcrumbs with the following structure:
+     * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything.
      *
      * @param array $value The links to appear in the breadcrumbs.
      *
-     * @return self A new instance with the specified links.
+     * @return self A new instance with the specified links to appear in the breadcrumbs.
      *
      * @psalm-param BreadcrumbLink[] $value The links to appear in the breadcrumbs.
      */
@@ -93,6 +92,21 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->links = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML tag to be used for the list of items in the breadcrumbs.
+     *
+     * @param string $value The HTML tag name for the list of items in the breadcrumbs.
+     *
+     * @return self A new instance class with the specified list tag name.
+     */
+    public function listTagName(string $value): self
+    {
+        $new = clone $this;
+        $new->listTagName = $value;
 
         return $new;
     }
