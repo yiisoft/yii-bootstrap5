@@ -40,15 +40,15 @@ final class Alert extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
-     /**
-     * Adds a CSS class for the alert component.
-     *
-     * @param string $value The CSS class for the alert component (e.g., 'test-class').
-     *
-     * @return self A new instance with the specified class value added.
-     *
-     * @link https://html.spec.whatwg.org/#classes
-     */
+    /**
+    * Adds a CSS class for the alert component.
+    *
+    * @param string $value The CSS class for the alert component (e.g., 'test-class').
+    *
+    * @return self A new instance with the specified class value added.
+    *
+    * @link https://html.spec.whatwg.org/#classes
+    */
     public function addClass(string $value): self
     {
         $new = clone $this;
