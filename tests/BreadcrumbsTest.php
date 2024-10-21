@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
