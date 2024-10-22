@@ -8,6 +8,8 @@ use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Base\Tag;
+use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
 use function implode;
@@ -23,30 +25,16 @@ use function strtr;
  */
 final class Breadcrumbs extends \Yiisoft\Widget\Widget
 {
-    private const NAME = 'breadcrumb';
+    private const LIST_NAME = 'breadcrumb';
+    private const ITEM_NAME = 'breadcrumb-item';
     private array $attributes = [];
-    private string $activeItemTemplate = "<li class=\"breadcrumb-item active\" aria-current=\"page\">{link}</li>\n";
-    private string $itemTemplate = "<li class=\"breadcrumb-item\">{link}</li>\n";
+    private string $itemActiveClass = 'active';
+    private array $itemAttributes = [];
+    private array $linkAttributes = [];
     private array $links = [];
     private array $listAttributes = [];
     private bool|string $listId = true;
     private string $listTagName = 'ol';
-
-    /**
-     * The template used to render each active item in the breadcrumbs. The token `{link}` will be replaced with the
-     * actual HTML link for each active item.
-     *
-     * @param string $value The template to be used to render the active item.
-     *
-     * @return self A new instance with the specified active template.
-     */
-    public function activeItemTemplate(string $value): self
-    {
-        $new = clone $this;
-        $new->activeItemTemplate = $value;
-
-        return $new;
-    }
 
     /**
      * Sets the ARIA label for the breacrump component.
@@ -78,6 +66,38 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets the active class for the items in the breadcrumbs.
+     *
+     * @param string $value The active class for the items in the breadcrumbs.
+     *
+     * @return self A new instance with the specified active class for the items in the breadcrumbs.
+     */
+    public function itemActiveClass(string $value): self
+    {
+        $new = clone $this;
+        $new->itemActiveClass = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the link of the items in the breadcrumbs.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the link of the items in the breadcrumbs.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function linkAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->linkAttributes = $values;
 
         return $new;
     }
@@ -150,31 +170,14 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $attributes = $this->attributes;
         $attributes['aria-label'] ??= 'breadcrumb';
-        $listAttributes = $this->listAttributes;
-
-        $listId = match ($this->listId) {
-            true => $listAttributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
-            default => $this->listId,
-        };
-
-        unset($listAttributes['id']);
 
         if ($this->links === []) {
             return '';
         }
 
-        Html::addCssClass($listAttributes, [self::NAME]);
+        $list = $this->renderList();
 
-        $links = [];
-
-        foreach ($this->links as $link) {
-            $links[] = $this->renderItem($link);
-        }
-
-        $links = implode('', $links);
-
-        if ($links === '') {
+        if ($list === '') {
             return '';
         }
 
@@ -182,27 +185,90 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             throw new InvalidArgumentException('Tag cannot be empty string.');
         }
 
-        $items = Html::tag($this->listTagName, "\n" . $links, $listAttributes)->encode(false)->id($listId);
-
-        return Nav::tag()->addAttributes($attributes)->content("\n", $items, "\n")->encode(false)->render();
+        return Nav::tag()->addAttributes($attributes)->content("\n", $list, "\n")->encode(false)->render();
     }
 
+    private function renderList(): string
+    {
+        $listAttributes = $this->listAttributes;
+
+        $listId = match ($this->listId) {
+            true => $listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
+            '', false => null,
+            default => $this->listId,
+        };
+
+        unset($listAttributes['id']);
+
+        $items = [];
+
+        foreach ($this->links as $link) {
+            $items[] = $this->renderItem($link);
+        }
+
+        $items = implode("\n", $items);
+
+        if ($items === '') {
+            return '';
+        }
+
+        Html::addCssClass($listAttributes, [self::LIST_NAME]);
+
+        return Html::tag($this->listTagName)
+            ->attributes($listAttributes)
+            ->content("\n", $items, "\n")
+            ->id($listId)
+            ->encode(false)
+            ->render();
+    }
+
+    /**
+     * Renders a single breadcrumb item.
+     *
+     * @param BreadcrumbLink $breadcrumbLink The breadcrumb item to render.
+     *
+     * @return string The rendering result.
+     */
     private function renderItem(BreadcrumbLink $breadcrumbLink): string
     {
         if ($breadcrumbLink->label === '') {
             throw new RuntimeException('The "label" element is required for each link.');
         }
 
-        $attributes = $breadcrumbLink->attributes;
-        $label = Html::encode($breadcrumbLink->label);
-        $link = $label;
-        $template = $this->activeItemTemplate;
+        $itemsAttributes = $this->itemAttributes;
 
-        if ($breadcrumbLink->url !== null) {
-            $template = $this->itemTemplate;
-            $link = A::tag()->addAttributes($attributes)->content($label)->url($breadcrumbLink->url)->encode(false);
+        $link = $this->renderLink($breadcrumbLink);
+        Html::addCssClass($itemsAttributes, [self::ITEM_NAME]);
+
+        if ($breadcrumbLink->url === null) {
+            $itemsAttributes['aria-current'] = 'page';
+
+            Html::addCssClass($itemsAttributes, $this->itemActiveClass);
         }
 
-        return strtr($template, ['{link}' => $link]);
+        return Li::tag()->attributes($itemsAttributes)->content($link)->encode(false)->render();
+    }
+
+    /**
+     * Renders a single breadcrumb link.
+     *
+     * @param BreadcrumbLink $breadcrumbLink The breadcrumb link to render.
+     *
+     * @return string The rendering result.
+     */
+    private function renderLink($breadcrumbLink): string
+    {
+        $label = Html::encode($breadcrumbLink->label);
+
+        return match ($breadcrumbLink->url) {
+            null => $label,
+            default => A::tag()
+                ->attributes($this->linkAttributes)
+                ->addAttributes($breadcrumbLink->getAttributes())
+                ->content($label)
+                ->url($breadcrumbLink->url)
+                ->encode(false)
+                ->render(),
+        };
     }
 }
