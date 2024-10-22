@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Html\Html;
-
 final class BreadcrumbLink
 {
     private array $attributes = [];

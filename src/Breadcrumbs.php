@@ -13,7 +13,6 @@ use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
 use function implode;
-use function strtr;
 
 /**
  * Button renders a bootstrap button.
