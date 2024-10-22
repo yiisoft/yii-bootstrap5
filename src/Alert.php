@@ -332,6 +332,6 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         Html::addCssClass($closeButtonAttributes, 'btn-close');
 
-        return Button::tag()->button('')->addAttributes($closeButtonAttributes)->encode(false)->render();
+        return Button::button('')->addAttributes($closeButtonAttributes)->render();
     }
 }
