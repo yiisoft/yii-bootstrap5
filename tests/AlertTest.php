@@ -15,6 +15,21 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class AlertTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert alert-secondary test-class-definition" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['id' => 'test'])
+                ->body('Body')
+                ->render(),
+        );
+    }
+
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -24,21 +39,6 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Alert::widget()->attributes(['class' => 'test-class'])->body('Body')->id(false)->render(),
-        );
-    }
-
-    public function testAttributesWithDefinition(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div id="test" class="alert alert-secondary test-class-definition" role="alert">
-            Body
-            </div>
-            HTML,
-            Alert::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->attributes(['id' => 'test'])
-                ->body('Body')
-                ->render(),
         );
     }
 

@@ -10,6 +10,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
+use function array_merge;
 use function preg_replace;
 use function strtr;
 
@@ -58,6 +59,21 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Adds a sets of attributes to the alert component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the alert component.
      *
      * @param array $values Attribute values indexed by attribute names.
@@ -69,7 +85,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($new->attributes, $values);
+        $new->attributes = $values;
 
         return $new;
     }
