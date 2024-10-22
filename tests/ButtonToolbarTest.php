@@ -19,6 +19,39 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar test-class-definition" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['data-id' => '1'])
+                ->ariaLabel('Toolbar with button groups')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
     public function testAddClass(): void
     {
         $buttonToolbar = ButtonToolbar::widget()
@@ -81,39 +114,6 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             ButtonToolbar::widget()
-                ->attributes(['data-id' => '1'])
-                ->ariaLabel('Toolbar with button groups')
-                ->buttonGroups(
-                    ButtonGroup::widget()
-                        ->addClass('me-2')
-                        ->ariaLabel('First group')
-                        ->buttons(
-                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
-                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
-                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
-                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
-                        )
-                        ->id(false),
-                )
-                ->id(false)
-                ->render(),
-        );
-    }
-
-    public function testAttributesWithDefinition(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="btn-toolbar test-class-definition" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
-            <div class="btn-group me-2" aria-label="First group" role="group">
-            <button type="button" class="btn btn-primary">1</button>
-            <button type="button" class="btn btn-primary">2</button>
-            <button type="button" class="btn btn-primary">3</button>
-            <button type="button" class="btn btn-primary">4</button>
-            </div>
-            </div>
-            HTML,
-            ButtonToolbar::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
                 ->attributes(['data-id' => '1'])
                 ->ariaLabel('Toolbar with button groups')
                 ->buttonGroups(
@@ -265,6 +265,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     {
         $buttonToolbar = ButtonToolbar::widget();
 
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->addAttributes([]));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->addClass(''));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->ariaLabel(''));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->attributes([]));

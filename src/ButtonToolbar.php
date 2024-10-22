@@ -8,6 +8,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Div;
 
+use function array_merge;
 use function implode;
 
 /**
@@ -58,6 +59,21 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
 
     /**
+     * Adds a sets of attributes for the button toolbar component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-button-toolbar']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
      * Adds a CSS class for the button toolbar component.
      *
      * @param string $value The CSS class for the button toolbar component (e.g., 'test-class').
@@ -103,7 +119,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($new->attributes, $values);
+        $new->attributes = $values;
 
         return $new;
     }

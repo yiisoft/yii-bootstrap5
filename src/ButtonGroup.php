@@ -43,6 +43,21 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     private bool|string $id = true;
 
     /**
+     * Adds a sets of attributes for the button group component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-button-group']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
      * Adds a CSS class for the button group component.
      *
      * @param string $value The CSS class for the button group component (e.g., 'test-class').
@@ -88,7 +103,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function attributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($new->attributes, $values);
+        $new->attributes = $values;
 
         return $new;
     }

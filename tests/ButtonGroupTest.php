@@ -18,6 +18,26 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group test-class-definition" data-test="test" role="group">
+            <button type="button" class="btn btn-secondary">Button B</button>
+            <button type="button" class="btn btn-primary">Button A</button>
+            </div>
+            HTML,
+            ButtonGroup::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['data-test' => 'test'])
+                ->buttons(
+                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
+                )
+                ->id(false)
+                ->render(),
+        );
+    }
+
     public function testAddClass(): void
     {
         $buttonGroupWidget = ButtonGroup::widget()
@@ -60,26 +80,6 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             HTML,
             ButtonGroup::widget()
                 ->attributes(['class' => 'test', 'data-test' => 'test'])
-                ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
-                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
-                )
-                ->id(false)
-                ->render(),
-        );
-    }
-
-    public function testAttributesWithDefinition(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="btn-group test-class-definition" data-test="test" role="group">
-            <button type="button" class="btn btn-secondary">Button B</button>
-            <button type="button" class="btn btn-primary">Button A</button>
-            </div>
-            HTML,
-            ButtonGroup::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->attributes(['data-test' => 'test'])
                 ->buttons(
                     Button::widget()->id(false)->label('Button B'),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
@@ -243,6 +243,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     {
         $buttonGroup = ButtonGroup::widget();
 
+        $this->assertNotSame($buttonGroup, $buttonGroup->addAttributes([]));
         $this->assertNotSame($buttonGroup, $buttonGroup->addClass(''));
         $this->assertNotSame($buttonGroup, $buttonGroup->ariaLabel(''));
         $this->assertNotSame($buttonGroup, $buttonGroup->attributes([]));

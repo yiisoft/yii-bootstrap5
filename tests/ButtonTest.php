@@ -39,6 +39,20 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary test-class-definition" data-test="test">Label</button>
+            HTML,
+            Button::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['data-test' => 'test'])
+                ->label('Label')
+                ->id(false)
+                ->render(),
+        );
+    }
+
     public function testAddCssClass(): void
     {
         $buttonWidget = Button::widget()->addCssClass('test-class')->label('Label')->id(false);
@@ -141,20 +155,6 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <button type="button" class="btn btn-secondary test-class">Label</button>
             HTML,
             Button::widget()->attributes(['class' => 'test-class'])->label('Label')->id(false)->render(),
-        );
-    }
-
-    public function testAttributesWithDefinition(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" class="btn btn-secondary test-class-definition" data-test="test">Label</button>
-            HTML,
-            Button::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->attributes(['data-test' => 'test'])
-                ->label('Label')
-                ->id(false)
-                ->render(),
         );
     }
 
@@ -266,6 +266,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $button = Button::widget();
 
         $this->assertNotSame($button, $button->active());
+        $this->assertNotSame($button, $button->addAttributes([]));
         $this->assertNotSame($button, $button->addCssClass(''));
         $this->assertNotSame($button, $button->addCssStyle(''));
         $this->assertNotSame($button, $button->attributes([]));
