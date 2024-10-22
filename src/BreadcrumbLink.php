@@ -17,7 +17,7 @@ final class BreadcrumbLink
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($new->attributes, $values);
+        $new->attributes = $values;
 
         return $new;
     }
