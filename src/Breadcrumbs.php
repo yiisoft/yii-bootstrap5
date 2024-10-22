@@ -180,10 +180,6 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        if ($this->listTagName === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
-        }
-
         return Nav::tag()->addAttributes($attributes)->content("\n", $list, "\n")->encode(false)->render();
     }
 
@@ -212,6 +208,10 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         }
 
         Html::addCssClass($listAttributes, [self::LIST_NAME]);
+
+        if ($this->listTagName === '') {
+            throw new InvalidArgumentException('Tag cannot be empty string.');
+        }
 
         return Html::tag($this->listTagName)
             ->attributes($listAttributes)
