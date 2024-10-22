@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Is an enumeration of types for the alert component.
+ * Variants for the alert component.
  *
  * @see https://getbootstrap.com/docs/5.3/components/alerts/#examples
  */
-enum AlertType: string
+enum AlertVariant: string
 {
     case PRIMARY = 'alert-primary';
     case SECONDARY = 'alert-secondary';
