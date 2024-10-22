@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
@@ -16,6 +17,31 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="test-class-definition" data-test="test" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['data-test' => 'test'])
+                ->ariaLabel('Basic example of breadcrumbs')
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
     public function testAriaLabel(): void
     {
         Assert::equalsWithoutLE(
@@ -64,6 +90,58 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.2/components/breadcrumb/#dividers
+     */
+    public function testDivider(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="--bs-breadcrumb-divider: &apos;&gt;&apos;;" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->divider('>')
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testDividerWithEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "divider" element cannot be empty.');
+
+        Breadcrumbs::widget()->divider('');
+    }
+
+    public function testImmutability(): void
+    {
+        $breacrumb = Breadcrumbs::widget();
+
+        $this->assertNotSame($breacrumb, $breacrumb->addAttributes([]));
+        $this->assertNotSame($breacrumb, $breacrumb->ariaLabel(''));
+        $this->assertNotSame($breacrumb, $breacrumb->attributes([]));
+        $this->assertNotSame($breacrumb, $breacrumb->divider('>'));
+        $this->assertNotSame($breacrumb, $breacrumb->itemActiveClass(''));
+        $this->assertNotSame($breacrumb, $breacrumb->itemAttributes([]));
+        $this->assertNotSame($breacrumb, $breacrumb->linkAttributes([]));
+        $this->assertNotSame($breacrumb, $breacrumb->links(new BreadcrumbLink()));
+        $this->assertNotSame($breacrumb, $breacrumb->listAttributes([]));
+        $this->assertNotSame($breacrumb, $breacrumb->listId(''));
+        $this->assertNotSame($breacrumb, $breacrumb->listTagName(''));
+    }
+
     public function testItemActiveClass(): void
     {
         Assert::equalsWithoutLE(
@@ -83,6 +161,30 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                     new BreadcrumbLink('Data'),
                 )
                 ->itemActiveClass('test-active-class')
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testItemAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item test-item-class"><a href="/">Home</a></li>
+            <li class="breadcrumb-item test-item-class"><a href="#">Library</a></li>
+            <li class="breadcrumb-item test-item-class active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->itemAttributes(['class' => 'test-item-class'])
                 ->listId(false)
                 ->render(),
         );
@@ -126,7 +228,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="test-override-class" href="/">Home</a></li>
+            <li class="breadcrumb-item"><a class="test-link-class" href="/" data-test="test">Home</a></li>
             <li class="breadcrumb-item"><a class="test-link-class" href="#">Library</a></li>
             <li class="breadcrumb-item active" aria-current="page">Data</li>
             </ol>
@@ -135,10 +237,34 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    (new BreadcrumbLink('Home', '/'))->addAttributes(['class' => 'test-override-class']),
+                    (new BreadcrumbLink('Home', '/'))->addAttributes(['data-test' => 'test']),
                     new BreadcrumbLink('Library', '#'),
                     new BreadcrumbLink('Data'),
                 )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testListAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb test-list-class">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    new BreadcrumbLink('Home', '/'),
+                    new BreadcrumbLink('Library', '#'),
+                    new BreadcrumbLink('Data'),
+                )
+                ->listAttributes(['class' => 'test-list-class'])
                 ->listId(false)
                 ->render(),
         );

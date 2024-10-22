@@ -8,10 +8,10 @@ use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
-use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
+use function array_merge;
 use function implode;
 
 /**
@@ -34,6 +34,21 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private array $listAttributes = [];
     private bool|string $listId = true;
     private string $listTagName = 'ol';
+
+    /**
+     * Adds a sets of attributes to the alert component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
 
     /**
      * Sets the ARIA label for the breacrump component.
@@ -70,6 +85,25 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Set the divider for the breadcrumb component.
+     *
+     * @param string $value The divider for the breadcrumb component.
+     *
+     * @return self A new instance with the specified divider.
+     */
+    public function divider(string $value): self
+    {
+        if ($value === '') {
+            throw new InvalidArgumentException('The "divider" element cannot be empty.');
+        }
+
+        $new = clone $this;
+        $new->attributes['style'] = ['--bs-breadcrumb-divider' => "'$value'"];
+
+        return $new;
+    }
+
+    /**
      * Sets the active class for the items in the breadcrumbs.
      *
      * @param string $value The active class for the items in the breadcrumbs.
@@ -80,6 +114,23 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->itemActiveClass = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the items in the breadcrumbs.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the items in the breadcrumbs.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function itemAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->itemAttributes = $values;
 
         return $new;
     }
@@ -186,6 +237,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private function renderList(): string
     {
         $listAttributes = $this->listAttributes;
+        $classes = $listAttributes['class'] ?? null;
 
         $listId = match ($this->listId) {
             true => $listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
@@ -193,7 +245,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             default => $this->listId,
         };
 
-        unset($listAttributes['id']);
+        unset($listAttributes['class'], $listAttributes['id']);
 
         $items = [];
 
@@ -207,7 +259,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        Html::addCssClass($listAttributes, [self::LIST_NAME]);
+        Html::addCssClass($listAttributes, [self::LIST_NAME, $classes]);
 
         if ($this->listTagName === '') {
             throw new InvalidArgumentException('Tag cannot be empty string.');
@@ -235,9 +287,12 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         }
 
         $itemsAttributes = $this->itemAttributes;
+        $classes = $itemsAttributes['class'] ?? null;
+
+        unset($itemsAttributes['class']);
 
         $link = $this->renderLink($breadcrumbLink);
-        Html::addCssClass($itemsAttributes, [self::ITEM_NAME]);
+        Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
         if ($breadcrumbLink->url === null) {
             $itemsAttributes['aria-current'] = 'page';
