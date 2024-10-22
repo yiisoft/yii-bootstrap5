@@ -47,7 +47,7 @@ use function implode;
  *     ->render();
  * ```
  *
- * @link https://getbootstrap.com/docs/5.2/components/button-group/#button-toolbar
+ * @link https://getbootstrap.com/docs/5.3/components/button-group/#button-toolbar
  */
 final class ButtonToolbar extends \Yiisoft\Widget\Widget
 {

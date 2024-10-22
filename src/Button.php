@@ -21,7 +21,7 @@ use function array_merge;
  * echo Button::widget()->label('Button')->largeSize()->variant(ButtonVariant::PRIMARY)->render();
  * ```
  *
- * @link https://getbootstrap.com/docs/5.2/components/buttons/
+ * @link https://getbootstrap.com/docs/5.3/components/buttons/
  */
 final class Button extends \Yiisoft\Widget\Widget
 {
@@ -74,7 +74,7 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addCssClass(string $value): self
+    public function addClass(string $value): self
     {
         $new = clone $this;
         $new->cssClass[] = $value;

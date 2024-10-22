@@ -31,7 +31,7 @@ use function implode;
  *
  * Pressing on the button should be handled via JavaScript. See the following for details:
  *
- * @link https://getbootstrap.com/docs/5.2/components/button-group/
+ * @link https://getbootstrap.com/docs/5.3/components/button-group/
  */
 final class ButtonGroup extends \Yiisoft\Widget\Widget
 {

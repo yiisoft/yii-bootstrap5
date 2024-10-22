@@ -7,7 +7,8 @@ namespace Yiisoft\Yii\Bootstrap5;
 /**
  * Variants for the button component.
  *
- * @see https://getbootstrap.com/docs/5.2/components/buttons/#examples
+ * @see https://getbootstrap.com/docs/5.3/components/buttons/#variants
+ * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
  */
 enum ButtonVariant: string
 {
