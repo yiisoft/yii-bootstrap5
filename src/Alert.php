@@ -42,6 +42,21 @@ final class Alert extends \Yiisoft\Widget\Widget
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
     /**
+     * Adds a sets of attributes to the alert component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
     * Adds a CSS class for the alert component.
     *
     * @param string $value The CSS class for the alert component (e.g., 'test-class').
@@ -54,21 +69,6 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClass[] = $value;
-
-        return $new;
-    }
-
-    /**
-     * Adds a sets of attributes to the alert component.
-     *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
-     *
-     * @return self A new instance with the specified attributes added.
-     */
-    public function addAttributes(array $values): self
-    {
-        $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
 
         return $new;
     }
