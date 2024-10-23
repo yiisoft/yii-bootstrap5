@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests\Provider;
 
-use Yiisoft\Yii\Bootstrap5\AlertType;
+use Yiisoft\Yii\Bootstrap5\AlertVariant;
 
 final class AlertProvider
 {
-    public static function type(): array
+    public static function variant(): array
     {
         return [
             [
-                AlertType::PRIMARY,
+                AlertVariant::PRIMARY,
                 <<<HTML
                 <div class="alert alert-primary" role="alert">
                 A simple alert-primary check it out!
@@ -20,7 +20,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::SECONDARY,
+                AlertVariant::SECONDARY,
                 <<<HTML
                 <div class="alert alert-secondary" role="alert">
                 A simple alert-secondary check it out!
@@ -28,7 +28,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::SUCCESS,
+                AlertVariant::SUCCESS,
                 <<<HTML
                 <div class="alert alert-success" role="alert">
                 A simple alert-success check it out!
@@ -36,7 +36,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::DANGER,
+                AlertVariant::DANGER,
                 <<<HTML
                 <div class="alert alert-danger" role="alert">
                 A simple alert-danger check it out!
@@ -44,7 +44,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::WARNING,
+                AlertVariant::WARNING,
                 <<<HTML
                 <div class="alert alert-warning" role="alert">
                 A simple alert-warning check it out!
@@ -52,7 +52,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::INFO,
+                AlertVariant::INFO,
                 <<<HTML
                 <div class="alert alert-info" role="alert">
                 A simple alert-info check it out!
@@ -60,7 +60,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::LIGHT,
+                AlertVariant::LIGHT,
                 <<<HTML
                 <div class="alert alert-light" role="alert">
                 A simple alert-light check it out!
@@ -68,7 +68,7 @@ final class AlertProvider
                 HTML,
             ],
             [
-                AlertType::DARK,
+                AlertVariant::DARK,
                 <<<HTML
                 <div class="alert alert-dark" role="alert">
                 A simple alert-dark check it out!

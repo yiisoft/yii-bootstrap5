@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\{Alert, AlertType};
+use Yiisoft\Yii\Bootstrap5\Alert;
+use Yiisoft\Yii\Bootstrap5\AlertVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
@@ -14,6 +15,21 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class AlertTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert alert-secondary test-class-definition" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['id' => 'test'])
+                ->body('Body')
+                ->render(),
+        );
+    }
+
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -23,6 +39,29 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Alert::widget()->attributes(['class' => 'test-class'])->body('Body')->id(false)->render(),
+        );
+    }
+
+    public function testAddCssClass(): void
+    {
+        $alert = Alert::widget()->addClass('test-class')->body('Body')->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary test-class" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary test-class test-class-1" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->addClass('test-class-1')->render(),
         );
     }
 
@@ -190,10 +229,23 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testIdWithSetAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test" class="alert alert-secondary" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->attributes(['id' => 'test'])->body('Body')->render(),
+        );
+    }
+
     public function testImmutability(): void
     {
         $alert = Alert::widget();
 
+        $this->assertNotSame($alert, $alert->addAttributes([]));
         $this->assertNotSame($alert, $alert->addClass(''));
         $this->assertNotSame($alert, $alert->attributes([]));
         $this->assertNotSame($alert, $alert->body('', true));
@@ -206,7 +258,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->headerTag('div'));
         $this->assertNotSame($alert, $alert->id(false));
         $this->assertNotSame($alert, $alert->templateContent(''));
-        $this->assertNotSame($alert, $alert->type(AlertType::PRIMARY));
+        $this->assertNotSame($alert, $alert->variant(AlertVariant::PRIMARY));
     }
 
     /**
@@ -227,7 +279,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                     false,
                 )
                 ->id(false)
-                ->type(AlertType::WARNING)
+                ->variant(AlertVariant::WARNING)
                 ->render(),
         );
     }
@@ -277,16 +329,16 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider::type()
+     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider::variant()
      */
-    public function testType(AlertType $alertType, string $expected): void
+    public function testVariant(AlertVariant $alertVariant, string $expected): void
     {
         Assert::equalsWithoutLE(
             $expected,
             Alert::widget()
-                ->body('A simple ' . $alertType->value . ' check it out!')
+                ->body('A simple ' . $alertVariant->value . ' check it out!')
                 ->id(false)
-                ->type($alertType)
+                ->variant($alertVariant)
                 ->render(),
         );
     }
