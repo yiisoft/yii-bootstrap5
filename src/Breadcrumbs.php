@@ -20,6 +20,14 @@ use function implode;
  * For example,
  *
  * ```php
+ * echo Breadcrumbs::widget()
+ *     ->links(
+ *         new Link('Home', '#'),
+ *         new Link('Library', '#'),
+ *         new Link('Data'),
+ *     )
+ *     ->listId(false)
+ *     ->render();
  * ```
  */
 final class Breadcrumbs extends \Yiisoft\Widget\Widget
@@ -36,7 +44,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private string $listTagName = 'ol';
 
     /**
-     * Adds a sets of attributes to the alert component.
+     * Adds a set of attributes to the alert component.
      *
      * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
      *
@@ -94,7 +102,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function divider(string $value): self
     {
         if ($value === '') {
-            throw new InvalidArgumentException('The "divider" element cannot be empty.');
+            throw new InvalidArgumentException('The "divider" cannot be empty.');
         }
 
         $new = clone $this;
@@ -159,9 +167,9 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified links to appear in the breadcrumbs.
      *
-     * @psalm-param BreadcrumbLink[] $value The links to appear in the breadcrumbs.
+     * @psalm-param Link[] $value The links to appear in the breadcrumbs.
      */
-    public function links(BreadcrumbLink ...$value): self
+    public function links(Link ...$value): self
     {
         $new = clone $this;
         $new->links = $value;
@@ -262,7 +270,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         Html::addCssClass($listAttributes, [self::LIST_NAME, $classes]);
 
         if ($this->listTagName === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
+            throw new InvalidArgumentException('List tag cannot be empty.');
         }
 
         return Html::tag($this->listTagName)
@@ -276,13 +284,13 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     /**
      * Renders a single breadcrumb item.
      *
-     * @param BreadcrumbLink $breadcrumbLink The breadcrumb item to render.
+     * @param Link $link The breadcrumb item to render.
      *
      * @return string The rendering result.
      */
-    private function renderItem(BreadcrumbLink $breadcrumbLink): string
+    private function renderItem(Link $link): string
     {
-        if ($breadcrumbLink->label === '') {
+        if ($link->label === '') {
             throw new RuntimeException('The "label" element is required for each link.');
         }
 
@@ -291,36 +299,36 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
 
         unset($itemsAttributes['class']);
 
-        $link = $this->renderLink($breadcrumbLink);
+        $linkTag = $this->renderLink($link);
         Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
-        if ($breadcrumbLink->url === null) {
+        if ($link->url === null) {
             $itemsAttributes['aria-current'] = 'page';
 
             Html::addCssClass($itemsAttributes, $this->itemActiveClass);
         }
 
-        return Li::tag()->attributes($itemsAttributes)->content($link)->encode(false)->render();
+        return Li::tag()->attributes($itemsAttributes)->content($linkTag)->encode(false)->render();
     }
 
     /**
      * Renders a single breadcrumb link.
      *
-     * @param BreadcrumbLink $breadcrumbLink The breadcrumb link to render.
+     * @param Link $link The breadcrumb link to render.
      *
      * @return string The rendering result.
      */
-    private function renderLink($breadcrumbLink): string
+    private function renderLink(Link $link): string
     {
-        $label = Html::encode($breadcrumbLink->label);
+        $label = Html::encode($link->label);
 
-        return match ($breadcrumbLink->url) {
+        return match ($link->url) {
             null => $label,
             default => A::tag()
                 ->attributes($this->linkAttributes)
-                ->addAttributes($breadcrumbLink->getAttributes())
+                ->addAttributes($link->getAttributes())
                 ->content($label)
-                ->url($breadcrumbLink->url)
+                ->url($link->url)
                 ->encode(false)
                 ->render(),
         };

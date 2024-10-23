@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
+use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
@@ -33,9 +33,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->addAttributes(['data-test' => 'test'])
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -57,9 +57,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -81,9 +81,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->attributes(['class' => 'test-class'])
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -108,9 +108,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->divider('>')
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -120,7 +120,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testDividerWithEmpty(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "divider" element cannot be empty.');
+        $this->expectExceptionMessage('The "divider" cannot be empty.');
 
         Breadcrumbs::widget()->divider('');
     }
@@ -136,7 +136,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($breacrumb, $breacrumb->itemActiveClass(''));
         $this->assertNotSame($breacrumb, $breacrumb->itemAttributes([]));
         $this->assertNotSame($breacrumb, $breacrumb->linkAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->links(new BreadcrumbLink()));
+        $this->assertNotSame($breacrumb, $breacrumb->links(new Link()));
         $this->assertNotSame($breacrumb, $breacrumb->listAttributes([]));
         $this->assertNotSame($breacrumb, $breacrumb->listId(''));
         $this->assertNotSame($breacrumb, $breacrumb->listTagName(''));
@@ -156,9 +156,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->itemActiveClass('test-active-class')
                 ->listId(false)
@@ -180,9 +180,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->itemAttributes(['class' => 'test-item-class'])
                 ->listId(false)
@@ -195,7 +195,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The "label" element is required for each link.');
 
-        Breadcrumbs::widget()->links(new BreadcrumbLink())->render();
+        Breadcrumbs::widget()->links(new Link())->render();
     }
 
     public function testLinkAttributes(): void
@@ -213,9 +213,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -237,9 +237,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    (new BreadcrumbLink('Home', '/'))->addAttributes(['data-test' => 'test']),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    (new Link('Home', '/'))->addAttributes(['data-test' => 'test']),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -260,9 +260,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listAttributes(['class' => 'test-list-class'])
                 ->listId(false)
@@ -284,9 +284,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId('test-id')
                 ->render(),
@@ -307,9 +307,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId('')
                 ->render(),
@@ -330,9 +330,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),
@@ -353,9 +353,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listAttributes(['id' => 'test-id'])
                 ->render(),
@@ -376,14 +376,29 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '/'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '/'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->listTagName('footer')
                 ->render(),
         );
+    }
+
+    public function testListTagNameWithException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('List tag cannot be empty.');
+
+        Breadcrumbs::widget()
+            ->links(
+                new Link('Home', '/'),
+                new Link('Library', '#'),
+                new Link('Data'),
+            )
+            ->listTagName('')
+            ->render();
     }
 
     public function testLinksWithEmpty(): void
@@ -408,9 +423,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new BreadcrumbLink('Home', '#'),
-                    new BreadcrumbLink('Library', '#'),
-                    new BreadcrumbLink('Data'),
+                    new Link('Home', '#'),
+                    new Link('Library', '#'),
+                    new Link('Data'),
                 )
                 ->listId(false)
                 ->render(),

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
+use Yiisoft\Yii\Bootstrap5\Link;
 
 /**
- * Tests for `BreadcrumbLink`.
+ * Tests for `Link`.
  *
  * @group breadcrumblink
  */
-final class BreadcrumbLinkTest extends \PHPUnit\Framework\TestCase
+final class LinkTest extends \PHPUnit\Framework\TestCase
 {
     public function testImmutability(): void
     {
-        $breacrumbLink = new BreadcrumbLink();
+        $breacrumbLink = new Link();
 
         $this->assertNotSame($breacrumbLink, $breacrumbLink->addAttributes([]));
     }

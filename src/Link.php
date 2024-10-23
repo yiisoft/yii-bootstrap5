@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-final class BreadcrumbLink
+final class Link
 {
     private array $attributes = [];
 
