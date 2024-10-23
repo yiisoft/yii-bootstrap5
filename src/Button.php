@@ -53,7 +53,7 @@ final class Button extends \Yiisoft\Widget\Widget
         array $config = [],
         string|null $theme = null
     ): self {
-        return static::widget($constructorArguments, $config, $theme)->label($label)->type(ButtonType::LINK)->url($url);
+        return self::widget($constructorArguments, $config, $theme)->label($label)->type(ButtonType::LINK)->url($url);
     }
 
     /**
@@ -72,7 +72,7 @@ final class Button extends \Yiisoft\Widget\Widget
         array $config = [],
         string|null $theme = null
     ): self {
-        return static::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::RESET);
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::RESET);
     }
 
     /**
@@ -91,7 +91,7 @@ final class Button extends \Yiisoft\Widget\Widget
         array $config = [],
         string|null $theme = null
     ): self {
-        return static::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::SUBMIT);
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::SUBMIT);
     }
 
     /**
