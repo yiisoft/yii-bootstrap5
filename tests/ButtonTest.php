@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Yii\Bootstrap5\Button;
+use Yiisoft\Yii\Bootstrap5\ButtonType;
 use Yiisoft\Yii\Bootstrap5\ButtonVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
@@ -275,11 +276,10 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
         $this->assertNotSame($button, $button->largeSize());
-        $this->assertNotSame($button, $button->link(null));
         $this->assertNotSame($button, $button->normalSize());
-        $this->assertNotSame($button, $button->reset());
         $this->assertNotSame($button, $button->smallSize());
-        $this->assertNotSame($button, $button->submit());
+        $this->assertNotSame($button, $button->type(ButtonType::LINK));
+        $this->assertNotSame($button, $button->url(''));
         $this->assertNotSame($button, $button->variant(ButtonVariant::PRIMARY));
     }
 
@@ -335,17 +335,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <a class="btn btn-secondary" role="button">Label</a>
             HTML,
-            Button::widget()->label('Label')->id(false)->link()->render(),
-        );
-    }
-
-    public function testLinkWithUrl(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" href="/test" role="button">Label</a>
-            HTML,
-            Button::widget()->label('Label')->id(false)->link('/test')->render(),
+            Button::link('Label')->id(false)->render(),
         );
     }
 
@@ -354,7 +344,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
      */
     public function testLinkWithActive(): void
     {
-        $buttonWidget = Button::widget()->active()->label('Active toggle link')->id(false)->link();
+        $buttonWidget = Button::link('Active toggle link')->active()->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -380,7 +370,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <a class="btn btn-secondary" data-bs-toggle="button" role="button">Toggle link</a>
             HTML,
-            Button::widget()->dataBsToggle('button')->label('Toggle link')->id(false)->link()->render(),
+            Button::link('Toggle link')->dataBsToggle('button')->id(false)->render(),
         );
     }
 
@@ -389,7 +379,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
      */
     public function testLinkWithDisabled(): void
     {
-        $buttonWidget = Button::widget()->disabled()->label('Label')->id(false)->link();
+        $buttonWidget = Button::link('Label')->disabled()->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -403,6 +393,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <a class="btn btn-secondary" role="button">Label</a>
             HTML,
             $buttonWidget->disabled(false)->render(),
+        );
+    }
+
+    public function testLinkWithUrl(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" href="/test" role="button">Label</a>
+            HTML,
+            Button::link('Label', '/test')->id(false)->render(),
         );
     }
 
@@ -430,7 +430,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="reset" class="btn btn-secondary" value="Reset">
             HTML,
-            Button::widget()->id(false)->reset()->render(),
+            Button::reset()->id(false)->render(),
         );
     }
 
@@ -443,17 +443,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="reset" class="btn btn-secondary" value="Clear">
             HTML,
-            Button::widget()->id(false)->reset()->label('Clear')->render(),
-        );
-    }
-
-    public function testResetWithValue(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <input type="reset" class="btn btn-secondary" value="Clear">
-            HTML,
-            Button::widget()->id(false)->reset('Clear')->render(),
+            Button::reset('Clear')->id(false)->render(),
         );
     }
 
@@ -479,7 +469,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="submit" class="btn btn-secondary" value="Submit">
             HTML,
-            Button::widget()->id(false)->submit()->render(),
+            Button::submit()->id(false)->render(),
         );
     }
 
@@ -492,20 +482,67 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="submit" class="btn btn-secondary" value="Send">
             HTML,
-            Button::widget()->id(false)->submit()->label('Send')->render(),
+            Button::submit('Send')->id(false)->render(),
         );
     }
 
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
-     */
-    public function testSubmitwithValue(): void
+    public function testTypeWithLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" role="button">Label</a>
+            HTML,
+            Button::widget()->label('Label')->id(false)->type(ButtonType::LINK)->render(),
+        );
+    }
+
+    public function testTypeWithLinkAndUrl(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" href="/test" role="button">Label</a>
+            HTML,
+            Button::widget()->label('Label')->id(false)->type(ButtonType::LINK)->url('/test')->render(),
+        );
+    }
+
+    public function testTypeWithReset(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="reset" class="btn btn-secondary" value="Reset">
+            HTML,
+            Button::widget()->id(false)->type(ButtonType::RESET)->render(),
+        );
+    }
+
+    public function testTypeWithResetAndLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="reset" class="btn btn-secondary" value="Clear">
+            HTML,
+            Button::widget()->id(false)->type(ButtonType::RESET)->label('Clear')->render(),
+        );
+    }
+
+    public function testTypeWithSubmit(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="submit" class="btn btn-secondary" value="Submit">
+            HTML,
+            Button::widget()->id(false)->type(ButtonType::SUBMIT)->render(),
+        );
+    }
+
+    public function testTypeWithSubmitAndLabel(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <input type="submit" class="btn btn-secondary" value="Send">
             HTML,
-            Button::widget()->id(false)->submit('Send')->render(),
+            Button::widget()->id(false)->type(ButtonType::SUBMIT)->label('Send')->render(),
         );
     }
 

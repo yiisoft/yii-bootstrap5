@@ -36,6 +36,65 @@ final class Button extends \Yiisoft\Widget\Widget
     private A|ButtonTag|Input|null $tag = null;
 
     /**
+     * Whether the button should be a link.
+     *
+     * @param string|stringable $label The content of the button.
+     * @param string|null $url The URL of the link button.
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the button as a link.
+     */
+    public static function link(
+        string|stringable $label = '',
+        string|null $url = null,
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return static::widget($constructorArguments, $config, $theme)->label($label)->type(ButtonType::LINK)->url($url);
+    }
+
+    /**
+     * Whether the button should be a reset button.
+     *
+     * @param string|stringable $value The content of the button. For default, it is 'Reset'.
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the button as a reset button.
+     */
+    public static function reset(
+        string|stringable $value = 'Reset',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return static::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::RESET);
+    }
+
+    /**
+     * Whether the button should be a submit button.
+     *
+     * @param string|stringable $value The content of the button. For default, it is 'Submit'.
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the button as a submit button.
+     */
+    public static function submit(
+        string|stringable $value = 'Submit',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return static::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::SUBMIT);
+    }
+
+    /**
      * Sets the button to be active.
      *
      * @param bool $value Whether the button should be active.
@@ -185,7 +244,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * The button label.
      *
-     * @param string $value The label to display on the button.
+     * @param string|stringable $value The label to display on the button.
      * @param bool $encode Whether the label value should be HTML-encoded. Use this when rendering user-generated
      * content to prevent XSS attacks.
      *
@@ -217,21 +276,6 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Whether the button should be a link.
-     *
-     * @param string|null $url The URL of the link.
-     *
-     * @return self A new instance with the button as a link.
-     */
-    public function link(string|null $url = null): self
-    {
-        $new = clone $this;
-        $new->tag = A::tag()->url($url);
-
-        return $new;
-    }
-
-    /**
      * Sets the button size to be normal.
      *
      * @return self A new instance with the button as a normal button.
@@ -240,21 +284,6 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClass['size'] = null;
-
-        return $new;
-    }
-
-    /**
-     * Whether the button should be a reset button.
-     *
-     * @param string|null $value The content of the button. For default, it is 'Reset'.
-     *
-     * @return self A new instance with the button as a reset button.
-     */
-    public function reset(string|null $value = 'Reset'): self
-    {
-        $new = clone $this;
-        $new->tag = Input::resetButton($value);
 
         return $new;
     }
@@ -273,16 +302,34 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Whether the button should be a submit button.
-     *
-     * @param string|null $value The content of the button. For default, it is 'Submit'.
-     *
-     * @return self A new instance with the button as a submit button.
+     * Sets the button type. The following options are allowed:
+     * - `ButtonType::LINK`: A link button.
+     * - `ButtonType::RESET`: A reset button.
+     * - `ButtonType::SUBMIT`: A submit button.
      */
-    public function submit(string|null $value = 'Submit'): self
+    public function type(ButtonType $value): self
     {
         $new = clone $this;
-        $new->tag = Input::submitButton($value);
+        $new->tag = match ($value) {
+            ButtonType::LINK => A::tag(),
+            ButtonType::RESET => Input::resetButton('Reset'),
+            ButtonType::SUBMIT => Input::submitButton('Submit'),
+        };
+
+        return $new;
+    }
+
+    /**
+     * Sets the URL of the link button.
+     *
+     * @param string|null $value The URL of the link button.
+     *
+     * @return self A new instance with the specified URL.
+     */
+    public function url(string|null $value): self
+    {
+        $new = clone $this;
+        $new->attributes['href'] = $value;
 
         return $new;
     }
