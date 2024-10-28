@@ -29,6 +29,8 @@ use function implode;
  *     ->listId(false)
  *     ->render();
  * ```
+ *
+ * @see https://getbootstrap.com/docs/5.3/components/breadcrumb/
  */
 final class Breadcrumbs extends \Yiisoft\Widget\Widget
 {
