@@ -14,7 +14,16 @@ final class Link
     ) {
     }
 
-    public function addAttributes(array $values): self
+    /**
+     * Sets the HTML attributes for the link.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
     {
         $new = clone $this;
         $new->attributes = $values;
@@ -22,6 +31,11 @@ final class Link
         return $new;
     }
 
+    /**
+     * Returns the HTML attributes for the link.
+     *
+     * @return array The attributes.
+     */
     public function getAttributes(): array
     {
         return $this->attributes;
