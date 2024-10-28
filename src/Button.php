@@ -47,7 +47,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * @return self A new instance with the button as a link.
      */
     public static function link(
-        string|stringable $label = '',
+        string|Stringable $label = '',
         string|null $url = null,
         array $constructorArguments = [],
         array $config = [],
@@ -67,7 +67,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * @return self A new instance with the button as a reset button.
      */
     public static function reset(
-        string|stringable $value = 'Reset',
+        string|Stringable $value = 'Reset',
         array $constructorArguments = [],
         array $config = [],
         string|null $theme = null
@@ -86,7 +86,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * @return self A new instance with the button as a submit button.
      */
     public static function submit(
-        string|stringable $value = 'Submit',
+        string|Stringable $value = 'Submit',
         array $constructorArguments = [],
         array $config = [],
         string|null $theme = null
@@ -312,8 +312,8 @@ final class Button extends \Yiisoft\Widget\Widget
         $new = clone $this;
         $new->tag = match ($value) {
             ButtonType::LINK => A::tag(),
-            ButtonType::RESET => Input::resetButton('Reset'),
-            ButtonType::SUBMIT => Input::submitButton('Submit'),
+            ButtonType::RESET => Input::resetButton(),
+            ButtonType::SUBMIT => Input::submitButton(),
         };
 
         return $new;

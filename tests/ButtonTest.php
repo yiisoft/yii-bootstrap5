@@ -512,7 +512,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="reset" class="btn btn-secondary" value="Reset">
             HTML,
-            Button::widget()->id(false)->type(ButtonType::RESET)->render(),
+            Button::widget()->id(false)->label('Reset')->type(ButtonType::RESET)->render(),
         );
     }
 
@@ -532,7 +532,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="submit" class="btn btn-secondary" value="Submit">
             HTML,
-            Button::widget()->id(false)->type(ButtonType::SUBMIT)->render(),
+            Button::widget()->id(false)->label('Submit')->type(ButtonType::SUBMIT)->render(),
         );
     }
 
@@ -542,7 +542,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="submit" class="btn btn-secondary" value="Send">
             HTML,
-            Button::widget()->id(false)->type(ButtonType::SUBMIT)->label('Send')->render(),
+            Button::widget()->id(false)->label('Send')->type(ButtonType::SUBMIT)->render(),
         );
     }
 
