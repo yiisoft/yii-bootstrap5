@@ -377,7 +377,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
 
@@ -386,10 +386,16 @@ final class Button extends \Yiisoft\Widget\Widget
                 $tag = $tag->value($this->label);
             }
 
-            return $tag->addAttributes($attributes)->id($id)->render();
+            return $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id)->render();
         }
 
-        return $tag->addAttributes($attributes)->addContent($this->label)->id($id)->encode(false)->render();
+        return $tag
+            ->addAttributes($attributes)
+            ->addClass(...$this->cssClass)
+            ->addContent($this->label)
+            ->id($id)
+            ->encode(false)
+            ->render();
     }
 
     /**
