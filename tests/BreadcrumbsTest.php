@@ -237,7 +237,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    (new Link('Home', '/'))->addAttributes(['data-test' => 'test']),
+                    (new Link('Home', '/'))->attributes(['data-test' => 'test']),
                     new Link('Library', '#'),
                     new Link('Data'),
                 )

@@ -17,6 +17,6 @@ final class LinkTest extends \PHPUnit\Framework\TestCase
     {
         $breacrumbLink = new Link();
 
-        $this->assertNotSame($breacrumbLink, $breacrumbLink->addAttributes([]));
+        $this->assertNotSame($breacrumbLink, $breacrumbLink->attributes([]));
     }
 }
