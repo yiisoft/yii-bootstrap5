@@ -56,7 +56,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
     public function testAddClass(): void
     {
-        $buttonWidget = Button::widget()->addClass('test-class')->label('Label')->id(false);
+        $buttonWidget = Button::widget()->addClass('test-class', null)->label('Label')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -67,9 +67,9 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary test-class test-class-1">Label</button>
+            <button type="button" class="btn btn-secondary test-class test-class-1 test-class-2">Label</button>
             HTML,
-            $buttonWidget->addClass('test-class-1')->render(),
+            $buttonWidget->addClass('test-class-1', 'test-class-2')->render(),
         );
     }
 
@@ -193,6 +193,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
                     Button::widget()->label('Block button')->id(false),
                     PHP_EOL,
                 )
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary custom-class another-class">Label</button>
+            HTML,
+            Button::widget()
+                ->addClass('test-class-1', 'test-class-2')
+                ->class('custom-class', 'another-class')
+                ->label('Label')
+                ->id(false)
                 ->render(),
         );
     }

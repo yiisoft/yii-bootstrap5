@@ -11,6 +11,7 @@ use Yiisoft\Html\Tag\Button as ButtonTag;
 use Yiisoft\Html\Tag\Input;
 
 use function array_merge;
+use function array_filter;
 
 /**
  * Button renders a bootstrap button.
@@ -38,7 +39,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a link.
      *
-     * @param string|stringable $label The content of the button.
+     * @param string|Stringable $label The content of the button.
      * @param string|null $url The URL of the link button.
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
@@ -59,7 +60,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a reset button.
      *
-     * @param string|stringable $value The content of the button. For default, it is 'Reset'.
+     * @param string|Stringable $value The content of the button. For default, it is 'Reset'.
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
      * @param string|null $theme The theme.
@@ -78,7 +79,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Whether the button should be a submit button.
      *
-     * @param string|stringable $value The content of the button. For default, it is 'Submit'.
+     * @param string|Stringable $value The content of the button. For default, it is 'Submit'.
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
      * @param string|null $theme The theme.
@@ -125,18 +126,29 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a CSS class for the button group component.
+     * Adds one or more CSS classes to the existing classes of the button component.
      *
-     * @param string $value The CSS class for the button component (e.g., 'test-class').
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
      *
-     * @return self A new instance with the specified class value added.
+     * @param string|null ...$value One or more CSS class names to add. Pass null to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $button->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string $value): self
+    public function addClass(string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass[] = $value;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
 
         return $new;
     }
@@ -196,6 +208,29 @@ final class Button extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+   /**
+    * Replaces all existing CSS classes of the button component with the provided ones.
+    *
+    * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+    * automatically.
+    *
+    * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
+    * For example:
+    *
+    * ```php
+    * $button->class('custom-class', null, 'another-class');
+    * ```
+    *
+    * @return self A new instance with the specified CSS classes set.
+    */
+    final public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+
+        return $new;
+    }
+
     /**
      * Sets the 'data-bs-toggle' attribute for the button.
      *
@@ -244,7 +279,7 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * The button label.
      *
-     * @param string|stringable $value The label to display on the button.
+     * @param string|Stringable $value The label to display on the button.
      * @param bool $encode Whether the label value should be HTML-encoded. Use this when rendering user-generated
      * content to prevent XSS attacks.
      *
@@ -380,22 +415,17 @@ final class Button extends \Yiisoft\Widget\Widget
         Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
+        $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id);
 
         if ($tag instanceof Input) {
             if ($this->label !== '') {
                 $tag = $tag->value($this->label);
             }
 
-            return $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id)->render();
+            return $tag->render();
         }
 
-        return $tag
-            ->addAttributes($attributes)
-            ->addClass(...$this->cssClass)
-            ->addContent($this->label)
-            ->id($id)
-            ->encode(false)
-            ->render();
+        return $tag->addContent($this->label)->encode(false)->render();
     }
 
     /**
