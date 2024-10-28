@@ -208,22 +208,22 @@ final class Button extends \Yiisoft\Widget\Widget
         return $new;
     }
 
-   /**
-    * Replaces all existing CSS classes of the button component with the provided ones.
-    *
-    * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
-    * automatically.
-    *
-    * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
-    * For example:
-    *
-    * ```php
-    * $button->class('custom-class', null, 'another-class');
-    * ```
-    *
-    * @return self A new instance with the specified CSS classes set.
-    */
-    final public function class(string|null ...$value): self
+    /**
+     * Replaces all existing CSS classes of the button component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $button->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
     {
         $new = clone $this;
         $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
