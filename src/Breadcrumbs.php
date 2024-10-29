@@ -311,7 +311,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         $linkTag = $this->renderLink($link);
         Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
-        if ($link->url === null || $link->isActive()) {
+        if ($link->isActive()) {
             $itemsAttributes['aria-current'] = 'page';
 
             Html::addCssClass($itemsAttributes, $this->itemActiveClass);

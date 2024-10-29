@@ -75,7 +75,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -99,7 +99,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -123,7 +123,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -150,7 +150,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -198,7 +198,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->itemActiveClass('test-active-class')
                 ->listId(false)
@@ -222,7 +222,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->itemAttributes(['class' => 'test-item-class'])
                 ->listId(false)
@@ -255,7 +255,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -279,7 +279,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     (new Link('Home', '/'))->attributes(['data-test' => 'test']),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -302,7 +302,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listAttributes(['class' => 'test-list-class'])
                 ->listId(false)
@@ -326,7 +326,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId('test-id')
                 ->render(),
@@ -349,7 +349,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId('')
                 ->render(),
@@ -372,7 +372,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
@@ -395,7 +395,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listAttributes(['id' => 'test-id'])
                 ->render(),
@@ -418,7 +418,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->listTagName('footer')
@@ -435,7 +435,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             ->links(
                 new Link('Home', '/'),
                 new Link('Library', '#'),
-                new Link('Data'),
+                (new Link('Data'))->active(),
             )
             ->listTagName('')
             ->render();
@@ -465,7 +465,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '#'),
                     new Link('Library', '#'),
-                    new Link('Data'),
+                    (new Link('Data'))->active(),
                 )
                 ->listId(false)
                 ->render(),
