@@ -104,9 +104,13 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function active(bool $value = true): self
     {
+        $activeClass = $value === true ? 'active' : null;
+        $ariaPressed = $value === true ? 'true' : null;
         $dataBsToggle = $value === true ? 'button' : null;
 
         $new = $this->dataBsToggle($dataBsToggle);
+        $new->attributes['aria-pressed'] = $ariaPressed;
+        $new->cssClass['active'] = $activeClass;
         $new->active = $value;
 
         return $new;
@@ -442,12 +446,6 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     private function setAttributes(array $attributes): array
     {
-        if ($this->active) {
-            $attributes['aria-pressed'] = 'true';
-
-            Html::addCssClass($attributes, 'active');
-        }
-
         if ($this->disabled) {
             $attributes['disabled'] = true;
 

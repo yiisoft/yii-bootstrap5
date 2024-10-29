@@ -32,11 +32,13 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             $buttonWidget->render(),
         );
 
+        $buttonWidget =$buttonWidget->active(false);
+
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary">Active toggle button</button>
             HTML,
-            $buttonWidget->active(false)->render(),
+            $buttonWidget->render(),
         );
     }
 
