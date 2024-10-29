@@ -17,6 +17,46 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 {
+    public function testActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->ariaLabel('Basic example of breadcrumbs')
+                ->links(
+                    new Link('Home', '/'),
+                    (new Link('Library', '#'))->active(),
+                    (new Link('Data', '#'))->active(false),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testActiveWithException(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Only one "link" can be active.');
+
+        Breadcrumbs::widget()
+            ->ariaLabel('Basic example of breadcrumbs')
+            ->links(
+                new Link('Home', '/'),
+                (new Link('Library', '#'))->active(),
+                (new Link('Data', '#'))->active(),
+            )
+            ->listId(false)
+            ->render();
+    }
+
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(

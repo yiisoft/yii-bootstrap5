@@ -258,9 +258,15 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         unset($listAttributes['class'], $listAttributes['id']);
 
         $items = [];
+        $active = 0;
 
         foreach ($this->links as $link) {
+            $active += (int) $link->isActive();
             $items[] = $this->renderItem($link);
+
+            if ($active > 1) {
+                throw new RuntimeException('Only one "link" can be active.');
+            }
         }
 
         $items = implode("\n", $items);
@@ -304,7 +310,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         $linkTag = $this->renderLink($link);
         Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
-        if ($link->url === null) {
+        if ($link->url === null || $link->isActive()) {
             $itemsAttributes['aria-current'] = 'page';
 
             Html::addCssClass($itemsAttributes, $this->itemActiveClass);
