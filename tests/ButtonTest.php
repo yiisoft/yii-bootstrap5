@@ -27,7 +27,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary active" aria-pressed="true" data-bs-toggle="button">Active toggle button</button>
+            <button type="button" class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
             HTML,
             $buttonWidget->render(),
         );
@@ -234,7 +234,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" disabled>Label</button>
+            <button type="button" class="btn btn-secondary" disabled data-bs-toggle="button">Label</button>
             HTML,
             $buttonWidget->render(),
         );
@@ -363,7 +363,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <a class="btn btn-secondary active" aria-pressed="true" data-bs-toggle="button" role="button">Active toggle link</a>
+            <a class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
             HTML,
             $buttonWidget->render(),
         );
@@ -385,7 +385,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <a class="btn btn-secondary" data-bs-toggle="button" role="button">Toggle link</a>
             HTML,
-            Button::link('Toggle link')->dataBsToggle('button')->id(false)->render(),
+            Button::link('Toggle link')->dataBsToggle()->id(false)->render(),
         );
     }
 
@@ -398,7 +398,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <a class="btn btn-secondary disabled" aria-disabled="true" role="button">Label</a>
+            <a class="btn btn-secondary disabled" data-bs-toggle="button" aria-disabled="true" role="button">Label</a>
             HTML,
             $buttonWidget->render(),
         );
@@ -498,6 +498,24 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <input type="submit" class="btn btn-secondary" value="Send">
             HTML,
             Button::submit('Send')->id(false)->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
+     */
+    public function testToggleState(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="button">Toggle button</button>
+            HTML,
+            Button::widget()
+                ->dataBsToggle()
+                ->label('Toggle button')
+                ->id(false)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
     }
 

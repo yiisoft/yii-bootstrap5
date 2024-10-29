@@ -104,7 +104,9 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function active(bool $value = true): self
     {
-        $new = clone $this;
+        $dataBsToggle = $value === true ? 'button' : null;
+
+        $new = $this->dataBsToggle($dataBsToggle);
         $new->active = $value;
 
         return $new;
@@ -234,11 +236,11 @@ final class Button extends \Yiisoft\Widget\Widget
     /**
      * Sets the 'data-bs-toggle' attribute for the button.
      *
-     * @param string $value The value to set for the 'data-bs-toggle' attribute.
+     * @param string|null $value The value to set for the 'data-bs-toggle' attribute.
      *
      * @return self A new instance with the specified 'data-bs-toggle' value.
      */
-    public function dataBsToggle(string $value): self
+    public function dataBsToggle(string|null $value = 'button'): self
     {
         $new = clone $this;
         $new->attributes['data-bs-toggle'] = $value;
@@ -255,7 +257,9 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function disabled(bool $value = true): self
     {
-        $new = clone $this;
+        $dataBsToggle = $value === true ? 'button' : null;
+
+        $new = $this->dataBsToggle($dataBsToggle);
         $new->disabled = $value;
 
         return $new;
@@ -439,7 +443,6 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         if ($this->active) {
             $attributes['aria-pressed'] = 'true';
-            $attributes['data-bs-toggle'] = 'button';
 
             Html::addCssClass($attributes, 'active');
         }
