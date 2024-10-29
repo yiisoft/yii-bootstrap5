@@ -32,7 +32,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             $buttonWidget->render(),
         );
 
-        $buttonWidget =$buttonWidget->active(false);
+        $buttonWidget = $buttonWidget->active(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
