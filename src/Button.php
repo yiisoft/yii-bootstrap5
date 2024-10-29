@@ -408,6 +408,7 @@ final class Button extends \Yiisoft\Widget\Widget
         $classes = $attributes['class'] ?? null;
         $tag = $this->tag ?? ButtonTag::tag()->button('');
 
+        /** @psalm-var non-empty-string|null $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,

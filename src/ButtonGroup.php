@@ -201,6 +201,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
         $attributes['role'] = 'group';
         $classes = $attributes['class'] ?? null;
 
+        /** @psalm-var non-empty-string|null $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
