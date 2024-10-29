@@ -249,6 +249,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         $listAttributes = $this->listAttributes;
         $classes = $listAttributes['class'] ?? null;
 
+        /** @psalm-var non-empty-string|null $listId */
         $listId = match ($this->listId) {
             true => $listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
             '', false => null,
