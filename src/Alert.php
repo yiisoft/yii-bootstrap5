@@ -11,6 +11,7 @@ use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
 use function array_merge;
+use function array_filter;
 use function preg_replace;
 use function strtr;
 
@@ -57,18 +58,49 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-    * Adds a CSS class for the alert component.
-    *
-    * @param string $value The CSS class for the alert component (e.g., 'test-class').
-    *
-    * @return self A new instance with the specified class value added.
-    *
-    * @link https://html.spec.whatwg.org/#classes
-    */
-    public function addClass(string $value): self
+     * Adds one or more CSS classes to the existing classes of the alert component.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to add. Pass null to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $alert->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass[] = $value;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
+
+        return $new;
+    }
+
+    /**
+     * Adds a style class for the alert component.
+     *
+     * @param array|string $value The style class for the alert component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified style class value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
 
         return $new;
     }
@@ -107,6 +139,29 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $new = clone $this;
         $new->body = $value;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the alert component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $alert->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
 
         return $new;
     }
