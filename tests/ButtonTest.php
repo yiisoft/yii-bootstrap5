@@ -228,14 +228,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($button, $button->addAttributes([]));
         $this->assertNotSame($button, $button->addClass(''));
         $this->assertNotSame($button, $button->addCssStyle(''));
+        $this->assertNotSame($button, $button->ariaExpanded());
         $this->assertNotSame($button, $button->attributes([]));
-        $this->assertNotSame($button, $button->toggle(''));
         $this->assertNotSame($button, $button->disabled());
+        $this->assertNotSame($button, $button->disableTextWrapping());
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
         $this->assertNotSame($button, $button->largeSize());
         $this->assertNotSame($button, $button->normalSize());
         $this->assertNotSame($button, $button->smallSize());
+        $this->assertNotSame($button, $button->toggle(''));
         $this->assertNotSame($button, $button->type(ButtonType::LINK));
         $this->assertNotSame($button, $button->url(''));
         $this->assertNotSame($button, $button->variant(ButtonVariant::PRIMARY));

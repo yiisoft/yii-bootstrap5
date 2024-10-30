@@ -274,6 +274,19 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Add `text-nowrap` CSS class to the button component, for preventing text from wrapping.
+     *
+     * @return self A new instance with the text wrapping disabled.
+     */
+    public function disableTextWrapping(): self
+    {
+        $new = clone $this;
+        $new->cssClass['text-nowrap'] = 'text-nowrap';
+
+        return $new;
+    }
+
+    /**
      * Sets the button to be disabled.
      *
      * @param bool $value Whether the button should be disabled.
