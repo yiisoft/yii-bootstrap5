@@ -277,6 +277,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         $toggle = '';
         $classes = $attributes['class'] ?? null;
 
+        /** @psalm-var non-empty-string|null $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
