@@ -44,7 +44,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
     public function testAddCssClass(): void
     {
-        $alert = Alert::widget()->addClass('test-class')->body('Body')->id(false);
+        $alert = Alert::widget()->addClass('test-class', null)->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
