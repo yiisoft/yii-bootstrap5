@@ -30,7 +30,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
                 ->addAttributes(['data-test' => 'test'])
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
@@ -43,7 +43,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
         $buttonGroupWidget = ButtonGroup::widget()
             ->addClass('test-class')
             ->buttons(
-                Button::widget()->id(false)->label('Button B'),
+                Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                 Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
             )
             ->id(false);
@@ -81,7 +81,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->attributes(['class' => 'test', 'data-test' => 'test'])
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)
@@ -101,7 +101,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ButtonGroup::widget()
                 ->attributes(['class' => 'test', 'data-test' => 'test', 'id' => 'test-id'])
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->render(),
@@ -193,7 +193,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             HTML,
             ButtonGroup::widget()
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id('test')
@@ -212,7 +212,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             HTML,
             ButtonGroup::widget()
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id('')
@@ -231,7 +231,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             HTML,
             ButtonGroup::widget()
                 ->buttons(
-                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button B')->variant(ButtonVariant::SECONDARY),
                     Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
                 )
                 ->id(false)

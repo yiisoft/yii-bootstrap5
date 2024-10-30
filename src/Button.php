@@ -27,9 +27,8 @@ use function array_filter;
 final class Button extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn';
-    private bool $active = false;
     private array $attributes = [];
-    private ButtonVariant $buttonVariant = ButtonVariant::SECONDARY;
+    private ButtonVariant|null $buttonVariant = null;
     private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
@@ -55,6 +54,44 @@ final class Button extends \Yiisoft\Widget\Widget
         string|null $theme = null
     ): self {
         return self::widget($constructorArguments, $config, $theme)->label($label)->type(ButtonType::LINK)->url($url);
+    }
+
+    /**
+     * Whether the button should be a reset button for an input form.
+     *
+     * @param string|Stringable $value The content of the button. For default, it is 'Reset'.
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the button as a reset button.
+     */
+    public static function inputReset(
+        string|Stringable $value = 'Reset',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::INPUT_RESET);
+    }
+
+    /**
+     * Whether the button should be a submit button for an input form.
+     *
+     * @param string|Stringable $value The content of the button. For default, it is 'Submit'.
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the button as a submit button.
+     */
+    public static function inputSubmit(
+        string|Stringable $value = 'Submit',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::INPUT_SUBMIT);
     }
 
     /**
@@ -108,10 +145,9 @@ final class Button extends \Yiisoft\Widget\Widget
         $ariaPressed = $value === true ? 'true' : null;
         $dataBsToggle = $value === true ? 'button' : null;
 
-        $new = $this->dataBsToggle($dataBsToggle);
+        $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
         $new->cssClass['active'] = $activeClass;
-        $new->active = $value;
 
         return $new;
     }
@@ -238,21 +274,6 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the 'data-bs-toggle' attribute for the button.
-     *
-     * @param string|null $value The value to set for the 'data-bs-toggle' attribute.
-     *
-     * @return self A new instance with the specified 'data-bs-toggle' value.
-     */
-    public function dataBsToggle(string|null $value = 'button'): self
-    {
-        $new = clone $this;
-        $new->attributes['data-bs-toggle'] = $value;
-
-        return $new;
-    }
-
-    /**
      * Sets the button to be disabled.
      *
      * @param bool $value Whether the button should be disabled.
@@ -263,7 +284,7 @@ final class Button extends \Yiisoft\Widget\Widget
     {
         $dataBsToggle = $value === true ? 'button' : null;
 
-        $new = $this->dataBsToggle($dataBsToggle);
+        $new = $this->toggle($dataBsToggle);
         $new->disabled = $value;
 
         return $new;
@@ -345,6 +366,21 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the 'data-bs-toggle' attribute for the button.
+     *
+     * @param string|null $value The value to set for the 'data-bs-toggle' attribute.
+     *
+     * @return self A new instance with the specified 'data-bs-toggle' value.
+     */
+    public function toggle(string|null $value = 'button'): self
+    {
+        $new = clone $this;
+        $new->attributes['data-bs-toggle'] = $value;
+
+        return $new;
+    }
+
+    /**
      * Sets the button type. The following options are allowed:
      * - `ButtonType::LINK`: A link button.
      * - `ButtonType::RESET`: A reset button.
@@ -355,8 +391,10 @@ final class Button extends \Yiisoft\Widget\Widget
         $new = clone $this;
         $new->tag = match ($value) {
             ButtonType::LINK => A::tag(),
-            ButtonType::RESET => Input::resetButton(),
-            ButtonType::SUBMIT => Input::submitButton(),
+            ButtonType::INPUT_RESET => Input::resetButton(),
+            ButtonType::INPUT_SUBMIT => Input::submitButton(),
+            ButtonType::RESET => ButtonTag::tag()->type('reset'),
+            ButtonType::SUBMIT => ButtonTag::tag()->type('submit'),
         };
 
         return $new;
@@ -421,7 +459,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes]);
+        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant?->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
         $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id);
