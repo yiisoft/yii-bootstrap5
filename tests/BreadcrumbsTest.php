@@ -230,14 +230,6 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testLabelWithEmpty(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('The "label" element is required for each link.');
-
-        Breadcrumbs::widget()->links(new Link())->render();
-    }
-
     public function testLinkAttributes(): void
     {
         Assert::equalsWithoutLE(

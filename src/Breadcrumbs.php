@@ -299,10 +299,6 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      */
     private function renderItem(Link $link): string
     {
-        if ($link->label === '') {
-            throw new RuntimeException('The "label" element is required for each link.');
-        }
-
         $itemsAttributes = $this->itemAttributes;
         $classes = $itemsAttributes['class'] ?? null;
 
