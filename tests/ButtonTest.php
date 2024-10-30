@@ -190,6 +190,50 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#disabled-state
+     */
+    public function testDisableState(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" disabled>Primary button</button>
+            HTML,
+            Button::widget()->disabled()->id(false)->label('Primary button')->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" disabled>Button</button>
+            HTML,
+            Button::widget()->disabled()->id(false)->label('Button')->variant(ButtonVariant::SECONDARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-outline-primary" disabled>Primary button</button>
+            HTML,
+            Button::widget()
+                ->disabled()
+                ->id(false)
+                ->label('Primary button')
+                ->variant(ButtonVariant::OUTLINE_PRIMARY)
+                ->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-outline-secondary" disabled>Button</button>
+            HTML,
+            Button::widget()
+                ->disabled()
+                ->id(false)
+                ->label('Button')
+                ->variant(ButtonVariant::OUTLINE_SECONDARY)
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(
@@ -467,7 +511,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <button type="button" class="btn" disabled data-bs-toggle="button">Disabled toggle button</button>
             HTML,
-            Button::widget()->disabled()->id(false)->label('Disabled toggle button')->render(),
+            Button::widget()->disabled()->id(false)->label('Disabled toggle button')->toggle()->render(),
         );
     }
 
@@ -504,6 +548,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
                 ->id(false)
                 ->label('Disabled toggle button')
                 ->variant(ButtonVariant::PRIMARY)
+                ->toggle()
                 ->render(),
         );
     }

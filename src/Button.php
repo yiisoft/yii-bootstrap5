@@ -295,9 +295,7 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function disabled(bool $value = true): self
     {
-        $dataBsToggle = $value === true ? 'button' : null;
-
-        $new = $this->toggle($dataBsToggle);
+        $new = clone $this;
         $new->disabled = $value;
 
         return $new;
@@ -501,6 +499,7 @@ final class Button extends \Yiisoft\Widget\Widget
             $attributes['disabled'] = true;
 
             if ($this->tag instanceof A) {
+                $attributes['data-bs-toggle'] = 'button';
                 $attributes['aria-disabled'] = 'true';
 
                 unset($attributes['disabled']);
