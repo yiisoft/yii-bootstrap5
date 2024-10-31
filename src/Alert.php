@@ -63,7 +63,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass null to skip adding a class.
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -86,16 +86,16 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a style class for the alert component.
+     * Adds a CSS style for the alert component.
      *
-     * @param array|string $value The style class for the alert component. If an array, the values will be separated by
+     * @param array|string $value The CSS style for the alert component. If an array, the values will be separated by
      * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
      * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
      * 'color: red; font-weight: bold;'.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
-     * @return self A new instance with the specified style class value added.
+     * @return self A new instance with the specified CSS style value added.
      */
     public function addCssStyle(array|string $value, bool $overwrite = true): self
     {
@@ -149,7 +149,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
