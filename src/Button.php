@@ -57,16 +57,16 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Whether the button should be a reset button for an input form.
+     * Get an instance of a reset button input.
      *
-     * @param string|Stringable $value The content of the button. For default, it is 'Reset'.
+     * @param string|Stringable $value The content of the button. By default, it's "Reset".
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
      * @param string|null $theme The theme.
      *
-     * @return self A new instance with the button as a reset button.
+     * @return self A new instance with the input of "reset" type.
      */
-    public static function inputReset(
+    public static function resetInput(
         string|Stringable $value = 'Reset',
         array $constructorArguments = [],
         array $config = [],
@@ -76,16 +76,16 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Whether the button should be a submit button for an input form.
+     * Get an instance of a submit button input.
      *
-     * @param string|Stringable $value The content of the button. For default, it is 'Submit'.
+     * @param string|Stringable $value The content of the button. By default, it's "Submit".
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
      * @param string|null $theme The theme.
      *
-     * @return self A new instance with the button as a submit button.
+     * @return self A new instance of an input with "submit" type.
      */
-    public static function inputSubmit(
+    public static function submitInput(
         string|Stringable $value = 'Submit',
         array $constructorArguments = [],
         array $config = [],
@@ -274,7 +274,7 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Add `text-nowrap` CSS class to the button component, for preventing text from wrapping.
+     * Add `text-nowrap` CSS class to the button component to prevent text from wrapping.
      *
      * @return self A new instance with the text wrapping disabled.
      */
@@ -377,11 +377,14 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the 'data-bs-toggle' attribute for the button.
+     * Sets the Bootstrap toggle behavior by the `data-bs-toggle` attribute, enabling interactive functionality such as
+     * `button`, `dropdown`, `modal`, and `tooltip`.
      *
-     * @param string|null $value The value to set for the 'data-bs-toggle' attribute.
+     * @param string|null $value The Bootstrap toggle type to be set. Common values include: `button`, `dropdown`,
+     * `modal`, `tooltip`, `popover`, `collapse`, or `null` to remove.
+     * Defaults to `button`.
      *
-     * @return self A new instance with the specified 'data-bs-toggle' value.
+     * @return self A new instance with the specified Bootstrap toggle behavior.
      */
     public function toggle(string|null $value = 'button'): self
     {

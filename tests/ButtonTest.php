@@ -457,14 +457,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="reset" class="btn btn-primary" value="Reset">
             HTML,
-            Button::inputReset()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+            Button::resetInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
             <input type="reset" class="btn btn-primary" value="Clear">
             HTML,
-            Button::inputReset('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+            Button::resetInput('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
     }
 
@@ -477,14 +477,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <input type="submit" class="btn btn-primary" value="Submit">
             HTML,
-            Button::inputSubmit()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+            Button::submitInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
             <input type="submit" class="btn btn-primary" value="Send">
             HTML,
-            Button::inputSubmit('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+            Button::submitInput('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
     }
 
