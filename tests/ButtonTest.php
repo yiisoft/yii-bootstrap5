@@ -704,12 +704,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#examples
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
      */
-    public function testVariant(ButtonVariant $buttonVariant, string $expected): void
+    public function testVariant(ButtonVariant|null $buttonVariant, string $expected): void
     {
+        $variant = $buttonVariant->value ?? 'button';
+
         Assert::equalsWithoutLE(
             $expected,
             Button::widget()
-                ->label('A simple ' . $buttonVariant->value . ' check it out!')
+                ->label('A simple ' . $variant . ' check it out!')
                 ->id(false)
                 ->variant($buttonVariant)
                 ->render(),

@@ -440,12 +440,22 @@ final class Button extends \Yiisoft\Widget\Widget
      * - `ButtonVariant::INFO`: Info button.
      * - `ButtonVariant::LIGHT`: Light button.
      * - `ButtonVariant::DARK`: Dark button.
+     * - `ButtonVariant::LINK`: Link button.
+     * - `ButtonVariant::OUTLINE_PRIMARY`: Primary outline button.
+     * - `ButtonVariant::OUTLINE_SECONDARY`: Secondary outline button.
+     * - `ButtonVariant::OUTLINE_SUCCESS`: Success outline button.
+     * - `ButtonVariant::OUTLINE_DANGER`: Danger outline button.
+     * - `ButtonVariant::OUTLINE_WARNING`: Warning outline button.
+     * - `ButtonVariant::OUTLINE_INFO`: Info outline button.
+     * - `ButtonVariant::OUTLINE_LIGHT`: Light outline button.
+     * - `ButtonVariant::OUTLINE_DARK`: Dark outline button.
+     * - `null`: No variant set.
      *
-     * @param ButtonVariant $value The button variant.
+     * @param ButtonVariant $value The button variant. If `null`, the variant will not be set.
      *
      * @return self A new instance with the specified button variant.
      */
-    public function variant(ButtonVariant $value): self
+    public function variant(ButtonVariant|null $value): self
     {
         $new = clone $this;
         $new->buttonVariant = $value;

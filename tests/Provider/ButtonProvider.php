@@ -113,6 +113,12 @@ final class ButtonProvider
                 <button type="button" class="btn btn-outline-dark">A simple btn-outline-dark check it out!</button>
                 HTML,
             ],
+            [
+                null,
+                <<<HTML
+                <button type="button" class="btn">A simple button check it out!</button>
+                HTML,
+            ],
         ];
     }
 }
