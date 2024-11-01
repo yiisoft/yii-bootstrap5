@@ -72,7 +72,7 @@ final class Button extends \Yiisoft\Widget\Widget
         array $config = [],
         string|null $theme = null
     ): self {
-        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::INPUT_RESET);
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::RESET_INPUT);
     }
 
     /**
@@ -91,7 +91,7 @@ final class Button extends \Yiisoft\Widget\Widget
         array $config = [],
         string|null $theme = null
     ): self {
-        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::INPUT_SUBMIT);
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::SUBMIT_INPUT);
     }
 
     /**
@@ -398,17 +398,19 @@ final class Button extends \Yiisoft\Widget\Widget
      * Sets the button type. The following options are allowed:
      * - `ButtonType::LINK`: A link button.
      * - `ButtonType::RESET`: A reset button.
+     * - `ButtonType::RESET_INPUT`: A reset button input.
      * - `ButtonType::SUBMIT`: A submit button.
+     * - `ButtonType::SUBMIT_INPUT`: A submit button input.
      */
     public function type(ButtonType $value): self
     {
         $new = clone $this;
         $new->tag = match ($value) {
             ButtonType::LINK => A::tag(),
-            ButtonType::INPUT_RESET => Input::resetButton(),
-            ButtonType::INPUT_SUBMIT => Input::submitButton(),
-            ButtonType::RESET => ButtonTag::tag()->type('reset'),
-            ButtonType::SUBMIT => ButtonTag::tag()->type('submit'),
+            ButtonType::RESET => ButtonTag::reset(''),
+            ButtonType::RESET_INPUT => Input::resetButton(),
+            ButtonType::SUBMIT => ButtonTag::submit(''),
+            ButtonType::SUBMIT_INPUT => Input::submitButton(),
         };
 
         return $new;
@@ -512,7 +514,6 @@ final class Button extends \Yiisoft\Widget\Widget
             $attributes['disabled'] = true;
 
             if ($this->tag instanceof A) {
-                $attributes['data-bs-toggle'] = 'button';
                 $attributes['aria-disabled'] = 'true';
 
                 unset($attributes['disabled']);

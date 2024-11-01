@@ -576,7 +576,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <a class="btn disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
             HTML,
-            Button::link('Disabled toggle link', '#')->disabled()->id(false)->render(),
+            Button::link('Disabled toggle link', '#')->disabled()->id(false)->toggle()->render(),
         );
     }
 
@@ -603,7 +603,12 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <a class="btn btn-primary disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
             HTML,
-            Button::link('Disabled toggle link', '#')->disabled()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+            Button::link('Disabled toggle link', '#')
+                ->disabled()
+                ->id(false)
+                ->variant(ButtonVariant::PRIMARY)
+                ->toggle()
+                ->render(),
         );
     }
 
@@ -674,7 +679,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             Button::widget()
                 ->id(false)
                 ->label('Clear')
-                ->type(ButtonType::INPUT_RESET)
+                ->type(ButtonType::RESET_INPUT)
                 ->variant(ButtonVariant::PRIMARY)
                 ->render(),
         );
@@ -692,7 +697,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             Button::widget()
                 ->id(false)
                 ->label('Send')
-                ->type(ButtonType::INPUT_SUBMIT)
+                ->type(ButtonType::SUBMIT_INPUT)
                 ->variant(ButtonVariant::PRIMARY)
                 ->render(),
         );
