@@ -44,7 +44,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
     public function testAddCssClass(): void
     {
-        $alert = Alert::widget()->addClass('test-class')->body('Body')->id(false);
+        $alert = Alert::widget()->addClass('test-class', null)->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -57,11 +57,57 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-secondary test-class test-class-1" role="alert">
+            <div class="alert alert-secondary test-class test-class-1 test-class-2" role="alert">
             Body
             </div>
             HTML,
-            $alert->addClass('test-class-1')->render(),
+            $alert->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $alert = Alert::widget()->addCssStyle('color: red;')->body('Body')->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" style="color: red;" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" style="color: red; font-weight: bold;" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $alert = Alert::widget()->addCssStyle('color: red;')->body('Body')->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" style="color: red;" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" style="color: red;" role="alert">
+            Body
+            </div>
+            HTML,
+            $alert->addCssStyle('color: blue;', false)->render(),
         );
     }
 
@@ -86,6 +132,23 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Alert::widget()->body('<body>')->id(false)->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary custom-class another-class" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()
+                ->addClass('test-class')
+                ->class('custom-class', 'another-class')
+                ->body('Body')
+                ->id(false)
+                ->render(),
         );
     }
 
