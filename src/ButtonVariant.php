@@ -19,6 +19,7 @@ enum ButtonVariant: string
     case WARNING = 'btn-warning';
     case INFO = 'btn-info';
     case LIGHT = 'btn-light';
+    case LINK = 'btn-link';
     case DARK = 'btn-dark';
     case OUTLINE_PRIMARY = 'btn-outline-primary';
     case OUTLINE_SECONDARY = 'btn-outline-secondary';

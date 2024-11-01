@@ -54,6 +54,12 @@ final class ButtonProvider
                 HTML,
             ],
             [
+                ButtonVariant::LINK,
+                <<<HTML
+                <button type="button" class="btn btn-link">A simple btn-link check it out!</button>
+                HTML,
+            ],
+            [
                 ButtonVariant::DARK,
                 <<<HTML
                 <button type="button" class="btn btn-dark">A simple btn-dark check it out!</button>
@@ -105,6 +111,12 @@ final class ButtonProvider
                 ButtonVariant::OUTLINE_DARK,
                 <<<HTML
                 <button type="button" class="btn btn-outline-dark">A simple btn-outline-dark check it out!</button>
+                HTML,
+            ],
+            [
+                null,
+                <<<HTML
+                <button type="button" class="btn">A simple button check it out!</button>
                 HTML,
             ],
         ];

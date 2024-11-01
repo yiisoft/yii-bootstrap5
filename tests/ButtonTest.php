@@ -18,30 +18,6 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class ButtonTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
-     */
-    public function testActive(): void
-    {
-        $buttonWidget = Button::widget()->active()->label('Active toggle button')->id(false);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
-            HTML,
-            $buttonWidget->render(),
-        );
-
-        $buttonWidget = $buttonWidget->active(false);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" class="btn btn-secondary">Active toggle button</button>
-            HTML,
-            $buttonWidget->render(),
-        );
-    }
-
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -175,24 +151,24 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#block-buttons
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#block-buttons
      */
     public function testBlock(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary">Block button</button>
-            <button type="button" class="btn btn-secondary">Block button</button>
+            <button type="button" class="btn btn-primary">Button</button>
+            <button type="button" class="btn btn-primary">Button</button>
             </div>
             HTML,
             Div::tag()
                 ->class('d-grid gap-2')
                 ->content(
                     PHP_EOL,
-                    Button::widget()->label('Block button')->id(false)->variant(ButtonVariant::PRIMARY),
+                    Button::widget()->label('Button')->id(false)->variant(ButtonVariant::PRIMARY),
                     PHP_EOL,
-                    Button::widget()->label('Block button')->id(false),
+                    Button::widget()->label('Button')->id(false)->variant(ButtonVariant::PRIMARY),
                     PHP_EOL,
                 )
                 ->render(),
@@ -215,37 +191,46 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#disabled-state
      */
-    public function testDataBsToggle(): void
+    public function testDisableState(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" data-bs-toggle="button">Toggle button</button>
+            <button type="button" class="btn btn-primary" disabled>Primary button</button>
             HTML,
-            Button::widget()->dataBsToggle('button')->label('Toggle button')->id(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#disabled-state
-     */
-    public function testDisabled(): void
-    {
-        $buttonWidget = Button::widget()->disabled()->label('Label')->id(false);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" class="btn btn-secondary" disabled data-bs-toggle="button">Label</button>
-            HTML,
-            $buttonWidget->render(),
+            Button::widget()->disabled()->id(false)->label('Primary button')->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary">Label</button>
+            <button type="button" class="btn btn-secondary" disabled>Button</button>
             HTML,
-            $buttonWidget->disabled(false)->render(),
+            Button::widget()->disabled()->id(false)->label('Button')->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-outline-primary" disabled>Primary button</button>
+            HTML,
+            Button::widget()
+                ->disabled()
+                ->id(false)
+                ->label('Primary button')
+                ->variant(ButtonVariant::OUTLINE_PRIMARY)
+                ->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-outline-secondary" disabled>Button</button>
+            HTML,
+            Button::widget()
+                ->disabled()
+                ->id(false)
+                ->label('Button')
+                ->variant(ButtonVariant::OUTLINE_SECONDARY)
+                ->render(),
         );
     }
 
@@ -287,14 +272,16 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($button, $button->addAttributes([]));
         $this->assertNotSame($button, $button->addClass(''));
         $this->assertNotSame($button, $button->addCssStyle(''));
+        $this->assertNotSame($button, $button->ariaExpanded());
         $this->assertNotSame($button, $button->attributes([]));
-        $this->assertNotSame($button, $button->dataBsToggle(''));
         $this->assertNotSame($button, $button->disabled());
+        $this->assertNotSame($button, $button->disableTextWrapping());
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
         $this->assertNotSame($button, $button->largeSize());
         $this->assertNotSame($button, $button->normalSize());
         $this->assertNotSame($button, $button->smallSize());
+        $this->assertNotSame($button, $button->toggle(''));
         $this->assertNotSame($button, $button->type(ButtonType::LINK));
         $this->assertNotSame($button, $button->url(''));
         $this->assertNotSame($button, $button->variant(ButtonVariant::PRIMARY));
@@ -331,268 +318,405 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#sizes
      */
     public function testLargeSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary btn-lg">Label</button>
+            <button type="button" class="btn btn-primary btn-lg">Large button</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->largeSize()->render(),
+            Button::widget()->id(false)->label('Large button')->largeSize()->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary btn-lg">Large button</button>
+            HTML,
+            Button::widget()->id(false)->label('Large button')->largeSize()->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
-     */
-    public function testLink(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" role="button">Label</a>
-            HTML,
-            Button::link('Label')->id(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
-     */
-    public function testLinkWithActive(): void
-    {
-        $buttonWidget = Button::link('Active toggle link')->active()->id(false);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
-            HTML,
-            $buttonWidget->render(),
-        );
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" role="button">Active toggle link</a>
-            HTML,
-            $buttonWidget->active(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
-     */
-    public function testLinkWithDataBsToggle(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" data-bs-toggle="button" role="button">Toggle link</a>
-            HTML,
-            Button::link('Toggle link')->dataBsToggle()->id(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#disabled-state
-     */
-    public function testLinkWithDisabled(): void
-    {
-        $buttonWidget = Button::link('Label')->disabled()->id(false);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary disabled" data-bs-toggle="button" aria-disabled="true" role="button">Label</a>
-            HTML,
-            $buttonWidget->render(),
-        );
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" role="button">Label</a>
-            HTML,
-            $buttonWidget->disabled(false)->render(),
-        );
-    }
-
-    public function testLinkWithUrl(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <a class="btn btn-secondary" href="/test" role="button">Label</a>
-            HTML,
-            Button::link('Label', '/test')->id(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#sizes
      */
     public function testNormalSize(): void
     {
-        $button = Button::widget()->label('Label')->id(false)->largeSize();
-
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
-            $button->normalSize()->render(),
+            Button::widget()->label('Label')->id(false)->largeSize()->normalSize()->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#base-class
      */
-    public function testReset(): void
+    public function testRender(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="reset" class="btn btn-secondary" value="Reset">
+            <button type="button" class="btn">Base class</button>
             HTML,
-            Button::reset()->id(false)->render(),
+            Button::widget()->label('Base class')->id(false)->variant(null)->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
-     */
-    public function testResetWithLabel(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <input type="reset" class="btn btn-secondary" value="Clear">
-            HTML,
-            Button::reset('Clear')->id(false)->render(),
-        );
-    }
-
-    /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#sizes
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#sizes
      */
     public function testSmallSize(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary btn-sm">Label</button>
+            <button type="button" class="btn btn-primary btn-sm">Small button</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->smallSize()->render(),
+            Button::widget()->id(false)->label('Small button')->smallSize()->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary btn-sm">Small button</button>
+            HTML,
+            Button::widget()
+                ->id(false)
+                ->label('Small button')
+                ->smallSize()
+                ->variant(ButtonVariant::SECONDARY)
+                ->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
      */
-    public function testSubmit(): void
+    public function testTagButtonReset(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="submit" class="btn btn-secondary" value="Submit">
+            <button type="reset" class="btn btn-primary">Reset</button>
             HTML,
-            Button::submit()->id(false)->render(),
+            Button::reset()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="reset" class="btn btn-primary">Clear</button>
+            HTML,
+            Button::reset('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#button-tags
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
      */
-    public function testSubmitWithLabel(): void
+    public function testTagButtonSubmit(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="submit" class="btn btn-secondary" value="Send">
+            <button type="submit" class="btn btn-primary">Submit</button>
             HTML,
-            Button::submit('Send')->id(false)->render(),
+            Button::submit()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="submit" class="btn btn-primary">Send</button>
+            HTML,
+            Button::submit('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
     }
 
     /**
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#toggle-states
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTagLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-primary" href="#" role="button">Label</a>
+            HTML,
+            Button::link('Label', '#')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-primary" href="/test" role="button">Label</a>
+            HTML,
+            Button::link('Label', '/test')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTagInputReset(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="reset" class="btn btn-primary" value="Reset">
+            HTML,
+            Button::resetInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="reset" class="btn btn-primary" value="Clear">
+            HTML,
+            Button::resetInput('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTagInputSubmit(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="submit" class="btn btn-primary" value="Submit">
+            HTML,
+            Button::submitInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <input type="submit" class="btn btn-primary" value="Send">
+            HTML,
+            Button::submitInput('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#toggle-states
      */
     public function testToggleState(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
+            <button type="button" class="btn btn-secondary" data-bs-toggle="button">Toggle button</button>
+            HTML,
+            Button::widget()->toggle()->id(false)->label('Toggle button')->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
+            HTML,
+            Button::widget()->active()->label('Active toggle button')->id(false)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" disabled data-bs-toggle="button">Disabled toggle button</button>
+            HTML,
+            Button::widget()->disabled()->id(false)->label('Disabled toggle button')->toggle()->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#toggle-states
+     */
+    public function testToggleStateWithVariant(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
             <button type="button" class="btn btn-primary" data-bs-toggle="button">Toggle button</button>
             HTML,
+            Button::widget()->toggle()->id(false)->label('Toggle button')->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
+            HTML,
             Button::widget()
-                ->dataBsToggle()
-                ->label('Toggle button')
+                ->active()
+                ->label('Active toggle button')
                 ->id(false)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" disabled data-bs-toggle="button">Disabled toggle button</button>
+            HTML,
+            Button::widget()
+                ->disabled()
+                ->id(false)
+                ->label('Disabled toggle button')
+                ->variant(ButtonVariant::PRIMARY)
+                ->toggle()
+                ->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#toggle-states
+     */
+    public function testToggleStateLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary" href="#" data-bs-toggle="button" role="button">Toggle link</a>
+            HTML,
+            Button::link('Toggle link', '#')->id(false)->toggle()->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary active" href="#" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
+            HTML,
+            Button::link('Active toggle link', '#')->active()->id(false)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-secondary disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
+            HTML,
+            Button::link('Disabled toggle link', '#')->disabled()->id(false)->toggle()->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#toggle-states
+     */
+    public function testToggleStateLinkAndVariant(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-primary" href="#" data-bs-toggle="button" role="button">Toggle link</a>
+            HTML,
+            Button::link('Toggle link', '#')->id(false)->toggle()->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-primary active" href="#" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
+            HTML,
+            Button::link('Active toggle link', '#')->active()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-primary disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
+            HTML,
+            Button::link('Disabled toggle link', '#')
+                ->disabled()
+                ->id(false)
+                ->variant(ButtonVariant::PRIMARY)
+                ->toggle()
+                ->render(),
+        );
+    }
+
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTypeButtonReset(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="reset" class="btn btn-primary">Clear</button>
+            HTML,
+            Button::widget()
+                ->id(false)
+                ->label('Clear')
+                ->type(ButtonType::RESET)
                 ->variant(ButtonVariant::PRIMARY)
                 ->render(),
         );
     }
 
-    public function testTypeWithLink(): void
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTypeButtonSubmit(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <a class="btn btn-secondary" role="button">Label</a>
+            <button type="submit" class="btn btn-primary">Send</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->type(ButtonType::LINK)->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Send')
+                ->type(ButtonType::SUBMIT)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
     }
 
-    public function testTypeWithLinkAndUrl(): void
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTypeLink(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <a class="btn btn-secondary" href="/test" role="button">Label</a>
+            <a class="btn btn-primary" href="/test" role="button">Label</a>
             HTML,
-            Button::widget()->label('Label')->id(false)->type(ButtonType::LINK)->url('/test')->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Label')
+                ->type(ButtonType::LINK)
+                ->url('/test')
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
     }
 
-    public function testTypeWithReset(): void
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTypeInputReset(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="reset" class="btn btn-secondary" value="Reset">
+            <input type="reset" class="btn btn-primary" value="Clear">
             HTML,
-            Button::widget()->id(false)->label('Reset')->type(ButtonType::RESET)->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Clear')
+                ->type(ButtonType::RESET_INPUT)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
     }
 
-    public function testTypeWithResetAndLabel(): void
+    /**
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#button-tags
+     */
+    public function testTypeInputSubmit(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <input type="reset" class="btn btn-secondary" value="Clear">
+            <input type="submit" class="btn btn-primary" value="Send">
             HTML,
-            Button::widget()->id(false)->type(ButtonType::RESET)->label('Clear')->render(),
-        );
-    }
-
-    public function testTypeWithSubmit(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <input type="submit" class="btn btn-secondary" value="Submit">
-            HTML,
-            Button::widget()->id(false)->label('Submit')->type(ButtonType::SUBMIT)->render(),
-        );
-    }
-
-    public function testTypeWithSubmitAndLabel(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <input type="submit" class="btn btn-secondary" value="Send">
-            HTML,
-            Button::widget()->id(false)->label('Send')->type(ButtonType::SUBMIT)->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Send')
+                ->type(ButtonType::SUBMIT_INPUT)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
     }
 
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider::variant
      *
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#examples
-     * @see https://getbootstrap.com/docs/5.2/components/buttons/#outline-buttons
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#examples
+     * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
      */
-    public function testVariant(ButtonVariant $buttonVariant, string $expected): void
+    public function testVariant(ButtonVariant|null $buttonVariant, string $expected): void
     {
+        $variant = $buttonVariant->value ?? 'button';
+
         Assert::equalsWithoutLE(
             $expected,
             Button::widget()
-                ->label('A simple ' . $buttonVariant->value . ' check it out!')
+                ->label('A simple ' . $variant . ' check it out!')
                 ->id(false)
                 ->variant($buttonVariant)
                 ->render(),

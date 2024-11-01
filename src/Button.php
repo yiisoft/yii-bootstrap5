@@ -27,9 +27,8 @@ use function array_filter;
 final class Button extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn';
-    private bool $active = false;
     private array $attributes = [];
-    private ButtonVariant $buttonVariant = ButtonVariant::SECONDARY;
+    private ButtonVariant|null $buttonVariant = ButtonVariant::SECONDARY;
     private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
@@ -55,6 +54,44 @@ final class Button extends \Yiisoft\Widget\Widget
         string|null $theme = null
     ): self {
         return self::widget($constructorArguments, $config, $theme)->label($label)->type(ButtonType::LINK)->url($url);
+    }
+
+    /**
+     * Get an instance of a reset button input.
+     *
+     * @param string|Stringable $value The content of the button. By default, it's "Reset".
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance with the input of "reset" type.
+     */
+    public static function resetInput(
+        string|Stringable $value = 'Reset',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::RESET_INPUT);
+    }
+
+    /**
+     * Get an instance of a submit button input.
+     *
+     * @param string|Stringable $value The content of the button. By default, it's "Submit".
+     * @param array $constructorArguments The constructor arguments.
+     * @param array $config The configuration.
+     * @param string|null $theme The theme.
+     *
+     * @return self A new instance of an input with "submit" type.
+     */
+    public static function submitInput(
+        string|Stringable $value = 'Submit',
+        array $constructorArguments = [],
+        array $config = [],
+        string|null $theme = null
+    ): self {
+        return self::widget($constructorArguments, $config, $theme)->label($value)->type(ButtonType::SUBMIT_INPUT);
     }
 
     /**
@@ -108,10 +145,9 @@ final class Button extends \Yiisoft\Widget\Widget
         $ariaPressed = $value === true ? 'true' : null;
         $dataBsToggle = $value === true ? 'button' : null;
 
-        $new = $this->dataBsToggle($dataBsToggle);
+        $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
         $new->cssClass['active'] = $activeClass;
-        $new->active = $value;
 
         return $new;
     }
@@ -137,7 +173,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass null to skip adding a class.
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -160,16 +196,16 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a style class for the button component.
+     * Adds a CSS style for the button component.
      *
-     * @param array|string $value The style class for the button component. If an array, the values will be separated by
+     * @param array|string $value The CSS style for the button component. If an array, the values will be separated by
      * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
      * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
      * 'color: red; font-weight: bold;'.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
-     * @return self A new instance with the specified style class value added.
+     * @return self A new instance with the specified CSS style value added.
      */
     public function addCssStyle(array|string $value, bool $overwrite = true): self
     {
@@ -220,7 +256,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass null to skip setting a class.
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -238,16 +274,14 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the 'data-bs-toggle' attribute for the button.
+     * Add `text-nowrap` CSS class to the button component to prevent text from wrapping.
      *
-     * @param string|null $value The value to set for the 'data-bs-toggle' attribute.
-     *
-     * @return self A new instance with the specified 'data-bs-toggle' value.
+     * @return self A new instance with the text wrapping disabled.
      */
-    public function dataBsToggle(string|null $value = 'button'): self
+    public function disableTextWrapping(): self
     {
         $new = clone $this;
-        $new->attributes['data-bs-toggle'] = $value;
+        $new->cssClass['text-nowrap'] = 'text-nowrap';
 
         return $new;
     }
@@ -261,9 +295,7 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function disabled(bool $value = true): self
     {
-        $dataBsToggle = $value === true ? 'button' : null;
-
-        $new = $this->dataBsToggle($dataBsToggle);
+        $new = clone $this;
         $new->disabled = $value;
 
         return $new;
@@ -345,18 +377,40 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the Bootstrap toggle behavior by the `data-bs-toggle` attribute, enabling interactive functionality such as
+     * `button`, `dropdown`, `modal`, and `tooltip`.
+     *
+     * @param string|null $value The Bootstrap toggle type to be set. Common values include: `button`, `dropdown`,
+     * `modal`, `tooltip`, `popover`, `collapse`, or `null` to remove.
+     * Defaults to `button`.
+     *
+     * @return self A new instance with the specified Bootstrap toggle behavior.
+     */
+    public function toggle(string|null $value = 'button'): self
+    {
+        $new = clone $this;
+        $new->attributes['data-bs-toggle'] = $value;
+
+        return $new;
+    }
+
+    /**
      * Sets the button type. The following options are allowed:
      * - `ButtonType::LINK`: A link button.
      * - `ButtonType::RESET`: A reset button.
+     * - `ButtonType::RESET_INPUT`: A reset button input.
      * - `ButtonType::SUBMIT`: A submit button.
+     * - `ButtonType::SUBMIT_INPUT`: A submit button input.
      */
     public function type(ButtonType $value): self
     {
         $new = clone $this;
         $new->tag = match ($value) {
             ButtonType::LINK => A::tag(),
-            ButtonType::RESET => Input::resetButton(),
-            ButtonType::SUBMIT => Input::submitButton(),
+            ButtonType::RESET => ButtonTag::reset(''),
+            ButtonType::RESET_INPUT => Input::resetButton(),
+            ButtonType::SUBMIT => ButtonTag::submit(''),
+            ButtonType::SUBMIT_INPUT => Input::submitButton(),
         };
 
         return $new;
@@ -388,12 +442,22 @@ final class Button extends \Yiisoft\Widget\Widget
      * - `ButtonVariant::INFO`: Info button.
      * - `ButtonVariant::LIGHT`: Light button.
      * - `ButtonVariant::DARK`: Dark button.
+     * - `ButtonVariant::LINK`: Link button.
+     * - `ButtonVariant::OUTLINE_PRIMARY`: Primary outline button.
+     * - `ButtonVariant::OUTLINE_SECONDARY`: Secondary outline button.
+     * - `ButtonVariant::OUTLINE_SUCCESS`: Success outline button.
+     * - `ButtonVariant::OUTLINE_DANGER`: Danger outline button.
+     * - `ButtonVariant::OUTLINE_WARNING`: Warning outline button.
+     * - `ButtonVariant::OUTLINE_INFO`: Info outline button.
+     * - `ButtonVariant::OUTLINE_LIGHT`: Light outline button.
+     * - `ButtonVariant::OUTLINE_DARK`: Dark outline button.
+     * - `null`: No variant set.
      *
-     * @param ButtonVariant $value The button variant.
+     * @param ButtonVariant $value The button variant. If `null`, the variant will not be set.
      *
      * @return self A new instance with the specified button variant.
      */
-    public function variant(ButtonVariant $value): self
+    public function variant(ButtonVariant|null $value): self
     {
         $new = clone $this;
         $new->buttonVariant = $value;
@@ -421,7 +485,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant->value, $classes]);
+        Html::addCssClass($attributes, [self::NAME, $this->buttonVariant?->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
         $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id);
