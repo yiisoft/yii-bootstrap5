@@ -314,9 +314,9 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         ->addClass('me-2')
                         ->ariaLabel('Second group')
                         ->buttons(
-                            Button::widget()->id(false)->label('5')->variant(ButtonVariant::SECONDARY),
-                            Button::widget()->id(false)->label('6')->variant(ButtonVariant::SECONDARY),
-                            Button::widget()->id(false)->label('7')->variant(ButtonVariant::SECONDARY),
+                            Button::widget()->id(false)->label('5'),
+                            Button::widget()->id(false)->label('6'),
+                            Button::widget()->id(false)->label('7'),
                         )
                         ->id(false),
                     ButtonGroup::widget()

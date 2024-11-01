@@ -28,7 +28,7 @@ final class Button extends \Yiisoft\Widget\Widget
 {
     private const NAME = 'btn';
     private array $attributes = [];
-    private ButtonVariant|null $buttonVariant = null;
+    private ButtonVariant|null $buttonVariant = ButtonVariant::SECONDARY;
     private array $cssClass = [];
     private bool $disabled = false;
     private bool|string $id = true;
