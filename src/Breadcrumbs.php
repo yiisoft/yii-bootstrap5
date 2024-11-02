@@ -11,6 +11,7 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
+use function array_filter;
 use function array_merge;
 use function implode;
 
@@ -37,6 +38,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private const LIST_NAME = 'breadcrumb';
     private const ITEM_NAME = 'breadcrumb-item';
     private array $attributes = [];
+    private array $cssClass = [];
     private string $itemActiveClass = 'active';
     private array $itemAttributes = [];
     private array $linkAttributes = [];
@@ -56,6 +58,34 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * Adds one or more CSS classes to the existing classes of the breadcrumb component.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $breadcrumb->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
 
         return $new;
     }
@@ -90,6 +120,29 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the breadcrumb component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $breadcrumb->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
 
         return $new;
     }
@@ -241,7 +294,12 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        return Nav::tag()->addAttributes($attributes)->content("\n", $list, "\n")->encode(false)->render();
+        return Nav::tag()
+            ->addAttributes($attributes)
+            ->addClass(...$this->cssClass)
+            ->content("\n", $list, "\n")
+            ->encode(false)
+            ->render();
     }
 
     private function renderList(): string
