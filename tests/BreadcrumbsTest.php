@@ -65,7 +65,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             ->links(
                 new Link('Home', '/'),
                 (new Link('Library', '#'))->active(),
-                (new Link('Data', '#')),
+                new Link('Data', '#'),
             )
             ->listId(false);
 
