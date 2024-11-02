@@ -312,6 +312,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->addClass(''));
         $this->assertNotSame($alert, $alert->attributes([]));
         $this->assertNotSame($alert, $alert->body('', true));
+        $this->assertNotSame($alert, $alert->class(''));
         $this->assertNotSame($alert, $alert->closeButtonAttributes([]));
         $this->assertNotSame($alert, $alert->dismissable(false));
         $this->assertNotSame($alert, $alert->fade(false));
