@@ -269,6 +269,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($buttonGroup, $buttonGroup->ariaLabel(''));
         $this->assertNotSame($buttonGroup, $buttonGroup->attributes([]));
         $this->assertNotSame($buttonGroup, $buttonGroup->buttons(Button::widget()));
+        $this->assertNotSame($buttonGroup, $buttonGroup->class(''));
         $this->assertNotSame($buttonGroup, $buttonGroup->id(false));
         $this->assertNotSame($buttonGroup, $buttonGroup->largeSize());
         $this->assertNotSame($buttonGroup, $buttonGroup->normalSize());
