@@ -41,7 +41,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testAddClass(): void
     {
         $buttonGroupWidget = ButtonGroup::widget()
-            ->addClass('test-class')
+            ->addClass('test-class', null)
             ->buttons(
                 Button::widget()->id(false)->label('Button B'),
                 Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
@@ -60,12 +60,12 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="btn-group test-class test-class-1" role="group">
+            <div class="btn-group test-class test-class-1 test-class-2" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
             </div>
             HTML,
-            $buttonGroupWidget->addClass('test-class-1')->render(),
+            $buttonGroupWidget->addClass('test-class-1', 'test-class-2')->render(),
         );
     }
 
@@ -178,6 +178,27 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
                         ->sideLabel('Radio 3', ['class' => 'btn btn-outline-primary']),
                 )
                 ->id('test')
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group custom-class another-class" role="group">
+            <button type="button" class="btn btn-secondary">Button B</button>
+            <button type="button" class="btn btn-primary">Button A</button>
+            </div>
+            HTML,
+            ButtonGroup::widget()
+                ->addClass('test-class')
+                ->buttons(
+                    Button::widget()->id(false)->label('Button B'),
+                    Button::widget()->id(false)->label('Button A')->variant(ButtonVariant::PRIMARY),
+                )
+                ->class('custom-class', 'another-class')
+                ->id(false)
                 ->render(),
         );
     }
