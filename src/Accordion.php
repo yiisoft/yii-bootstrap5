@@ -248,6 +248,21 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML tag to be used for the header section of the accordion component.
+     *
+     * @param string $value The HTML tag name for the header section of the accordion component.
+     *
+     * @return self A new instance with the specified header tag.
+     */
+    public function headerTag(string $value): self
+    {
+        $new = clone $this;
+        $new->headerTag = $value;
+
+        return $new;
+    }
+
+    /**
      * Sets the items of the accordion component.
      *
      * @param AccordionItem ...$values The items of the accordion component.

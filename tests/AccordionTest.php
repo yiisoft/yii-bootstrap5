@@ -678,6 +678,37 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testHeaderTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h3 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h3>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->headerTag('h3')
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(
@@ -778,8 +809,12 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->addItem('', ''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
         $this->assertNotSame($accordion, $accordion->attributes([]));
+        $this->assertNotSame($accordion, $accordion->bodyAttributes([]));
         $this->assertNotSame($accordion, $accordion->class(''));
+        $this->assertNotSame($accordion, $accordion->collapseAttributes([]));
         $this->assertNotSame($accordion, $accordion->flush());
+        $this->assertNotSame($accordion, $accordion->headerAttributes([]));
+        $this->assertNotSame($accordion, $accordion->headerTag(''));
         $this->assertNotSame($accordion, $accordion->id(''));
         $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
     }
