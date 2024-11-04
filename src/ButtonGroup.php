@@ -9,6 +9,7 @@ use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
 
+use function array_filter;
 use function array_merge;
 use function implode;
 
@@ -58,18 +59,29 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a CSS class for the button group component.
+     * Adds one or more CSS classes to the existing classes of the button group component.
      *
-     * @param string $value The CSS class for the button group component (e.g., 'test-class').
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
      *
-     * @return self A new instance with the specified class value added.
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $buttonGroup->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string $value): self
+    public function addClass(string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass[] = $value;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
 
         return $new;
     }
@@ -119,6 +131,29 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->buttons = $value;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the button group component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $buttonGroup->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
 
         return $new;
     }
