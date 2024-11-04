@@ -37,6 +37,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $bodyAttributes = [];
     private array $collapseAttributes = [];
     private array $cssClass = [];
+    private bool $flush = false;
     private array $headerAttributes = [];
     private string $headerTag = 'h2';
     private bool|string $id = true;
@@ -113,6 +114,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * @param bool|string $id The ID of the item. If `true`, an ID will be generated automatically.
      * @param bool $encodeHeader Whether to encode the header content. Default is `true`.
      * @param bool $encodeBody Whether to encode the body content. Default is `true`.
+     * @param bool $active Whether the item is active. Default is `false`.
      *
      * @return self A new instance with the specified item.
      */
@@ -121,10 +123,11 @@ final class Accordion extends \Yiisoft\Widget\Widget
         string $body,
         string|bool $id = true,
         bool $encodeHeader = true,
-        bool $encodeBody = true
+        bool $encodeBody = true,
+        bool $active = false
     ): self {
         $new = clone $this;
-        $new->items[] = new AccordionItem($header, $body, $id, $encodeHeader, $encodeBody);
+        $new->items[] = new AccordionItem($header, $body, $id, $encodeHeader, $encodeBody, $active);
 
         return $new;
     }
@@ -233,6 +236,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClass['flush'] = $value ? 'accordion-flush' : null;
+        $new->flush = $value;
 
         return $new;
     }
@@ -338,19 +342,14 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * @param AccordionItem $accordionItem The accordion item.
      * @param string $idParent The ID of the parent element.
      * @param string $idCollapse The ID of the collapse element.
-     * @param bool $active Whether the item is active.
      *
      * @return string The HTML representation of the element.
      *
      * @psalm-param non-empty-string $idParent The ID of the parent element.
      * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
      */
-    private function renderBody(
-        AccordionItem $accordionItem,
-        string $idParent,
-        string $idCollapse,
-        bool $active
-    ): string {
+    private function renderBody(AccordionItem $accordionItem, string $idParent, string $idCollapse): string
+    {
         $bodyAttributes = $this->bodyAttributes;
         $classesBodyAttributes = $bodyAttributes['class'] ?? null;
 
@@ -367,7 +366,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->addAttributes($collapseAttributes)
             ->addClass(
                 self::CLASS_COLLAPSE,
-                $active ? 'show' : null,
+                $accordionItem->isActive() ? 'show' : null,
                 $classesCollapseAttributes,
             )
             ->id($idCollapse)
@@ -390,13 +389,12 @@ final class Accordion extends \Yiisoft\Widget\Widget
      *
      * @param AccordionItem $accordionItem The accordion item.
      * @param string $idCollapse The ID of the collapse element.
-     * @param bool $active Whether the item is active.
      *
      * @return string The HTML representation of the element.
      *
      * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
      */
-    private function renderHeader(AccordionItem $accordionItem, string $idCollapse, bool $active): string
+    private function renderHeader(AccordionItem $accordionItem, string $idCollapse): string
     {
         $headerAttributes = $this->headerAttributes;
         $classesHeaderAttributes = $headerAttributes['class'] ?? null;
@@ -412,7 +410,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->addClass(self::CLASS_HEADER, $classesHeaderAttributes)
             ->addContent(
                 "\n",
-                $this->renderToggle($accordionItem->getHeader(), $idCollapse, $active),
+                $this->renderToggle($accordionItem->getHeader(), $idCollapse, $accordionItem->isActive()),
                 "\n",
             )
             ->encode(false)
@@ -433,8 +431,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $key => $item) {
-            $active = $key === 0 && !isset($this->cssClass['flush']);
-            $items[] = $this->renderItem($item, $idParent, $active);
+            $items[] = $this->renderItem($item, $idParent);
         }
 
         return implode("\n", $items);
@@ -445,13 +442,12 @@ final class Accordion extends \Yiisoft\Widget\Widget
      *
      * @param AccordionItem $accordionItem The accordion item.
      * @param string $idParent The ID of the parent element.
-     * @param bool $active Whether the item is active.
      *
      * @return string The HTML representation of the element.
      *
      * @psalm-param non-empty-string $idParent The ID of the parent element.
      */
-    private function renderItem(AccordionItem $accordionItem, string $idParent, bool $active): string
+    private function renderItem(AccordionItem $accordionItem, string $idParent): string
     {
         /** @psalm-var non-empty-string $idCollapse */
         $idCollapse = $accordionItem->getId();
@@ -459,9 +455,9 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return Div::tag()->addClass(self::CLASS_ITEM)
             ->addContent(
                 "\n",
-                $this->renderHeader($accordionItem, $idCollapse, $active),
+                $this->renderHeader($accordionItem, $idCollapse),
                 "\n",
-                $this->renderBody($accordionItem, $idParent, $idCollapse, $active),
+                $this->renderBody($accordionItem, $idParent, $idCollapse),
                 "\n",
             )
             ->encode(false)

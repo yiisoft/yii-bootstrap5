@@ -36,7 +36,8 @@ final class AccordionItem
         private readonly string $body,
         private readonly bool|string $id = true,
         private readonly bool $encodeHeader = true,
-        private readonly bool $encodeBody = true
+        private readonly bool $encodeBody = true,
+        private readonly bool $active = false,
     ) {
     }
 
@@ -74,5 +75,13 @@ final class AccordionItem
             '', false => throw new InvalidArgumentException('The "id" property must be a non-empty string or `true`.'),
             default => $this->id,
         };
+    }
+
+    /**
+     * @return bool Whether the item is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

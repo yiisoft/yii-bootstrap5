@@ -23,11 +23,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class-definition">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -55,11 +55,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -75,11 +75,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class test-class-1 test-class-2">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -103,11 +103,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion" style="color: red;">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -123,11 +123,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion" style="color: red; font-weight: bold;">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -151,11 +151,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion" style="color: red;">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -171,11 +171,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion" style="color: red;">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -242,7 +242,8 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     ' You can modify any of this with custom CSS or overriding our default variables. ' .
                     ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
                     'accordion-1',
-                    encodeBody: false
+                    encodeBody: false,
+                    active: true
                 )
                 ->addItem(
                     'Accordion Item #2',
@@ -269,6 +270,103 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAddItemWithActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="true" aria-controls="accordion-2">
+            Accordion Item #2
+            </button>
+            </h2>
+            <div id="accordion-2" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the second item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    'This is the first item\'s accordion body.',
+                    'accordion-1',
+                )
+                ->addItem(
+                    'Accordion Item #2',
+                    'This is the second item\'s accordion body.',
+                    'accordion-2',
+                    active: true
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testAddItemWithMultipleActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="true" aria-controls="accordion-2">
+            Accordion Item #2
+            </button>
+            </h2>
+            <div id="accordion-2" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the second item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    'This is the first item\'s accordion body.',
+                    'accordion-1',
+                    active: true
+                )
+                ->addItem(
+                    'Accordion Item #2',
+                    'This is the second item\'s accordion body.',
+                    'accordion-2',
+                    active: true
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
     public function testAddItemWithEncodeHeaderAndEncodeBody(): void
     {
         Assert::equalsWithoutLE(
@@ -276,11 +374,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             &lt;strong&gt;Accordion Item #1&lt;/strong&gt;
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             &lt;strong&gt;This is the first item's accordion body.&lt;/strong&gt;
             </div>
@@ -307,11 +405,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             <strong>Accordion Item #1</strong>
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             <strong>This is the first item's accordion body.</strong>
             </div>
@@ -340,11 +438,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion test-class">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -415,7 +513,8 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     ' You can modify any of this with custom CSS or overriding our default variables. ' .
                     ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
                     'accordion-1',
-                    encodeBody: false
+                    encodeBody: false,
+                    active: true
                 )
                 ->addItem(
                     'Accordion Item #2',
@@ -450,11 +549,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body test-class">
             This is the first item's accordion body.
             </div>
@@ -477,11 +576,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion custom-class another-class">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -505,11 +604,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show test-class" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse test-class" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -663,7 +762,8 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     ' You can modify any of this with custom CSS or overriding our default variables. ' .
                     ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
                     'accordion-1',
-                    encodeBody: false
+                    encodeBody: false,
+                    active: true
                 )
                 ->addItem(
                     'Accordion Item #2',
@@ -698,11 +798,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header test-class">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -725,11 +825,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h3 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h3>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -752,11 +852,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -800,11 +900,11 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -839,7 +939,55 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
     }
 
-    public function testItemWithEncodeHeaderAndEncodeBody(): void
+    public function testItemsWithActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="true" aria-controls="accordion-2">
+            Accordion Item #2
+            </button>
+            </h2>
+            <div id="accordion-2" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the second item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    'This is the first item\'s accordion body.',
+                    'accordion-1'
+                )
+                ->addItem(
+                    'Accordion Item #2',
+                    'This is the second item\'s accordion body.',
+                    'accordion-2',
+                    active: true
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testItemsWithMultipleActive(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -847,10 +995,61 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
-            &lt;strong&gt;Accordion Item #1&lt;/strong&gt;
+            Accordion Item #1
             </button>
             </h2>
             <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="true" aria-controls="accordion-2">
+            Accordion Item #2
+            </button>
+            </h2>
+            <div id="accordion-2" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the second item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->items(
+                    new AccordionItem(
+                        'Accordion Item #1',
+                        'This is the first item\'s accordion body.',
+                        'accordion-1',
+                        active: true
+                    ),
+                    new AccordionItem(
+                        'Accordion Item #2',
+                        'This is the second item\'s accordion body.',
+                        'accordion-2',
+                        active: true
+                    ),
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testItemsWithEncodeHeaderAndEncodeBody(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            &lt;strong&gt;Accordion Item #1&lt;/strong&gt;
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             &lt;strong&gt;This is the first item's accordion body.&lt;/strong&gt;
             </div>
@@ -871,18 +1070,18 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testItemWithEncodeHeaderAndEncodeBodyWithFalse(): void
+    public function testItemsWithEncodeHeaderAndEncodeBodyWithFalse(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             <strong>Accordion Item #1</strong>
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
             <strong>This is the first item's accordion body.</strong>
             </div>
@@ -961,7 +1160,8 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
                         ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
                         'accordion-1',
-                        encodeBody: false
+                        encodeBody: false,
+                        active: true
                     ),
                     new AccordionItem(
                         'Accordion Item #2',
