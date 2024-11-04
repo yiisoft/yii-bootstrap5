@@ -210,7 +210,11 @@ final class Accordion extends \Yiisoft\Widget\Widget
      */
     private function renderHeader(AccordionItem $accordionItem, string $idCollapse, bool $active): string
     {
-        $headerTag = Html::tag($this->headerTag)
+        if ($this->headerTag === '') {
+            throw new InvalidArgumentException('The "headerTag" property must be a non-empty string.');
+        }
+
+        return Html::tag($this->headerTag)
             ->addAttributes($this->headerAttributes)
             ->addClass(self::CLASS_HEADER)
             ->addContent(
@@ -218,9 +222,8 @@ final class Accordion extends \Yiisoft\Widget\Widget
                 $this->renderToggle($accordionItem->getHeader(), $idCollapse, $active),
                 "\n",
             )
-            ->encode(false);
-
-        return $headerTag->render();
+            ->encode(false)
+            ->render();
     }
 
     /**
