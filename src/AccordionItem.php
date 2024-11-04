@@ -94,6 +94,7 @@ final class AccordionItem
      * Returns the ID of the accordion item.
      *
      * @throws InvalidArgumentException If the "id" property is invalid.
+     *
      * @return bool|string The ID of the accordion item.
      */
     public function getId(): bool|string
