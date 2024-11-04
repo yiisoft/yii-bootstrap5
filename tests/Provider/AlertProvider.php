@@ -13,7 +13,7 @@ final class AlertProvider
         return [
             [
                 AlertVariant::PRIMARY,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-primary" role="alert">
                 A simple alert-primary check it out!
                 </div>
@@ -21,7 +21,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::SECONDARY,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-secondary" role="alert">
                 A simple alert-secondary check it out!
                 </div>
@@ -29,7 +29,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::SUCCESS,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-success" role="alert">
                 A simple alert-success check it out!
                 </div>
@@ -37,7 +37,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::DANGER,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-danger" role="alert">
                 A simple alert-danger check it out!
                 </div>
@@ -45,7 +45,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::WARNING,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-warning" role="alert">
                 A simple alert-warning check it out!
                 </div>
@@ -53,7 +53,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::INFO,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-info" role="alert">
                 A simple alert-info check it out!
                 </div>
@@ -61,7 +61,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::LIGHT,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-light" role="alert">
                 A simple alert-light check it out!
                 </div>
@@ -69,7 +69,7 @@ final class AlertProvider
             ],
             [
                 AlertVariant::DARK,
-                <<<'HTML'
+                <<<HTML
                 <div class="alert alert-dark" role="alert">
                 A simple alert-dark check it out!
                 </div>
