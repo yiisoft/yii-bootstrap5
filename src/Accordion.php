@@ -157,6 +157,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML attributes for the accordion component in the body section.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function bodyAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->bodyAttributes = $values;
+
+        return $new;
+    }
+
+    /**
      * Replaces all existing CSS classes of the accordion component with the provided ones.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
@@ -273,6 +290,11 @@ final class Accordion extends \Yiisoft\Widget\Widget
         string $idCollapse,
         bool $active
     ): string {
+        $bodyAttributes = $this->bodyAttributes;
+        $classes = $bodyAttributes['class'] ?? null;
+
+        unset($bodyAttributes['class']);
+
         $collapseAttributes = $this->collapseAttributes;
 
         if ($this->alwaysOpen === false) {
@@ -289,8 +311,8 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->addContent(
                 "\n",
                 Div::tag()
-                    ->addAttributes($this->bodyAttributes)
-                    ->addClass(self::CLASS_BODY)
+                    ->addAttributes($bodyAttributes)
+                    ->addClass(self::CLASS_BODY, $classes)
                     ->addContent("\n", $accordionItem->getBody(), "\n")
                     ->encode(false)
                     ->render(),
