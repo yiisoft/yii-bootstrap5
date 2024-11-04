@@ -61,7 +61,7 @@ Accordion Item #3
 </div>
 </div>
 HTML_WRAP
-,
+            ,
             Accordion::widget()
                 ->addItem(
                     'Accordion Item #1',
@@ -142,7 +142,7 @@ Accordion Item #3
 </div>
 </div>
 HTML_WRAP
-,
+            ,
             Accordion::widget()
                 ->addItem(
                     'Accordion Item #1',
@@ -222,7 +222,7 @@ Accordion Item #3
 </div>
 </div>
 HTML_WRAP
-,
+            ,
             Accordion::widget()
                 ->addItem(
                     'Accordion Item #1',
@@ -312,7 +312,7 @@ Accordion Item #3
 </div>
 </div>
 HTML_WRAP
-,
+            ,
             Accordion::widget()
                 ->items(
                     new AccordionItem(
