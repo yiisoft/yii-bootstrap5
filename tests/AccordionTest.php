@@ -203,6 +203,85 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/accordion/#example
+     */
+    public function testAddItem(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="false" aria-controls="accordion-2">
+            Accordion Item #2
+            </button>
+            </h2>
+            <div id="accordion-2" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-3" aria-expanded="false" aria-controls="accordion-3">
+            Accordion Item #3
+            </button>
+            </h2>
+            <div id="accordion-3" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>' .
+                    ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
+                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
+                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
+                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                    'accordion-1'
+                )
+                ->addItem(
+                    'Accordion Item #2',
+                    '<strong>This is the second item\'s accordion body.</strong>' .
+                    ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
+                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
+                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
+                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                    'accordion-2'
+                )
+                ->addItem(
+                    'Accordion Item #3',
+                    '<strong>This is the third item\'s accordion body.</strong>' .
+                    ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
+                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
+                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
+                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                    'accordion-3'
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -309,85 +388,6 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     'accordion-3'
                 )
                 ->alwaysOpen()
-                ->id('accordion')
-                ->render(),
-        );
-    }
-
-    /**
-     * @link https://getbootstrap.com/docs/5.3/components/accordion/#example
-     */
-    public function testAddItem(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div id="accordion" class="accordion">
-            <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
-            Accordion Item #1
-            </button>
-            </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
-            <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-            </div>
-            </div>
-            <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-2" aria-expanded="false" aria-controls="accordion-2">
-            Accordion Item #2
-            </button>
-            </h2>
-            <div id="accordion-2" class="accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-            </div>
-            </div>
-            <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-3" aria-expanded="false" aria-controls="accordion-3">
-            Accordion Item #3
-            </button>
-            </h2>
-            <div id="accordion-3" class="accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.  These classes control the overall appearance, as well as the showing and hiding via CSS transitions.  You can modify any of this with custom CSS or overriding our default variables.  It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-            </div>
-            </div>
-            </div>
-            HTML,
-            Accordion::widget()
-                ->addItem(
-                    'Accordion Item #1',
-                    '<strong>This is the first item\'s accordion body.</strong>' .
-                    ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
-                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
-                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
-                    'accordion-1'
-                )
-                ->addItem(
-                    'Accordion Item #2',
-                    '<strong>This is the second item\'s accordion body.</strong>' .
-                    ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
-                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
-                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
-                    'accordion-2'
-                )
-                ->addItem(
-                    'Accordion Item #3',
-                    '<strong>This is the third item\'s accordion body.</strong>' .
-                    ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
-                    ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
-                    ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                    ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
-                    'accordion-3'
-                )
                 ->id('accordion')
                 ->render(),
         );
