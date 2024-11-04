@@ -15,6 +15,37 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class AccordionTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion test-class-definition">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['id' => 'accordion'])
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->alwaysOpen()
+                ->render(),
+        );
+    }
+
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -290,6 +321,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     {
         $accordion = Accordion::widget();
 
+        $this->assertNotSame($accordion, $accordion->addAttributes([]));
         $this->assertNotSame($accordion, $accordion->addItem('', ''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
         $this->assertNotSame($accordion, $accordion->attributes([]));

@@ -43,6 +43,21 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $items = [];
 
     /**
+     * Adds a sets of attributes to the accordion component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the accordion component.
      *
      * @param array $values Attribute values indexed by attribute names.
