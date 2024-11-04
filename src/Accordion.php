@@ -86,6 +86,26 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Adds a CSS style for the accordion component.
+     *
+     * @param array|string $value The CSS style for the alert component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the accordion component.
      *
      * @param array $values Attribute values indexed by attribute names.

@@ -98,6 +98,110 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAddCssStyle(): void
+    {
+        $accordion = Accordion::widget()
+            ->addCssStyle('color: red;')
+            ->addItem(
+                'Accordion Item #1',
+                '<strong>This is the first item\'s accordion body.</strong>',
+                'accordion-1'
+            )
+            ->id('accordion');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion" style="color: red;">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion" style="color: red; font-weight: bold;">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $accordion = Accordion::widget()
+            ->addCssStyle('color: red;')
+            ->addItem(
+                'Accordion Item #1',
+                '<strong>This is the first item\'s accordion body.</strong>',
+                'accordion-1'
+            )
+            ->id('accordion');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion" style="color: red;">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion" style="color: red;">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -406,6 +510,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotSame($accordion, $accordion->addAttributes([]));
         $this->assertNotSame($accordion, $accordion->addClass(''));
+        $this->assertNotSame($accordion, $accordion->addCssStyle(''));
         $this->assertNotSame($accordion, $accordion->addItem('', ''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
         $this->assertNotSame($accordion, $accordion->attributes([]));
