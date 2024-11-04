@@ -20,7 +20,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testActive(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="Basic example of breadcrumbs">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -60,7 +60,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav class="test-class-definition" data-test="test" aria-label="Basic example of breadcrumbs">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -85,7 +85,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testAriaLabel(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="Basic example of breadcrumbs">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -109,7 +109,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav class="test-class" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -136,7 +136,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testDivider(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav style="--bs-breadcrumb-divider: &apos;&gt;&apos;;" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -185,7 +185,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testItemActiveClass(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -209,7 +209,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testItemAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item test-item-class"><a href="/">Home</a></li>
@@ -233,7 +233,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testLinkAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a class="test-link-class" href="/">Home</a></li>
@@ -257,7 +257,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testLinksWithSetAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a class="test-link-class" href="/" data-test="test">Home</a></li>
@@ -281,7 +281,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb test-list-class">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -305,7 +305,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListId(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol id="test-id" class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -328,7 +328,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListIdWithEmpty(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -351,7 +351,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -374,7 +374,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListIdWithSetAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol id="test-id" class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -397,7 +397,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testListTagName(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <footer class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -444,7 +444,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>

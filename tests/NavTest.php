@@ -520,7 +520,7 @@ final class NavTest extends TestCase
     public function testHomeLink(): void
     {
         // Home link is active.
-        $expected = <<<HTML
+        $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
         HTML;
@@ -543,7 +543,7 @@ final class NavTest extends TestCase
         );
 
         // Home link is not active.
-        $expected = <<<HTML
+        $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/item1">Item1</a></li></ul>
         HTML;
@@ -567,7 +567,7 @@ final class NavTest extends TestCase
         );
 
         // Home link and item1 is active.
-        $expected = <<<HTML
+        $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
         HTML;
@@ -591,7 +591,7 @@ final class NavTest extends TestCase
         );
 
         // Home link is not active and item1 is active.
-        $expected = <<<HTML
+        $expected = <<<'HTML'
         <ul id="test" class="nav"><li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
         <li class="nav-item"><a class="nav-link active" href="/item1">Item1</a></li></ul>
         HTML;

@@ -13,109 +13,109 @@ final class ButtonProvider
         return [
             [
                 ButtonVariant::PRIMARY,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-primary">A simple btn-primary check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::SECONDARY,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-secondary">A simple btn-secondary check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::SUCCESS,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-success">A simple btn-success check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::DANGER,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-danger">A simple btn-danger check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::WARNING,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-warning">A simple btn-warning check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::INFO,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-info">A simple btn-info check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::LIGHT,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-light">A simple btn-light check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::LINK,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-link">A simple btn-link check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::DARK,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-dark">A simple btn-dark check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_PRIMARY,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-primary">A simple btn-outline-primary check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_SECONDARY,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-secondary">A simple btn-outline-secondary check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_SUCCESS,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-success">A simple btn-outline-success check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_DANGER,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-danger">A simple btn-outline-danger check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_WARNING,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-warning">A simple btn-outline-warning check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_INFO,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-info">A simple btn-outline-info check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_LIGHT,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-light">A simple btn-outline-light check it out!</button>
                 HTML,
             ],
             [
                 ButtonVariant::OUTLINE_DARK,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn btn-outline-dark">A simple btn-outline-dark check it out!</button>
                 HTML,
             ],
             [
                 null,
-                <<<HTML
+                <<<'HTML'
                 <button type="button" class="btn">A simple button check it out!</button>
                 HTML,
             ],

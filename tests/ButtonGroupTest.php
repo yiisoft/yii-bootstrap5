@@ -21,7 +21,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group test-class-definition" data-test="test" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -49,7 +49,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ->id(false);
 
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group test-class" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -59,7 +59,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group test-class test-class-1" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -72,7 +72,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group test" data-test="test" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -92,7 +92,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testAttributesWithId(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="test-id" class="btn-group test" data-test="test" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -114,7 +114,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testButtonsWithCheckbox(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="test" class="btn-group" aria-label="Basic checkbox toggle button group" role="group">
             <input type="checkbox" id="btncheck1" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
             <input type="checkbox" id="btncheck2" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label>
@@ -151,7 +151,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testButtonsWithRadio(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="test" class="btn-group" aria-label="Basic radio toggle button group" role="group">
             <input type="radio" id="btnradio1" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
             <input type="radio" id="btnradio2" class="btn-check" autocomplete="off"> <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
@@ -185,7 +185,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testId(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="test" class="btn-group" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -204,7 +204,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testIdWithEmpty(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -223,7 +223,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testIdWIthFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group" role="group">
             <button type="button" class="btn btn-secondary">Button B</button>
             <button type="button" class="btn btn-primary">Button A</button>
@@ -261,7 +261,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testLargeSize(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group btn-lg" aria-label="Large button group" role="group">
             <button type="button" class="btn btn-outline-dark">Left</button>
             <button type="button" class="btn btn-outline-dark">Middle</button>
@@ -297,7 +297,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
             ->id(false);
 
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group" aria-label="Normal button group" role="group">
             <button type="button" class="btn btn-outline-light">Left</button>
             <button type="button" class="btn btn-outline-light">Middle</button>
@@ -314,7 +314,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group btn-lg" aria-label="Basic example" role="group">
             <button type="button" class="btn btn-primary">Left</button>
             <button type="button" class="btn btn-primary">Middle</button>
@@ -345,7 +345,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithMizedStyle(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group" aria-label="Basic mixed styles example" role="group">
             <button type="button" class="btn btn-danger">Left</button>
             <button type="button" class="btn btn-warning">Middle</button>
@@ -370,7 +370,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithOutlinedStyle(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group" aria-label="Basic outlined styles example" role="group">
             <button type="button" class="btn btn-outline-primary">Left</button>
             <button type="button" class="btn btn-outline-secondary">Middle</button>
@@ -395,7 +395,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testSmallSize(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group btn-sm" aria-label="Small button group" role="group">
             <button type="button" class="btn btn-outline-dark">Left</button>
             <button type="button" class="btn btn-outline-dark">Middle</button>
@@ -421,7 +421,7 @@ final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
     public function testVertical(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div class="btn-group btn-group-vertical" aria-label="Vertical button group" role="group">
             <button type="button" class="btn btn-dark">Top</button>
             <button type="button" class="btn btn-dark">Middle</button>

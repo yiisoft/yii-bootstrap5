@@ -21,7 +21,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     public function testAlwaysOpen(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
@@ -101,7 +101,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     public function testAddItem(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
@@ -180,7 +180,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     public function testFlush(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="accordion" class="accordion accordion-flush">
             <div class="accordion-item">
             <h2 class="accordion-header">
@@ -269,7 +269,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
-            <<<HTML
+            <<<'HTML'
             <div id="accordion" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">

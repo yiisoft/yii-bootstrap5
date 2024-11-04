@@ -375,7 +375,7 @@ final class NavBarTest extends TestCase
         return [
             [
                 NavBar::EXPAND_SM,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-sm">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -388,7 +388,7 @@ final class NavBarTest extends TestCase
 
             [
                 NavBar::EXPAND_MD,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-md">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -401,7 +401,7 @@ final class NavBarTest extends TestCase
 
             [
                 NavBar::EXPAND_LG,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -414,7 +414,7 @@ final class NavBarTest extends TestCase
 
             [
                 NavBar::EXPAND_XL,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-xl">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -427,7 +427,7 @@ final class NavBarTest extends TestCase
 
             [
                 NavBar::EXPAND_XXL,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-xxl">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -564,7 +564,7 @@ final class NavBarTest extends TestCase
         return [
             [
                 NavBar::THEME_LIGHT,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-light" data-bs-theme="light">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
@@ -577,7 +577,7 @@ final class NavBarTest extends TestCase
 
             [
                 NavBar::THEME_DARK,
-                <<<HTML
+                <<<'HTML'
                 <nav id="expanded-navbar" class="navbar navbar-expand-lg navbar-dark" data-bs-theme="dark">
                 <div class="container">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" aria-label="Toggle navigation" aria-controls="C_ID" data-bs-target="#C_ID" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
