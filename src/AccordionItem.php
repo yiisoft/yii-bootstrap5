@@ -35,39 +35,9 @@ final class AccordionItem
         private readonly string $header,
         private readonly string $body,
         private readonly bool|string $id = true,
-        private bool $encodeHeader = true,
-        private bool $encodeBody = true
+        private readonly bool $encodeHeader = true,
+        private readonly bool $encodeBody = true
     ) {
-    }
-
-    /**
-     * Whether to encode the body content.
-     *
-     * @param bool $value Whether to encode the body content. Default is `true`.
-     *
-     * @return self A new instance with the specified encodeBody value.
-     */
-    public function encodeBody(bool $value = true): self
-    {
-        $new = clone $this;
-        $new->encodeBody = $value;
-
-        return $new;
-    }
-
-    /**
-     * Whether to encode the header content.
-     *
-     * @param bool $value Whether to encode the header content. Default is `true`.
-     *
-     * @return self A new instance with the specified encodeHeader value.
-     */
-    public function encodeHeader(bool $value = true): static
-    {
-        $new = clone $this;
-        $new->encodeHeader = $value;
-
-        return $new;
     }
 
     /**

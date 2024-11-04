@@ -19,7 +19,13 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $accordionItem = new AccordionItem('header', '<strong>body</strong>');
 
         $this->assertSame('&lt;strong&gt;body&lt;/strong&gt;', $accordionItem->getBody());
-        $this->assertSame('<strong>body</strong>', $accordionItem->encodeBody(false)->getBody());
+    }
+
+    public function testEncodeBodyWithFalse(): void
+    {
+        $accordionItem = new AccordionItem('header', '<strong>body</strong>', encodeBody: false);
+
+        $this->assertSame('<strong>body</strong>', $accordionItem->getBody());
     }
 
     public function testEncodeHeader(): void
@@ -27,7 +33,13 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $accordionItem = new AccordionItem('<strong>header</strong>', 'body');
 
         $this->assertSame('&lt;strong&gt;header&lt;/strong&gt;', $accordionItem->getHeader());
-        $this->assertSame('<strong>header</strong>', $accordionItem->encodeHeader(false)->getHeader());
+    }
+
+    public function testEncodeHeaderWithFalse(): void
+    {
+        $accordionItem = new AccordionItem('<strong>header</strong>', 'body', encodeHeader: false);
+
+        $this->assertSame('<strong>header</strong>', $accordionItem->getHeader());
     }
 
     public function testId(): void
@@ -61,13 +73,5 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $item = new AccordionItem('header', 'body', 'custom-id');
 
         $this->assertSame('custom-id', $item->getId());
-    }
-
-    public function testImmutability(): void
-    {
-        $accordionItem = new AccordionItem('header', 'body');
-
-        $this->assertNotSame($accordionItem, $accordionItem->encodeBody());
-        $this->assertNotSame($accordionItem, $accordionItem->encodeHeader());
     }
 }
