@@ -292,6 +292,11 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Run the accordion widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -456,6 +461,17 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the toggle button of the accordion item.
+     *
+     * @param string $header The header of the item.
+     * @param string $idCollpase The ID of the collapse element.
+     * @param bool $active Whether the item is active.
+     *
+     * @return string The HTML representation of the element.
+     *
+     * @psalm-param non-empty-string $idCollpase The ID of the collapse element.
+     */
     private function renderToggle(string $header, string $idCollpase, bool $active): string
     {
         return Button::button('')
