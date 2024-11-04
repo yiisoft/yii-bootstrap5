@@ -14,6 +14,22 @@ use Yiisoft\Yii\Bootstrap5\AccordionItem;
  */
 final class AccordionItemTest extends \PHPUnit\Framework\TestCase
 {
+    public function testEncodeBody(): void
+    {
+        $accordionItem = new AccordionItem('header', '<strong>body</strong>');
+
+        $this->assertSame('&lt;strong&gt;body&lt;/strong&gt;', $accordionItem->getBody());
+        $this->assertSame('<strong>body</strong>', $accordionItem->encodeBody(false)->getBody());
+    }
+
+    public function testEncodeHeader(): void
+    {
+        $accordionItem = new AccordionItem('<strong>header</strong>', 'body');
+
+        $this->assertSame('&lt;strong&gt;header&lt;/strong&gt;', $accordionItem->getHeader());
+        $this->assertSame('<strong>header</strong>', $accordionItem->encodeHeader(false)->getHeader());
+    }
+
     public function testId(): void
     {
         $item = new AccordionItem('header', 'body');
@@ -46,4 +62,13 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('custom-id', $item->getId());
     }
+
+    public function testImmutability(): void
+    {
+        $accordionItem = new AccordionItem('header', 'body');
+
+        $this->assertNotSame($accordionItem, $accordionItem->encodeBody());
+        $this->assertNotSame($accordionItem, $accordionItem->encodeHeader());
+    }
+
 }

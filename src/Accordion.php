@@ -111,13 +111,20 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * @param string $header The header of the item.
      * @param string $body The body of the item.
      * @param bool|string $id The ID of the item. If `true`, an ID will be generated automatically.
+     * @param bool $encodeHeader Whether to encode the header content. Default is `true`.
+     * @param bool $encodeBody Whether to encode the body content. Default is `true`.
      *
      * @return self A new instance with the specified item.
      */
-    public function addItem(string $header, string $body, string|bool $id = true): self
-    {
+    public function addItem(
+        string $header,
+        string $body,
+        string|bool $id = true,
+        bool $encodeHeader = true,
+        bool $encodeBody = true
+    ): self {
         $new = clone $this;
-        $new->items[] = new AccordionItem($header, $body, $id);
+        $new->items[] = new AccordionItem($header, $body, $id, $encodeHeader, $encodeBody);
 
         return $new;
     }
@@ -488,6 +495,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
                 ]
             )
             ->addContent("\n", $header, "\n")
+            ->encode(false)
             ->id(null)
             ->render();
     }
