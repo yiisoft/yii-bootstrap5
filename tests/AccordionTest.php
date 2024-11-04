@@ -413,12 +413,12 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Accordion::widget()
-                ->bodyAttributes(['class' => 'test-class'])
                 ->addItem(
                     'Accordion Item #1',
                     '<strong>This is the first item\'s accordion body.</strong>',
                     'accordion-1'
                 )
+                ->bodyAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->render(),
         );
@@ -451,6 +451,37 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     'accordion-1'
                 )
                 ->class('custom-class', 'another-class')
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testCollapseAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show test-class" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->collapseAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->render(),
         );

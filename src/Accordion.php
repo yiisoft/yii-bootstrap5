@@ -197,6 +197,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML attributes for the accordion component in the collapse section.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function collapseAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->collapseAttributes = $values;
+
+        return $new;
+    }
+
+    /**
      * Sets whether the accordion should use the flush style.
      *
      * @param bool $value Whether to apply the flush style.
@@ -293,9 +310,10 @@ final class Accordion extends \Yiisoft\Widget\Widget
         $bodyAttributes = $this->bodyAttributes;
         $classesBodyAttributes = $bodyAttributes['class'] ?? null;
 
-        unset($bodyAttributes['class']);
-
         $collapseAttributes = $this->collapseAttributes;
+        $classesCollapseAttributes = $collapseAttributes['class'] ?? null;
+
+        unset($bodyAttributes['class'], $collapseAttributes['class']);
 
         if ($this->alwaysOpen === false) {
             $collapseAttributes['data-bs-parent'] = '#' . $idParent;
@@ -306,6 +324,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->addClass(
                 self::CLASS_COLLAPSE,
                 $active ? 'show' : null,
+                $classesCollapseAttributes,
             )
             ->id($idCollapse)
             ->addContent(
