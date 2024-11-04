@@ -20,7 +20,6 @@ enabled:
   - fully_qualified_strict_types
   - function_to_constant
   - hash_to_slash_comment
-  - heredoc_to_nowdoc
   - is_null
   - logical_operators
   - magic_constant_casing

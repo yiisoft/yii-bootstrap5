@@ -21,7 +21,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary test-class-definition" data-test="test">Label</button>
             HTML,
             Button::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
@@ -37,14 +37,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         $buttonWidget = Button::widget()->addClass('test-class', null)->label('Label')->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary test-class">Label</button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary test-class test-class-1 test-class-2">Label</button>
             HTML,
             $buttonWidget->addClass('test-class-1', 'test-class-2')->render(),
@@ -65,14 +65,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             ->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 12px;">Label</button>
             HTML,
             $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;')->render(),
@@ -93,14 +93,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
             ->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
             HTML,
             $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;', false)->render(),
@@ -110,7 +110,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testAriaExpanded(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" aria-expanded="true">Label</button>
             HTML,
             Button::widget()->ariaExpanded()->label('Label')->id(false)->render(),
@@ -120,7 +120,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testAriaExpandedWithFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" aria-expanded="false">Label</button>
             HTML,
             Button::widget()->ariaExpanded(false)->label('Label')->id(false)->render(),
@@ -130,7 +130,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary test-class">Label</button>
             HTML,
             Button::widget()->attributes(['class' => 'test-class'])->label('Label')->id(false)->render(),
@@ -140,7 +140,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testAttributesWithId(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" id="test-id" class="btn btn-secondary test-class">Label</button>
             HTML,
             Button::widget()
@@ -156,7 +156,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testBlock(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="d-grid gap-2">
             <button type="button" class="btn btn-primary">Button</button>
             <button type="button" class="btn btn-primary">Button</button>
@@ -178,7 +178,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testClass(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary custom-class another-class">Label</button>
             HTML,
             Button::widget()
@@ -196,21 +196,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testDisableState(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary" disabled>Primary button</button>
             HTML,
             Button::widget()->disabled()->id(false)->label('Primary button')->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" disabled>Button</button>
             HTML,
             Button::widget()->disabled()->id(false)->label('Button')->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-outline-primary" disabled>Primary button</button>
             HTML,
             Button::widget()
@@ -222,7 +222,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-outline-secondary" disabled>Button</button>
             HTML,
             Button::widget()
@@ -237,7 +237,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testId(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" id="test" class="btn btn-secondary">Label</button>
             HTML,
             Button::widget()->id('test')->label('Label')->render(),
@@ -247,7 +247,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testIdWithEmpty(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
             Button::widget()->id('')->label('Label')->render(),
@@ -257,7 +257,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
             Button::widget()->id(false)->label('Label')->render(),
@@ -290,7 +290,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testLabelWithEncodeFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary"><Label></button>
             HTML,
             Button::widget()->label('<Label>', false)->id(false)->render(),
@@ -300,7 +300,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testLabelWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary">&lt;Label&gt;</button>
             HTML,
             Button::widget()->label('<Label>')->id(false)->render(),
@@ -310,7 +310,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testLabelWithStringable(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary"><span>Stringable</span></button>
             HTML,
             Button::widget()->label(Span::tag()->content('Stringable'), false)->id(false)->render(),
@@ -323,14 +323,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testLargeSize(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary btn-lg">Large button</button>
             HTML,
             Button::widget()->id(false)->label('Large button')->largeSize()->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary btn-lg">Large button</button>
             HTML,
             Button::widget()->id(false)->label('Large button')->largeSize()->render(),
@@ -343,7 +343,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testNormalSize(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
             Button::widget()->label('Label')->id(false)->largeSize()->normalSize()->render(),
@@ -356,7 +356,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn">Base class</button>
             HTML,
             Button::widget()->label('Base class')->id(false)->variant(null)->render(),
@@ -369,14 +369,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testSmallSize(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary btn-sm">Small button</button>
             HTML,
             Button::widget()->id(false)->label('Small button')->smallSize()->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary btn-sm">Small button</button>
             HTML,
             Button::widget()
@@ -394,14 +394,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTagButtonReset(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="reset" class="btn btn-primary">Reset</button>
             HTML,
             Button::reset()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="reset" class="btn btn-primary">Clear</button>
             HTML,
             Button::reset('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
@@ -414,14 +414,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTagButtonSubmit(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="submit" class="btn btn-primary">Submit</button>
             HTML,
             Button::submit()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="submit" class="btn btn-primary">Send</button>
             HTML,
             Button::submit('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
@@ -434,14 +434,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTagLink(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary" href="#" role="button">Label</a>
             HTML,
             Button::link('Label', '#')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary" href="/test" role="button">Label</a>
             HTML,
             Button::link('Label', '/test')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
@@ -454,14 +454,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTagInputReset(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="reset" class="btn btn-primary" value="Reset">
             HTML,
             Button::resetInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="reset" class="btn btn-primary" value="Clear">
             HTML,
             Button::resetInput('Clear')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
@@ -474,14 +474,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTagInputSubmit(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="submit" class="btn btn-primary" value="Submit">
             HTML,
             Button::submitInput()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="submit" class="btn btn-primary" value="Send">
             HTML,
             Button::submitInput('Send')->id(false)->variant(ButtonVariant::PRIMARY)->render(),
@@ -494,21 +494,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testToggleState(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" data-bs-toggle="button">Toggle button</button>
             HTML,
             Button::widget()->toggle()->id(false)->label('Toggle button')->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
             HTML,
             Button::widget()->active()->label('Active toggle button')->id(false)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-secondary" disabled data-bs-toggle="button">Disabled toggle button</button>
             HTML,
             Button::widget()->disabled()->id(false)->label('Disabled toggle button')->toggle()->render(),
@@ -521,14 +521,14 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testToggleStateWithVariant(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary" data-bs-toggle="button">Toggle button</button>
             HTML,
             Button::widget()->toggle()->id(false)->label('Toggle button')->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
             HTML,
             Button::widget()
@@ -540,7 +540,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="button" class="btn btn-primary" disabled data-bs-toggle="button">Disabled toggle button</button>
             HTML,
             Button::widget()
@@ -559,21 +559,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testToggleStateLink(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-secondary" href="#" data-bs-toggle="button" role="button">Toggle link</a>
             HTML,
             Button::link('Toggle link', '#')->id(false)->toggle()->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-secondary active" href="#" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
             HTML,
             Button::link('Active toggle link', '#')->active()->id(false)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-secondary disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
             HTML,
             Button::link('Disabled toggle link', '#')->disabled()->id(false)->toggle()->render(),
@@ -586,21 +586,21 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testToggleStateLinkAndVariant(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary" href="#" data-bs-toggle="button" role="button">Toggle link</a>
             HTML,
             Button::link('Toggle link', '#')->id(false)->toggle()->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary active" href="#" data-bs-toggle="button" aria-pressed="true" role="button">Active toggle link</a>
             HTML,
             Button::link('Active toggle link', '#')->active()->id(false)->variant(ButtonVariant::PRIMARY)->render(),
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary disabled" href="#" data-bs-toggle="button" aria-disabled="true" role="button">Disabled toggle link</a>
             HTML,
             Button::link('Disabled toggle link', '#')
@@ -618,7 +618,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTypeButtonReset(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="reset" class="btn btn-primary">Clear</button>
             HTML,
             Button::widget()
@@ -636,7 +636,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTypeButtonSubmit(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <button type="submit" class="btn btn-primary">Send</button>
             HTML,
             Button::widget()
@@ -654,7 +654,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTypeLink(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <a class="btn btn-primary" href="/test" role="button">Label</a>
             HTML,
             Button::widget()
@@ -673,7 +673,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTypeInputReset(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="reset" class="btn btn-primary" value="Clear">
             HTML,
             Button::widget()
@@ -691,7 +691,7 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     public function testTypeInputSubmit(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <input type="submit" class="btn btn-primary" value="Send">
             HTML,
             Button::widget()

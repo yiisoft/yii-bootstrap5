@@ -484,7 +484,7 @@ HTML;
         return [
             [
                 Modal::FULLSCREEN_ALWAYS,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen">
@@ -501,7 +501,7 @@ HTML;
 
             [
                 Modal::FULLSCREEN_BELOW_SM,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-sm-down">
@@ -518,7 +518,7 @@ HTML;
 
             [
                 Modal::FULLSCREEN_BELOW_MD,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-md-down">
@@ -535,7 +535,7 @@ HTML;
 
             [
                 Modal::FULLSCREEN_BELOW_LG,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-lg-down">
@@ -552,7 +552,7 @@ HTML;
 
             [
                 Modal::FULLSCREEN_BELOW_XL,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-xl-down">
@@ -569,7 +569,7 @@ HTML;
 
             [
                 Modal::FULLSCREEN_BELOW_XXL,
-                <<<'HTML'
+                <<<HTML
                 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
                 <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-xxl-down">
@@ -658,7 +658,7 @@ HTML;
             ->begin();
         $html .= Modal::end();
 
-        $expected = <<<'HTML'
+        $expected = <<<HTML
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
         <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog">
@@ -683,7 +683,7 @@ HTML;
             ->begin();
         $html .= Modal::end();
 
-        $expected = <<<'HTML'
+        $expected = <<<HTML
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
         <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -708,7 +708,7 @@ HTML;
             ->begin();
         $html .= Modal::end();
 
-        $expected = <<<'HTML'
+        $expected = <<<HTML
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
         <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -747,7 +747,7 @@ HTML;
         ])
         ->renderToggle();
 
-        $expected = <<<'HTML'
+        $expected = <<<HTML
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label</button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label 2</button>
@@ -769,7 +769,7 @@ HTML;
             ->begin();
         $html .= Modal::end();
 
-        $expected = <<<'HTML'
+        $expected = <<<HTML
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
         <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="bg-white modal-dialog modal-dialog-centered">

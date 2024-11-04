@@ -18,7 +18,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test" class="alert alert-secondary test-class-definition" role="alert">
             Body
             </div>
@@ -33,7 +33,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary test-class" role="alert">
             Body
             </div>
@@ -47,7 +47,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $alert = Alert::widget()->addClass('test-class', null)->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary test-class" role="alert">
             Body
             </div>
@@ -56,7 +56,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary test-class test-class-1 test-class-2" role="alert">
             Body
             </div>
@@ -70,7 +70,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $alert = Alert::widget()->addCssStyle('color: red;')->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" style="color: red;" role="alert">
             Body
             </div>
@@ -79,7 +79,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" style="color: red; font-weight: bold;" role="alert">
             Body
             </div>
@@ -93,7 +93,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $alert = Alert::widget()->addCssStyle('color: red;')->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" style="color: red;" role="alert">
             Body
             </div>
@@ -102,7 +102,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" style="color: red;" role="alert">
             Body
             </div>
@@ -114,7 +114,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testBodyWithEncodeFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             <body>
             </div>
@@ -126,7 +126,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testBodyWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             &lt;body&gt;
             </div>
@@ -138,7 +138,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testClass(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary custom-class another-class" role="alert">
             Body
             </div>
@@ -158,7 +158,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testDismissable(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary alert-dismissible fade show" role="alert">
             <strong>Holy guacamole!</strong> You should check in on some of those fields below.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -176,7 +176,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testDismissableWithCloseButtonAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test" class="alert alert-secondary alert-dismissible" role="alert">
             Body
             <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -194,7 +194,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeader(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading">Alert header</h5>
             Body
@@ -221,7 +221,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeaderWithEncodeFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading"><header></h5>
             Body
@@ -240,7 +240,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeaderWithEncodeTrue(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             <h5 class="header-class alert-heading">&lt;header&gt;</h5>
             Body
@@ -259,7 +259,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testId(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test" class="alert alert-secondary" role="alert">
             Body
             </div>
@@ -271,7 +271,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testIdWithEmpty(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             Body
             </div>
@@ -283,7 +283,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary" role="alert">
             Body
             </div>
@@ -295,7 +295,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testIdWithSetAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test" class="alert alert-secondary" role="alert">
             Body
             </div>
@@ -330,7 +330,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testRenderLink(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-warning" role="alert">
             A simple warning alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
             </div>
@@ -353,7 +353,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testRenderIcon(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary d-flex align-items-center" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
             <div>An example alert with an icon</div>
@@ -376,7 +376,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testTemplateContent(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="alert alert-secondary alert-dismissible" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             Body

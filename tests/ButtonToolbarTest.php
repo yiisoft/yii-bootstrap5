@@ -22,7 +22,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testAddAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar test-class-definition" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -72,7 +72,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
             ->id(false);
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar test-class" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -86,7 +86,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
         );
 
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar test-class test-class-1" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -103,7 +103,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testAttributes(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -136,7 +136,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testAttributesWithId(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test-id" class="btn-toolbar" data-id="1" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -168,7 +168,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testId(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div id="test" class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -200,7 +200,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testIdWithEmpty(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -232,7 +232,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testIdWithFalse(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -279,7 +279,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
@@ -342,7 +342,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testTag(): void
     {
         Assert::equalsWithoutLE(
-            <<<'HTML'
+            <<<HTML
             <div class="btn-toolbar" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
