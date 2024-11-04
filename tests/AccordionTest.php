@@ -15,6 +15,9 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class AccordionTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/accordion/#example
+     */
     public function testAddItem(): void
     {
         Assert::equalsWithoutLE(
@@ -99,6 +102,9 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/accordion/#example
+     */
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
