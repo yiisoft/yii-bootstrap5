@@ -130,7 +130,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
 
         unset($attributes['class']);
 
-        /** @psalm-var non-empty-string|null $id */
+        /** @psalm-var non-empty-string $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => throw new InvalidArgumentException('The "id" property must be a non-empty string or `true`.'),
@@ -151,6 +151,19 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the body of the accordion item.
+     *
+     * @param AccordionItem $accordionItem The accordion item.
+     * @param string $idParent The ID of the parent element.
+     * @param string $idCollapse The ID of the collapse element.
+     * @param bool $active Whether the item is active.
+     *
+     * @return string The HTML representation of the element.
+     *
+     * @psalm-param non-empty-string $idParent The ID of the parent element.
+     * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
+     */
     private function renderBody(
         AccordionItem $accordionItem,
         string $idParent,
@@ -184,6 +197,17 @@ final class Accordion extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the header of the accordion item.
+     *
+     * @param AccordionItem $accordionItem The accordion item.
+     * @param string $idCollapse The ID of the collapse element.
+     * @param bool $active Whether the item is active.
+     *
+     * @return string The HTML representation of the element.
+     *
+     * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
+     */
     private function renderHeader(AccordionItem $accordionItem, string $idCollapse, bool $active): string
     {
         $headerTag = Html::tag($this->headerTag)
@@ -199,6 +223,15 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return $headerTag->render();
     }
 
+    /**
+     * Renders the items of the accordion component.
+     *
+     * @param string $idParent The ID of the parent element.
+     *
+     * @return string The HTML representation of the element.
+     *
+     * @psalm-param non-empty-string $idParent The ID of the parent element.
+     */
     private function renderItems(string $idParent): string
     {
         $items = [];
@@ -211,8 +244,20 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return implode("\n", $items);
     }
 
+    /**
+     * Renders an accordion item.
+     *
+     * @param AccordionItem $accordionItem The accordion item.
+     * @param string $idParent The ID of the parent element.
+     * @param bool $active Whether the item is active.
+     *
+     * @return string The HTML representation of the element.
+     *
+     * @psalm-param non-empty-string $idParent The ID of the parent element.
+     */
     private function renderItem(AccordionItem $accordionItem, string $idParent, bool $active): string
     {
+        /** @psalm-var non-empty-string $idCollapse */
         $idCollapse = $accordionItem->getId();
 
         return Div::tag()->addClass(self::CLASS_ITEM)
