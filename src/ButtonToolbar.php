@@ -8,6 +8,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Div;
 
+use function array_filter;
 use function array_merge;
 use function implode;
 
@@ -74,18 +75,29 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a CSS class for the button toolbar component.
+     * Adds one or more CSS classes to the existing classes of the button toolbar component.
      *
-     * @param string $value The CSS class for the button toolbar component (e.g., 'test-class').
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
      *
-     * @return self A new instance with the specified class value added.
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $buttonToolbar->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string $value): self
+    public function addClass(string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass[] = $value;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
 
         return $new;
     }
@@ -135,6 +147,29 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->buttonGroups = $value;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the button toolbar component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $buttonToolbar->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
 
         return $new;
     }
