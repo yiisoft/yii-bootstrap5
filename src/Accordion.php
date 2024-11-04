@@ -32,6 +32,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private const CLASS_ITEM = 'accordion-item';
     private const CLASS_TOGGLE = 'accordion-button';
     private const NAME = 'accordion';
+    private bool $alwaysOpen = false;
     private array $attributes = [];
     private array $bodyAttributes = [];
     private array $collapseAttributes = [];
@@ -40,6 +41,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private string $headerTag = 'h2';
     private bool|string $id = true;
     private array $items = [];
+
+    /**
+     * Sets whether the accordion should always allow multiple items to be open simultaneously.
+     *
+     * @param bool $value Whether the accordion should always be open.
+     *
+     * @return self A new instance with the updated alwaysOpen property.
+     *
+     * @see https://getbootstrap.com/docs/5.3/components/accordion/#always-open
+     */
+    public function alwaysOpen(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->alwaysOpen = $value;
+
+        return $new;
+    }
 
     /**
      * Adds a new item to the accordion.
@@ -58,6 +76,15 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Sets whether the accordion should use the flush style.
+     *
+     * @param bool $value Whether to apply the flush style.
+     *
+     * @return self A new instance with the updated flush property.
+     *
+     * @see https://getbootstrap.com/docs/5.3/components/accordion/#flush
+     */
     public function flush(bool $value = true): self
     {
         $new = clone $this;
@@ -131,7 +158,10 @@ final class Accordion extends \Yiisoft\Widget\Widget
         bool $active
     ): string {
         $collapseAttributes = $this->collapseAttributes;
-        $collapseAttributes['data-bs-parent'] = '#' . $idParent;
+
+        if ($this->alwaysOpen === false) {
+            $collapseAttributes['data-bs-parent'] = '#' . $idParent;
+        }
 
         return Div::tag()
             ->addAttributes($collapseAttributes)
