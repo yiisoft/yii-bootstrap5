@@ -137,6 +137,29 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Replaces all existing CSS classes of the accordion component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $accordion->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+
+        return $new;
+    }
+
+    /**
      * Sets whether the accordion should use the flush style.
      *
      * @param bool $value Whether to apply the flush style.

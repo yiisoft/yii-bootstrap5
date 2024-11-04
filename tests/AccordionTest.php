@@ -288,6 +288,38 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion custom-class another-class">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addClass('test-class')
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->class('custom-class', 'another-class')
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/accordion/#flush
      */
@@ -377,6 +409,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->addItem('', ''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
         $this->assertNotSame($accordion, $accordion->attributes([]));
+        $this->assertNotSame($accordion, $accordion->class(''));
         $this->assertNotSame($accordion, $accordion->flush());
         $this->assertNotSame($accordion, $accordion->id(''));
         $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
