@@ -70,5 +70,4 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordionItem, $accordionItem->encodeBody());
         $this->assertNotSame($accordionItem, $accordionItem->encodeHeader());
     }
-
 }
