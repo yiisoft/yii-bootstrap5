@@ -106,6 +106,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Adds a new item to the accordion.
+     *
+     * @param string $header The header of the item.
+     * @param string $body The body of the item.
+     * @param bool|string $id The ID of the item. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified item.
+     */
+    public function addItem(string $header, string $body, string|bool $id = true): self
+    {
+        $new = clone $this;
+        $new->items[] = new AccordionItem($header, $body, $id);
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the accordion component.
      *
      * @param array $values Attribute values indexed by attribute names.
@@ -135,23 +152,6 @@ final class Accordion extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->alwaysOpen = $value;
-
-        return $new;
-    }
-
-    /**
-     * Adds a new item to the accordion.
-     *
-     * @param string $header The header of the item.
-     * @param string $body The body of the item.
-     * @param bool|string $id The ID of the item. If `true`, an ID will be generated automatically.
-     *
-     * @return self A new instance with the specified item.
-     */
-    public function addItem(string $header, string $body, string|bool $id = true): self
-    {
-        $new = clone $this;
-        $new->items[] = new AccordionItem($header, $body, $id);
 
         return $new;
     }
