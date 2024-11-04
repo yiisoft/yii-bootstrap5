@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 use Yiisoft\Yii\Bootstrap5\AccordionItem;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
@@ -580,6 +581,96 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 )
                 ->flush(false)
                 ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
+    public function testIdWithEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
+
+        Accordion::widget()
+            ->addItem(
+                'Accordion Item #1',
+                '<strong>This is the first item\'s accordion body.</strong>',
+                'accordion-1'
+            )
+            ->id('')
+            ->render();
+    }
+
+    public function testIdWithFalse(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
+
+        Accordion::widget()
+            ->addItem(
+                'Accordion Item #1',
+                '<strong>This is the first item\'s accordion body.</strong>',
+                'accordion-1'
+            )
+            ->id(false)
+            ->render();
+    }
+
+    public function testIdWithSetAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->attributes(['id' => 'accordion'])
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
                 ->render(),
         );
     }
