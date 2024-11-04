@@ -291,7 +291,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
         bool $active
     ): string {
         $bodyAttributes = $this->bodyAttributes;
-        $classes = $bodyAttributes['class'] ?? null;
+        $classesBodyAttributes = $bodyAttributes['class'] ?? null;
 
         unset($bodyAttributes['class']);
 
@@ -312,7 +312,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
                 "\n",
                 Div::tag()
                     ->addAttributes($bodyAttributes)
-                    ->addClass(self::CLASS_BODY, $classes)
+                    ->addClass(self::CLASS_BODY, $classesBodyAttributes)
                     ->addContent("\n", $accordionItem->getBody(), "\n")
                     ->encode(false)
                     ->render(),
