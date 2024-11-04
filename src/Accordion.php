@@ -43,6 +43,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $items = [];
 
     /**
+     * Sets the HTML attributes for the accordion component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
      * Sets whether the accordion should always allow multiple items to be open simultaneously.
      *
      * @param bool $value Whether the accordion should always be open.
