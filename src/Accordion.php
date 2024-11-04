@@ -496,7 +496,6 @@ final class Accordion extends \Yiisoft\Widget\Widget
             )
             ->addContent("\n", $header, "\n")
             ->encode(false)
-            ->id(null)
             ->render();
     }
 }
