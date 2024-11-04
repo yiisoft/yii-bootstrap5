@@ -647,6 +647,37 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testHeaderAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header test-class">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->addItem(
+                    'Accordion Item #1',
+                    '<strong>This is the first item\'s accordion body.</strong>',
+                    'accordion-1'
+                )
+                ->headerAttributes(['class' => 'test-class'])
+                ->id('accordion')
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(

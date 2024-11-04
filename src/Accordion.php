@@ -231,6 +231,23 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML attributes for the accordion component in the header section.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function headerAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->headerAttributes = $values;
+
+        return $new;
+    }
+
+    /**
      * Sets the items of the accordion component.
      *
      * @param AccordionItem ...$values The items of the accordion component.
@@ -354,13 +371,18 @@ final class Accordion extends \Yiisoft\Widget\Widget
      */
     private function renderHeader(AccordionItem $accordionItem, string $idCollapse, bool $active): string
     {
+        $headerAttributes = $this->headerAttributes;
+        $classesHeaderAttributes = $headerAttributes['class'] ?? null;
+
+        unset($headerAttributes['class']);
+
         if ($this->headerTag === '') {
             throw new InvalidArgumentException('The "headerTag" property must be a non-empty string.');
         }
 
         return Html::tag($this->headerTag)
-            ->addAttributes($this->headerAttributes)
-            ->addClass(self::CLASS_HEADER)
+            ->addAttributes($headerAttributes)
+            ->addClass(self::CLASS_HEADER, $classesHeaderAttributes)
             ->addContent(
                 "\n",
                 $this->renderToggle($accordionItem->getHeader(), $idCollapse, $active),
