@@ -58,6 +58,34 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Adds one or more CSS classes to the existing classes of the accordion component.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $accordion->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
+
+        return $new;
+    }
+
+    /**
      * Sets the HTML attributes for the accordion component.
      *
      * @param array $values Attribute values indexed by attribute names.

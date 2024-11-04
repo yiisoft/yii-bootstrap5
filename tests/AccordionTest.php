@@ -26,7 +26,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show">
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
             <div class="accordion-body">
             <strong>This is the first item's accordion body.</strong>
             </div>
@@ -41,8 +41,60 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     '<strong>This is the first item\'s accordion body.</strong>',
                     'accordion-1'
                 )
-                ->alwaysOpen()
+                ->id('accordion')
                 ->render(),
+        );
+    }
+
+    public function testAddClass(): void
+    {
+        $accordion = Accordion::widget()
+            ->addClass('test-class', null)
+            ->addItem(
+                'Accordion Item #1',
+                '<strong>This is the first item\'s accordion body.</strong>',
+                'accordion-1'
+            )
+            ->id('accordion');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion test-class">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion test-class test-class-1 test-class-2">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="true" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            <strong>This is the first item's accordion body.</strong>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $accordion->addClass('test-class-1', 'test-class-2')->render(),
         );
     }
 
@@ -57,7 +109,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse show">
+            <div id="accordion-1" class="accordion-collapse collapse show" data-bs-parent="#accordion">
             <div class="accordion-body">
             <strong>This is the first item's accordion body.</strong>
             </div>
@@ -72,7 +124,6 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                     '<strong>This is the first item\'s accordion body.</strong>',
                     'accordion-1'
                 )
-                ->alwaysOpen()
                 ->id('accordion')
                 ->render(),
         );
@@ -322,6 +373,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $accordion = Accordion::widget();
 
         $this->assertNotSame($accordion, $accordion->addAttributes([]));
+        $this->assertNotSame($accordion, $accordion->addClass(''));
         $this->assertNotSame($accordion, $accordion->addItem('', ''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
         $this->assertNotSame($accordion, $accordion->attributes([]));
