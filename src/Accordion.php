@@ -58,6 +58,14 @@ final class Accordion extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    public function flush(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->cssClass['flush'] = $value ? 'accordion-flush' : null;
+
+        return $new;
+    }
+
     /**
      * Sets the items of the accordion component.
      *
@@ -166,7 +174,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $key => $item) {
-            $active = $key === 0;
+            $active = $key === 0 && !isset($this->cssClass['flush']);
             $items[] = $this->renderItem($item, $idParent, $active);
         }
 
