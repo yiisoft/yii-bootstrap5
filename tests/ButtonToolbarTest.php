@@ -55,7 +55,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
     public function testAddClass(): void
     {
         $buttonToolbar = ButtonToolbar::widget()
-            ->addClass('test-class')
+            ->addClass('test-class', null)
             ->ariaLabel('Toolbar with button groups')
             ->buttonGroups(
                 ButtonGroup::widget()
@@ -87,7 +87,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="btn-toolbar test-class test-class-1" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-toolbar test-class test-class-1 test-class-2" aria-label="Toolbar with button groups" role="toolbar">
             <div class="btn-group me-2" aria-label="First group" role="group">
             <button type="button" class="btn btn-primary">1</button>
             <button type="button" class="btn btn-primary">2</button>
@@ -96,7 +96,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
             </div>
             </div>
             HTML,
-            $buttonToolbar->addClass('test-class-1')->render(),
+            $buttonToolbar->addClass('test-class-1', 'test-class-2')->render(),
         );
     }
 
@@ -161,6 +161,40 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
                         )
                         ->id(false),
                 )
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-toolbar custom-class another-class" aria-label="Toolbar with button groups" role="toolbar">
+            <div class="btn-group me-2" aria-label="First group" role="group">
+            <button type="button" class="btn btn-primary">1</button>
+            <button type="button" class="btn btn-primary">2</button>
+            <button type="button" class="btn btn-primary">3</button>
+            <button type="button" class="btn btn-primary">4</button>
+            </div>
+            </div>
+            HTML,
+            ButtonToolbar::widget()
+                ->ariaLabel('Toolbar with button groups')
+                ->addClass('test-class')
+                ->buttonGroups(
+                    ButtonGroup::widget()
+                        ->addClass('me-2')
+                        ->ariaLabel('First group')
+                        ->buttons(
+                            Button::widget()->id(false)->label('1')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('2')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('3')->variant(ButtonVariant::PRIMARY),
+                            Button::widget()->id(false)->label('4')->variant(ButtonVariant::PRIMARY),
+                        )
+                        ->id(false),
+                )
+                ->class('custom-class', 'another-class')
+                ->id(false)
                 ->render(),
         );
     }
@@ -270,6 +304,7 @@ final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($buttonToolbar, $buttonToolbar->ariaLabel(''));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->attributes([]));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->buttonGroups());
+        $this->assertNotSame($buttonToolbar, $buttonToolbar->class(''));
         $this->assertNotSame($buttonToolbar, $buttonToolbar->id(false));
     }
 
