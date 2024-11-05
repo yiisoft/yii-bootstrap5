@@ -25,7 +25,7 @@ use function implode;
  *     ->links(
  *         new Link('Home', '#'),
  *         new Link('Library', '#'),
- *         new Link('Data'),
+ *         new Link('Data', active: true),
  *     )
  *     ->listId(false)
  *     ->render();
@@ -383,15 +383,16 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      */
     private function renderLink(Link $link): string
     {
-        $label = Html::encode($link->label);
+        $label = $link->getLabel();
+        $url = $link->getUrl();
 
-        return match ($link->url) {
+        return match ($url) {
             null => $label,
             default => A::tag()
                 ->attributes($this->linkAttributes)
                 ->addAttributes($link->getAttributes())
                 ->content($label)
-                ->url($link->url)
+                ->url($url)
                 ->encode(false)
                 ->render(),
         };

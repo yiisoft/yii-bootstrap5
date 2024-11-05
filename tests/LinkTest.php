@@ -13,11 +13,38 @@ use Yiisoft\Yii\Bootstrap5\Link;
  */
 final class LinkTest extends \PHPUnit\Framework\TestCase
 {
-    public function testImmutability(): void
+    public function testGetAttributes(): void
     {
-        $breacrumbLink = new Link();
+        $link = new Link('label', 'url', attributes: ['class' => 'test']);
 
-        $this->assertNotSame($breacrumbLink, $breacrumbLink->active(false));
-        $this->assertNotSame($breacrumbLink, $breacrumbLink->attributes([]));
+        $this->assertSame(['class' => 'test'], $link->getAttributes());
+    }
+
+    public function testGetLabel(): void
+    {
+        $label = new Link('<strong>label</strong>', 'url');
+
+        $this->assertSame('&lt;strong&gt;label&lt;/strong&gt;', $label->getLabel());
+    }
+
+    public function testGetLabelEncodeWithFalse(): void
+    {
+        $label = new Link('<strong>label</strong>', 'url', encodeLabel: false);
+
+        $this->assertSame('<strong>label</strong>', $label->getLabel());
+    }
+
+    public function testGetUrl(): void
+    {
+        $url = new Link('label', 'url');
+
+        $this->assertSame('url', $url->getUrl());
+    }
+
+    public function testIsActive(): void
+    {
+        $active = new Link('label', 'url', active: true);
+
+        $this->assertTrue($active->isActive());
     }
 }

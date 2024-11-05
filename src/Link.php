@@ -4,47 +4,32 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Html\Html;
+
+/**
+ * Link represents a single link in a {@see Breadcrumbs} widget.
+ *
+ * For example:
+ *
+ * ```php
+ * echo Breadcrumbs::widget()
+ *     ->links(
+ *         new Link('Home', '#'),
+ *         new Link('Library', '#'),
+ *         new Link('Data', active: true),
+ *     )
+ *     ->render();
+ * ```
+ */
 final class Link
 {
-    private array $attributes = [];
-    private bool $active = false;
-
     public function __construct(
-        public readonly string $label = '',
-        public readonly string|null $url = null,
+        private readonly string $label = '',
+        private readonly string|null $url = null,
+        private readonly bool $active = false,
+        private readonly bool $encodeLabel = true,
+        private readonly array $attributes = [],
     ) {
-    }
-
-    /**
-     * Sets the HTML attributes for the breadcrumb item.
-     *
-     * @param array $values Attribute values indexed by attribute names.
-     *
-     * @return self A new instance with the specified attributes.
-     *
-     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function attributes(array $values): self
-    {
-        $new = clone $this;
-        $new->attributes = $values;
-
-        return $new;
-    }
-
-    /**
-     * Sets the active state of the breadcrumb item.
-     *
-     * @param bool $value Whether the item is active.
-     *
-     * @return self A new instance with the specified active state.
-     */
-    public function active(bool $value = true): self
-    {
-        $new = clone $this;
-        $new->active = $value;
-
-        return $new;
     }
 
     /**
@@ -55,6 +40,26 @@ final class Link
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * Returns the encoded label content.
+     *
+     * @return string The encoded label content.
+     */
+    public function getLabel(): string
+    {
+        return $this->encodeLabel ? Html::encode($this->label) : $this->label;
+    }
+
+    /**
+     * Returns the URL for the breadcrumb item.
+     *
+     * @return string|null The URL.
+     */
+    public function getUrl(): string|null
+    {
+        return $this->url;
     }
 
     /**
