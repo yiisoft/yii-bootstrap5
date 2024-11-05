@@ -107,32 +107,6 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Adds a new item to the accordion.
-     *
-     * @param string $header The header of the item.
-     * @param string $body The body of the item.
-     * @param bool|string $id The ID of the item. If `true`, an ID will be generated automatically.
-     * @param bool $encodeHeader Whether to encode the header content. Default is `true`.
-     * @param bool $encodeBody Whether to encode the body content. Default is `true`.
-     * @param bool $active Whether the item is active. Default is `false`.
-     *
-     * @return self A new instance with the specified item.
-     */
-    public function addItem(
-        string $header,
-        string $body,
-        string|bool $id = true,
-        bool $encodeHeader = true,
-        bool $encodeBody = true,
-        bool $active = false
-    ): self {
-        $new = clone $this;
-        $new->items[] = new AccordionItem($header, $body, $id, $encodeHeader, $encodeBody, $active);
-
-        return $new;
-    }
-
-    /**
      * Sets the HTML attributes for the accordion component.
      *
      * @param array $values Attribute values indexed by attribute names.
