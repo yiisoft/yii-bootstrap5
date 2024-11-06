@@ -975,4 +975,9 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->render(),
         );
     }
+
+    public function testRenderWithEmptyItems(): void
+    {
+        $this->assertEmpty(Accordion::widget()->render());
+    }
 }

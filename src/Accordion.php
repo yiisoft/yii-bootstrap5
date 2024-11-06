@@ -287,6 +287,10 @@ final class Accordion extends \Yiisoft\Widget\Widget
 
         unset($attributes['class']);
 
+        if ($this->items === []) {
+            return '';
+        }
+
         /** @psalm-var non-empty-string $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
