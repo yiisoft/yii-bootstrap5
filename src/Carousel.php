@@ -8,6 +8,9 @@ use JsonException;
 use RuntimeException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Span;
 
 use function count;
 use function implode;
@@ -19,94 +22,59 @@ use function is_string;
  * For example:
  *
  * ```php
- * echo Carousel::widget()
- *     ->items([
- *         // the item contains only the image
- *         '<img src="https://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
- *         // equivalent to the above
- *         ['content' => '<img src="https://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-02.jpg"/>'],
- *         // the item contains both the image and the caption
- *         [
- *             'content' => '<img src="https://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-03.jpg"/>',
- *             'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
- *             'captionOptions' => ['class' => ['d-none', 'd-md-block']],
- *             'options' => [...],
- *         ],
- *     ]);
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.3/components/carousel/
  */
-final class Carousel extends Widget
+final class Carousel extends \Yiisoft\Widget\Widget
 {
-    private array $controls = [
-        '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
-        '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>',
-    ];
-    private bool $encodeTags = false;
-    private bool $showIndicators = true;
+    private const CLASS_IMAGE = 'd-block w-100';
+    private const CLASS_SLIDE = 'slide';
+    private const NAME = 'carousel';
+    private array $attributes = [];
+    private array $cssClass = [];
+    private bool|string $id = true;
     private array $items = [];
-    private bool $crossfade = false;
-    private array $options = ['data-bs-ride' => 'carousel'];
 
-    public function render(): string
-    {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($this->options, ['widget' => 'carousel', 'slide']);
-
-        if ($this->crossfade) {
-            Html::addCssClass($this->options, ['crossfade' => 'carousel-fade']);
-        }
-
-        return Html::div(
-            $this->renderIndicators() . $this->renderItems() . $this->renderControls(),
-            $this->options
-        )
-            ->encode($this->encodeTags)
-            ->render();
-    }
 
     /**
-     * The labels for the previous and the next control buttons.
+     * Set the carousel to crossfade slides instead of sliding.
      *
-     * If null, it means the previous and the next control buttons should not be displayed.
+     * @param bool|null $value Whether to crossfade slides or not.
+     *
+     * @return self A new instance with the specified crossfade value.
      */
-    public function controls(array $value): self
+    public function crossfade(bool|null $value): self
     {
         $new = clone $this;
-        $new->controls = $value;
+        $new->cssClass['crossfade'] = $value === true ? 'carousel-fade' : null;
 
         return $new;
     }
 
     /**
-     * Animate slides with a fade transition instead of a slide. Defaults to `false`.
+     * Sets the ID of the carousel component.
+     *
+     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID.
      */
-    public function withCrossfade(): self
+    public function id(bool|string $value): self
     {
         $new = clone $this;
-        $new->crossfade = true;
+        $new->id = $value;
 
         return $new;
     }
 
     /**
-     * List of slides in the carousel. Each array element represents a single slide with the following structure:
+     * Sets the items of the carousel component.
      *
-     * ```php
-     * [
-     *     // required, slide content (HTML), such as an image tag
-     *     'content' => '<img src="https://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
-     *     // optional, the caption (HTML) of the slide
-     *     'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
-     *     // optional the HTML attributes of the slide container
-     *     'options' => [],
-     * ]
-     * ```
+     * @param CarouselItem ...$value the items of the carousel component.
+     *
+     * @return self A new instance with the specified items.
      */
-    public function items(array $value): self
+    public function items(CarouselItem ...$value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -114,150 +82,110 @@ final class Carousel extends Widget
         return $new;
     }
 
-    /**
-     * The HTML attributes for the container tag. The following special options are recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
+    public function render(): string
     {
-        $new = clone $this;
-        $new->options = $value;
+        $attributes = $this->attributes;
+        $classes = $attributes['class'] ?? null;
 
-        return $new;
-    }
+        unset($attributes['class']);
 
-    /**
-     * Whether carousel indicators (<ol> tag with anchors to items) should be displayed or not.
-     */
-    public function withoutShowIndicators(): self
-    {
-        $new = clone $this;
-        $new->showIndicators = false;
-
-        return $new;
-    }
-
-    /**
-     * Renders carousel indicators.
-     */
-    private function renderIndicators(): string
-    {
-        if ($this->showIndicators === false) {
+        if ($this->items === []) {
             return '';
         }
 
-        $indicators = [];
+        /** @psalm-var non-empty-string|null $id */
+        $id = match ($this->id) {
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
 
-        for ($i = 0, $count = count($this->items); $i < $count; $i++) {
-            $options = ['data-bs-target' => '#' . $this->options['id'], 'data-bs-slide-to' => $i];
-            if ($i === 0) {
-                /** @psalm-suppress InvalidArgument */
-                Html::addCssClass($options, ['active' => 'active']);
-            }
-            $indicators[] = Html::tag('li', '', $options);
-        }
+        Html::addCssClass($attributes, [self::NAME, self::CLASS_SLIDE, $classes, ...$this->cssClass]);
 
-        $indicatorOptions = ['class' => ['carousel-indicators']];
-
-        return Html::tag('ol', implode("\n", $indicators), $indicatorOptions)
-            ->encode($this->encodeTags)
+        return Div::tag()
+            ->attributes($attributes)
+            ->addContent(
+                "\n",
+                $this->renderItems(),
+                "\n",
+                $this->renderControlPrev($id),
+                "\n",
+                $this->renderControlNext($id),
+                "\n",
+            )
+            ->encode(false)
+            ->id($id)
             ->render();
     }
 
-    /**
-     * Renders carousel items as specified on {@see items}.
-     */
     private function renderItems(): string
     {
         $items = [];
 
-        foreach ($this->items as $i => $iValue) {
-            $items[] = $this->renderItem($iValue, $i);
+        foreach ($this->items as $item) {
+            $items[] = $this->renderItem($item);
         }
 
-        $itemOptions = ['class' => 'carousel-inner'];
-
-        return Html::div(implode("\n", $items), $itemOptions)
-            ->encode($this->encodeTags)
+        return Div::tag()
+            ->addClass('carousel-inner')
+            ->addContent("\n" . implode("\n", $items) . "\n")
+            ->encode(false)
             ->render();
     }
 
-    /**
-     * Renders a single carousel item
-     *
-     * @param array|string $item a single item from {@see items}
-     * @param int $index the item index as the first item should be set to `active`
-     *
-     * @throws JsonException|RuntimeException if the item is invalid.
-     *
-     * @return string the rendering result.
-     */
-    private function renderItem(array|string $item, int $index): string
+    private function renderItem(CarouselItem $carouselItem): string
     {
-        if (is_string($item)) {
-            $content = $item;
-            $caption = null;
-            $options = [];
-        } elseif (isset($item['content'])) {
-            $content = $item['content'];
-            $caption = ArrayHelper::getValue($item, 'caption');
+        $image = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
 
-            if ($caption !== null) {
-                $captionOptions = ArrayHelper::remove($item, 'captionOptions', []);
-                Html::addCssClass($captionOptions, ['captionOptions' => 'carousel-caption']);
-
-                $caption = Html::div($caption, $captionOptions)
-                    ->encode($this->encodeTags)
-                    ->render();
-            }
-
-            $options = ArrayHelper::getValue($item, 'options', []);
-        } else {
-            throw new RuntimeException('The "content" option is required.');
-        }
-
-        Html::addCssClass($options, ['widget' => 'carousel-item']);
-
-        if ($index === 0) {
-            Html::addCssClass($options, ['active' => 'active']);
-        }
-
-        return Html::div($content . "\n" . $caption, $options)
-            ->encode($this->encodeTags)
+        return Div::tag()
+            ->addClass(
+                'carousel-item',
+                $carouselItem->isActive() ? 'active' : null
+            )
+            ->addContent("\n", $image, "\n")
+            ->encode(false)
             ->render();
     }
 
-    /**
-     * Renders previous and next control buttons.
-     *
-     * @throws JsonException|RuntimeException if {@see controls} is invalid.
-     */
-    private function renderControls(): string
+    private function renderControlPrev(string $id): string
     {
-        $controlsOptions0 = [
-            'class' => 'carousel-control-prev',
-            'data-bs-slide' => 'prev',
-            'role' => 'button',
-        ];
+        return Button::button('')
+            ->addAttributes(
+                [
+                    'data-bs-target' => '#' . $id,
+                    'data-bs-slide' => 'prev',
+                ],
+            )
+            ->addClass('carousel-control-prev')
+            ->addContent(
+                "\n",
+                Span::tag()->addAttributes(['aria-hidden' => 'true'])->addClass('carousel-control-prev-icon')->render(),
+                "\n",
+                Span::tag()->addClass('visually-hidden')->addContent('Previous')->render(),
+                "\n",
+            )
+            ->encode(false)
+            ->render();
+    }
 
-        $controlsOptions1 = [
-            'class' => 'carousel-control-next',
-            'data-bs-slide' => 'next',
-            'role' => 'button',
-        ];
-
-        if (isset($this->controls[0], $this->controls[1])) {
-            return Html::a($this->controls[0], '#' . $this->options['id'], $controlsOptions0)->encode($this->encodeTags) . "\n" .
-                Html::a($this->controls[1], '#' . $this->options['id'], $controlsOptions1)->encode($this->encodeTags);
-        }
-
-        if ($this->controls === []) {
-            return '';
-        }
-
-        throw new RuntimeException(
-            'The "controls" property must be either null or an array of two elements.'
-        );
+    private function renderControlNext(string $id): string
+    {
+        return Button::button('')
+            ->addAttributes(
+                [
+                    'data-bs-target' => '#' . $id,
+                    'data-bs-slide' => 'next',
+                ],
+            )
+            ->addClass('carousel-control-next')
+            ->addContent(
+                "\n",
+                Span::tag()->addAttributes(['aria-hidden' => 'true'])->addClass('carousel-control-next-icon')->render(),
+                "\n",
+                Span::tag()->addClass('visually-hidden')->addContent('Next')->render(),
+                "\n",
+            )
+            ->encode(false)
+            ->render();
     }
 }
