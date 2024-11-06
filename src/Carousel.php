@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use RuntimeException;
-use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Span;
 
-use function count;
 use function implode;
-use function is_string;
 
 /**
  * Carousel renders a carousel bootstrap javascript component.
@@ -35,7 +30,6 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private array $cssClass = [];
     private bool|string $id = true;
     private array $items = [];
-
 
     /**
      * Set the carousel to crossfade slides instead of sliding.
