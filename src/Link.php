@@ -7,19 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Html;
 
 /**
- * Link represents a single link in a {@see Breadcrumbs} widget.
- *
- * For example:
- *
- * ```php
- * echo Breadcrumbs::widget()
- *     ->links(
- *         new Link('Home', '#'),
- *         new Link('Library', '#'),
- *         new Link('Data', active: true),
- *     )
- *     ->render();
- * ```
+ * Represents a link.
  */
 final class Link
 {
@@ -33,7 +21,7 @@ final class Link
     }
 
     /**
-     * Returns the HTML attributes for the breadcrumb item.
+     * Returns the HTML attributes for the link.
      *
      * @return array The attributes.
      */
@@ -53,7 +41,7 @@ final class Link
     }
 
     /**
-     * Returns the URL for the breadcrumb item.
+     * Returns the URL for the link.
      *
      * @return string|null The URL.
      */
