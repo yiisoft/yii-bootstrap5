@@ -33,8 +33,8 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
                     new Link('Home', '/'),
-                    (new Link('Library', '#'))->active(),
-                    (new Link('Data', '#'))->active(false),
+                    new Link('Library', '#', active: true),
+                    new Link('Data', '#'),
                 )
                 ->listId(false)
                 ->render(),
@@ -50,8 +50,8 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             ->ariaLabel('Basic example of breadcrumbs')
             ->links(
                 new Link('Home', '/'),
-                (new Link('Library', '#'))->active(),
-                (new Link('Data', '#'))->active(),
+                new Link('Library', '#', active: true),
+                new Link('Data', '#', active: true),
             )
             ->listId(false)
             ->render();
@@ -64,7 +64,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             ->addClass('test-class', null)
             ->links(
                 new Link('Home', '/'),
-                (new Link('Library', '#'))->active(),
+                new Link('Library', '#', active: true),
                 new Link('Data', '#'),
             )
             ->listId(false);
@@ -114,7 +114,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -138,7 +138,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -162,7 +162,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -187,7 +187,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -214,7 +214,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -264,7 +264,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->itemActiveClass('test-active-class')
                 ->listId(false)
@@ -288,7 +288,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->itemAttributes(['class' => 'test-item-class'])
                 ->listId(false)
@@ -313,7 +313,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -335,9 +335,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    (new Link('Home', '/'))->attributes(['data-test' => 'test']),
+                    new Link('Home', '/', attributes: ['data-test' => 'test']),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -360,7 +360,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listAttributes(['class' => 'test-list-class'])
                 ->listId(false)
@@ -384,7 +384,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId('test-id')
                 ->render(),
@@ -407,7 +407,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId('')
                 ->render(),
@@ -430,7 +430,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -453,7 +453,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listAttributes(['id' => 'test-id'])
                 ->render(),
@@ -476,7 +476,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->listTagName('footer')
@@ -493,7 +493,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             ->links(
                 new Link('Home', '/'),
                 new Link('Library', '#'),
-                (new Link('Data'))->active(),
+                new Link('Data', active: true),
             )
             ->listTagName('')
             ->render();
@@ -523,7 +523,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->links(
                     new Link('Home', '#'),
                     new Link('Library', '#'),
-                    (new Link('Data'))->active(),
+                    new Link('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
