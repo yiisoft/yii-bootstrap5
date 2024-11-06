@@ -37,7 +37,6 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $bodyAttributes = [];
     private array $collapseAttributes = [];
     private array $cssClass = [];
-    private bool $flush = false;
     private array $headerAttributes = [];
     private string $headerTag = 'h2';
     private bool|string $id = true;
@@ -210,7 +209,6 @@ final class Accordion extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClass['flush'] = $value ? 'accordion-flush' : null;
-        $new->flush = $value;
 
         return $new;
     }
