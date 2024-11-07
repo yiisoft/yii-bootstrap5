@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
@@ -111,10 +112,10 @@ final class Carousel extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        /** @psalm-var non-empty-string|null $id */
+        /** @psalm-var non-empty-string $id */
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
+            '', false => throw new InvalidArgumentException('The "id" property must be a non-empty string or `true`.'),
             default => $this->id,
         };
 
