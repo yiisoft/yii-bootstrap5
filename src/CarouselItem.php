@@ -44,7 +44,7 @@ final class CarouselItem
     /**
      * Returns the image URL for the carrusel item.
      *
-     * @return string The image URL.
+     * @return Img The image URL.
      */
     public function getImage(): Img
     {

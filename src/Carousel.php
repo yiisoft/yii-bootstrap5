@@ -23,13 +23,22 @@ use function implode;
  */
 final class Carousel extends \Yiisoft\Widget\Widget
 {
+    private const CLASS_CAROUSEL_CONTROL_NEXT = 'carousel-control-next';
+    private const CLASS_CAROUSEL_CONTROL_NEXT_ICON = 'carousel-control-next-icon';
+    private const CLASS_CAROUSEL_CONTROL_PREV = 'carousel-control-prev';
+    private const CLASS_CAROUSEL_CONTROL_PREV_ICON = 'carousel-control-prev-icon';
+    private const CLASS_CAROUSEL_INDICATORS = 'carousel-indicators';
+    private const CLASS_CAROUSEL_INNER = 'carousel-inner';
+    private const CLASS_CAROUSEL_ITEM = 'carousel-item';
     private const CLASS_IMAGE = 'd-block w-100';
     private const CLASS_SLIDE = 'slide';
     private const NAME = 'carousel';
     private array $attributes = [];
     private array $cssClass = [];
     private bool|string $id = true;
+    /** @psalm-var CarouselItem[] */
     private array $items = [];
+    private bool $showIndicators = false;
 
     /**
      * Set the carousel to crossfade slides instead of sliding.
@@ -76,6 +85,21 @@ final class Carousel extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Whether to show indicators or not.
+     *
+     * @param bool $value Whether to show indicators or not. Default is `true`.
+     *
+     * @return self A new instance with the specified value.
+     */
+    public function showIndicators(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->showIndicators = $value;
+
+        return $new;
+    }
+
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -100,7 +124,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->attributes($attributes)
             ->addContent(
                 "\n",
-                $this->renderItems(),
+                $this->renderItems($id),
                 "\n",
                 $this->renderControlPrev($id),
                 "\n",
@@ -109,35 +133,6 @@ final class Carousel extends \Yiisoft\Widget\Widget
             )
             ->encode(false)
             ->id($id)
-            ->render();
-    }
-
-    private function renderItems(): string
-    {
-        $items = [];
-
-        foreach ($this->items as $item) {
-            $items[] = $this->renderItem($item);
-        }
-
-        return Div::tag()
-            ->addClass('carousel-inner')
-            ->addContent("\n" . implode("\n", $items) . "\n")
-            ->encode(false)
-            ->render();
-    }
-
-    private function renderItem(CarouselItem $carouselItem): string
-    {
-        $image = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
-
-        return Div::tag()
-            ->addClass(
-                'carousel-item',
-                $carouselItem->isActive() ? 'active' : null
-            )
-            ->addContent("\n", $image, "\n")
-            ->encode(false)
             ->render();
     }
 
@@ -150,10 +145,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
                     'data-bs-slide' => 'prev',
                 ],
             )
-            ->addClass('carousel-control-prev')
+            ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV)
             ->addContent(
                 "\n",
-                Span::tag()->addAttributes(['aria-hidden' => 'true'])->addClass('carousel-control-prev-icon')->render(),
+                Span::tag()
+                    ->addAttributes(['aria-hidden' => 'true'])
+                    ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV_ICON)
+                    ->render(),
                 "\n",
                 Span::tag()->addClass('visually-hidden')->addContent('Previous')->render(),
                 "\n",
@@ -171,14 +169,77 @@ final class Carousel extends \Yiisoft\Widget\Widget
                     'data-bs-slide' => 'next',
                 ],
             )
-            ->addClass('carousel-control-next')
+            ->addClass(self::CLASS_CAROUSEL_CONTROL_NEXT)
             ->addContent(
                 "\n",
-                Span::tag()->addAttributes(['aria-hidden' => 'true'])->addClass('carousel-control-next-icon')->render(),
+                Span::tag()
+                    ->addAttributes(['aria-hidden' => 'true'])
+                    ->addClass(self::CLASS_CAROUSEL_CONTROL_NEXT_ICON)
+                    ->render(),
                 "\n",
                 Span::tag()->addClass('visually-hidden')->addContent('Next')->render(),
                 "\n",
             )
+            ->encode(false)
+            ->render();
+    }
+
+    private function renderIndicator(int $key, CarouselItem $carouselItem, string $id): string
+    {
+        return Button::button('')
+            ->addAttributes(
+                [
+                    'data-bs-target' => '#' . $id,
+                    'data-bs-slide-to' => (string) $key,
+                    'aria-current' => $carouselItem->isActive() ? 'true' : null,
+                    'aria-label' => 'Slide ' . (string) ($key + 1),
+                ],
+            )
+            ->addClass($carouselItem->isActive() ? 'active' : null)
+            ->encode(false)
+            ->render();
+    }
+
+    private function renderItems(string $id): string
+    {
+        $items = [];
+        $indicators = [];
+        $renderIndicators = '';
+
+        foreach ($this->items as $key => $item) {
+            if ($this->showIndicators) {
+                $indicators[] = $this->renderIndicator($key, $item, $id);
+            }
+
+            $items[] = $this->renderItem($item);
+        }
+
+        if ($this->showIndicators) {
+            $renderIndicators = Div::tag()
+                ->addClass(self::CLASS_CAROUSEL_INDICATORS)
+                ->addContent("\n" . implode("\n", $indicators) . "\n")
+                ->encode(false)
+                ->render() . "\n";
+        }
+
+        return $renderIndicators .
+            Div::tag()
+                ->addClass(self::CLASS_CAROUSEL_INNER)
+                ->addContent("\n" . implode("\n", $items) . "\n")
+                ->encode(false)
+                ->render();
+    }
+
+    private function renderItem(CarouselItem $carouselItem): string
+    {
+        $image = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
+
+        return Div::tag()
+            ->addClass(
+                self::CLASS_CAROUSEL_ITEM,
+                $carouselItem->isActive() ? 'active' : null
+            )
+            ->addContent("\n", $image, "\n")
             ->encode(false)
             ->render();
     }
