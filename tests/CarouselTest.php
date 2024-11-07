@@ -18,6 +18,72 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 final class CarouselTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#captions
+     */
+    public function testCaptions(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptions" class="carousel slide carousel-fade">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <H5>First slide</H5>
+            <P>Some representative placeholder content for the first slide.</P>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <H5>Second slide</H5>
+            <P>Some representative placeholder content for the second slide.</P>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <H5>Third slide</H5>
+            <P>Some representative placeholder content for the third slide.</P>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleCaptions')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                    ),
+                )
+                ->crossfade()
+                ->render(),
+        );
+    }
+
+    /**
      * @link https://getbootstrap.com/docs/5.3/components/carousel/#crossfade
      */
     public function testCrossfade(): void

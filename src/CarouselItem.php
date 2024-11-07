@@ -15,8 +15,10 @@ final class CarouselItem
     public function __construct(
         private readonly Img $image,
         private readonly string $caption = '',
+        private readonly string $captionPlaceholder = '',
         private readonly bool $active = false,
         private readonly bool $encodeCaption = true,
+        private readonly bool $encodeCaptionPlaceholder = true,
         private readonly array $attributes = [],
     ) {
     }
@@ -39,6 +41,16 @@ final class CarouselItem
     public function getCaption(): string
     {
         return $this->encodeCaption ? Html::encode($this->caption) : $this->caption;
+    }
+
+    /**
+     * Returns the caption placeholder for the carrusel item.
+     *
+     * @return string The caption placeholder.
+     */
+    public function getCaptionPlaceholder(): string
+    {
+        return $this->encodeCaptionPlaceholder ? Html::encode($this->captionPlaceholder) : $this->captionPlaceholder;
     }
 
     /**

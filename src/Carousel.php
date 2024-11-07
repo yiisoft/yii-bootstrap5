@@ -24,6 +24,7 @@ use function implode;
  */
 final class Carousel extends \Yiisoft\Widget\Widget
 {
+    private const CLASS_CAROUSEL_CAPTION = 'carousel-caption d-none d-md-block';
     private const CLASS_CAROUSEL_CONTROL_NEXT = 'carousel-control-next';
     private const CLASS_CAROUSEL_CONTROL_NEXT_ICON = 'carousel-control-next-icon';
     private const CLASS_CAROUSEL_CONTROL_PREV = 'carousel-control-prev';
@@ -233,14 +234,32 @@ final class Carousel extends \Yiisoft\Widget\Widget
 
     private function renderItem(CarouselItem $carouselItem): string
     {
-        $image = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
+        $imageTag = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
+        $caption = $carouselItem->getCaption();
+
+        if ($caption !== '') {
+            $captionContainerTag = Div::tag()
+                ->addClass(self::CLASS_CAROUSEL_CAPTION)
+                ->addContent(
+                    "\n",
+                    Html::tag('H5')->addContent($caption),
+                    "\n",
+                    Html::tag('P')->addContent($carouselItem->getCaptionPlaceholder()),
+                    "\n"
+                ) . "\n";
+        }
 
         return Div::tag()
             ->addClass(
                 self::CLASS_CAROUSEL_ITEM,
                 $carouselItem->isActive() ? 'active' : null
             )
-            ->addContent("\n", $image, "\n")
+            ->addContent(
+                "\n",
+                $imageTag,
+                "\n",
+                $captionContainerTag ?? '',
+            )
             ->encode(false)
             ->render();
     }
