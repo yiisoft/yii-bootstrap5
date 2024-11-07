@@ -44,11 +44,11 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Set the carousel to crossfade slides instead of sliding.
      *
-     * @param bool|null $value Whether to crossfade slides or not.
+     * @param bool|null $value Whether to crossfade slides or not. Default is `true`.
      *
      * @return self A new instance with the specified crossfade value.
      */
-    public function crossfade(bool|null $value): self
+    public function crossfade(bool|null $value = true): self
     {
         $new = clone $this;
         $new->cssClass['crossfade'] = $value === true ? 'carousel-fade' : null;

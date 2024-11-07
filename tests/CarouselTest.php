@@ -17,6 +17,54 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class CarouselTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#crossfade
+     */
+    public function testCrossfade(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleFade" class="carousel slide carousel-fade">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleFade')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->crossfade()
+                ->render(),
+        );
+    }
+
     public function testId(): void
     {
         Assert::equalsWithoutLE(
