@@ -22,6 +22,21 @@ use function implode;
  * For example:
  *
  * ```php
+ * echo Carousel::widget()
+ *     ->id('carouselExample')
+ *     ->items(
+ *         new CarouselItem(
+ *             Img::tag()->alt('First slide')->src('image-1.jpg'),
+ *             active: true,
+ *         ),
+ *         new CarouselItem(
+ *             Img::tag()->alt('Second slide')->src('image-2.jpg'),
+ *         ),
+ *         new CarouselItem(
+ *             Img::tag()->alt('Third slide')->src('image-3.jpg'),
+ *         ),
+ *     )
+ *     ->render(),
  * ```
  *
  * @link https://getbootstrap.com/docs/5.3/components/carousel/
@@ -280,6 +295,11 @@ final class Carousel extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Run the carousel widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -314,6 +334,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the next control button.
+     *
+     * @param string $id The ID of the carousel component.
+     *
+     * @return string The HTML representation of the element.
+     */
     private function renderControlNext(string $id): string
     {
         return Button::button('')
@@ -338,6 +365,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the previous control button.
+     *
+     * @param string $id The ID of the carousel component.
+     *
+     * @return string The HTML representation of the element.
+     */
     private function renderControlPrev(string $id): string
     {
         return Button::button('')
@@ -362,6 +396,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the carousel indicators.
+     *
+     * @param string $id The ID of the carousel component.
+     *
+     * @return string The HTML representation of the element.
+     */
     private function renderIndicator(int $key, CarouselItem $carouselItem, string $id): string
     {
         return Button::button('')
@@ -378,6 +419,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the carousel items.
+     *
+     * @param string $id The ID of the carousel component.
+     *
+     * @return string The HTML representation of the element.
+     */
     private function renderItems(string $id): string
     {
         $items = [];
@@ -408,6 +456,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 ->render();
     }
 
+    /**
+     * Renders a carousel item.
+     *
+     * @param CarouselItem $carouselItem The carousel item to render.
+     *
+     * @return string The HTML representation of the element.
+     */
     private function renderItem(CarouselItem $carouselItem): string
     {
         $imageTag = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
