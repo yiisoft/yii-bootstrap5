@@ -165,7 +165,6 @@ final class Carousel extends \Yiisoft\Widget\Widget
         return $new;
     }
 
-
     /**
      * Sets the label for the next control button.
      *
