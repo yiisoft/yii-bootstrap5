@@ -8,8 +8,12 @@ use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\H5;
+use Yiisoft\Html\Tag\P;
 use Yiisoft\Html\Tag\Span;
 
+use function array_filter;
+use function array_merge;
 use function implode;
 
 /**
@@ -37,10 +41,160 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private const NAME = 'carousel';
     private array $attributes = [];
     private array $cssClass = [];
+    private bool $controls = true;
+    private string $controlNextLabel = 'Next';
+    private string $controlPrevLabel = 'Previous';
     private bool|string $id = true;
     /** @psalm-var CarouselItem[] */
     private array $items = [];
     private bool $showIndicators = false;
+
+    /**
+     * Adds a sets of attributes for the carousel component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-carousel']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * Adds one or more CSS classes to the existing classes of the carousel component.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $carousel->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     */
+    public function addClass(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_merge(
+            $new->cssClass,
+            array_filter($value, static fn ($v) => $v !== null)
+        );
+
+        return $new;
+    }
+
+    /**
+     * Adds a CSS style for the carousel component.
+     *
+     * @param array|string $value The CSS style for the carousel component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the carousel component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets the carousel to automatically cycle through the slides.
+     *
+     * @param bool|string $value Whether to automatically cycle through the slides or not. Default is `'carousel'`.
+     * If `false` or an empty string, the carousel will not automatically cycle.
+     *
+     * @return self A new instance with the specified auto-playing value.
+     */
+    public function autoPlaying(bool|string $value = 'carousel'): self
+    {
+        return $this->addAttributes(['data-bs-ride' => $value === false || $value === '' ? null : $value]);
+    }
+
+    /**
+     * Replaces all existing CSS classes of the carousel component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $carousel->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+
+        return $new;
+    }
+
+
+    /**
+     * Sets the label for the next control button.
+     *
+     * @param string $value The label for the next control button.
+     *
+     * @return self A new instance with the specified label for the next control button.
+     */
+    public function controlNextLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->controlNextLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the label for the previous control button.
+     *
+     * @param string $value The label for the previous control button.
+     *
+     * @return self A new instance with the specified label for the previous control button.
+     */
+    public function controlPrevLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->controlPrevLabel = $value;
+
+        return $new;
+    }
 
     /**
      * Set the carousel to crossfade slides instead of sliding.
@@ -55,6 +209,16 @@ final class Carousel extends \Yiisoft\Widget\Widget
         $new->cssClass['crossfade'] = $value === true ? 'carousel-fade' : null;
 
         return $new;
+    }
+
+    /**
+     * Disables the touch swipe functionality of the carousel.
+     *
+     * @return self A new instance with the touch swipe functionality disabled.
+     */
+    public function disableTouchSwiping(): self
+    {
+        return $this->addAttributes(['data-bs-touch' => 'false']);
     }
 
     /**
@@ -102,6 +266,21 @@ final class Carousel extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Whether to show the carousel controls or not.
+     *
+     * @param bool $value Whether to show the carousel controls or not. Default is `true`.
+     *
+     * @return self A new instance with the specified value.
+     */
+    public function withoutControls(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->controls = !$value;
+
+        return $new;
+    }
+
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -128,37 +307,11 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 "\n",
                 $this->renderItems($id),
                 "\n",
-                $this->renderControlPrev($id),
-                "\n",
-                $this->renderControlNext($id),
-                "\n",
+                $this->controls ? $this->renderControlPrev($id) . "\n" : '',
+                $this->controls ? $this->renderControlNext($id) . "\n" : '',
             )
             ->encode(false)
             ->id($id)
-            ->render();
-    }
-
-    private function renderControlPrev(string $id): string
-    {
-        return Button::button('')
-            ->addAttributes(
-                [
-                    'data-bs-target' => '#' . $id,
-                    'data-bs-slide' => 'prev',
-                ],
-            )
-            ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV)
-            ->addContent(
-                "\n",
-                Span::tag()
-                    ->addAttributes(['aria-hidden' => 'true'])
-                    ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV_ICON)
-                    ->render(),
-                "\n",
-                Span::tag()->addClass('visually-hidden')->addContent('Previous')->render(),
-                "\n",
-            )
-            ->encode(false)
             ->render();
     }
 
@@ -179,7 +332,31 @@ final class Carousel extends \Yiisoft\Widget\Widget
                     ->addClass(self::CLASS_CAROUSEL_CONTROL_NEXT_ICON)
                     ->render(),
                 "\n",
-                Span::tag()->addClass('visually-hidden')->addContent('Next')->render(),
+                Span::tag()->addClass('visually-hidden')->addContent($this->controlNextLabel)->render(),
+                "\n",
+            )
+            ->encode(false)
+            ->render();
+    }
+
+    private function renderControlPrev(string $id): string
+    {
+        return Button::button('')
+            ->addAttributes(
+                [
+                    'data-bs-target' => '#' . $id,
+                    'data-bs-slide' => 'prev',
+                ],
+            )
+            ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV)
+            ->addContent(
+                "\n",
+                Span::tag()
+                    ->addAttributes(['aria-hidden' => 'true'])
+                    ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV_ICON)
+                    ->render(),
+                "\n",
+                Span::tag()->addClass('visually-hidden')->addContent($this->controlPrevLabel)->render(),
                 "\n",
             )
             ->encode(false)
@@ -242,9 +419,9 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 ->addClass(self::CLASS_CAROUSEL_CAPTION)
                 ->addContent(
                     "\n",
-                    Html::tag('H5')->addContent($caption),
+                    H5::tag()->addContent($caption),
                     "\n",
-                    Html::tag('P')->addContent($carouselItem->getCaptionPlaceholder()),
+                    P::tag()->addContent($carouselItem->getCaptionPlaceholder()),
                     "\n"
                 ) . "\n";
         }
@@ -254,6 +431,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 self::CLASS_CAROUSEL_ITEM,
                 $carouselItem->isActive() ? 'active' : null
             )
+            ->addAttributes(['data-bs-interval' => $carouselItem->getAutoPlayingInterval()])
             ->addContent(
                 "\n",
                 $imageTag,

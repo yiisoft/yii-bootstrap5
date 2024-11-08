@@ -16,6 +16,7 @@ final class CarouselItem
         private readonly Img $image,
         private readonly string $caption = '',
         private readonly string $captionPlaceholder = '',
+        private readonly int|null $autoPlayingInterval = null,
         private readonly bool $active = false,
         private readonly bool $encodeCaption = true,
         private readonly bool $encodeCaptionPlaceholder = true,
@@ -31,6 +32,16 @@ final class CarouselItem
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * Returns the auto playing interval for the carrusel item.
+     *
+     * @return int|null The auto playing interval.
+     */
+    public function getAutoPlayingInterval(): int|null
+    {
+        return $this->autoPlayingInterval;
     }
 
     /**
