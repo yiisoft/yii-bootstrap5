@@ -481,7 +481,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
                     "\n",
                     H5::tag()->addContent($contentCaption),
                     "\n",
-                    P::tag()->addContent($carouselItem->getContentCaptionPlaceholder()),
+                    P::tag()->addContent($carouselItem->getContentCaptionPlaceholder() ?? ''),
                     "\n"
                 ) . "\n";
         }
