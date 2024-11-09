@@ -464,72 +464,75 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @link https://getbootstrap.com/docs/5.3/components/carousel/#captions
-     */
-    public function testCaptions(): void
+    public function testCaptionAndPlaceholderWithAttributes(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExampleCaptions" class="carousel slide">
+            <div id="carouselExampleCaptionsCustomTagName" class="carousel slide">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             <div class="carousel-caption d-none d-md-block">
-            <h5>First slide</h5>
-            <p>Some representative placeholder content for the first slide.</p>
+            <h5 class="bg-primary text-center">First slide</h5>
+            <p class="bg-success">Some representative placeholder content for the first slide.</p>
             </div>
             </div>
             <div class="carousel-item">
             <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
             <div class="carousel-caption d-none d-md-block">
-            <h5>Second slide</h5>
-            <p>Some representative placeholder content for the second slide.</p>
+            <h5 class="bg-success text-center">Second slide</h5>
+            <p class="bg-danger">Some representative placeholder content for the second slide.</p>
             </div>
             </div>
             <div class="carousel-item">
             <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
             <div class="carousel-caption d-none d-md-block">
-            <h5>Third slide</h5>
-            <p>Some representative placeholder content for the third slide.</p>
+            <h5 class="bg-danger text-center">Third slide</h5>
+            <p class="bg-warning">Some representative placeholder content for the third slide.</p>
             </div>
             </div>
             </div>
-            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
             </button>
-            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
             </button>
             </div>
             HTML,
             Carousel::widget()
-                ->id('carouselExampleCaptions')
+                ->id('carouselExampleCaptionsCustomTagName')
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
                         'First slide',
                         'Some representative placeholder content for the first slide.',
                         active: true,
+                        captionAttributes: ['class' => 'bg-primary text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-success'],
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
                         'Second slide',
                         'Some representative placeholder content for the second slide.',
+                        captionAttributes: ['class' => 'bg-success text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-danger'],
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Third slide')->src('image-3.jpg'),
                         'Third slide',
                         'Some representative placeholder content for the third slide.',
+                        captionAttributes: ['class' => 'bg-danger text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-warning'],
                     ),
                 )
                 ->render(),
         );
     }
 
-    public function testCaptionsWithCustomTagName(): void
+    public function testCaptionWithCustomTagName(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -633,6 +636,71 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ),
             )
             ->render();
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#captions
+     */
+    public function testCaptions(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>First slide</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>Second slide</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleCaptions')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                    ),
+                )
+                ->render(),
+        );
     }
 
     public function testClass(): void

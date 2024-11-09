@@ -502,9 +502,9 @@ final class Carousel extends \Yiisoft\Widget\Widget
             $content = $content->addClass(self::CLASS_IMAGE);
         }
 
-        $contentCaption = $carouselItem->getContentCaption();
+        $caption = $carouselItem->getCaption();
 
-        if (empty($contentCaption) !== true) {
+        if (empty($caption) !== true) {
             if ($this->captionTagName === '' || $this->captionPlaceholderTagName === '') {
                 throw new InvalidArgumentException(
                     'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
@@ -515,10 +515,13 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 ->addClass(self::CLASS_CAROUSEL_CAPTION)
                 ->addContent(
                     "\n",
-                    html::tag($this->captionTagName)->addContent($contentCaption),
+                    html::tag($this->captionTagName)
+                        ->addAttributes($carouselItem->getCaptionAttributes())
+                        ->addContent($caption),
                     "\n",
                     html::tag($this->captionPlaceholderTagName)
-                        ->addContent($carouselItem->getContentCaptionPlaceholder() ?? ''),
+                        ->addAttributes($carouselItem->getCaptionPlaceholderAttributes())
+                        ->addContent($carouselItem->getcaptionPlaceholder() ?? ''),
                     "\n"
                 ) . "\n";
         }

@@ -15,13 +15,15 @@ final class CarouselItem
 {
     public function __construct(
         private readonly string|Stringable|Img $content = '',
-        private readonly string|null $contentCaption = null,
-        private readonly string|null $contentCaptionPlaceholder = null,
+        private readonly string|null $caption = null,
+        private readonly string|null $captionPlaceholder = null,
         private readonly int|null $autoPlayingInterval = null,
         private readonly bool $active = false,
-        private readonly bool $encodeContentCaption = true,
-        private readonly bool $encodeContentCaptionPlaceholder = true,
+        private readonly bool $encodeCaption = true,
+        private readonly bool $encodeCaptionPlaceholder = true,
         private readonly array $attributes = [],
+        private readonly array $captionAttributes = [],
+        private readonly array $captionPlaceholderAttributes = [],
     ) {
     }
 
@@ -42,29 +44,43 @@ final class CarouselItem
     }
 
     /**
+     * @return string|null Returns the caption content for the carrusel item.
+     */
+    public function getCaption(): string|null
+    {
+        return $this->encodeCaption ? Html::encode($this->caption) : $this->caption;
+    }
+
+    /**
+     * @return array Returns the HTML attributes for the caption.
+     */
+    public function getCaptionAttributes(): array
+    {
+        return $this->captionAttributes;
+    }
+
+    /**
+     * @return string|null Returns the caption placeholder content for the carrusel item.
+     */
+    public function getCaptionPlaceholder(): string|null
+    {
+        return $this->encodeCaptionPlaceholder ? Html::encode($this->captionPlaceholder) : $this->captionPlaceholder;
+    }
+
+    /**
+     * @return array Returns the HTML attributes for the caption placeholder.
+     */
+    public function getCaptionPlaceholderAttributes(): array
+    {
+        return $this->captionPlaceholderAttributes;
+    }
+
+    /**
      * @return Img|string|Stringable Returns the content for the carrusel item.
      */
     public function getContent(): string|Stringable|Img
     {
         return $this->content;
-    }
-
-    /**
-     * @return string|null Returns the caption content for the carrusel item.
-     */
-    public function getContentCaption(): string|null
-    {
-        return $this->encodeContentCaption
-            ? Html::encode($this->contentCaption) : $this->contentCaption;
-    }
-
-    /**
-     * @return string|null Returns the caption placeholder for the carrusel item.
-     */
-    public function getContentCaptionPlaceholder(): string|null
-    {
-        return $this->encodeContentCaptionPlaceholder
-            ? Html::encode($this->contentCaptionPlaceholder) : $this->contentCaptionPlaceholder;
     }
 
     /**
