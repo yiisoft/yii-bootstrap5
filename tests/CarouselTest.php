@@ -471,7 +471,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExampleCaptions" class="carousel slide carousel-fade">
+            <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -525,9 +525,114 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         'Some representative placeholder content for the third slide.',
                     ),
                 )
-                ->crossfade()
                 ->render(),
         );
+    }
+
+    public function testCaptionsWithCustomTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptionsCustomTagName" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>First slide</h2>
+            <span>Some representative placeholder content for the first slide.</span>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>Second slide</h2>
+            <span>Some representative placeholder content for the second slide.</span>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>Third slide</h2>
+            <span>Some representative placeholder content for the third slide.</span>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->captionTagName('h2')
+                ->captionPlaceholderTagName('span')
+                ->id('carouselExampleCaptionsCustomTagName')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testCaptionTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
+        );
+
+        Carousel::widget()
+            ->captionTagName('')
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    'First slide',
+                    'Some representative placeholder content for the first slide.',
+                    active: true,
+                ),
+            )
+            ->render();
+    }
+
+    public function testCaptionPlaceholderTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
+        );
+
+        Carousel::widget()
+            ->captionPlaceholderTagName('')
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    'First slide',
+                    'Some representative placeholder content for the first slide.',
+                    active: true,
+                ),
+            )
+            ->render();
     }
 
     public function testClass(): void
@@ -778,6 +883,8 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($carousel, $carousel->attributes([]));
         $this->assertNotSame($carousel, $carousel->autoPlaying('false'));
         $this->assertNotSame($carousel, $carousel->class(''));
+        $this->assertNotSame($carousel, $carousel->captionTagName(''));
+        $this->assertNotSame($carousel, $carousel->captionPlaceholderTagName(''));
         $this->assertNotSame($carousel, $carousel->controlNextLabel(''));
         $this->assertNotSame($carousel, $carousel->controlPrevLabel(''));
         $this->assertNotSame($carousel, $carousel->crossfade(false));

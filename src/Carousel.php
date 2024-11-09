@@ -8,9 +8,7 @@ use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
-use Yiisoft\Html\Tag\H5;
 use Yiisoft\Html\Tag\Img;
-use Yiisoft\Html\Tag\P;
 use Yiisoft\Html\Tag\Span;
 
 use function array_filter;
@@ -58,6 +56,8 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private array $cssClass = [];
     private bool $controls = true;
+    private string $captionTagName = 'h5';
+    private string $captionPlaceholderTagName = 'p';
     private string $controlNextLabel = 'Next';
     private string $controlPrevLabel = 'Previous';
     private bool|string $id = true;
@@ -177,6 +177,36 @@ final class Carousel extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+
+        return $new;
+    }
+
+    /**
+     * Sets the tag name for the content caption.
+     *
+     * @param string $value The tag name for the content caption.
+     *
+     * @return self A new instance with the specified tag name for the content caption.
+     */
+    public function captionTagName(string $value): self
+    {
+        $new = clone $this;
+        $new->captionTagName = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the tag name for the content caption placeholder.
+     *
+     * @param string $value The tag name for the content caption placeholder.
+     *
+     * @return self A new instance with the specified tag name for the content caption placeholder.
+     */
+    public function captionPlaceholderTagName(string $value): self
+    {
+        $new = clone $this;
+        $new->captionPlaceholderTagName = $value;
 
         return $new;
     }
@@ -475,13 +505,20 @@ final class Carousel extends \Yiisoft\Widget\Widget
         $contentCaption = $carouselItem->getContentCaption();
 
         if (empty($contentCaption) !== true) {
+            if ($this->captionTagName === '' || $this->captionPlaceholderTagName === '') {
+                throw new InvalidArgumentException(
+                    'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
+                );
+            }
+
             $captionContainerTag = Div::tag()
                 ->addClass(self::CLASS_CAROUSEL_CAPTION)
                 ->addContent(
                     "\n",
-                    H5::tag()->addContent($contentCaption),
+                    html::tag($this->captionTagName)->addContent($contentCaption),
                     "\n",
-                    P::tag()->addContent($carouselItem->getContentCaptionPlaceholder() ?? ''),
+                    html::tag($this->captionPlaceholderTagName)
+                        ->addContent($carouselItem->getContentCaptionPlaceholder() ?? ''),
                     "\n"
                 ) . "\n";
         }
