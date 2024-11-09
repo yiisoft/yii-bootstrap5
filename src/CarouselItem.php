@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Img;
 
@@ -13,21 +14,19 @@ use Yiisoft\Html\Tag\Img;
 final class CarouselItem
 {
     public function __construct(
-        private readonly Img $image,
-        private readonly string $caption = '',
-        private readonly string $captionPlaceholder = '',
+        private readonly string|Stringable|Img $content = '',
+        private readonly string|null $contentCaption = null,
+        private readonly string|null $contentCaptionPlaceholder = null,
         private readonly int|null $autoPlayingInterval = null,
         private readonly bool $active = false,
-        private readonly bool $encodeCaption = true,
-        private readonly bool $encodeCaptionPlaceholder = true,
+        private readonly bool $encodeContentCaption = true,
+        private readonly bool $encodeContentCaptionPlaceholder = true,
         private readonly array $attributes = [],
     ) {
     }
 
     /**
-     * Returns the HTML attributes for the carrusel item.
-     *
-     * @return array The attributes.
+     * @return array Returns the HTML attributes for the carrusel item.
      */
     public function getAttributes(): array
     {
@@ -35,9 +34,7 @@ final class CarouselItem
     }
 
     /**
-     * Returns the auto playing interval for the carrusel item.
-     *
-     * @return int|null The auto playing interval.
+     * @return int|null Returns the auto playing interval for the carrusel item.
      */
     public function getAutoPlayingInterval(): int|null
     {
@@ -45,33 +42,29 @@ final class CarouselItem
     }
 
     /**
-     * Returns the encoded caption content for the carrusel item.
-     *
-     * @return string The encoded caption content.
+     * @return string|Stringable|Img Returns the content for the carrusel item.
      */
-    public function getCaption(): string
+    public function getContent(): string|Stringable|Img
     {
-        return $this->encodeCaption ? Html::encode($this->caption) : $this->caption;
+        return $this->content;
     }
 
     /**
-     * Returns the caption placeholder for the carrusel item.
-     *
-     * @return string The caption placeholder.
+     * @return string|null Returns the caption content for the carrusel item.
      */
-    public function getCaptionPlaceholder(): string
+    public function getContentCaption(): string|null
     {
-        return $this->encodeCaptionPlaceholder ? Html::encode($this->captionPlaceholder) : $this->captionPlaceholder;
+        return $this->encodeContentCaption
+            ? Html::encode($this->contentCaption) : $this->contentCaption;
     }
 
     /**
-     * Returns the image URL for the carrusel item.
-     *
-     * @return Img The image URL.
+     * @return string|null Returns the caption placeholder for the carrusel item.
      */
-    public function getImage(): Img
+    public function getContentCaptionPlaceholder(): string|null
     {
-        return $this->image;
+        return $this->encodeContentCaptionPlaceholder
+            ? Html::encode($this->contentCaptionPlaceholder) : $this->contentCaptionPlaceholder;
     }
 
     /**

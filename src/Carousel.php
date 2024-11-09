@@ -9,6 +9,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\H5;
+use Yiisoft\Html\Tag\Img;
 use Yiisoft\Html\Tag\P;
 use Yiisoft\Html\Tag\Span;
 
@@ -465,17 +466,22 @@ final class Carousel extends \Yiisoft\Widget\Widget
      */
     private function renderItem(CarouselItem $carouselItem): string
     {
-        $imageTag = $carouselItem->getImage()->addClass(self::CLASS_IMAGE);
-        $caption = $carouselItem->getCaption();
+        $content = $carouselItem->getcontent();
 
-        if ($caption !== '') {
+        if ($content instanceof Img) {
+            $content = $content->addClass(self::CLASS_IMAGE);
+        }
+
+        $contentCaption = $carouselItem->getContentCaption();
+
+        if (empty($contentCaption) !== true) {
             $captionContainerTag = Div::tag()
                 ->addClass(self::CLASS_CAROUSEL_CAPTION)
                 ->addContent(
                     "\n",
-                    H5::tag()->addContent($caption),
+                    H5::tag()->addContent($contentCaption),
                     "\n",
-                    P::tag()->addContent($carouselItem->getCaptionPlaceholder()),
+                    P::tag()->addContent($carouselItem->getContentCaptionPlaceholder()),
                     "\n"
                 ) . "\n";
         }
@@ -488,7 +494,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
             ->addAttributes(['data-bs-interval' => $carouselItem->getAutoPlayingInterval()])
             ->addContent(
                 "\n",
-                $imageTag,
+                $content,
                 "\n",
                 $captionContainerTag ?? '',
             )

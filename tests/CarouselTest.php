@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\H2;
 use Yiisoft\Html\Tag\Img;
+use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Carousel;
 use Yiisoft\Yii\Bootstrap5\CarouselItem;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
@@ -831,6 +834,83 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testRenderWithOnlyText(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleOnlyText" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <div class="bg-primary text-white p-5 text-center">
+            <h2>Title 1</h2>
+            <p>This is the first slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-success text-white p-5 text-center">
+            <h2>Title 2</h2>
+            <p>This is the second slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-danger text-white p-5 text-center">
+            <h2>Title 3</h2>
+            <p>This is the third slide with text.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleOnlyText" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleOnlyText" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleOnlyText')
+                ->items(
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-primary text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 1'),
+                                "\n",
+                                P::tag()->content('This is the first slide with text.'),
+                                "\n",
+                            ),
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-success text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 2'),
+                                "\n",
+                                P::tag()->content('This is the second slide with text.'),
+                                "\n",
+                            ),
+                    ),
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-danger text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 3'),
+                                "\n",
+                                P::tag()->content('This is the third slide with text.'),
+                                "\n",
+                            ),
                     ),
                 )
                 ->render(),
