@@ -840,7 +840,80 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testRenderWithOnlyText(): void
+    public function testRenderWithEmptyItems(): void
+    {
+        $this->assertEmpty(Carousel::widget()->render());
+    }
+
+    public function testRenderWithOnlyTextWithString(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleOnlyText" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <div class="bg-primary text-white p-5 text-center">
+            <h2>Title 1</h2>
+            <p>This is the first slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-success text-white p-5 text-center">
+            <h2>Title 2</h2>
+            <p>This is the second slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-danger text-white p-5 text-center">
+            <h2>Title 3</h2>
+            <p>This is the third slide with text.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleOnlyText" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleOnlyText" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleOnlyText')
+                ->items(
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-primary text-white p-5 text-center">
+                        <h2>Title 1</h2>
+                        <p>This is the first slide with text.</p>
+                        </div>
+                        HTML,
+                        active: true,
+                    ),
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-success text-white p-5 text-center">
+                        <h2>Title 2</h2>
+                        <p>This is the second slide with text.</p>
+                        </div>
+                        HTML,
+                    ),
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-danger text-white p-5 text-center">
+                        <h2>Title 3</h2>
+                        <p>This is the third slide with text.</p>
+                        </div>
+                        HTML,
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testRenderWithOnlyTextStringable(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -915,11 +988,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 )
                 ->render(),
         );
-    }
-
-    public function testRenderWithEmptyItems(): void
-    {
-        $this->assertEmpty(Carousel::widget()->render());
     }
 
     /**
