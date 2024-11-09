@@ -60,10 +60,10 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
     {
         $carouselItem = new CarouselItem(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
-            contentCaption: 'First slide',
+            contentCaption: '<strong>First slide</strong>',
         );
 
-        $this->assertSame('First slide', $carouselItem->getContentCaption());
+        $this->assertSame('&lt;strong&gt;First slide&lt;/strong&gt;', $carouselItem->getContentCaption());
     }
 
     public function testGetContentCaptionEncodeWithFalse(): void
