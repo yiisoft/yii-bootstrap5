@@ -42,7 +42,7 @@ final class CarouselItem
     }
 
     /**
-     * @return string|Stringable|Img Returns the content for the carrusel item.
+     * @return Img|string|Stringable Returns the content for the carrusel item.
      */
     public function getContent(): string|Stringable|Img
     {
