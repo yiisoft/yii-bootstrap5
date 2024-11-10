@@ -312,6 +312,18 @@ final class Carousel extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the theme for the carousel component.
+     *
+     * @param string|null $value The theme for the carousel component.
+     *
+     * @return self A new instance with the specified theme.
+     */
+    public function theme(string|null $value): self
+    {
+        return $this->addAttributes(['data-bs-theme' => $value]);
+    }
+
+    /**
      * Whether to show the carousel controls or not.
      *
      * @param bool $value Whether to show the carousel controls or not. Default is `true`.
