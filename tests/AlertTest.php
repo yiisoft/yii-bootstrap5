@@ -258,6 +258,14 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testDimissableWithCloseButtonWithTagNameEmpty(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Button tag cannot be empty string.');
+
+        Alert::widget()->closeButtonTag('')->dismissable(true)->render();
+    }
+
     public function testHeader(): void
     {
         Assert::equalsWithoutLE(
