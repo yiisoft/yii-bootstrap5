@@ -34,6 +34,8 @@ final class Alert extends \Yiisoft\Widget\Widget
     private string|Stringable $body = '';
     private array $cssClass = [];
     private array $closeButtonAttributes = [];
+    private string|null $closeButtonTag = null;
+    private string $closeButtonLabel = '';
     private bool $dismissable = false;
     private bool $fade = false;
     private string|null $header = null;
@@ -179,6 +181,36 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->closeButtonAttributes = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the label for the close button.
+     *
+     * @param string $value The label for the close button.
+     *
+     * @return self A new instance with the specified close button label.
+     */
+    public function closeButtonLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->closeButtonLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML tag to be used for the close button.
+     *
+     * @param string $value The HTML tag name for the close button.
+     *
+     * @return self A new instance with the specified close button tag.
+     */
+    public function closeButtonTag(string $value): self
+    {
+        $new = clone $this;
+        $new->closeButtonTag = $value;
 
         return $new;
     }
@@ -397,13 +429,19 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     private function renderToggle(): string
     {
+        $buttonTag = match ($this->closeButtonTag) {
+            null => Button::button(''),
+            '' => throw new InvalidArgumentException('Button tag cannot be empty string.'),
+            default => Html::tag($this->closeButtonTag),
+        };
+
         $closeButtonAttributes = $this->closeButtonAttributes;
 
-        $closeButtonAttributes['data-bs-dismiss'] = self::NAME;
-        $closeButtonAttributes['aria-label'] = 'Close';
+        $closeButtonAttributes['data-bs-dismiss'] ??= self::NAME;
+        $closeButtonAttributes['aria-label'] ??= 'Close';
 
         Html::addCssClass($closeButtonAttributes, 'btn-close');
 
-        return Button::button('')->addAttributes($closeButtonAttributes)->render();
+        return $buttonTag->addAttributes($closeButtonAttributes)->addContent($this->closeButtonLabel)->render();
     }
 }
