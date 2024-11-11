@@ -10,6 +10,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
+use function array_key_exists;
 use function array_merge;
 use function array_filter;
 use function preg_replace;
