@@ -209,6 +209,24 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testDimissableWithCloseButtonWithAriaLabelNullAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['aria-label' => null])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
     public function testDimissableWithCloseButtonWithDataBsDismissAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -221,6 +239,24 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             Alert::widget()
                 ->body('Body')
                 ->closeButtonAttributes(['data-bs-dismiss' => 'my-component'])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithDataBsDismissNullAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['data-bs-dismiss' => null])
                 ->dismissable(true)
                 ->id(false)
                 ->render(),

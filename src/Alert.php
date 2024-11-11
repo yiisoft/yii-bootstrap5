@@ -437,8 +437,13 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $closeButtonAttributes = $this->closeButtonAttributes;
 
-        $closeButtonAttributes['data-bs-dismiss'] ??= self::NAME;
-        $closeButtonAttributes['aria-label'] ??= 'Close';
+        if (array_key_exists('data-bs-dismiss', $closeButtonAttributes) === false) {
+            $closeButtonAttributes['data-bs-dismiss'] = 'alert';
+        }
+
+        if (array_key_exists('aria-label', $closeButtonAttributes) === false) {
+            $closeButtonAttributes['aria-label'] = 'Close';
+        }
 
         Html::addCssClass($closeButtonAttributes, 'btn-close');
 
