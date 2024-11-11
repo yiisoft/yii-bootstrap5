@@ -186,7 +186,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the label for the close button.
+     * Sets the label for the close button in the alert component.
      *
      * @param string $value The label for the close button.
      *
@@ -201,7 +201,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the HTML tag to be used for the close button.
+     * Sets the HTML tag to be used for the close button in the alert component.
      *
      * @param string $value The HTML tag name for the close button.
      *
