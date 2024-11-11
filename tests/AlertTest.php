@@ -179,7 +179,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="test" class="alert alert-secondary alert-dismissible" role="alert">
             Body
-            <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-lg" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             HTML,
             Alert::widget()

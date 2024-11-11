@@ -29,6 +29,7 @@ use function strtr;
  */
 final class Alert extends \Yiisoft\Widget\Widget
 {
+    private const CLASS_CLOSE_BUTTON = 'btn-close';
     private const NAME = 'alert';
     private array $attributes = [];
     private AlertVariant $alertType = AlertVariant::SECONDARY;
@@ -440,6 +441,10 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         $closeButtonAttributes = $this->closeButtonAttributes;
 
+        $classesButton = $closeButtonAttributes['class'] ?? null;
+
+        unset($closeButtonAttributes['class']);
+
         if (array_key_exists('data-bs-dismiss', $closeButtonAttributes) === false) {
             $closeButtonAttributes['data-bs-dismiss'] = 'alert';
         }
@@ -448,7 +453,7 @@ final class Alert extends \Yiisoft\Widget\Widget
             $closeButtonAttributes['aria-label'] = 'Close';
         }
 
-        Html::addCssClass($closeButtonAttributes, 'btn-close');
+        Html::addCssClass($closeButtonAttributes, [self::CLASS_CLOSE_BUTTON, $classesButton]);
 
         return $buttonTag->addAttributes($closeButtonAttributes)->addContent($this->closeButtonLabel)->render();
     }
