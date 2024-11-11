@@ -297,7 +297,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testDimissableWithCloseButtonWithTagNameEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Button tag cannot be empty string.');
+        $this->expectExceptionMessage('Close button tag cannot be empty string.');
 
         Alert::widget()->closeButtonTag('')->dismissable(true)->render();
     }
@@ -324,7 +324,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeaderTagException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tag cannot be empty string.');
+        $this->expectExceptionMessage('Header tag cannot be empty string.');
 
         Alert::widget()->header('Header')->headerTag('')->render();
     }

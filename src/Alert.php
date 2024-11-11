@@ -417,7 +417,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         Html::addCssClass($headerAttributes, 'alert-heading');
 
         if ($this->headerTag === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
+            throw new InvalidArgumentException('Header tag cannot be empty string.');
         }
 
         return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();
@@ -426,13 +426,15 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Render toggle component.
      *
+     * @throws InvalidArgumentException if the close button tag is an empty string.
+     *
      * @return string The rendered toggle component.
      */
     private function renderToggle(): string
     {
         $buttonTag = match ($this->closeButtonTag) {
             null => Button::button(''),
-            '' => throw new InvalidArgumentException('Button tag cannot be empty string.'),
+            '' => throw new InvalidArgumentException('Close button tag cannot be empty string.'),
             default => Html::tag($this->closeButtonTag),
         };
 
