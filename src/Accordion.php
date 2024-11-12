@@ -9,6 +9,11 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
+use function array_filter;
+use function array_key_exists;
+use function array_merge;
+use function implode;
+
 /**
  * Accordion renders an accordion bootstrap JavaScript component.
  *
@@ -31,6 +36,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private const CLASS_HEADER = 'accordion-header';
     private const CLASS_ITEM = 'accordion-item';
     private const CLASS_TOGGLE = 'accordion-button';
+    private const CLASS_TOGGLE_ACTIVE = 'collapsed';
     private const NAME = 'accordion';
     private bool $alwaysOpen = false;
     private array $attributes = [];
@@ -41,6 +47,8 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private string $headerTag = 'h2';
     private bool|string $id = true;
     private array $items = [];
+    private array $toggleAttributes = [];
+    private string|null $toggleTag = null;
 
     /**
      * Adds a sets of attributes to the accordion component.
@@ -276,6 +284,37 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML attributes for the toggle in the accordion component.
+     *
+     * @param array $value Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified close button attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function toggleAttributes(array $value): self
+    {
+        $new = clone $this;
+        $new->toggleAttributes = $value;
+        return $new;
+    }
+
+    /**
+     * Sets the HTML tag to be used for the toggle in the accordion component.
+     *
+     * @param string $value The HTML tag name for the close button.
+     *
+     * @return self A new instance with the specified close button tag.
+     */
+    public function toggleTag(string $value): self
+    {
+        $new = clone $this;
+        $new->toggleTag = $value;
+
+        return $new;
+    }
+
+    /**
      * Run the accordion widget.
      *
      * @return string The HTML representation of the element.
@@ -286,6 +325,10 @@ final class Accordion extends \Yiisoft\Widget\Widget
         $classes = $attributes['class'] ?? null;
 
         unset($attributes['class']);
+
+        if ($this->items === []) {
+            return '';
+        }
 
         /** @psalm-var non-empty-string $id */
         $id = match ($this->id) {
@@ -437,11 +480,13 @@ final class Accordion extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Renders the toggle button of the accordion item.
+     * Renders the toggle of the accordion item.
      *
      * @param string $header The header of the item.
      * @param string $idCollpase The ID of the collapse element.
      * @param bool $active Whether the item is active.
+     *
+     * @throws InvalidArgumentException if the toggle tag is an empty string.
      *
      * @return string The HTML representation of the element.
      *
@@ -449,21 +494,38 @@ final class Accordion extends \Yiisoft\Widget\Widget
      */
     private function renderToggle(string $header, string $idCollpase, bool $active): string
     {
-        return Button::button('')
-            ->addClass(
-                self::CLASS_TOGGLE,
-                $active === false ? 'collapsed' : null,
-            )
-            ->addAttributes(
-                [
-                    'data-bs-toggle' => 'collapse',
-                    'data-bs-target' => '#' . $idCollpase,
-                    'aria-expanded' => $active ? 'true' : 'false',
-                    'aria-controls' => $idCollpase,
-                ]
-            )
-            ->addContent("\n", $header, "\n")
-            ->encode(false)
-            ->render();
+        $toggleTag = match ($this->toggleTag) {
+            null => Button::button(''),
+            '' => throw new InvalidArgumentException('Toggle tag cannot be empty string.'),
+            default => Html::tag($this->toggleTag),
+        };
+
+        $toggleAttributes = $this->toggleAttributes;
+        $toggleClasses = $toggleAttributes['class'] ?? null;
+
+        unset($toggleAttributes['class']);
+
+        Html::addCssClass(
+            $toggleAttributes,
+            [self::CLASS_TOGGLE, $active === false ? self::CLASS_TOGGLE_ACTIVE : null, $toggleClasses],
+        );
+
+        if (array_key_exists('data-bs-toggle', $toggleAttributes) === false) {
+            $toggleAttributes['data-bs-toggle'] = 'collapse';
+        }
+
+        if (array_key_exists('data-bs-target', $toggleAttributes) === false) {
+            $toggleAttributes['data-bs-target'] = '#' . $idCollpase;
+        }
+
+        if (array_key_exists('aria-expanded', $toggleAttributes) === false) {
+            $toggleAttributes['aria-expanded'] = $active ? 'true' : 'false';
+        }
+
+        if (array_key_exists('aria-controls', $toggleAttributes) === false) {
+            $toggleAttributes['aria-controls'] = $idCollpase;
+        }
+
+        return $toggleTag->addAttributes($toggleAttributes)->addContent("\n", $header, "\n")->encode(false)->render();
     }
 }

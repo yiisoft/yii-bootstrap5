@@ -722,6 +722,8 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->headerTag(''));
         $this->assertNotSame($accordion, $accordion->id(''));
         $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
+        $this->assertNotSame($accordion, $accordion->toggleAttributes([]));
+        $this->assertNotSame($accordion, $accordion->toggleTag(''));
     }
 
     public function testItemsWithActive(): void
@@ -974,5 +976,313 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->id('accordion')
                 ->render(),
         );
+    }
+
+    public function testRenderWithEmptyItems(): void
+    {
+        $this->assertEmpty(Accordion::widget()->render());
+    }
+
+    public function testToggleAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed btn-lg" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['class' => 'btn-lg'])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithAriaControls(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" aria-controls="custom-value" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['aria-controls' => 'custom-value'])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithAriaControlsWithNull(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['aria-controls' => null])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithAriaExpanded(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" aria-expanded="custom-value" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['aria-expanded' => 'custom-value'])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithAriaExpandedNull(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['aria-expanded' => null])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithDataBsTarget(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-target="custom-value" data-bs-toggle="collapse" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['data-bs-target' => 'custom-value'])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithDataBsTargetNull(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['data-bs-target' => null])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithDataBsToggle(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="custom-value" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['data-bs-toggle' => 'custom-value'])
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithDataBsToggleNull(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleAttributes(['data-bs-toggle' => null])
+                ->render(),
+        );
+    }
+
+    public function testToggleTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <my-custom-tag class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </my-custom-tag>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->id('accordion')
+                ->items(
+                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                )
+                ->toggleTag('my-custom-tag')
+                ->render(),
+        );
+    }
+
+    public function testToggleTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Toggle tag cannot be empty string.');
+
+        Accordion::widget()
+            ->items(
+                new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+            )
+            ->toggleTag('')
+            ->render();
     }
 }

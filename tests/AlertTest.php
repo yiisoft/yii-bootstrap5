@@ -179,7 +179,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="test" class="alert alert-secondary alert-dismissible" role="alert">
             Body
-            <button type="button" class="btn-lg btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-lg" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             HTML,
             Alert::widget()
@@ -189,6 +189,117 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
                 ->id('test')
                 ->render(),
         );
+    }
+
+    public function testDimissableWithCloseButtonWithAriaLabelAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" aria-label="Close alert" data-bs-dismiss="alert"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['aria-label' => 'Close alert'])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithAriaLabelNullAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['aria-label' => null])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithDataBsDismissAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" data-bs-dismiss="my-component" aria-label="Close"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['data-bs-dismiss' => 'my-component'])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithDataBsDismissNullAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonAttributes(['data-bs-dismiss' => null])
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">Close</button>
+            </div>
+            HTML,
+            Alert::widget()
+                ->body('Body')
+                ->closeButtonLabel('Close')
+                ->dismissable(true)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary alert-dismissible" role="alert">
+            Body
+            <my-custom-tag class="btn-close" data-bs-dismiss="alert" aria-label="Close"></my-custom-tag>
+            </div>
+            HTML,
+            Alert::widget()->body('Body')->closeButtonTag('my-custom-tag')->dismissable(true)->id(false)->render(),
+        );
+    }
+
+    public function testDimissableWithCloseButtonWithTagNameEmpty(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Close button tag cannot be empty string.');
+
+        Alert::widget()->closeButtonTag('')->dismissable(true)->render();
     }
 
     public function testHeader(): void
@@ -213,7 +324,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     public function testHeaderTagException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tag cannot be empty string.');
+        $this->expectExceptionMessage('Header tag cannot be empty string.');
 
         Alert::widget()->header('Header')->headerTag('')->render();
     }
@@ -314,6 +425,8 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($alert, $alert->body('', true));
         $this->assertNotSame($alert, $alert->class(''));
         $this->assertNotSame($alert, $alert->closeButtonAttributes([]));
+        $this->assertNotSame($alert, $alert->closeButtonLabel(''));
+        $this->assertNotSame($alert, $alert->closeButtonTag(''));
         $this->assertNotSame($alert, $alert->dismissable(false));
         $this->assertNotSame($alert, $alert->fade(false));
         $this->assertNotSame($alert, $alert->id(false));
