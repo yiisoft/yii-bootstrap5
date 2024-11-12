@@ -10,8 +10,9 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
-use function array_merge;
 use function array_filter;
+use function array_key_exists;
+use function array_merge;
 use function preg_replace;
 use function strtr;
 
@@ -28,12 +29,15 @@ use function strtr;
  */
 final class Alert extends \Yiisoft\Widget\Widget
 {
+    private const CLASS_CLOSE_BUTTON = 'btn-close';
     private const NAME = 'alert';
     private array $attributes = [];
     private AlertVariant $alertType = AlertVariant::SECONDARY;
     private string|Stringable $body = '';
     private array $cssClass = [];
     private array $closeButtonAttributes = [];
+    private string|null $closeButtonTag = null;
+    private string $closeButtonLabel = '';
     private bool $dismissable = false;
     private bool $fade = false;
     private string|null $header = null;
@@ -179,6 +183,36 @@ final class Alert extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->closeButtonAttributes = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the label for the close button in the alert component.
+     *
+     * @param string $value The label for the close button.
+     *
+     * @return self A new instance with the specified close button label.
+     */
+    public function closeButtonLabel(string $value): self
+    {
+        $new = clone $this;
+        $new->closeButtonLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML tag to be used for the close button in the alert component.
+     *
+     * @param string $value The HTML tag name for the close button.
+     *
+     * @return self A new instance with the specified close button tag.
+     */
+    public function closeButtonTag(string $value): self
+    {
+        $new = clone $this;
+        $new->closeButtonTag = $value;
 
         return $new;
     }
@@ -384,7 +418,7 @@ final class Alert extends \Yiisoft\Widget\Widget
         Html::addCssClass($headerAttributes, 'alert-heading');
 
         if ($this->headerTag === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
+            throw new InvalidArgumentException('Header tag cannot be empty string.');
         }
 
         return Html::tag($this->headerTag, '', $headerAttributes)->content($this->header)->encode(false)->render();
@@ -393,17 +427,34 @@ final class Alert extends \Yiisoft\Widget\Widget
     /**
      * Render toggle component.
      *
+     * @throws InvalidArgumentException if the close button tag is an empty string.
+     *
      * @return string The rendered toggle component.
      */
     private function renderToggle(): string
     {
+        $buttonTag = match ($this->closeButtonTag) {
+            null => Button::button(''),
+            '' => throw new InvalidArgumentException('Close button tag cannot be empty string.'),
+            default => Html::tag($this->closeButtonTag),
+        };
+
         $closeButtonAttributes = $this->closeButtonAttributes;
 
-        $closeButtonAttributes['data-bs-dismiss'] = self::NAME;
-        $closeButtonAttributes['aria-label'] = 'Close';
+        $classesButton = $closeButtonAttributes['class'] ?? null;
 
-        Html::addCssClass($closeButtonAttributes, 'btn-close');
+        unset($closeButtonAttributes['class']);
 
-        return Button::button('')->addAttributes($closeButtonAttributes)->render();
+        if (array_key_exists('data-bs-dismiss', $closeButtonAttributes) === false) {
+            $closeButtonAttributes['data-bs-dismiss'] = 'alert';
+        }
+
+        if (array_key_exists('aria-label', $closeButtonAttributes) === false) {
+            $closeButtonAttributes['aria-label'] = 'Close';
+        }
+
+        Html::addCssClass($closeButtonAttributes, [self::CLASS_CLOSE_BUTTON, $classesButton]);
+
+        return $buttonTag->addAttributes($closeButtonAttributes)->addContent($this->closeButtonLabel)->render();
     }
 }
