@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use Stringable;
 use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\Img;
 
 /**
  * Represents a carousel item.
@@ -14,7 +13,7 @@ use Yiisoft\Html\Tag\Img;
 final class CarouselItem
 {
     public function __construct(
-        private readonly string|Stringable|Img $content = '',
+        private readonly string|Stringable $content = '',
         private readonly string|null $caption = null,
         private readonly string|null $captionPlaceholder = null,
         private readonly int|null $autoPlayingInterval = null,
@@ -76,9 +75,9 @@ final class CarouselItem
     }
 
     /**
-     * @return Img|string|Stringable Returns the content for the carrusel item.
+     * @return string|Stringable Returns the content for the carrusel item.
      */
-    public function getContent(): string|Stringable|Img
+    public function getContent(): string|Stringable
     {
         return $this->content;
     }

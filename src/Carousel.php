@@ -13,6 +13,7 @@ use Yiisoft\Html\Tag\Span;
 
 use function array_filter;
 use function array_merge;
+use function count;
 use function implode;
 
 /**
@@ -59,7 +60,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private string $captionTagName = 'h5';
     private string $captionPlaceholderTagName = 'p';
     private string $controlNextLabel = 'Next';
-    private string $controlPrevLabel = 'Previous';
+    private string $controlPreviousLabel = 'Previous';
     private bool|string $id = true;
     /** @psalm-var CarouselItem[] */
     private array $items = [];
@@ -146,16 +147,42 @@ final class Carousel extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the carousel to automatically cycle through the slides.
+     * Sets whether and how the carousel should automatically cycle through slides.
      *
-     * @param bool|string $value Whether to automatically cycle through the slides or not. Default is `'carousel'`.
-     * If `false` or an empty string, the carousel will not automatically cycle.
+     * Bootstrap supports three modes of auto-playing for carousels:
+     * - 'carousel': Starts cycling when the page loads (recommended).
+     * - 'true': Like 'carousel', but waits until the first manual interaction before cycling.
+     * - 'false'/'empty string': Disables auto-playing completely.
+     *
+     * When auto-playing is enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
+     * on carousel controls/indicators.
+     *
+     * Example:
+     * ```php
+     * // Start cycling immediately
+     * $carousel->autoPlaying('carousel')
+     *
+     * // Start cycling after first manual interaction
+     * $carousel->autoPlaying(true)
+     *
+     * // Disable auto cycling
+     * $carousel->autoPlaying(false)
+     * ```
      *
      * @return self A new instance with the specified auto-playing value.
+     *
+     * @see https://getbootstrap.com/docs/5.3/components/carousel/#autoplaying-carousels
      */
     public function autoPlaying(bool|string $value = 'carousel'): self
     {
-        return $this->addAttributes(['data-bs-ride' => $value === false || $value === '' ? null : $value]);
+        $dataBsRide = match ($value) {
+            '', 'false', false => null,
+            'true' => 'true',
+            true => 'true',
+            default => 'carousel',
+        };
+
+        return $this->addAttributes(['data-bs-ride' => $dataBsRide]);
     }
 
     /**
@@ -233,10 +260,25 @@ final class Carousel extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified label for the previous control button.
      */
-    public function controlPrevLabel(string $value): self
+    public function controlPreviousLabel(string $value): self
     {
         $new = clone $this;
-        $new->controlPrevLabel = $value;
+        $new->controlPreviousLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether to show the carousel controls or not.
+     *
+     * @param bool $value Whether to show the carousel controls or not. Default is `true`.
+     *
+     * @return self A new instance with the specified value.
+     */
+    public function controls(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->controls = !$value;
 
         return $new;
     }
@@ -244,11 +286,11 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Set the carousel to crossfade slides instead of sliding.
      *
-     * @param bool|null $value Whether to crossfade slides or not. Default is `true`.
+     * @param bool $value Whether to crossfade slides or not. Default is `true`.
      *
      * @return self A new instance with the specified crossfade value.
      */
-    public function crossfade(bool|null $value = true): self
+    public function crossfade(bool $value = true): self
     {
         $new = clone $this;
         $new->cssClass['crossfade'] = $value === true ? 'carousel-fade' : null;
@@ -259,17 +301,21 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Disables the touch swipe functionality of the carousel.
      *
+     * @param bool $value Whether to disable the touch swipe functionality or not. Default is `true`.
+     *
      * @return self A new instance with the touch swipe functionality disabled.
      */
-    public function disableTouchSwiping(): self
+    public function disableTouchSwiping(bool $value = true): self
     {
-        return $this->addAttributes(['data-bs-touch' => 'false']);
+        return $this->addAttributes(['data-bs-touch' => $value ? 'false' : null]);
     }
 
     /**
      * Sets the ID of the carousel component.
      *
      * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
      *
      * @return self A new instance with the specified ID.
      */
@@ -284,7 +330,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Sets the items of the carousel component.
      *
-     * @param CarouselItem ...$value the items of the carousel component.
+     * @param CarouselItem ...$value Items of the carousel component.
      *
      * @return self A new instance with the specified items.
      */
@@ -314,32 +360,19 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Sets the theme for the carousel component.
      *
-     * @param string|null $value The theme for the carousel component.
+     * @param string $value The theme for the carousel component.
      *
      * @return self A new instance with the specified theme.
      */
-    public function theme(string|null $value): self
+    public function theme(string $value): self
     {
-        return $this->addAttributes(['data-bs-theme' => $value]);
-    }
-
-    /**
-     * Whether to show the carousel controls or not.
-     *
-     * @param bool $value Whether to show the carousel controls or not. Default is `true`.
-     *
-     * @return self A new instance with the specified value.
-     */
-    public function withoutControls(bool $value = true): self
-    {
-        $new = clone $this;
-        $new->controls = !$value;
-
-        return $new;
+        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
     }
 
     /**
      * Run the carousel widget.
+     *
+     * @throws InvalidArgumentException if the "id" property is an empty string or `false`.
      *
      * @return string The HTML representation of the element.
      */
@@ -369,7 +402,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
                 "\n",
                 $this->renderItems($id),
                 "\n",
-                $this->controls ? $this->renderControlPrev($id) . "\n" : '',
+                $this->controls ? $this->renderControlPrevious($id) . "\n" : '',
                 $this->controls ? $this->renderControlNext($id) . "\n" : '',
             )
             ->encode(false)
@@ -415,7 +448,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
      *
      * @return string The HTML representation of the element.
      */
-    private function renderControlPrev(string $id): string
+    private function renderControlPrevious(string $id): string
     {
         return Button::button('')
             ->addAttributes(
@@ -432,7 +465,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
                     ->addClass(self::CLASS_CAROUSEL_CONTROL_PREV_ICON)
                     ->render(),
                 "\n",
-                Span::tag()->addClass('visually-hidden')->addContent($this->controlPrevLabel)->render(),
+                Span::tag()->addClass('visually-hidden')->addContent($this->controlPreviousLabel)->render(),
                 "\n",
             )
             ->encode(false)
@@ -442,22 +475,25 @@ final class Carousel extends \Yiisoft\Widget\Widget
     /**
      * Renders the carousel indicators.
      *
+     * @param int $key The key of the carousel item.
+     * @param CarouselItem $carouselItem The carousel item to render.
      * @param string $id The ID of the carousel component.
+     * @param bool $active Whether the carousel item is active or not.
      *
      * @return string The HTML representation of the element.
      */
-    private function renderIndicator(int $key, CarouselItem $carouselItem, string $id): string
+    private function renderIndicator(int $key, CarouselItem $carouselItem, string $id, bool $active): string
     {
         return Button::button('')
             ->addAttributes(
                 [
                     'data-bs-target' => '#' . $id,
                     'data-bs-slide-to' => (string) $key,
-                    'aria-current' => $carouselItem->isActive() ? 'true' : null,
+                    'aria-current' => $carouselItem->isActive() || $active ? 'true' : null,
                     'aria-label' => 'Slide ' . (string) ($key + 1),
                 ],
             )
-            ->addClass($carouselItem->isActive() ? 'active' : null)
+            ->addClass($carouselItem->isActive() || $active ? 'active' : null)
             ->encode(false)
             ->render();
     }
@@ -475,12 +511,20 @@ final class Carousel extends \Yiisoft\Widget\Widget
         $indicators = [];
         $renderIndicators = '';
 
+        $activeItems = array_filter($this->items, static fn (CarouselItem $item) => $item->isActive());
+
+        if (count($activeItems) > 1) {
+            throw new InvalidArgumentException('Only one carousel item can be active at a time.');
+        }
+
         foreach ($this->items as $key => $item) {
+            $active = $activeItems === [] && $key === 0 ? true : false;
+
             if ($this->showIndicators) {
-                $indicators[] = $this->renderIndicator($key, $item, $id);
+                $indicators[] = $this->renderIndicator($key, $item, $id, $active);
             }
 
-            $items[] = $this->renderItem($item);
+            $items[] = $this->renderItem($item, $active);
         }
 
         if ($this->showIndicators) {
@@ -503,10 +547,11 @@ final class Carousel extends \Yiisoft\Widget\Widget
      * Renders a carousel item.
      *
      * @param CarouselItem $carouselItem The carousel item to render.
+     * @param bool $active Whether the carousel item is active or not.
      *
      * @return string The HTML representation of the element.
      */
-    private function renderItem(CarouselItem $carouselItem): string
+    private function renderItem(CarouselItem $carouselItem, bool $active): string
     {
         $content = $carouselItem->getcontent();
 
@@ -541,7 +586,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
         return Div::tag()
             ->addClass(
                 self::CLASS_CAROUSEL_ITEM,
-                $carouselItem->isActive() ? 'active' : null
+                $carouselItem->isActive() || $active ? 'active' : null
             )
             ->addAttributes(['data-bs-interval' => $carouselItem->getAutoPlayingInterval()])
             ->addContent(

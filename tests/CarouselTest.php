@@ -26,7 +26,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide test-class-definition" data-test="test">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -67,7 +67,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide test-class">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -88,7 +88,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide test-class test-class-1 test-class-2">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -121,7 +121,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide" style="color: red;">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -142,7 +142,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide" style="color: red; font-weight: bold;">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -175,7 +175,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide" style="color: red;">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -196,7 +196,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide" style="color: red;">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -220,7 +220,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide test-class">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -252,7 +252,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="test-id" class="carousel slide test-class">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -312,7 +312,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -361,7 +360,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
                         autoPlayingInterval: 10000,
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -410,7 +408,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -450,7 +447,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -459,7 +455,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         Img::tag()->alt('Third slide')->src('image-3.jpg'),
                     ),
                 )
-                ->withoutControls()
+                ->controls()
                 ->render(),
         );
     }
@@ -509,7 +505,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
                         'First slide',
                         'Some representative placeholder content for the first slide.',
-                        active: true,
                         captionAttributes: ['class' => 'bg-primary text-center'],
                         captionPlaceholderAttributes: ['class' => 'bg-success'],
                     ),
@@ -579,7 +574,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
                         'First slide',
                         'Some representative placeholder content for the first slide.',
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -611,7 +605,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                     Img::tag()->alt('First slide')->src('image-1.jpg'),
                     'First slide',
                     'Some representative placeholder content for the first slide.',
-                    active: true,
                 ),
             )
             ->render();
@@ -632,7 +625,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                     Img::tag()->alt('First slide')->src('image-1.jpg'),
                     'First slide',
                     'Some representative placeholder content for the first slide.',
-                    active: true,
                 ),
             )
             ->render();
@@ -686,7 +678,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
                         'First slide',
                         'Some representative placeholder content for the first slide.',
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -709,7 +700,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide custom-class another-class">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -742,7 +733,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             <<<HTML
             <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
-            <div class="carousel-item">
+            <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
             </div>
             </div>
@@ -758,7 +749,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             HTML,
             Carousel::widget()
                 ->controlNextLabel('Следующий')
-                ->controlPrevLabel('Предыдущий')
+                ->controlPreviousLabel('Предыдущий')
                 ->id('carouselExample')
                 ->items(
                     new CarouselItem(
@@ -803,7 +794,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -852,7 +842,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -896,7 +885,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -919,7 +907,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             ->items(
                 new CarouselItem(
                     Img::tag()->alt('First slide')->src('image-1.jpg'),
-                    active: true,
                 ),
             )
             ->render();
@@ -935,7 +922,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             ->items(
                 new CarouselItem(
                     Img::tag()->alt('First slide')->src('image-1.jpg'),
-                    active: true,
                 ),
             )
             ->render();
@@ -954,9 +940,10 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($carousel, $carousel->captionTagName(''));
         $this->assertNotSame($carousel, $carousel->captionPlaceholderTagName(''));
         $this->assertNotSame($carousel, $carousel->controlNextLabel(''));
-        $this->assertNotSame($carousel, $carousel->controlPrevLabel(''));
+        $this->assertNotSame($carousel, $carousel->controlPreviousLabel(''));
+        $this->assertNotSame($carousel, $carousel->controls(false));
         $this->assertNotSame($carousel, $carousel->crossfade(false));
-        $this->assertNotSame($carousel, $carousel->disableTouchSwiping());
+        $this->assertNotSame($carousel, $carousel->disableTouchSwiping(false));
         $this->assertNotSame($carousel, $carousel->id(''));
         $this->assertNotSame(
             $carousel,
@@ -965,8 +952,7 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
             ),
         );
         $this->assertNotSame($carousel, $carousel->showIndicators(false));
-        $this->assertNotSame($carousel, $carousel->theme(null));
-        $this->assertNotSame($carousel, $carousel->withoutControls(false));
+        $this->assertNotSame($carousel, $carousel->theme(''));
     }
 
     /**
@@ -1003,7 +989,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -1019,6 +1004,70 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithEmptyItems(): void
     {
         $this->assertEmpty(Carousel::widget()->render());
+    }
+
+    public function testRenderWithItemsActiveDiferentFromFirst(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        active: true,
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testRenderWithItemsMultipleActive(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Only one carousel item can be active at a time.');
+
+        Carousel::widget()
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    active: true,
+                ),
+                new CarouselItem(
+                    Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    active: true,
+                ),
+            )
+            ->render();
     }
 
     public function testRenderWithOnlyTextWithString(): void
@@ -1066,7 +1115,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                         <p>This is the first slide with text.</p>
                         </div>
                         HTML,
-                        active: true,
                     ),
                     new CarouselItem(
                         <<<HTML
@@ -1137,7 +1185,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                                 P::tag()->content('This is the first slide with text.'),
                                 "\n",
                             ),
-                        active: true,
                     ),
                     new CarouselItem(
                         Div::tag()
@@ -1205,7 +1252,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
@@ -1258,7 +1304,6 @@ final class CarouselTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     new CarouselItem(
                         Img::tag()->alt('First slide')->src('image-1.jpg'),
-                        active: true,
                     ),
                     new CarouselItem(
                         Img::tag()->alt('Second slide')->src('image-2.jpg'),
