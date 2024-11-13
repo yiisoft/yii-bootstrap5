@@ -67,7 +67,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private bool $showIndicators = false;
 
     /**
-     * Adds a sets of attributes for the carousel component.
+     * Adds a set of attributes for the carousel component.
      *
      * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-carousel']`.
      *
@@ -518,7 +518,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
         }
 
         foreach ($this->items as $key => $item) {
-            $active = $activeItems === [] && $key === 0 ? true : false;
+            $active = $activeItems === [] && $key === 0;
 
             if ($this->showIndicators) {
                 $indicators[] = $this->renderIndicator($key, $item, $id, $active);
