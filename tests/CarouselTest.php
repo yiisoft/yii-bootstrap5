@@ -4,206 +4,1317 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use RuntimeException;
+use InvalidArgumentException;
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\H2;
+use Yiisoft\Html\Tag\Img;
+use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Carousel;
+use Yiisoft\Yii\Bootstrap5\CarouselItem;
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `Carousel` widget.
+ *
+ * @group carousel
  */
-final class CarouselTest extends TestCase
+final class CarouselTest extends \PHPUnit\Framework\TestCase
 {
-    public function testRender(): void
+    public function testAddAttributes(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=Second+slide" class="d-block w-100">',
-                    'caption' => '<h5>Second slide label</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=Third+slide" class="d-block w-100">',
-                    'caption' => '<h5>Third slide label</h5><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="test" class="carousel slide" data-bs-ride="carousel"><ol class="carousel-indicators"><li class="active" data-bs-target="#test" data-bs-slide-to="0"></li>
-        <li data-bs-target="#test" data-bs-slide-to="1"></li>
-        <li data-bs-target="#test" data-bs-slide-to="2"></li></ol><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div>
-        <div class="carousel-item"><img src="https://via.placeholder.com/800x400?text=Second+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>Second slide label</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div></div>
-        <div class="carousel-item"><img src="https://via.placeholder.com/800x400?text=Third+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>Third slide label</h5><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p></div></div></div><a class="carousel-control-prev" href="#test" data-bs-slide="prev" role="button"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></a>
-        <a class="carousel-control-next" href="#test" data-bs-slide="next" role="button"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></a></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide test-class-definition" data-test="test">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
+                ->addAttributes(['data-test' => 'test'])
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                )
+                ->render(),
+        );
     }
 
+    public function testAddClass(): void
+    {
+        $carouselWidget = Carousel::widget()
+            ->addClass('test-class', null)
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                ),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide test-class">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide test-class test-class-1 test-class-2">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $carouselWidget = Carousel::widget()
+            ->addCssStyle(['color' => 'red'])
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                ),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide" style="color: red;">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide" style="color: red; font-weight: bold;">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $carouselWidget = Carousel::widget()
+            ->addCssStyle(['color' => 'red'])
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                ),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide" style="color: red;">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide" style="color: red;">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            $carouselWidget->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide test-class">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->attributes(['class' => 'test-class'])
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testAttributesWithId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="carousel slide test-class">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#test-id" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#test-id" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->attributes(['class' => 'test-class', 'id' => 'test-id'])
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#autoplaying-carousels
+     */
+    public function testAutoPlaying(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->autoPlaying()
+                ->id('carouselExampleAutoplaying')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#individual-carousel-item-interval
+     */
+    public function testAutoPlayingWithCarouselItemInterval(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->autoPlaying()
+                ->id('carouselExampleInterval')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        autoPlayingInterval: 10000,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        autoPlayingInterval: 2000,
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#autoplaying-carousels
+     */
+    public function testAutoPlayingWithTrue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->autoPlaying('true')
+                ->id('carouselExampleRide')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#autoplaying-carousels-without-controls
+     */
+    public function testAutoPlayingWithoutControls(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->autoPlaying()
+                ->id('carouselExampleSlidesOnly')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->controls()
+                ->render(),
+        );
+    }
+
+    public function testCaptionAndPlaceholderWithAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptionsCustomTagName" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5 class="bg-primary text-center">First slide</h5>
+            <p class="bg-success">Some representative placeholder content for the first slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5 class="bg-success text-center">Second slide</h5>
+            <p class="bg-danger">Some representative placeholder content for the second slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5 class="bg-danger text-center">Third slide</h5>
+            <p class="bg-warning">Some representative placeholder content for the third slide.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleCaptionsCustomTagName')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                        captionAttributes: ['class' => 'bg-primary text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-success'],
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                        captionAttributes: ['class' => 'bg-success text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-danger'],
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                        captionAttributes: ['class' => 'bg-danger text-center'],
+                        captionPlaceholderAttributes: ['class' => 'bg-warning'],
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testCaptionWithCustomTagName(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptionsCustomTagName" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>First slide</h2>
+            <span>Some representative placeholder content for the first slide.</span>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>Second slide</h2>
+            <span>Some representative placeholder content for the second slide.</span>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h2>Third slide</h2>
+            <span>Some representative placeholder content for the third slide.</span>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptionsCustomTagName" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->captionTagName('h2')
+                ->captionPlaceholderTagName('span')
+                ->id('carouselExampleCaptionsCustomTagName')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testCaptionTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
+        );
+
+        Carousel::widget()
+            ->captionTagName('')
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    'First slide',
+                    'Some representative placeholder content for the first slide.',
+                ),
+            )
+            ->render();
+    }
+
+    public function testCaptionPlaceholderTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'
+        );
+
+        Carousel::widget()
+            ->captionPlaceholderTagName('')
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    'First slide',
+                    'Some representative placeholder content for the first slide.',
+                ),
+            )
+            ->render();
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#captions
+     */
+    public function testCaptions(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>First slide</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>Second slide</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleCaptions')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                        'First slide',
+                        'Some representative placeholder content for the first slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                        'Second slide',
+                        'Some representative placeholder content for the second slide.',
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        'Third slide',
+                        'Some representative placeholder content for the third slide.',
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide custom-class another-class">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->addClass('test-class')
+                ->class('custom-class', 'another-class')
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testControlNextLabelAndControlPrevLabelWithRussianLanguage(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Следующий</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->controlNextLabel('Следующий')
+                ->controlPreviousLabel('Предыдущий')
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#crossfade
+     */
     public function testCrossfade(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->withCrossfade()
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=Second+slide" class="d-block w-100">',
-                    'caption' => '<h5>Second slide label</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=Third+slide" class="d-block w-100">',
-                    'caption' => '<h5>Third slide label</h5><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->render();
-        $this->assertStringContainsString('class="carousel slide carousel-fade"', $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleFade" class="carousel slide carousel-fade">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleFade')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->crossfade()
+                ->render(),
+        );
     }
 
-    public function testControlsEmpty(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#disable-touch-swiping
+     */
+    public function testDisableTouchSwiping(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->controls([])
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="carousel slide" data-bs-ride="carousel"><ol class="carousel-indicators"><li class="active" data-bs-target="#test" data-bs-slide-to="0"></li></ol><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div></div></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->disableTouchSwiping()
+                ->id('carouselExampleControlsNoTouching')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
     }
 
-    public function testControlsException(): void
+    public function testId(): void
     {
-        $this->expectException(RuntimeException::class);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testIdWithEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
+
         Carousel::widget()
-            ->controls(
-                [
-                    '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>',
-                ],
+            ->id('')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                ),
             )
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
             ->render();
     }
 
-    public function testItemContentEmpty(): void
+    public function testIdWithFalse(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
+
         Carousel::widget()
-            ->items([
-                [
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
+            ->id(false)
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                ),
+            )
             ->render();
     }
 
-    public function testItemContentString(): void
+    public function testImmutability(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->items([
-                '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="carousel slide" data-bs-ride="carousel"><ol class="carousel-indicators"><li class="active" data-bs-target="#test" data-bs-slide-to="0"></li></ol><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
-        </div></div><a class="carousel-control-prev" href="#test" data-bs-slide="prev" role="button"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></a>
-        <a class="carousel-control-next" href="#test" data-bs-slide="next" role="button"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></a></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $carousel = Carousel::widget();
+
+        $this->assertNotSame($carousel, $carousel->addAttributes([]));
+        $this->assertNotSame($carousel, $carousel->addClass(''));
+        $this->assertNotSame($carousel, $carousel->addCssStyle(''));
+        $this->assertNotSame($carousel, $carousel->attributes([]));
+        $this->assertNotSame($carousel, $carousel->autoPlaying('false'));
+        $this->assertNotSame($carousel, $carousel->class(''));
+        $this->assertNotSame($carousel, $carousel->captionTagName(''));
+        $this->assertNotSame($carousel, $carousel->captionPlaceholderTagName(''));
+        $this->assertNotSame($carousel, $carousel->controlNextLabel(''));
+        $this->assertNotSame($carousel, $carousel->controlPreviousLabel(''));
+        $this->assertNotSame($carousel, $carousel->controls(false));
+        $this->assertNotSame($carousel, $carousel->crossfade(false));
+        $this->assertNotSame($carousel, $carousel->disableTouchSwiping(false));
+        $this->assertNotSame($carousel, $carousel->id(''));
+        $this->assertNotSame(
+            $carousel,
+            $carousel->items(
+                new CarouselItem(Img::tag()->alt('First slide')->src('image-1.jpg')),
+            ),
+        );
+        $this->assertNotSame($carousel, $carousel->showIndicators(false));
+        $this->assertNotSame($carousel, $carousel->theme(''));
     }
 
-    public function testWithOptions(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#basic-examples
+     */
+    public function testRender(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->options(['class' => 'testMe'])
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="testMe carousel slide"><ol class="carousel-indicators"><li class="active" data-bs-target="#test" data-bs-slide-to="0"></li></ol><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div></div><a class="carousel-control-prev" href="#test" data-bs-slide="prev" role="button"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></a>
-        <a class="carousel-control-next" href="#test" data-bs-slide="next" role="button"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></a></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->render(),
+        );
     }
 
-    public function testShowIndicator(): void
+    public function testRenderWithEmptyItems(): void
     {
-        $html = Carousel::widget()
-            ->id('test')
-            ->items([
-                [
-                    'content' => '<img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">',
-                    'caption' => '<h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>',
-                    'captionOptions' => [
-                        'class' => ['d-none', 'd-md-block'],
-                    ],
-                ],
-            ])
-            ->withoutShowIndicators()
+        $this->assertEmpty(Carousel::widget()->render());
+    }
+
+    public function testRenderWithItemsActiveDiferentFromFirst(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExample')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                        active: true,
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testRenderWithItemsMultipleActive(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Only one carousel item can be active at a time.');
+
+        Carousel::widget()
+            ->id('carouselExample')
+            ->items(
+                new CarouselItem(
+                    Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    active: true,
+                ),
+                new CarouselItem(
+                    Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    active: true,
+                ),
+            )
             ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="carousel slide" data-bs-ride="carousel"><div class="carousel-inner"><div class="carousel-item active"><img src="https://via.placeholder.com/800x400?text=First+slide" class="d-block w-100">
-        <div class="d-none d-md-block carousel-caption"><h5>First slide label</h5><p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p></div></div></div><a class="carousel-control-prev" href="#test" data-bs-slide="prev" role="button"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></a>
-        <a class="carousel-control-next" href="#test" data-bs-slide="next" role="button"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></a></div>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+    }
+
+    public function testRenderWithOnlyTextWithString(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleOnlyText" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <div class="bg-primary text-white p-5 text-center">
+            <h2>Title 1</h2>
+            <p>This is the first slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-success text-white p-5 text-center">
+            <h2>Title 2</h2>
+            <p>This is the second slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-danger text-white p-5 text-center">
+            <h2>Title 3</h2>
+            <p>This is the third slide with text.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleOnlyText" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleOnlyText" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleOnlyText')
+                ->items(
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-primary text-white p-5 text-center">
+                        <h2>Title 1</h2>
+                        <p>This is the first slide with text.</p>
+                        </div>
+                        HTML,
+                    ),
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-success text-white p-5 text-center">
+                        <h2>Title 2</h2>
+                        <p>This is the second slide with text.</p>
+                        </div>
+                        HTML,
+                    ),
+                    new CarouselItem(
+                        <<<HTML
+                        <div class="bg-danger text-white p-5 text-center">
+                        <h2>Title 3</h2>
+                        <p>This is the third slide with text.</p>
+                        </div>
+                        HTML,
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    public function testRenderWithOnlyTextStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleOnlyText" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <div class="bg-primary text-white p-5 text-center">
+            <h2>Title 1</h2>
+            <p>This is the first slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-success text-white p-5 text-center">
+            <h2>Title 2</h2>
+            <p>This is the second slide with text.</p>
+            </div>
+            </div>
+            <div class="carousel-item">
+            <div class="bg-danger text-white p-5 text-center">
+            <h2>Title 3</h2>
+            <p>This is the third slide with text.</p>
+            </div>
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleOnlyText" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleOnlyText" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleOnlyText')
+                ->items(
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-primary text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 1'),
+                                "\n",
+                                P::tag()->content('This is the first slide with text.'),
+                                "\n",
+                            ),
+                    ),
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-success text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 2'),
+                                "\n",
+                                P::tag()->content('This is the second slide with text.'),
+                                "\n",
+                            ),
+                    ),
+                    new CarouselItem(
+                        Div::tag()
+                            ->addClass('bg-danger text-white p-5 text-center')
+                            ->addContent(
+                                "\n",
+                                H2::tag()->content('Title 3'),
+                                "\n",
+                                P::tag()->content('This is the third slide with text.'),
+                                "\n",
+                            ),
+                    ),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/carousel/#indicators
+     */
+    public function testShowIndicators(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+            <button type="button" class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleIndicators')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->showIndicators()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/customize/color-modes/
+     */
+    public function testTheme(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-theme="dark">
+            <div class="carousel-indicators">
+            <button type="button" class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+            <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->id('carouselExampleIndicators')
+                ->items(
+                    new CarouselItem(
+                        Img::tag()->alt('First slide')->src('image-1.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Second slide')->src('image-2.jpg'),
+                    ),
+                    new CarouselItem(
+                        Img::tag()->alt('Third slide')->src('image-3.jpg'),
+                    ),
+                )
+                ->showIndicators()
+                ->theme('dark')
+                ->render(),
+        );
     }
 }
