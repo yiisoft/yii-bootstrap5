@@ -553,7 +553,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
      */
     private function renderItem(CarouselItem $carouselItem, bool $active): string
     {
-        $content = $carouselItem->getcontent();
+        $content = $carouselItem->getContent();
 
         if ($content instanceof Img) {
             $content = $content->addClass(self::CLASS_IMAGE);
