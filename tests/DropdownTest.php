@@ -60,8 +60,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 DropdownItem::link('Something else here', '#'),
             );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown test-class bg-primary">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -77,11 +77,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->render(),
-            );
+            $dropdownWidget->render(),
+        );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown test-class bg-primary test-class-1 test-class-2">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -97,8 +97,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->addClass('test-class-1', 'test-class-2')->render(),
-            );
+            $dropdownWidget->addClass('test-class-1', 'test-class-2')->render(),
+        );
     }
 
     public function testAddCssStyle(): void
@@ -111,8 +111,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 DropdownItem::link('Something else here', '#'),
             );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown" style="color: red;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -128,11 +128,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->render(),
-            );
+            $dropdownWidget->render(),
+        );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown" style="color: red; font-weight: bold;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -148,8 +148,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->addCssStyle('font-weight: bold;')->render(),
-            );
+            $dropdownWidget->addCssStyle('font-weight: bold;')->render(),
+        );
     }
 
     public function testAddCssStyleWithOverwriteFalse(): void
@@ -162,8 +162,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 DropdownItem::link('Something else here', '#'),
             );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown" style="color: red;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -179,11 +179,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->render(),
-            );
+            $dropdownWidget->render(),
+        );
 
-            Assert::equalsWithoutLE(
-                <<<HTML
+        Assert::equalsWithoutLE(
+            <<<HTML
                 <div class="dropdown" style="color: red;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
                 <ul class="dropdown-menu">
@@ -199,8 +199,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 </ul>
                 </div>
                 HTML,
-                $dropdownWidget->addCssStyle('color: blue;', false)->render(),
-            );
+            $dropdownWidget->addCssStyle('color: blue;', false)->render(),
+        );
     }
 
     /**
