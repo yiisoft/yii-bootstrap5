@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
 use Yiisoft\Yii\Bootstrap5\DropdownDirection;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\DropdownToggleVariant;
@@ -18,6 +19,380 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class DropdownTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::END)
+                ->toggleContent('Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentSMEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">SM Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-sm-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::SM_END)
+                ->toggleContent('SM Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentMDEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MD Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-md-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::MD_END)
+                ->toggleContent('MD Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentLGEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">LG Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::LG_END)
+                ->toggleContent('LG Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentXLEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XL Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xl-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XL_END)
+                ->toggleContent('XL Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentXXLEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XXL Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xxl-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XXL_END)
+                ->toggleContent('XXL Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentSMStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">SM Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-sm-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::SM_START)
+                ->toggleContent('SM Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentMDStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MD Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-md-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::MD_START)
+                ->toggleContent('MD Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentLGStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">LG Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-lg-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::LG_START)
+                ->toggleContent('LG Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentXLStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XL Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xl-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XL_START)
+                ->toggleContent('XL Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentXXLStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XXL Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xxl-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                    new DropdownItem('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XXL_START)
+                ->toggleContent('XXL Left-aligned menu')
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#centered
      */
@@ -190,6 +565,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addAttributes([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addClass(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));

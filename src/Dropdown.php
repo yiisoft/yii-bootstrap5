@@ -39,6 +39,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     private const DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
     private const DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
     private const NAME = 'dropdown';
+    private array $alignmentClasses = [];
     private array $attributes = [];
     private array $cssClass = [];
     private bool $container = true;
@@ -48,7 +49,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /** @psalm-var DropdownItem[] */
     private array $items = [];
     private array $itemsClass = [];
-    private array $listClass = [];
     private string|Stringable $toggleButton = '';
     private string $toggleContent = 'Dropdown button';
     private bool $toggleLink = false;
@@ -114,6 +114,21 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         Html::addCssStyle($new->attributes, $value, $overwrite);
+
+        return $new;
+    }
+
+    /**
+     * Sets the alignment of the dropdown component.
+     *
+     * @param DropdownAlignment ...$value The alignment of the dropdown component.
+     *
+     * @return self A new instance with the specified alignment of the dropdown component.
+     */
+    public function alignment(DropdownAlignment ...$value): self
+    {
+        $new = clone $this;
+        $new->alignmentClasses = $value;
 
         return $new;
     }
@@ -535,12 +550,8 @@ final class Dropdown extends \Yiisoft\Widget\Widget
                     'aria-labelledby' => $id,
                 ],
             )
-            ->addClass(self::DROPDOWN_LIST_CLASS)
+            ->addClass(self::DROPDOWN_LIST_CLASS, ...$this->alignmentClasses)
             ->items(...$items);
-
-        if ($this->listClass !== []) {
-            $ulTag->class(...$this->listClass);
-        }
 
         return $ulTag->render();
     }
