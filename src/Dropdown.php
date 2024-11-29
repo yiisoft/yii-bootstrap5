@@ -505,7 +505,18 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the variant for the dropdown toggle button.
+     * Sets the variant for the dropdown toggle button. The following options are allowed:
+     *
+     * - `DropdownToggleVariant::PRIMARY`: The primary variant.
+     * - `DropdownToggleVariant::SECONDARY`: The secondary variant.
+     * - `DropdownToggleVariant::SUCCESS`: The success variant.
+     * - `DropdownToggleVariant::DANGER`: The danger variant.
+     * - `DropdownToggleVariant::WARNING`: The warning variant.
+     * - `DropdownToggleVariant::INFO`: The info variant.
+     * - `DropdownToggleVariant::LIGHT`: The light variant.
+     * - `DropdownToggleVariant::LINK`: The link variant.
+     * - `DropdownToggleVariant::DARK`: The dark variant.
+     * - `DropdownToggleVariant::NAV_LINK`: The nav link variant.
      *
      * @param DropdownToggleVariant $value The variant for the dropdown toggle button.
      *
