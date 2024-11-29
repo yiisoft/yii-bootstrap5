@@ -11,8 +11,6 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
-use Yiisoft\Html\Tag\Hr;
-use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Html\Tag\Ul;
 
@@ -22,16 +20,25 @@ use Yiisoft\Html\Tag\Ul;
  * For example,
  *
  * ```php
+ * echo Dropdown::widget()
+ *     ->items(
+ *         DropdownItem::link('Action', '#'),
+ *         DropdownItem::link('Another action', '#'),
+ *         DropdownItem::link('Something else here', '#'),
+ *         DropdownItem::divider(),
+ *         DropdownItem::link('Separated link', '#'),
+ *     )
+ *     ->toggleContent('Toggle dropdown')
+ *     ->toggleVariant(DropdownToggleVariant::DANGER)
+ *     ->toggleSplit()
+ *     ->toggleSplitContent('Danger')
+ *     ->toggleSizeLarge()
+ *     ->render();
  * ```
  */
 final class Dropdown extends \Yiisoft\Widget\Widget
 {
     private const DROPDOWN_CLASS = 'dropdown';
-    private const DROPDOWN_DIVIDER_CLASS = 'dropdown-divider';
-    private const DROPDOWN_ITEM_CLASS = 'dropdown-item';
-    private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
-    private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
-    private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
     private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
     private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
     private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
@@ -45,10 +52,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     private bool $container = true;
     private BackedEnum|string $containerClass = self::DROPDOWN_CLASS;
     private bool|string $id = false;
-    private string $itemTag = 'a';
     /** @psalm-var DropdownItem[] */
     private array $items = [];
-    private array $itemsClass = [];
+    private array $toggleAttributes = [];
     private string|Stringable $toggleButton = '';
     private string $toggleContent = 'Dropdown button';
     private bool $toggleLink = false;
@@ -119,7 +125,29 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the alignment of the dropdown component.
+     * Sets the alignment of the dropdown component. The following options are allowed:
+     *
+     * - `DropdownAlignment::END`: Aligns the dropdown menu to the end of the dropdown toggle.
+     * - `DropdownAlignment::SM_END`: Aligns the dropdown menu to the end of the dropdown toggle on the small
+     * breakpoint.
+     * - `DropdownAlignment::MD_END`: Aligns the dropdown menu to the end of the dropdown toggle on the medium
+     * breakpoint.
+     * - `DropdownAlignment::LG_END`: Aligns the dropdown menu to the end of the dropdown toggle on the large
+     * breakpoint.
+     * - `DropdownAlignment::XL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the extra-large
+     * breakpoint.
+     * - `DropdownAlignment::XXL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the
+     * extra-extra-large breakpoint.
+     * - `DropdownAlignment::SM_START`: Aligns the dropdown menu to the start of the dropdown toggle on the small
+     * breakpoint.
+     * - `DropdownAlignment::MD_START`: Aligns the dropdown menu to the start of the dropdown toggle on the medium
+     * breakpoint.
+     * - `DropdownAlignment::LG_START`: Aligns the dropdown menu to the start of the dropdown toggle on the large
+     * breakpoint.
+     * - `DropdownAlignment::XL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the extra-large
+     * breakpoint.
+     * - `DropdownAlignment::XXL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the
+     * extra-extra-large breakpoint.
      *
      * @param DropdownAlignment ...$value The alignment of the dropdown component.
      *
@@ -129,6 +157,21 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->alignmentClasses = $value;
+
+        return $new;
+    }
+
+    /**
+     * Adds a set of attributes for the dropdown toggle button.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addToggleAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->toggleAttributes = array_merge($this->toggleAttributes, $values);
 
         return $new;
     }
@@ -148,6 +191,46 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $new->attributes = $values;
 
         return $new;
+    }
+
+    /**
+     * Whether to automatically close the dropdown when any of its elements is clicked.
+     *
+     * @param bool $value If set to `true`, the dropdown will be closed when any of its elements is clicked. If set to
+     * `false`, should be closed manually.
+     *
+     * @return self A new instance with the specified auto-close setting.
+     */
+    public function autoClose(bool $value = true): self
+    {
+        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'true' : 'false']);
+    }
+
+    /**
+     * Whether to automatically close the dropdown when the user clicks inside of the dropdown.
+     *
+     * @param bool $value If set to `true`, the dropdown will be closed when the user clicks inside of the dropdown. If
+     * set to `false`, no attribute will be set.
+     *
+     * @return self A new instance with the specified auto-close setting.
+     */
+    public function autoCloseInside(bool $value = true): self
+    {
+        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'inside' : null]);
+    }
+
+    /**
+     * Whether to automatically close the dropdown when the user clicks outside of the dropdown or the dropdown toggle
+     * button.
+     *
+     * @param bool $value If set to `true`, the dropdown will be closed when the user clicks outside of the dropdown. If
+     * set to `false`, no attribute will be set.
+     *
+     * @return self A new instance with the specified auto-close setting.
+     */
+    public function autoCloseOutside(bool $value = true): self
+    {
+        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'outside' : null]);
     }
 
     /**
@@ -247,21 +330,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the tag name for the dropdown items.
-     *
-     * @param string $value The tag name for the dropdown items. Defaults to 'a'.
-     *
-     * @return self A new instance with the specified tag name for the dropdown items.
-     */
-    public function itemTag(string $value): self
-    {
-        $new = clone $this;
-        $new->itemTag = $value;
-
-        return $new;
-    }
-
-    /**
      * List of links to appear in the dropdown. If this property is empty, the widget will not render anything.
      *
      * @param array $value The links to appear in the dropdown.
@@ -290,6 +358,23 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         return $this
             ->addAttributes(['data-bs-theme' => $value === '' ? null : $value])
             ->id($this->id === false ? true : $this->id);
+    }
+
+    /**
+     * Sets the HTML attributes for the dropdown toggle button.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the dropdown toggle button.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function toggleAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->toggleAttributes = $values;
+
+        return $new;
     }
 
     /**
@@ -478,61 +563,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         };
     }
 
-    private function renderItem(DropdownItem $item): Li
-    {
-        if ($item->isDivider()) {
-            return Li::tag()->addContent("\n", Hr::tag()->addClass(self::DROPDOWN_DIVIDER_CLASS), "\n");
-        }
-
-        if ($item->isText()) {
-            return Li::tag()
-                ->addContent(
-                    "\n",
-                    Span::tag()->addClass(self::DROPDOWN_ITEM_TEXT_CLASS)->addContent($item->getLabel()),
-                    "\n"
-                );
-        }
-
-        $linkAttributes = $item->getAttributes();
-
-        Html::addCssClass($linkAttributes, [self::DROPDOWN_ITEM_CLASS]);
-
-        if ($item->isActive()) {
-            Html::addCssClass($linkAttributes, self::DROPDOWN_ITEM_ACTIVE_CLASS);
-            $linkAttributes['aria-current'] = 'true';
-        }
-
-        if ($item->isDisabled()) {
-            Html::addCssClass($linkAttributes, self::DROPDOWN_ITEM_DISABLED_CLASS);
-            $linkAttributes['aria-disabled'] = 'true';
-        }
-
-        if ($this->itemTag === '' || in_array($this->itemTag, ['a', 'button'], true) === false) {
-            throw new InvalidArgumentException('The item tag must be either "a" or "button".');
-        }
-
-        $liTag = Li::tag()
-            ->addContent(
-                "\n",
-                Html::tag($this->itemTag)
-                    ->addAttributes($linkAttributes)
-                    ->addContent($item->getLabel())
-                    ->addAttributes(
-                        [
-                            'href' => $this->itemTag === 'a' ? $item->getUrl() : null,
-                            'type' => $this->itemTag === 'button' ? 'button' : null,
-                        ],
-                    ),
-                "\n",
-            );
-
-        if ($this->itemsClass !== []) {
-            $liTag->class(...$this->itemsClass);
-        }
-
-        return $liTag;
-    }
-
     /**
      * @psalm-param non-empty-string|null $id
      */
@@ -541,7 +571,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = $this->renderItem($item);
+            $items[] = $item->getContent();
         }
 
         $ulTag = Ul::tag()
@@ -575,9 +605,18 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             default => $this->toggleContent,
         };
 
+        $toggleAttributes = $this->toggleAttributes;
+
+        $classes = $toggleAttributes['class'] ?? null;
+
+        unset($toggleAttributes['class']);
+
         if ($this->toggleLink) {
-            return $this->renderToggleLink($toggleContent);
+            return $this->renderToggleLink($toggleAttributes, $toggleContent, $classes);
         }
+
+        $toggleAttributes['data-bs-toggle'] = 'dropdown';
+        $toggleAttributes['aria-expanded'] = 'false';
 
         return Button::button('')
             ->addClass(
@@ -586,21 +625,21 @@ final class Dropdown extends \Yiisoft\Widget\Widget
                 $this->toggleSize,
                 self::DROPDOWN_TOGGLE_CLASS,
                 $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                $classes,
             )
-            ->addAttributes(
-                [
-                    'data-bs-toggle' => 'dropdown',
-                    'aria-expanded' => 'false',
-                ],
-            )
+            ->addAttributes($toggleAttributes)
             ->addContent($toggleContent)
             ->encode(false)
             ->id($id)
             ->render();
     }
 
-    private function renderToggleLink(string $toggleContent): string
+    private function renderToggleLink(array $toggleAttributes, string $toggleContent, string|null $classes): string
     {
+        $toggleAttributes['role'] = 'button';
+        $toggleAttributes['data-bs-toggle'] = 'dropdown';
+        $toggleAttributes['aria-expanded'] = 'false';
+
         return A::tag()
             ->addClass(
                 $this->toggleVariant !== DropdownToggleVariant::NAV_LINK ? self::DROPDOWN_TOGGLE_BUTTON_CLASS : null,
@@ -608,14 +647,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
                 $this->toggleSize,
                 self::DROPDOWN_TOGGLE_CLASS,
                 $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                $classes,
             )
-            ->addAttributes(
-                [
-                    'role' => 'button',
-                    'data-bs-toggle' => 'dropdown',
-                    'aria-expanded' => 'false',
-                ],
-            )
+            ->addAttributes($toggleAttributes)
             ->addContent($toggleContent)
             ->encode(false)
             ->url($this->toggleUrl)

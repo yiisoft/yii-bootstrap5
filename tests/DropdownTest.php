@@ -43,9 +43,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::END)
                 ->toggleContent('Right-aligned menu')
@@ -77,9 +77,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::SM_END)
                 ->toggleContent('SM Right-aligned menu')
@@ -111,9 +111,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::MD_END)
                 ->toggleContent('MD Right-aligned menu')
@@ -145,9 +145,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::LG_END)
                 ->toggleContent('LG Right-aligned menu')
@@ -179,9 +179,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XL_END)
                 ->toggleContent('XL Right-aligned menu')
@@ -213,9 +213,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XXL_END)
                 ->toggleContent('XXL Right-aligned menu')
@@ -247,9 +247,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::SM_START)
                 ->toggleContent('SM Left-aligned menu')
@@ -281,9 +281,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::MD_START)
                 ->toggleContent('MD Left-aligned menu')
@@ -315,9 +315,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::LG_START)
                 ->toggleContent('LG Left-aligned menu')
@@ -349,9 +349,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XL_START)
                 ->toggleContent('XL Left-aligned menu')
@@ -383,12 +383,148 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
-                    new DropdownItem('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XXL_START)
                 ->toggleContent('XXL Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoClose(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="true" data-bs-toggle="dropdown" aria-expanded="false">Default dropdown</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(true)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Default dropdown')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="false" data-bs-toggle="dropdown" aria-expanded="false">Manual close</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(false)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Manual close')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseInside(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="inside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable inside</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoCloseInside()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Clickeable inside')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseOutside(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable outside</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoCloseOutside()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Clickeable outside')
                 ->render(),
         );
     }
@@ -417,9 +553,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->direction(DropdownDirection::CENTERED)
                 ->render(),
@@ -450,9 +586,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->direction(DropdownDirection::DROPUP)
                 ->render(),
@@ -483,9 +619,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->direction(DropdownDirection::DROPUP_CENTERED)
                 ->render(),
@@ -516,9 +652,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->direction(DropdownDirection::DROPEND)
                 ->render(),
@@ -549,9 +685,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->direction(DropdownDirection::DROPSTART)
                 ->render(),
@@ -567,14 +703,17 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseInside(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOutside(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClass(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->id(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->itemTag('button'));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->items(new DropdownItem('')));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleButton(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleContent(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleLink(false));
@@ -609,11 +748,10 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->itemTag('button')
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#', button: true),
+                    DropdownItem::link('Another action', '#', button: true),
+                    DropdownItem::link('Something else here', '#', button: true),
                 )
                 ->render(),
         );
@@ -643,9 +781,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Regular link', '#'),
-                    new DropdownItem('Active link', '#', active: true),
-                    new DropdownItem('Another link', '#'),
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Active link', '#', active: true),
+                    DropdownItem::link('Another link', '#'),
                 )
                 ->render(),
         );
@@ -675,9 +813,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Regular link', '#'),
-                    new DropdownItem('Disabled link', '#', disabled: true),
-                    new DropdownItem('Another link', '#'),
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Disabled link', '#', disabled: true),
+                    DropdownItem::link('Another link', '#'),
                 )
                 ->render(),
         );
@@ -709,12 +847,43 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->itemTag('button')
                 ->items(
-                    new DropdownItem('Dropdown item text', text: true),
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::text('Dropdown item text'),
+                    DropdownItem::link('Action', '#', button: true),
+                    DropdownItem::link('Another action', '#', button: true),
+                    DropdownItem::link('Something else here', '#', button: true),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
+     */
+    public function testMenuItemsWithDropdownItemWithHeader(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <h6 class="dropdown-header">Dropdown header</h6>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::header('Dropdown header'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
                 )
                 ->render(),
         );
@@ -747,13 +916,18 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Dropdown item text', text: true),
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::text('Dropdown item text'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->render(),
         );
+    }
+
+    public function testRender(): void
+    {
+        $this->assertEmpty(Dropdown::widget()->render());
     }
 
     /**
@@ -780,9 +954,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->render(),
         );
@@ -812,9 +986,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->toggleContent('Dropdown link')
                 ->toggleLink()
@@ -846,9 +1020,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->toggleContent('Dropdown link')
                 ->toggleLink()
@@ -881,9 +1055,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->id('dropdownLight')
                 ->theme('light')
@@ -916,13 +1090,124 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->id('dropdownDark')
                 ->theme('dark')
                 ->toggleContent('Dark dropdown')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
+     */
+    public function testToggleAttributesWithDataBSoffset(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-offset="10,20" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
+     */
+    public function testToggleAttributesWithLinkAndDataBSoffset(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" data-bs-offset="10,20" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->toggleLink()
+                ->render(),
+        );
+    }
+
+    public function testToggleAttributesWithSplitAndDataBSReference(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <button type="button" class="btn btn-secondary">Danger</button>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-reference="parent" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleAttributes(['data-bs-reference' => 'parent'])
+                ->toggleContent('Toggle dropdown')
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
                 ->render(),
         );
     }
@@ -948,9 +1233,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->toggleButton(
                     Button::tag()
@@ -988,9 +1273,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->toggleContent('Large button')
                 ->toggleSizeLarge()
@@ -1019,9 +1304,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
                 )
                 ->toggleContent('Small button')
                 ->toggleSizeSmall()
@@ -1062,11 +1347,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
@@ -1109,11 +1394,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
@@ -1154,11 +1439,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
@@ -1199,11 +1484,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
@@ -1245,11 +1530,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
@@ -1294,11 +1579,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    new DropdownItem('Action', '#'),
-                    new DropdownItem('Another action', '#'),
-                    new DropdownItem('Something else here', '#'),
-                    new DropdownItem(divider: true),
-                    new DropdownItem('Separated link', '#'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
                 )
                 ->toggleContent('Toggle dropdown')
                 ->toggleVariant(DropdownToggleVariant::DANGER)
