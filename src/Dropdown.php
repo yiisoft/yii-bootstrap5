@@ -240,10 +240,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      */
     public function itemTag(string $value): self
     {
-        if ($value === '' || in_array($value, ['a', 'button'], true) === false) {
-            throw new InvalidArgumentException('The item tag must be either "a" or "button".');
-        }
-
         $new = clone $this;
         $new->itemTag = $value;
 
@@ -314,8 +310,8 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Whether to render the dropdown toggle as a link.
      *
-     * @param string|Stringable $value Whether to render the dropdown toggle as a link. If set to `true`, the dropdown
-     * toggle will be rendered as a link. If set to `false`, the dropdown toggle will be rendered as a button.
+     * @param bool $value Whether to render the dropdown toggle as a link. If set to `true`, the dropdown toggle will be
+     * rendered as a link. If set to `false`, the dropdown toggle will be rendered as a button.
      *
      * @return self A new instance with the specified dropdown toggle as a link setting.
      */
@@ -330,9 +326,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Whether to render the dropdown toggle button as a large button.
      *
-     * @param string|Stringable $value Whether to render the dropdown toggle button as a large button. If set to `true`,
-     * the dropdown toggle button will be rendered as a large button. If set to `false`, the dropdown toggle button will
-     * be rendered as a normal-sized button.
+     * @param bool $value Whether to render the dropdown toggle button as a large button. If set to `true`, the dropdown
+     * toggle button will be rendered as a large button. If set to `false`, the dropdown toggle button will be rendered
+     * as a normal-sized button.
      *
      * @return self A new instance with the specified dropdown toggle button size large setting.
      */
@@ -347,9 +343,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Whether to render the dropdown toggle button as a small button.
      *
-     * @param string|Stringable $value Whether to render the dropdown toggle button as a small button. If set to `true`,
-     * the dropdown toggle button will be rendered as a small button. If set to `false`, the dropdown toggle button will
-     * be rendered as a normal-sized button.
+     * @param bool $value Whether to render the dropdown toggle button as a small button. If set to `true`, the dropdown
+     * toggle button will be rendered as a small button. If set to `false`, the dropdown toggle button will be rendered
+     * as a normal-sized button.
      *
      * @return self A new instance with the specified dropdown toggle button size small setting.
      */
@@ -385,10 +381,10 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified content of the dropdown toggle split button.
      */
-    public function toggleSplitContent(string $value): self
+    public function toggleSplitContent(string|Stringable $value): self
     {
         $new = clone $this;
-        $new->toggleSplitContent = $value;
+        $new->toggleSplitContent = (string) $value;
 
         return $new;
     }
@@ -496,6 +492,10 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             $linkAttributes['aria-disabled'] = 'true';
         }
 
+        if ($this->itemTag === '' || in_array($this->itemTag, ['a', 'button'], true) === false) {
+            throw new InvalidArgumentException('The item tag must be either "a" or "button".');
+        }
+
         $liTag = Li::tag()
             ->addContent(
                 "\n",
@@ -518,6 +518,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         return $liTag;
     }
 
+    /**
+     * @psalm-param non-empty-string|null $id
+     */
     private function renderItems(string|null $id): string
     {
         $items = [];
@@ -542,10 +545,13 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         return $ulTag->render();
     }
 
+    /**
+     * @psalm-param non-empty-string|null $id
+     */
     private function renderToggle(string|null $id): string
     {
         if ($this->toggleButton !== '') {
-            return $this->toggleButton;
+            return (string) $this->toggleButton;
         }
 
         $toggleContent = match ($this->toggleSplit) {
