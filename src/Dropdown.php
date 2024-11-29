@@ -204,7 +204,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @param DropdownDirection $value The direction of the dropdown component.
      *
-     *
      * @return self A new instance with the specified direction of the dropdown component.
      */
     public function direction(DropdownDirection $value): self

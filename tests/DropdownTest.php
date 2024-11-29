@@ -210,7 +210,6 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleVariant(DropdownToggleVariant::DANGER));
     }
 
-
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
      */
