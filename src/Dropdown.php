@@ -51,12 +51,12 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     private array $cssClass = [];
     private bool $container = true;
     private BackedEnum|string $containerClass = self::DROPDOWN_CLASS;
-    private bool|string $id = false;
     /** @psalm-var DropdownItem[] */
     private array $items = [];
     private array $toggleAttributes = [];
     private string|Stringable $toggleButton = '';
     private string $toggleContent = 'Dropdown button';
+    private bool|string $toggleId = false;
     private bool $toggleLink = false;
     private string $toggleUrl = '#';
     private string|null $toggleSize = null;
@@ -313,23 +313,6 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the ID of the dropdown component.
-     *
-     * @param bool|string $value The ID of the dropdown component. If `true`, an ID will be generated automatically.
-     *
-     * @throws InvalidArgumentException if the ID is an empty string or `false`.
-     *
-     * @return self A new instance with the specified ID.
-     */
-    public function id(bool|string $value): self
-    {
-        $new = clone $this;
-        $new->id = $value;
-
-        return $new;
-    }
-
-    /**
      * List of links to appear in the dropdown. If this property is empty, the widget will not render anything.
      *
      * @param array $value The links to appear in the dropdown.
@@ -357,7 +340,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     {
         return $this
             ->addAttributes(['data-bs-theme' => $value === '' ? null : $value])
-            ->id($this->id === false ? true : $this->id);
+            ->toggleId($this->toggleId === false ? true : $this->toggleId);
     }
 
     /**
@@ -403,6 +386,23 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->toggleContent = (string) $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the toggle button for the dropdown component.
+     *
+     * @param bool|string $value The ID of the dropdown component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
+     * @return self A new instance with the specified ID of the toggle button for the dropdown component.
+     */
+    public function toggleId(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->toggleId = $value;
 
         return $new;
     }
@@ -532,20 +532,20 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         }
 
         /** @psalm-var non-empty-string|null $id */
-        $id = match ($this->id) {
+        $toggleId = match ($this->toggleId) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
             '', false => null,
-            default => $this->id,
+            default => $this->toggleId,
         };
 
         Html::addCssClass($attributes, [$containerClass, $classes, ...$this->cssClass]);
 
         $renderToggle = match ($this->toggleSplit) {
-            true => $this->renderToggleSplit() . "\n" . $this->renderToggle($id),
-            false => $this->renderToggle($id),
+            true => $this->renderToggleSplit() . "\n" . $this->renderToggle($toggleId),
+            false => $this->renderToggle($toggleId),
         };
 
-        $renderItems = $this->renderItems($id);
+        $renderItems = $this->renderItems($toggleId);
 
         return match ($this->container) {
             true => Div::tag()
@@ -564,9 +564,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * @psalm-param non-empty-string|null $id
+     * @psalm-param non-empty-string|null $toggleId
      */
-    private function renderItems(string|null $id): string
+    private function renderItems(string|null $toggleId): string
     {
         $items = [];
 
@@ -577,7 +577,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $ulTag = Ul::tag()
             ->addAttributes(
                 [
-                    'aria-labelledby' => $id,
+                    'aria-labelledby' => $toggleId,
                 ],
             )
             ->addClass(self::DROPDOWN_LIST_CLASS, ...$this->alignmentClasses)
@@ -587,9 +587,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * @psalm-param non-empty-string|null $id
+     * @psalm-param non-empty-string|null $toggleId
      */
-    private function renderToggle(string|null $id): string
+    private function renderToggle(string|null $toggleId): string
     {
         if ($this->toggleButton !== '') {
             return (string) $this->toggleButton;
@@ -630,7 +630,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             ->addAttributes($toggleAttributes)
             ->addContent($toggleContent)
             ->encode(false)
-            ->id($id)
+            ->id($toggleId)
             ->render();
     }
 
