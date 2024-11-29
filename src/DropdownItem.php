@@ -7,28 +7,29 @@ namespace Yiisoft\Yii\Bootstrap5;
 use InvalidArgumentException;
 use Yiisoft\Html\Html;
 
-/**
- * Represents a link.
- */
-final class Link
+final class DropdownItem
 {
     public function __construct(
         private readonly string $label = '',
         private readonly string|null $url = null,
+        private readonly bool $divider = false,
+        private readonly bool $text = false,
         private readonly bool $active = false,
         private readonly bool $disabled = false,
         private readonly bool $encodeLabel = true,
         private readonly array $attributes = [],
     ) {
         if ($this->active && $this->disabled) {
-            throw new InvalidArgumentException('The link cannot be both active and disabled.');
+            throw new InvalidArgumentException('The dropdown item cannot be active and disabled at the same time.');
+        }
+
+        if ($this->divider && $this->text) {
+            throw new InvalidArgumentException('The dropdown item cannot be a divider and text at the same time.');
         }
     }
 
     /**
-     * Returns the HTML attributes for the link.
-     *
-     * @return array The attributes.
+     * @return array Returns the HTML attributes for the link.
      */
     public function getAttributes(): array
     {
@@ -36,9 +37,7 @@ final class Link
     }
 
     /**
-     * Returns the encoded label content.
-     *
-     * @return string The encoded label content.
+     * @return string Returns the encoded label content.
      */
     public function getLabel(): string
     {
@@ -46,9 +45,7 @@ final class Link
     }
 
     /**
-     * Returns the URL for the link.
-     *
-     * @return string|null The URL.
+     * @return string|null Returns the URL for the link.
      */
     public function getUrl(): string|null
     {
@@ -69,5 +66,21 @@ final class Link
     public function isDisabled(): bool
     {
         return $this->disabled;
+    }
+
+    /**
+     * @return bool Whether the item is a divider.
+     */
+    public function isDivider(): bool
+    {
+        return $this->divider;
+    }
+
+    /**
+     * @return bool Whether the item is a text.
+     */
+    public function isText(): bool
+    {
+        return $this->text;
     }
 }
