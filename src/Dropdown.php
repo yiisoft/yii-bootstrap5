@@ -125,29 +125,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the alignment of the dropdown component. The following options are allowed:
-     *
-     * - `DropdownAlignment::END`: Aligns the dropdown menu to the end of the dropdown toggle.
-     * - `DropdownAlignment::SM_END`: Aligns the dropdown menu to the end of the dropdown toggle on the small
-     * breakpoint.
-     * - `DropdownAlignment::MD_END`: Aligns the dropdown menu to the end of the dropdown toggle on the medium
-     * breakpoint.
-     * - `DropdownAlignment::LG_END`: Aligns the dropdown menu to the end of the dropdown toggle on the large
-     * breakpoint.
-     * - `DropdownAlignment::XL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the extra-large
-     * breakpoint.
-     * - `DropdownAlignment::XXL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the
-     * extra-extra-large breakpoint.
-     * - `DropdownAlignment::SM_START`: Aligns the dropdown menu to the start of the dropdown toggle on the small
-     * breakpoint.
-     * - `DropdownAlignment::MD_START`: Aligns the dropdown menu to the start of the dropdown toggle on the medium
-     * breakpoint.
-     * - `DropdownAlignment::LG_START`: Aligns the dropdown menu to the start of the dropdown toggle on the large
-     * breakpoint.
-     * - `DropdownAlignment::XL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the extra-large
-     * breakpoint.
-     * - `DropdownAlignment::XXL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the
-     * extra-extra-large breakpoint.
+     * Sets the alignment of the dropdown component.
      *
      * @param DropdownAlignment ...$value The alignment of the dropdown component.
      *
@@ -201,7 +179,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified auto-close setting.
      */
-    public function autoClose(bool $value = true): self
+    public function autoCloseOnClick(bool $value = true): self
     {
         return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'true' : 'false']);
     }
@@ -214,7 +192,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified auto-close setting.
      */
-    public function autoCloseInside(bool $value = true): self
+    public function autoCloseOnClickInside(bool $value = true): self
     {
         return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'inside' : null]);
     }
@@ -228,7 +206,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified auto-close setting.
      */
-    public function autoCloseOutside(bool $value = true): self
+    public function autoCloseOnClickOutside(bool $value = true): self
     {
         return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'outside' : null]);
     }
@@ -259,7 +237,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Whether to render the dropdown in a container `<div>` tag.
      *
-     * @param bool $value Whether to render the dropdown in a container `<div>` tag. For default, it will be rendered in
+     * @param bool $value Whether to render the dropdown in a container `<div>` tag. By default, it will be rendered in
      * a container `<div>` tag. If set to `false`, the container will not be rendered.
      *
      * @return self A new instance with the specified container setting.
@@ -288,17 +266,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the direction of the dropdown component. The following options are allowed:
-     *
-     * - `DropdownDirection::CENTERED`: Make the dropdown menu centered below the toggle with `.dropdown-center` on the
-     * parent element.
-     * - `DropdownDirection::DROPUP`: Trigger dropdown menus above elements by adding `.dropup` to the parent element.
-     * - `DropdownDirection::DROPUP_CENTERED`: Make the dropup menu centered above the toggle with `.dropup-center` on
-     * the parent element.
-     * - `DropdownDirection::DROPEND`: Trigger dropdown menus at the right of the elements by adding `.dropend` to the
-     * parent element.
-     * - `DropdownDirection::DROPSTART`: Trigger dropdown menus at the left of the elements by adding `.dropstart` to
-     * the parent element.
+     * Set the direction of the dropdown component.
      *
      * @param DropdownDirection $value The direction of the dropdown component.
      *
@@ -367,7 +335,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified toggle button custom tag.
      */
-    public function toggleButton(string|Stringable $value): self
+    public function toggleTag(string|Stringable $value): self
     {
         $new = clone $this;
         $new->toggleButton = (string) $value;
@@ -415,7 +383,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified dropdown toggle as a link setting.
      */
-    public function toggleLink(bool $value = true): self
+    public function toggleAsLink(bool $value = true): self
     {
         $new = clone $this;
         $new->toggleLink = $value;
@@ -505,18 +473,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the variant for the dropdown toggle button. The following options are allowed:
-     *
-     * - `DropdownToggleVariant::PRIMARY`: The primary variant.
-     * - `DropdownToggleVariant::SECONDARY`: The secondary variant.
-     * - `DropdownToggleVariant::SUCCESS`: The success variant.
-     * - `DropdownToggleVariant::DANGER`: The danger variant.
-     * - `DropdownToggleVariant::WARNING`: The warning variant.
-     * - `DropdownToggleVariant::INFO`: The info variant.
-     * - `DropdownToggleVariant::LIGHT`: The light variant.
-     * - `DropdownToggleVariant::LINK`: The link variant.
-     * - `DropdownToggleVariant::DARK`: The dark variant.
-     * - `DropdownToggleVariant::NAV_LINK`: The nav link variant.
+     * Sets the variant for the dropdown toggle button.
      *
      * @param DropdownToggleVariant $value The variant for the dropdown toggle button.
      *
@@ -653,7 +610,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
 
         return A::tag()
             ->addClass(
-                $this->toggleVariant !== DropdownToggleVariant::NAV_LINK ? self::DROPDOWN_TOGGLE_BUTTON_CLASS : null,
+                self::DROPDOWN_TOGGLE_BUTTON_CLASS,
                 $this->toggleVariant,
                 $this->toggleSize,
                 self::DROPDOWN_TOGGLE_CLASS,

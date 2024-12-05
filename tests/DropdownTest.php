@@ -580,7 +580,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
      */
-    public function testAutoClose(): void
+    public function testAutoCloseOnClick(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -600,7 +600,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoClose(true)
+                ->autoCloseOnClick(true)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -614,7 +614,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
      */
-    public function testAutoCloseWithFalse(): void
+    public function testAutoCloseOnClickWithFalse(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -634,7 +634,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoClose(false)
+                ->autoCloseOnClick(false)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -648,7 +648,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
      */
-    public function testAutoCloseInside(): void
+    public function testAutoCloseOnClickInside(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -668,7 +668,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoCloseInside()
+                ->autoCloseOnClickInside()
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -682,7 +682,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
      */
-    public function testAutoCloseOutside(): void
+    public function testAutoCloseOnClickOutside(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -702,7 +702,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoCloseOutside()
+                ->autoCloseOnClickOutside()
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -976,24 +976,24 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseInside(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOutside(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClick(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClickInside(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClickOutside(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClass(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->items(new DropdownItem('')));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAsLink(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleButton(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleContent(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleId(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleLink(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeLarge());
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeSmall());
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplit(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplitContent(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleTag(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleUrl(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleVariant(DropdownToggleVariant::DANGER));
     }
@@ -1263,8 +1263,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleContent('Dropdown link')
-                ->toggleLink()
                 ->render(),
         );
     }
@@ -1297,8 +1297,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleContent('Dropdown link')
-                ->toggleLink()
                 ->toggleVariant(DropdownToggleVariant::DANGER)
                 ->render(),
         );
@@ -1435,8 +1435,8 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleAttributes(['data-bs-offset' => '10,20'])
-                ->toggleLink()
                 ->render(),
         );
     }
@@ -1481,46 +1481,6 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 ->toggleContent('Toggle dropdown')
                 ->toggleSplit()
                 ->toggleSplitContent('Danger')
-                ->render(),
-        );
-    }
-
-    public function testToggleButton(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown custom button</button>
-            <ul class="dropdown-menu">
-            <li>
-            <a class="dropdown-item" href="#">Action</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Another action</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Something else here</a>
-            </li>
-            </ul>
-            </div>
-            HTML,
-            Dropdown::widget()
-                ->items(
-                    DropdownItem::link('Action', '#'),
-                    DropdownItem::link('Another action', '#'),
-                    DropdownItem::link('Something else here', '#'),
-                )
-                ->toggleButton(
-                    Button::tag()
-                        ->addAttributes(
-                            [
-                                'data-bs-toggle' => 'dropdown',
-                                'aria-expanded' => 'false',
-                            ],
-                        )
-                        ->addClass('btn btn-primary dropdown-toggle')
-                        ->content('Dropdown custom button')
-                )
                 ->render(),
         );
     }
@@ -1748,11 +1708,11 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
                 ->toggleSplit()
                 ->toggleSplitContent('Danger')
-                ->toggleLink()
+                ->toggleVariant(DropdownToggleVariant::DANGER)
                 ->render(),
         );
     }
@@ -1793,12 +1753,12 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->toggleSizeLarge()
                 ->toggleSplit()
                 ->toggleSplitContent('Danger')
-                ->toggleLink()
-                ->toggleSizeLarge()
+                ->toggleVariant(DropdownToggleVariant::DANGER)
                 ->render(),
         );
     }
@@ -1839,12 +1799,12 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
+                ->toggleAsLink()
                 ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->toggleSizeSmall()
                 ->toggleSplit()
                 ->toggleSplitContent('Danger')
-                ->toggleLink()
-                ->toggleSizeSmall()
+                ->toggleVariant(DropdownToggleVariant::DANGER)
                 ->render(),
         );
     }
@@ -1893,6 +1853,46 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                 ->toggleSplit()
                 ->toggleSplitContent('Danger')
                 ->toggleSizeSmall()
+                ->render(),
+        );
+    }
+
+    public function testToggleTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown custom button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleTag(
+                    Button::tag()
+                        ->addAttributes(
+                            [
+                                'data-bs-toggle' => 'dropdown',
+                                'aria-expanded' => 'false',
+                            ],
+                        )
+                        ->addClass('btn btn-primary dropdown-toggle')
+                        ->content('Dropdown custom button')
+                )
                 ->render(),
         );
     }

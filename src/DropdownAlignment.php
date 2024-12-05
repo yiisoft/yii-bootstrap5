@@ -7,6 +7,18 @@ namespace Yiisoft\Yii\Bootstrap5;
 /**
  * Alignment for the dropdown component.
  *
+ * - `END`: Aligns the dropdown menu to the end of the dropdown toggle.
+ * - `SM_END`: Aligns the dropdown menu to the end of the dropdown toggle on the small breakpoint.
+ * - `MD_END`: Aligns the dropdown menu to the end of the dropdown toggle on the medium breakpoint.
+ * - `LG_END`: Aligns the dropdown menu to the end of the dropdown toggle on the large breakpoint.
+ * - `XL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the extra-large breakpoint.
+ * - `XXL_END`: Aligns the dropdown menu to the end of the dropdown toggle on the extra-extra-large breakpoint.
+ * - `SM_START`: Aligns the dropdown menu to the start of the dropdown toggle on the small breakpoint.
+ * - `MD_START`: Aligns the dropdown menu to the start of the dropdown toggle on the medium breakpoint.
+ * - `LG_START`: Aligns the dropdown menu to the start of the dropdown toggle on the large breakpoint.
+ * - `XL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the extra-large breakpoint.
+ * - `XXL_START`: Aligns the dropdown menu to the start of the dropdown toggle on the extra-extra-large breakpoint.
+ *
  * @see https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
  */
 enum DropdownAlignment: string

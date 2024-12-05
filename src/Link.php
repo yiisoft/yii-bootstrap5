@@ -62,12 +62,4 @@ final class Link
     {
         return $this->active;
     }
-
-    /**
-     * @return bool Whether the item is disabled.
-     */
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
-    }
 }
