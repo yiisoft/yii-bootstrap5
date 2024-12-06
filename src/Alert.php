@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
-use function array_filter;
 use function array_key_exists;
 use function array_merge;
 use function preg_replace;
@@ -34,7 +34,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private AlertVariant $alertType = AlertVariant::SECONDARY;
     private string|Stringable $body = '';
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private array $closeButtonAttributes = [];
     private string|null $closeButtonTag = null;
     private string $closeButtonLabel = '';
@@ -67,24 +67,21 @@ final class Alert extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
-     * $alert->addClass('custom-class', null, 'another-class');
+     * $alert->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY());
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = array_merge($new->cssClasses, $values);
 
         return $new;
     }
@@ -153,19 +150,19 @@ final class Alert extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
-     * $alert->class('custom-class', null, 'another-class');
+     * $alert->class('custom-class', null, 'another-class', BackgroundColor::PRIMARY());
      * ```
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -331,15 +328,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the alert variant. The following options are allowed:
-     * - `AlertVariant::PRIMARY`: Primary alert.
-     * - `AlertVariant::SECONDARY`: Secondary alert.
-     * - `AlertVariant::SUCCESS`: Success alert.
-     * - `AlertVariant::DANGER`: Danger alert.
-     * - `AlertVariant::WARNING`: Warning alert.
-     * - `AlertVariant::INFO`: Info alert.
-     * - `AlertVariant::LIGHT`: Light alert.
-     * - `AlertVariant::DARK`: Dark alert.
+     * Set the alert variant.
      *
      * @param AlertVariant $value The alert variant.
      *
@@ -375,7 +364,7 @@ final class Alert extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->cssClasses]);
 
         if ($this->dismissable) {
             Html::addCssClass($attributes, 'alert-dismissible');
