@@ -16,7 +16,7 @@ final class TextColorTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\TextColorProvider::variant()
      */
-    public function testBackgroundColor(BackedEnum $value, string $expected): void
+    public function testTextColor(BackedEnum $value, string $expected): void
     {
         $this->assertSame($expected, $value->value);
     }
