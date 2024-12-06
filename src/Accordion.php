@@ -42,7 +42,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private array $bodyAttributes = [];
     private array $collapseAttributes = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private array $headerAttributes = [];
     private string $headerTag = 'h2';
     private bool|string $id = true;
@@ -85,7 +85,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge($new->cssClass, $values);
+        $new->cssClasses = array_merge($new->cssClasses, $values);
 
         return $new;
     }
@@ -167,19 +167,19 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
-     * $accordion->class('custom-class', null, 'another-class');
+     * $accordion->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
      * ```
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(BackedEnum|string|null ...$value): self
+    public function class(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -213,7 +213,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     public function flush(bool $value = true): self
     {
         $new = clone $this;
-        $new->cssClass['flush'] = $value ? 'accordion-flush' : null;
+        $new->cssClasses['flush'] = $value ? 'accordion-flush' : null;
 
         return $new;
     }
@@ -334,7 +334,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
             default => $this->id,
         };
 
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClasses]);
 
         return Div::tag()
             ->addAttributes($attributes)
