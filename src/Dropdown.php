@@ -490,7 +490,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $classes[] = $attributes['class'] ?? null;
+        $classes = $attributes['class'] ?? null;
         $containerClasses = $this->containerClasses;
 
         unset($attributes['class']);
@@ -510,7 +510,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
         }
 
-        Html::addCssClass($attributes, [...$containerClasses, ...$classes, ...$this->cssClasses]);
+        Html::addCssClass($attributes, [...$containerClasses, $classes, ...$this->cssClasses]);
 
         $renderToggle = match ($this->toggleSplit) {
             true => $this->renderToggleSplit() . "\n" . $this->renderToggle($toggleId),
