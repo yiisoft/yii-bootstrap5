@@ -16,13 +16,9 @@ final class Link
         private readonly string $label = '',
         private readonly string|null $url = null,
         private readonly bool $active = false,
-        private readonly bool $disabled = false,
         private readonly bool $encodeLabel = true,
         private readonly array $attributes = [],
     ) {
-        if ($this->active && $this->disabled) {
-            throw new InvalidArgumentException('The link cannot be both active and disabled.');
-        }
     }
 
     /**

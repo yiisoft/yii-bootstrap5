@@ -57,17 +57,6 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetContentException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Dropdown item must be initialized before use, use one of the static methods to initialize it.'
-        );
-
-        $dropdownItem = new DropdownItem();
-        $dropdownItem->getContent();
-    }
-
     public function testHeader(): void
     {
         $header = DropdownItem::header('content');

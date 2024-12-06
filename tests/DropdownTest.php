@@ -983,7 +983,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClasses(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->items(new DropdownItem('')));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->items(DropdownItem::link('')));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAsLink(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));

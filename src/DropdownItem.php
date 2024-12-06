@@ -21,7 +21,12 @@ final class DropdownItem
     private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
     private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
     private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
-    private Li|null $content = null;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    private Li $content;
+
+    private function __construct()
+    {
+    }
 
     public static function divider(array $attributes = [], array $dividerAttributes = []): self
     {
@@ -142,12 +147,6 @@ final class DropdownItem
      */
     public function getContent(): Li
     {
-        if ($this->content === null) {
-            throw new InvalidArgumentException(
-                'Dropdown item must be initialized before use, use one of the static methods to initialize it.'
-            );
-        }
-
         return $this->content;
     }
 }
