@@ -206,6 +206,63 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
+    public function testAlignmentDefault(): void
+    {
+        // Dropdown with alignment set to `DropdownAlignment::END`
+        $dropdownWidget = Dropdown::widget()
+            ->items(
+                DropdownItem::link('Menu Item', '#'),
+                DropdownItem::link('Menu Item', '#'),
+                DropdownItem::link('Menu Item', '#'),
+            )
+            ->alignment(DropdownAlignment::END)
+            ->toggleContent('Right-aligned menu');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->render(),
+        );
+
+        // Dropdown with alignment set to default
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->alignment(null)->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
     public function testAlignmentEnd(): void
     {
         Assert::equalsWithoutLE(

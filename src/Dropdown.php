@@ -127,11 +127,12 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Sets the alignment of the dropdown component.
      *
-     * @param DropdownAlignment ...$value The alignment of the dropdown component.
+     * @param DropdownAlignment|null ...$value The alignment of the dropdown component. If `null`, the alignment will
+     * not be set.
      *
      * @return self A new instance with the specified alignment of the dropdown component.
      */
-    public function alignment(DropdownAlignment ...$value): self
+    public function alignment(DropdownAlignment|null ...$value): self
     {
         $new = clone $this;
         $new->alignmentClasses = $value;
