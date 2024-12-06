@@ -11,7 +11,7 @@ use BackedEnum;
  *
  * @group utility
  */
-final class ColorTest extends \PHPUnit\Framework\TestCase
+final class ColorTextTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\ColorTextProvider::variant()
