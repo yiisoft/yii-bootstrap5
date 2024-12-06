@@ -48,9 +48,9 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     private const NAME = 'dropdown';
     private array $alignmentClasses = [];
     private array $attributes = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private bool $container = true;
-    private BackedEnum|string $containerClass = self::DROPDOWN_CLASS;
+    private array $containerClasses = [self::DROPDOWN_CLASS];
     /** @psalm-var DropdownItem[] */
     private array $items = [];
     private array $toggleAttributes = [];
@@ -99,7 +99,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge($new->cssClass, $value);
+        $new->cssClasses = array_merge($new->cssClasses, $value);
 
         return $new;
     }
@@ -229,7 +229,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function class(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClasses = $value;
 
         return $new;
     }
@@ -251,16 +251,16 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the CSS class for the dropdown container.
+     * Sets the CSS classes for the dropdown container.
      *
-     * @param BackedEnum|string $value The CSS class for the dropdown container.
+     * @param BackedEnum|string ...$values The CSS class for the dropdown container.
      *
      * @return self A new instance with the specified CSS class for the dropdown container.
      */
-    public function containerClass(BackedEnum|string $value): self
+    public function containerClasses(BackedEnum|string ...$values): self
     {
         $new = clone $this;
-        $new->containerClass = $value;
+        $new->containerClasses = $values;
 
         return $new;
     }
@@ -275,7 +275,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function direction(DropdownDirection $value): self
     {
         $new = clone $this;
-        $new->containerClass = $value;
+        $new->containerClasses = [$value];
 
         return $new;
     }
@@ -490,8 +490,8 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $classes = $attributes['class'] ?? null;
-        $containerClass = $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_CONTAINER_CLASS : $this->containerClass;
+        $classes[] = $attributes['class'] ?? null;
+        $containerClasses = $this->containerClasses;
 
         unset($attributes['class']);
 
@@ -506,7 +506,11 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             default => $this->toggleId,
         };
 
-        Html::addCssClass($attributes, [$containerClass, $classes, ...$this->cssClass]);
+        if ($this->toggleSplit === true) {
+            $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
+        }
+
+        Html::addCssClass($attributes, [...$containerClasses, ...$classes, ...$this->cssClasses]);
 
         $renderToggle = match ($this->toggleSplit) {
             true => $this->renderToggleSplit() . "\n" . $this->renderToggle($toggleId),
