@@ -772,7 +772,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testContainerClass(): void
+    public function testContainerClasses(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -792,7 +792,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->containerClass('test-class')
+                ->containerClasses('test-class')
                 ->items(
                     DropdownItem::link('Action', '#'),
                     DropdownItem::link('Another action', '#'),
@@ -981,7 +981,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClickOutside(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClass(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClasses(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->items(new DropdownItem('')));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
