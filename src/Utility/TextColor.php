@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Utility;
 
 /**
- * Background colors.
+ * Text colors.
  *
  * @see https://getbootstrap.com/docs/5.3/utilities/colors/#colors
  */
-enum ColorText: string
+enum TextColor: string
 {
     /**
      * Primary text color.
