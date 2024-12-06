@@ -7,14 +7,14 @@ namespace Yiisoft\Yii\Bootstrap5\Tests\Utility;
 use BackedEnum;
 
 /**
- * Tests for `TextColorBackground` enum.
+ * Tests for `TextBackgroundColor` enum.
  *
  * @group utility
  */
-final class TextColorBackgroundTest extends \PHPUnit\Framework\TestCase
+final class TextBackgroundColorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\TextColorBackgroundProvider::variant()
+     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\TextBackgroundColorProvider::variant()
      */
     public function testTextColorBackground(BackedEnum $value, string $expected): void
     {
