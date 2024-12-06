@@ -14,7 +14,7 @@ enum DropdownAlignment: string
     /**
      * Aligns the dropdown menu to the end of the dropdown toggle.
      */
-    case END = 'dropdown-menu';
+    case END = 'dropdown-menu-end';
     /**
      * Aligns the dropdown menu to the end of the dropdown toggle on the small breakpoint.
      */
