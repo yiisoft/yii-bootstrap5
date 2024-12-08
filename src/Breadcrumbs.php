@@ -72,7 +72,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      * For example:
      *
      * ```php
-     * $breadcrumb->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY());
+     * $breadcrumb->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
