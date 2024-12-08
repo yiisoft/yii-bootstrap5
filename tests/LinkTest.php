@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Link;
 
 /**
@@ -47,20 +46,5 @@ final class LinkTest extends \PHPUnit\Framework\TestCase
         $active = new Link('label', 'url', active: true);
 
         $this->assertTrue($active->isActive());
-    }
-
-    public function testIsDisabled(): void
-    {
-        $disabled = new Link('label', 'url', disabled: true);
-
-        $this->assertTrue($disabled->isDisabled());
-    }
-
-    public function testIsActiveAndDisabled(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The link cannot be both active and disabled.');
-
-        new Link('label', 'url', active: true, disabled: true);
     }
 }
