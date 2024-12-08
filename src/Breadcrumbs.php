@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use BackedEnum;
 use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Html\Html;
@@ -11,7 +12,6 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
-use function array_filter;
 use function array_merge;
 use function implode;
 
@@ -38,7 +38,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     private const LIST_NAME = 'breadcrumb';
     private const ITEM_NAME = 'breadcrumb-item';
     private array $attributes = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private string $itemActiveClass = 'active';
     private array $itemAttributes = [];
     private array $linkAttributes = [];
@@ -68,24 +68,21 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
-     * $breadcrumb->addClass('custom-class', null, 'another-class');
+     * $breadcrumb->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = array_merge($new->cssClasses, $values);
 
         return $new;
     }
@@ -130,7 +127,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -139,10 +136,10 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -279,6 +276,11 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Run the breadcrumb widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -296,12 +298,17 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
 
         return Nav::tag()
             ->addAttributes($attributes)
-            ->addClass(...$this->cssClass)
+            ->addClass(...$this->cssClasses)
             ->content("\n", $list, "\n")
             ->encode(false)
             ->render();
     }
 
+    /**
+     * Renders the list of items in the breadcrumbs.
+     *
+     * @return string The rendering result.
+     */
     private function renderList(): string
     {
         $listAttributes = $this->listAttributes;
