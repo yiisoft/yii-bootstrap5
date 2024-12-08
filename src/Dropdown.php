@@ -173,43 +173,15 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Whether to automatically close the dropdown when any of its elements is clicked.
+     * Sets the auto-close setting for the dropdown component.
      *
-     * @param bool $value If set to `true`, the dropdown will be closed when any of its elements is clicked. If set to
-     * `false`, should be closed manually.
-     *
-     * @return self A new instance with the specified auto-close setting.
-     */
-    public function autoCloseOnClick(bool $value = true): self
-    {
-        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'true' : 'false']);
-    }
-
-    /**
-     * Whether to automatically close the dropdown when the user clicks inside of the dropdown.
-     *
-     * @param bool $value If set to `true`, the dropdown will be closed when the user clicks inside of the dropdown. If
-     * set to `false`, no attribute will be set.
+     * @param DropdownAutoClose $value The auto-close setting for the dropdown component.
      *
      * @return self A new instance with the specified auto-close setting.
      */
-    public function autoCloseOnClickInside(bool $value = true): self
+    public function autoClose(DropdownAutoClose $value): self
     {
-        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'inside' : null]);
-    }
-
-    /**
-     * Whether to automatically close the dropdown when the user clicks outside of the dropdown or the dropdown toggle
-     * button.
-     *
-     * @param bool $value If set to `true`, the dropdown will be closed when the user clicks outside of the dropdown. If
-     * set to `false`, no attribute will be set.
-     *
-     * @return self A new instance with the specified auto-close setting.
-     */
-    public function autoCloseOnClickOutside(bool $value = true): self
-    {
-        return $this->addToggleAttributes(['data-bs-auto-close' => $value === true ? 'outside' : null]);
+        return $this->addToggleAttributes(['data-bs-auto-close' => $value->value]);
     }
 
     /**
@@ -307,9 +279,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
      */
     public function theme(string $value): self
     {
-        return $this
-            ->addAttributes(['data-bs-theme' => $value === '' ? null : $value])
-            ->toggleId($this->toggleId === false ? true : $this->toggleId);
+        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
+use Yiisoft\Yii\Bootstrap5\DropdownAutoClose;
 use Yiisoft\Yii\Bootstrap5\DropdownDirection;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\DropdownToggleVariant;
@@ -637,7 +638,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
      */
-    public function testAutoCloseOnClick(): void
+    public function testAutoClose(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -657,47 +658,13 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoCloseOnClick(true)
+                ->autoClose(DropdownAutoClose::DEFAULT)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->toggleContent('Default dropdown')
-                ->render(),
-        );
-    }
-
-    /**
-     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
-     */
-    public function testAutoCloseOnClickWithFalse(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="dropdown">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="false" data-bs-toggle="dropdown" aria-expanded="false">Manual close</button>
-            <ul class="dropdown-menu">
-            <li>
-            <a class="dropdown-item" href="#">Menu Item</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Menu Item</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Menu Item</a>
-            </li>
-            </ul>
-            </div>
-            HTML,
-            Dropdown::widget()
-                ->autoCloseOnClick(false)
-                ->items(
-                    DropdownItem::link('Menu Item', '#'),
-                    DropdownItem::link('Menu Item', '#'),
-                    DropdownItem::link('Menu Item', '#'),
-                )
-                ->toggleContent('Manual close')
                 ->render(),
         );
     }
@@ -725,13 +692,47 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoCloseOnClickInside()
+                ->autoClose(DropdownAutoClose::INSIDE)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->toggleContent('Clickeable inside')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseOnClickWithManual(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="false" data-bs-toggle="dropdown" aria-expanded="false">Manual close</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(DropdownAutoClose::MANUAL)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Manual close')
                 ->render(),
         );
     }
@@ -759,7 +760,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoCloseOnClickOutside()
+                ->autoClose(DropdownAutoClose::OUTSIDE)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -1033,9 +1034,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClick(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClickInside(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoCloseOnClickOutside(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(DropdownAutoClose::DEFAULT));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClasses(''));
