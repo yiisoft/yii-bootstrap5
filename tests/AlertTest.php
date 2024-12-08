@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use Yiisoft\Yii\Bootstrap5\Alert;
 use Yiisoft\Yii\Bootstrap5\AlertVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Alert` widget.
@@ -44,11 +45,11 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
     public function testAddCssClass(): void
     {
-        $alert = Alert::widget()->addClass('test-class', null)->body('Body')->id(false);
+        $alert = Alert::widget()->addClass('test-class', null, BackgroundColor::PRIMARY)->body('Body')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-secondary test-class" role="alert">
+            <div class="alert alert-secondary test-class bg-primary" role="alert">
             Body
             </div>
             HTML,
@@ -57,7 +58,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-secondary test-class test-class-1 test-class-2" role="alert">
+            <div class="alert alert-secondary test-class bg-primary test-class-1 test-class-2" role="alert">
             Body
             </div>
             HTML,
@@ -139,13 +140,13 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div class="alert alert-secondary custom-class another-class" role="alert">
+            <div class="alert alert-secondary custom-class another-class bg-primary" role="alert">
             Body
             </div>
             HTML,
             Alert::widget()
                 ->addClass('test-class')
-                ->class('custom-class', 'another-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->body('Body')
                 ->id(false)
                 ->render(),
