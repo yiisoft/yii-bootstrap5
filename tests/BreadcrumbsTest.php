@@ -9,6 +9,7 @@ use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Link;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Breadcrumbs` widget
@@ -61,7 +62,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     {
         $alert = Breadcrumbs::widget()
             ->ariaLabel('Basic example of breadcrumbs')
-            ->addClass('test-class', null)
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->links(
                 new Link('Home', '/'),
                 new Link('Library', '#', active: true),
@@ -71,7 +72,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <nav class="test-class" aria-label="Basic example of breadcrumbs">
+            <nav class="test-class bg-primary" aria-label="Basic example of breadcrumbs">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
@@ -84,7 +85,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <nav class="test-class test-class-1 test-class-2" aria-label="Basic example of breadcrumbs">
+            <nav class="test-class bg-primary test-class-1 test-class-2" aria-label="Basic example of breadcrumbs">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
@@ -173,7 +174,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <nav class="custom-class another-class" aria-label="breadcrumb">
+            <nav class="custom-class another-class bg-primary" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Library</a></li>
@@ -183,7 +184,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->addClass('test-class')
-                ->class('custom-class', 'another-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->links(
                     new Link('Home', '/'),
                     new Link('Library', '#'),

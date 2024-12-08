@@ -11,12 +11,36 @@ namespace Yiisoft\Yii\Bootstrap5;
  */
 enum AlertVariant: string
 {
+    /**
+     * Primary variant.
+     */
     case PRIMARY = 'alert-primary';
+    /**
+     * Secondary variant.
+     */
     case SECONDARY = 'alert-secondary';
+    /**
+     * Success variant.
+     */
     case SUCCESS = 'alert-success';
+    /**
+     * Danger variant.
+     */
     case DANGER = 'alert-danger';
+    /**
+     * Warning variant.
+     */
     case WARNING = 'alert-warning';
+    /**
+     * Info variant.
+     */
     case INFO = 'alert-info';
+    /**
+     * Light variant.
+     */
     case LIGHT = 'alert-light';
+    /**
+     * Dark variant.
+     */
     case DARK = 'alert-dark';
 }
