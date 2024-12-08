@@ -71,7 +71,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * For example:
      *
      * ```php
-     * $alert->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY());
+     * $alert->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
@@ -154,7 +154,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      * For example:
      *
      * ```php
-     * $alert->class('custom-class', null, 'another-class', BackgroundColor::PRIMARY());
+     * $alert->class('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes set.
