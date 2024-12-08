@@ -75,7 +75,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * For example:
      *
      * ```php
-     * $accordion->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * $accordion->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
@@ -171,7 +171,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * For example:
      *
      * ```php
-     * $accordion->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * $accordion->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes set.
