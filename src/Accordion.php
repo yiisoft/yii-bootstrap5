@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use BackedEnum;
 use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
-use function array_filter;
 use function array_key_exists;
 use function array_merge;
 use function implode;
@@ -42,7 +42,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private array $bodyAttributes = [];
     private array $collapseAttributes = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private array $headerAttributes = [];
     private string $headerTag = 'h2';
     private bool|string $id = true;
@@ -71,24 +71,21 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
-     * $accordion->addClass('custom-class', null, 'another-class');
+     * $accordion->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = array_merge($new->cssClasses, $values);
 
         return $new;
     }
@@ -170,19 +167,19 @@ final class Accordion extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
-     * $accordion->class('custom-class', null, 'another-class');
+     * $accordion->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -216,7 +213,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     public function flush(bool $value = true): self
     {
         $new = clone $this;
-        $new->cssClass['flush'] = $value ? 'accordion-flush' : null;
+        $new->cssClasses['flush'] = $value ? 'accordion-flush' : null;
 
         return $new;
     }
@@ -337,7 +334,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
             default => $this->id,
         };
 
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClasses]);
 
         return Div::tag()
             ->addAttributes($attributes)

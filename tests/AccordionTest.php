@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 use Yiisoft\Yii\Bootstrap5\AccordionItem;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Accordion` widget
@@ -48,7 +49,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     public function testAddClass(): void
     {
         $accordion = Accordion::widget()
-            ->addClass('test-class', null)
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->id('accordion')
             ->items(
                 new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
@@ -56,7 +57,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion test-class">
+            <div id="accordion" class="accordion test-class bg-primary">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
@@ -76,7 +77,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion test-class test-class-1 test-class-2">
+            <div id="accordion" class="accordion test-class bg-primary test-class-1 test-class-2">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
@@ -339,7 +340,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion custom-class another-class">
+            <div id="accordion" class="accordion custom-class another-class bg-primary">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
@@ -356,7 +357,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             HTML,
             Accordion::widget()
                 ->addClass('test-class')
-                ->class('custom-class', 'another-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->id('accordion')
                 ->items(
                     new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
