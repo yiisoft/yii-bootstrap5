@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
-use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
