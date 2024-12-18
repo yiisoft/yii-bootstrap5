@@ -42,27 +42,10 @@ final class Nav extends \Yiisoft\Widget\Widget
     private const NAV_ITEM_DROPDOWN_CLASS = 'dropdown';
     private const NAV_LIST_CLASS = 'nav';
     private array $attributes = [];
-    /** @psalm-var Dropdown|Link[] */
+    /** @psalm-var Dropdown[]|NavLink[] */
     private array $items = [];
     private array $itemsClass = [];
     private array $styleClasses = [];
-
-    /**
-     * Sets the ID of the nav component.
-     *
-     * @param bool|string $value The ID of the nav component. If `true`, an ID will be generated automatically.
-     *
-     * @throws InvalidArgumentException if the ID is an empty string or `false`.
-     *
-     * @return self A new instance with the specified ID.
-     */
-    public function id(bool|string $value): self
-    {
-        $new = clone $this;
-        $new->id = $value;
-
-        return $new;
-    }
 
     /**
      * List of links to appear in the nav. If this property is empty, the widget will not render anything.
@@ -71,7 +54,7 @@ final class Nav extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified links to appear in the nav.
      *
-     * @psalm-param Dropdown[]|Link[] $value The links to appear in the nav.
+     * @psalm-param Dropdown[]|NavLink[] $value The links to appear in the nav.
      */
     public function items(Dropdown|NavLink ...$value): self
     {
@@ -159,10 +142,7 @@ final class Nav extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = match ($item instanceof Dropdown) {
-                true => $this->renderItemDropdown($item),
-                default => $item->getContent(),
-            };
+            $items[] = $item instanceof Dropdown ? $this->renderItemDropdown($item) : $item->getContent();
         }
 
         $ulTag = Ul::tag()->addClass(self::NAV_LIST_CLASS)->items(...$items);
