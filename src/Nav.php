@@ -23,7 +23,7 @@ use function implode;
  * ```php
  * echo Nav::widget()
  *     ->items(
- *         NavLink::create('Active', '#', active: true),
+ *         NavLink::item('Active', '#', active: true),
  *         Dropdown::widget()
  *             ->items(
  *                 DropdownItem::link('Action', '#'),
@@ -32,8 +32,8 @@ use function implode;
  *                 DropdownItem::divider(),
  *                 DropdownItem::link('Separated link', '#'),
  *             ),
- *         NavLink::create('Link', url: '#'),
- *         NavLink::create('Disabled', '#', disabled: true),
+ *         NavLink::item('Link', url: '#'),
+ *         NavLink::item('Disabled', '#', disabled: true),
  *     )
  *     ->styles(NavStyle::TABS)
  *     ->render(),
