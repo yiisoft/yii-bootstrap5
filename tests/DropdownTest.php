@@ -4,384 +4,1988 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use RuntimeException;
-use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\Button;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
+use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
+use Yiisoft\Yii\Bootstrap5\DropdownAutoClose;
+use Yiisoft\Yii\Bootstrap5\DropdownDirection;
+use Yiisoft\Yii\Bootstrap5\DropdownItem;
+use Yiisoft\Yii\Bootstrap5\DropdownToggleVariant;
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Dropdown` widget.
+ *
+ * @group dropdown
  */
-final class DropdownTest extends TestCase
+final class DropdownTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown" data-test="test">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->addAttributes(['data-test' => 'test'])
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    public function testAddClass(): void
+    {
+        $dropdownWidget = Dropdown::widget()
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
+            ->items(
+                DropdownItem::link('Action', '#'),
+                DropdownItem::link('Another action', '#'),
+                DropdownItem::link('Something else here', '#'),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown test-class bg-primary">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown test-class bg-primary test-class-1 test-class-2">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $dropdownWidget = Dropdown::widget()
+            ->addCssStyle(['color' => 'red'])
+            ->items(
+                DropdownItem::link('Action', '#'),
+                DropdownItem::link('Another action', '#'),
+                DropdownItem::link('Something else here', '#'),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown" style="color: red;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown" style="color: red; font-weight: bold;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $dropdownWidget = Dropdown::widget()
+            ->addCssStyle(['color' => 'red'])
+            ->items(
+                DropdownItem::link('Action', '#'),
+                DropdownItem::link('Another action', '#'),
+                DropdownItem::link('Something else here', '#'),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown" style="color: red;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+                <div class="dropdown" style="color: red;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+                <ul class="dropdown-menu">
+                <li>
+                <a class="dropdown-item" href="#">Action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another action</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </div>
+                HTML,
+            $dropdownWidget->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentDefault(): void
+    {
+        // Dropdown with alignment set to `DropdownAlignment::END`
+        $dropdownWidget = Dropdown::widget()
+            ->items(
+                DropdownItem::link('Menu Item', '#'),
+                DropdownItem::link('Menu Item', '#'),
+                DropdownItem::link('Menu Item', '#'),
+            )
+            ->alignment(DropdownAlignment::END)
+            ->toggleContent('Right-aligned menu');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->render(),
+        );
+
+        // Dropdown with alignment set to default
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->alignment(null)->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::END)
+                ->toggleContent('Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentSMEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">SM Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-sm-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::SM_END)
+                ->toggleContent('SM Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentMDEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MD Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-md-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::MD_END)
+                ->toggleContent('MD Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentLGEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">LG Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::LG_END)
+                ->toggleContent('LG Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentXLEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XL Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xl-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XL_END)
+                ->toggleContent('XL Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAligmentXXLEnd(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XXL Right-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xxl-end">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XXL_END)
+                ->toggleContent('XXL Right-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentSMStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">SM Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-sm-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::SM_START)
+                ->toggleContent('SM Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentMDStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">MD Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-md-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::MD_START)
+                ->toggleContent('MD Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentLGStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">LG Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-lg-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::LG_START)
+                ->toggleContent('LG Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentXLStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XL Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xl-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XL_START)
+                ->toggleContent('XL Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
+     */
+    public function testAlignmentXXLStart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">XXL Left-aligned menu</button>
+            <ul class="dropdown-menu dropdown-menu-xxl-start">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->alignment(DropdownAlignment::XXL_START)
+                ->toggleContent('XXL Left-aligned menu')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoClose(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="true" data-bs-toggle="dropdown" aria-expanded="false">Default dropdown</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(DropdownAutoClose::TRUE)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Default dropdown')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseOnClickInside(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="inside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable inside</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(DropdownAutoClose::INSIDE)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Clickeable inside')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseOnClickWithManual(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="false" data-bs-toggle="dropdown" aria-expanded="false">Manual close</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(DropdownAutoClose::FALSE)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Manual close')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#auto-close-behavior
+     */
+    public function testAutoCloseOnClickOutside(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable outside</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Menu Item</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->autoClose(DropdownAutoClose::OUTSIDE)
+                ->items(
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                    DropdownItem::link('Menu Item', '#'),
+                )
+                ->toggleContent('Clickeable outside')
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown custom-class another-class">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->addClass('test-class')
+                ->class('custom-class', 'another-class')
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    public function testContainerWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            HTML,
+            Dropdown::widget()
+                ->container(false)
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    public function testContainerClasses(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="test-class">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->containerClasses('test-class')
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#centered
+     */
+    public function testDirectionWithCentered(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown-center">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->direction(DropdownDirection::CENTERED)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropup
+     */
+    public function testDirectionWithDropup(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group dropup">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->direction(DropdownDirection::DROPUP)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropup-centered
+     */
+    public function testDirectionWithDropupCentered(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropup-center dropup">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->direction(DropdownDirection::DROPUP_CENTERED)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropend
+     */
+    public function testDirectionWithDropend(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group dropend">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->direction(DropdownDirection::DROPEND)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropstart
+     */
+    public function testDirectionWithDropstart(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group dropstart">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->direction(DropdownDirection::DROPSTART)
+                ->render(),
+        );
+    }
+
+    public function testImmutability(): void
+    {
+        $dropdownWidget = Dropdown::widget();
+
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->addAttributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->addClass(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(DropdownAutoClose::TRUE));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClasses(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->items(DropdownItem::link('')));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAsLink(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleClass(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleContent(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleId(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeLarge());
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeSmall());
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplit(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplitContent(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleTag(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleUrl(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleVariant(DropdownToggleVariant::DANGER));
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
+     */
+    public function testMenuItemsWithButtons(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <button type="button" class="dropdown-item">Action</button>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item">Another action</button>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item">Something else here</button>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#', button: true),
+                    DropdownItem::link('Another action', '#', button: true),
+                    DropdownItem::link('Something else here', '#', button: true),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#active
+     */
+    public function testMenuItemsWithDropdownItemActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item active" href="#" aria-current="true">Active link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Active link', '#', active: true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#disabled
+     */
+    public function testMenuItemsWithDropdownItemDisabled(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item disabled" href="#" aria-disabled="true">Disabled link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Disabled link', '#', disabled: true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
+     */
+    public function testMenuItemsWithDropdownItemButtonWithText(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <span class="dropdown-item-text">Dropdown item text</span>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item">Action</button>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item">Another action</button>
+            </li>
+            <li>
+            <button type="button" class="dropdown-item">Something else here</button>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::text('Dropdown item text'),
+                    DropdownItem::link('Action', '#', button: true),
+                    DropdownItem::link('Another action', '#', button: true),
+                    DropdownItem::link('Something else here', '#', button: true),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
+     */
+    public function testMenuItemsWithDropdownItemWithHeader(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <h6 class="dropdown-header">Dropdown header</h6>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::header('Dropdown header'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-items
+     */
+    public function testMenuItemsWithDropdownItemWithText(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <span class="dropdown-item-text">Dropdown item text</span>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::text('Dropdown item text'),
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
+    }
+
+    public function testNavBar(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            HTML,
+            Dropdown::widget()
+                ->container(false)
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleClass('nav-link', 'dropdown-toggle')
+                ->toggleContent('Dropdown')
+                ->render(),
+        );
+    }
+
     public function testRender(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items([
-                [
-                    'label' => 'Page1',
-                    'url' => '#',
-                    'disabled' => true,
-                ],
-                [
-                    'label' => 'Page2',
-                    'url' => '#',
-                    'active' => true,
-                ],
-                [
-                    'label' => 'Dropdown1',
-                    'url' => '#test',
-                    'submenuOptions' => ['id' => 'ID2'],
-                    'items' => [
-                        ['label' => 'Page2'],
-                        ['label' => 'Page3'],
-                    ],
-                ],
-                [
-                    'label' => 'Dropdown2',
-                    'visible' => false,
-                    'items' => [
-                        ['label' => 'Page4', 'content' => 'Page4'],
-                        ['label' => 'Page5', 'content' => 'Page5'],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Page1</a></li>
-        <li><a class="dropdown-item active" href="#">Page2</a></li>
-        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" href="#test" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul id="ID2" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        </ul></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        $this->assertEmpty(Dropdown::widget()->render());
     }
 
-    public function testRenderString(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button
+     */
+    public function testSingleButton(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('Some string content')
-            ->render();
-
-        $expected = '<div id="TEST_ID" class="dropdown-menu">Some string content</div>';
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->render(),
+        );
     }
 
-    public function testRenderStringableContent(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button
+     */
+    public function testSingleButtonWithLink(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items(Html::p('Some stringable p-tag content'))
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu"><p>Some stringable p-tag content</p></div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown link</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleContent('Dropdown link')
+                ->render(),
+        );
     }
 
-    public function testAlignment(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button
+     */
+    public function testSingleButtonWithVariantDanger(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('I\'m alignment end dropdown')
-            ->withAlignment(Dropdown::ALIGNMENT_END)
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end">I'm alignment end dropdown</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('I\'m alignment end, but xl start dropdown')
-            ->withAlignment(Dropdown::ALIGNMENT_END, Dropdown::ALIGNMENT_XL_START)
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-end dropdown-menu-xl-start">I'm alignment end, but xl start dropdown</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <a class="btn btn-danger dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown link</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleContent('Dropdown link')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->render(),
+        );
     }
 
-    public function testOuterContent(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/customize/color-modes/
+     */
+    public function testThemeLight(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items(null)
-            ->begin();
-        $html .= 'I\'m very-very-very-very long content';
-        $html .= Dropdown::end();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu">I'm very-very-very-very long content</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown" data-bs-theme="light">
+            <button type="button" id="dropdownLight" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Light dropdown</button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownLight">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->theme('light')
+                ->toggleContent('Light dropdown')
+                ->toggleId('dropdownLight')
+                ->render(),
+        );
     }
 
-    public function testTheme(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/customize/color-modes/
+     */
+    public function testThemeDark(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('I\'m dark dropdown')
-            ->withDarkTheme()
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu dropdown-menu-dark" data-bs-theme="dark">I'm dark dropdown</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('I\'m light dropdown')
-            ->withLightTheme()
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="light">I'm light dropdown</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items('I\'m blue dropdown')
-            ->withTheme('blue')
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu" data-bs-theme="blue">I'm blue dropdown</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown" data-bs-theme="dark">
+            <button type="button" id="dropdownDark" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dark dropdown</button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownDark">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->theme('dark')
+                ->toggleContent('Dark dropdown')
+                ->toggleId('dropdownDark')
+                ->render(),
+        );
     }
 
-    public function testMissingLabel(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
+     */
+    public function testToggleAttributesWithDataBSoffset(): void
     {
-        $this->expectException(RuntimeException::class);
-        Dropdown::widget()
-            ->items([['url' => '#test']])
-            ->render();
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-offset="10,20" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->render(),
+        );
     }
 
-    public function testSubMenuOptions(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
+     */
+    public function testToggleAttributesWithLinkAndDataBSoffset(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items([
-                [
-                    'label' => 'Dropdown1',
-                    'submenuOptions' => ['id' => 'ID1'],
-                    'items' => [
-                        ['label' => 'Page1', 'content' => 'Page2'],
-                        ['label' => 'Page2', 'content' => 'Page3'],
-                    ],
-                ],
-                '-',
-                [
-                    'label' => 'Dropdown2',
-                    'items' => [
-                        ['label' => 'Page3', 'content' => 'Page4'],
-                        ['label' => 'Page4', 'content' => 'Page5'],
-                    ],
-                    'submenuOptions' => [
-                        'id' => 'ID2',
-                        'class' => 'submenu-override',
-                    ],
-                ],
-            ])
-            ->submenuOptions(['class' => 'submenu-list'])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown1</a><ul id="ID1" class="submenu-list dropdown-menu">
-        <li><h6 class="dropdown-header">Page1</h6></li>
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></li>
-        <li><hr class="dropdown-divider"></li>
-        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">Dropdown2</a><ul id="ID2" class="submenu-override dropdown-menu">
-        <li><h6 class="dropdown-header">Page3</h6></li>
-        <li><h6 class="dropdown-header">Page4</h6></li>
-        </ul></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" data-bs-offset="10,20" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->render(),
+        );
     }
 
-    public function testForms(): void
+    public function testToggleAttributesWithSplitAndDataBSReference(): void
     {
-        $form = <<<'HTML'
-        <form class="px-4 py-3">
-        <div class="form-group">
-        <label for="exampleDropdownFormEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-        </div>
-        <div class="form-group">
-        <label for="exampleDropdownFormPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
-        </div>
-        <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-        <label class="form-check-label" for="dropdownCheck">
-        Remember me
-        </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-        HTML;
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items([
-                $form,
-                '-',
-                ['label' => 'New around here? Sign up', 'url' => '#'],
-                ['label' => '-'],
-                ['label' => 'Forgot password?', 'url' => '#'],
-                ['label' => '-', 'visible' => false],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li><form class="px-4 py-3">
-        <div class="form-group">
-        <label for="exampleDropdownFormEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-        </div>
-        <div class="form-group">
-        <label for="exampleDropdownFormPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
-        </div>
-        <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-        <label class="form-check-label" for="dropdownCheck">
-        Remember me
-        </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-        </form></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">New around here? Sign up</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Forgot password?</a></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <button type="button" class="btn btn-secondary">Danger</button>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-reference="parent" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleAttributes(['data-bs-reference' => 'parent'])
+                ->toggleContent('Toggle dropdown')
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->render(),
+        );
     }
 
-    public function testEncodeTags(): void
+    public function testToggleId(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items(Html::p('Some stringable p-tag content'))
-            ->withEncodeTags(true)
-            ->render();
-
-        $expected = <<<'HTML'
-        <div id="TEST_ID" class="dropdown-menu">&lt;p&gt;Some stringable p-tag content&lt;/p&gt;</div>
-        HTML;
-
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" id="test-id" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu" aria-labelledby="test-id">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleId('test-id')
+                ->render(),
+        );
     }
 
-    public function testEncodeLabels(): void
+    public function testToggleSizeLarge(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->items([
-                [
-                    'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
-                    'submenuOptions' => ['id' => 'ID2'],
-                    'items' => [
-                        ['label' => 'Page1', 'content' => 'Page2'],
-                        ['label' => 'Page2', 'content' => 'Page3'],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button">&lt;span&gt;&lt;i class=fas fastest&gt;&lt;/i&gt;Dropdown1&lt;/span&gt;</a><ul id="ID2" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page1</h6></li>
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
-
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->withoutEncodeLabels()
-            ->items([
-                [
-                    'label' => '<span><i class=fas fastest></i>Dropdown1</span>',
-                    'submenuOptions' => ['id' => 'ID2'],
-                    'items' => [
-                        ['label' => 'Page1', 'content' => 'Page2'],
-                        ['label' => 'Page2', 'content' => 'Page3'],
-                    ],
-                ],
-            ])
-            ->render();
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li class="dropdown" aria-expanded="false"><a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" role="button"><span><i class=fas fastest></i>Dropdown1</span></a><ul id="ID2" class="dropdown-menu">
-        <li><h6 class="dropdown-header">Page1</h6></li>
-        <li><h6 class="dropdown-header">Page2</h6></li>
-        </ul></li>
-        </ul>
-        HTML;
-        $this->assertEqualsWithoutLE($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Large button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleContent('Large button')
+                ->toggleSizeLarge()
+                ->render(),
+        );
     }
 
-    public function testMainOptions(): void
+    public function testToggleSizeSmall(): void
     {
-        $html = Dropdown::widget()
-            ->id('TEST_ID')
-            ->withoutEncodeLabels()
-            ->itemOptions([
-                'class' => 'main-item-class',
-            ])
-            ->linkOptions([
-                'class' => 'main-link-class',
-            ])
-            ->items([
-                [
-                    'label' => 'Label 1',
-                    'url' => '#',
-                ],
-                [
-                    'label' => 'Label 2',
-                    'url' => '#',
-                    'options' => [
-                        'id' => 'custom-item-id',
-                        'class' => 'custom-item-class',
-                    ],
-                    'linkOptions' => [
-                        'class' => 'custom-link-class',
-                    ],
-                ],
-            ])
-            ->render();
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Small button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleContent('Small button')
+                ->toggleSizeSmall()
+                ->render(),
+        );
+    }
 
-        $expected = <<<'HTML'
-        <ul id="TEST_ID" class="dropdown-menu">
-        <li class="main-item-class"><a class="main-link-class dropdown-item" href="#">Label 1</a></li>
-        <li id="custom-item-id" class="custom-item-class"><a class="custom-link-class dropdown-item" href="#">Label 2</a></li>
-        </ul>
-        HTML;
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#split-button
+     */
+    public function testToggleSplit(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <button type="button" class="btn btn-danger">Danger</button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleContent('Toggle dropdown')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->render(),
+        );
+    }
 
-        $this->assertEqualsWithoutLE($expected, $html);
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#sizing
+     */
+    public function testToggleSplitWithSizeLarge(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <button type="button" class="btn btn-danger btn-lg">Danger</button>
+            <button type="button" class="btn btn-danger btn-lg dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleContent('Toggle dropdown')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->toggleSizeLarge()
+                ->render(),
+        );
+    }
+
+    public function testToggleSplitWithLink(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <a class="btn btn-danger" role="button">Danger</a>
+            <a class="btn btn-danger dropdown-toggle dropdown-toggle-split" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleContent('Toggle dropdown')
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->render(),
+        );
+    }
+
+    public function testToggleSplitWithLinkAndSizeLarge(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <a class="btn btn-danger btn-lg" role="button">Danger</a>
+            <a class="btn btn-danger btn-lg dropdown-toggle dropdown-toggle-split" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleContent('Toggle dropdown')
+                ->toggleSizeLarge()
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->render(),
+        );
+    }
+
+    public function testToggleSplitWithLinkAndSizeSmall(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <a class="btn btn-danger btn-sm" role="button">Danger</a>
+            <a class="btn btn-danger btn-sm dropdown-toggle dropdown-toggle-split" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleContent('Toggle dropdown')
+                ->toggleSizeSmall()
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#sizing
+     */
+    public function testToggleSplitWithSizeSmall(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="btn-group">
+            <button type="button" class="btn btn-danger btn-sm">Danger</button>
+            <button type="button" class="btn btn-danger btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Separated link', '#'),
+                )
+                ->toggleContent('Toggle dropdown')
+                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->toggleSplit()
+                ->toggleSplitContent('Danger')
+                ->toggleSizeSmall()
+                ->render(),
+        );
+    }
+
+    public function testToggleTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown custom button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleTag(
+                    Button::tag()
+                        ->addAttributes(
+                            [
+                                'data-bs-toggle' => 'dropdown',
+                                'aria-expanded' => 'false',
+                            ],
+                        )
+                        ->addClass('btn btn-primary dropdown-toggle')
+                        ->content('Dropdown custom button')
+                )
+                ->render(),
+        );
     }
 }

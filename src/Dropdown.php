@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use RuntimeException;
+use BackedEnum;
+use InvalidArgumentException;
 use Stringable;
-use Yiisoft\Arrays\ArrayHelper;
-use Yiisoft\Definitions\Exception\InvalidConfigException;
 use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\CustomTag;
-use Yiisoft\Html\Tag\Li;
+use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Span;
 use Yiisoft\Html\Tag\Ul;
-
-use function array_key_exists;
-use function array_merge;
-use function array_merge_recursive;
-use function array_unique;
-use function is_array;
-use function is_string;
 
 /**
  * Dropdown renders a Bootstrap dropdown menu component.
@@ -27,336 +20,635 @@ use function is_string;
  * For example,
  *
  * ```php
- * <div class="dropdown">
- *     <?php
- *         echo Dropdown::widget()
- *             ->items([
- *                 ['label' => 'DropdownA', 'url' => '/'],
- *                 ['label' => 'DropdownB', 'url' => '#'],
- *             ]);
- *     ?>
- * </div>
+ * echo Dropdown::widget()
+ *     ->items(
+ *         DropdownItem::link('Action', '#'),
+ *         DropdownItem::link('Another action', '#'),
+ *         DropdownItem::link('Something else here', '#'),
+ *         DropdownItem::divider(),
+ *         DropdownItem::link('Separated link', '#'),
+ *     )
+ *     ->toggleContent('Toggle dropdown')
+ *     ->toggleVariant(DropdownToggleVariant::DANGER)
+ *     ->toggleSplit()
+ *     ->toggleSplitContent('Danger')
+ *     ->toggleSizeLarge()
+ *     ->render();
  * ```
  */
-final class Dropdown extends Widget
+final class Dropdown extends \Yiisoft\Widget\Widget
 {
-    public const ALIGNMENT_END = 'dropdown-menu-end';
-    public const ALIGNMENT_SM_END = 'dropdown-menu-sm-end';
-    public const ALIGNMENT_MD_END = 'dropdown-menu-md-end';
-    public const ALIGNMENT_LG_END = 'dropdown-menu-lg-end';
-    public const ALIGNMENT_XL_END = 'dropdown-menu-xl-end';
-    public const ALIGNMENT_XXL_END = 'dropdown-menu-xxl-end';
-    public const ALIGNMENT_SM_START = 'dropdown-menu-sm-start';
-    public const ALIGNMENT_MD_START = 'dropdown-menu-md-start';
-    public const ALIGNMENT_LG_START = 'dropdown-menu-lg-start';
-    public const ALIGNMENT_XL_START = 'dropdown-menu-xl-start';
-    public const ALIGNMENT_XXL_START = 'dropdown-menu-xxl-start';
+    private const DROPDOWN_CLASS = 'dropdown';
+    private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
+    private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
+    private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
+    private const DROPDOWN_TOGGLE_CONTAINER_CLASS = 'btn-group';
+    private const DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
+    private const DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
+    private const NAME = 'dropdown';
+    private array $alignmentClasses = [];
+    private array $attributes = [];
+    private array $cssClasses = [];
+    private bool $container = true;
+    private array $containerClasses = [self::DROPDOWN_CLASS];
+    /** @psalm-var DropdownItem[] */
+    private array $items = [];
+    private array $toggleAttributes = [];
+    private array $toggleClasses = [];
+    private string|Stringable $toggleButton = '';
+    private string $toggleContent = 'Dropdown button';
+    private bool|string $toggleId = false;
+    private bool $toggleLink = false;
+    private string $toggleUrl = '#';
+    private string|null $toggleSize = null;
+    private bool $toggleSplit = false;
+    private string $toggleSplitContent = 'Action';
+    private DropdownToggleVariant $toggleVariant = DropdownToggleVariant::SECONDARY;
 
-    private array|string|Stringable|null $items = [];
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    private array $submenuOptions = [];
-    private array $options = [];
-    private array $itemOptions = [];
-    private array $linkOptions = [];
-    private array $alignment = [];
-
-    private ?string $tagName = null;
-
-    public function getId(?string $suffix = '-dropdown'): ?string
+    /**
+     * Adds a set of attributes for the dropdown component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
     {
-        return $this->options['id'] ?? parent::getId($suffix);
-    }
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
 
-    private function prepareOptions(): array
-    {
-        $options = $this->options;
-        $options['id'] = $this->getId();
-        $classNames = array_merge(['widget' => 'dropdown-menu'], $this->alignment);
-
-        if ($this->theme) {
-            $options['data-bs-theme'] = $this->theme;
-
-            if ($this->theme === self::THEME_DARK) {
-                $classNames[] = 'dropdown-menu-dark';
-            }
-        }
-
-        /** @psalm-suppress InvalidArgument */
-        Html::addCssClass($options, $classNames);
-
-        return $options;
-    }
-
-    private function prepareDropdownLayout(): CustomTag|Ul
-    {
-        $options = $this->prepareOptions();
-
-        if (is_array($this->items)) {
-            return Html::ul()
-                ->attributes($options);
-        }
-
-        $tagName = ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::tag($tagName, '', $options)
-            ->encode($this->encodeTags);
-    }
-
-    public function begin(): ?string
-    {
-        parent::begin();
-
-        $options = $this->prepareOptions();
-        $this->tagName = is_array($this->items) ? 'ul' : ArrayHelper::remove($options, 'tag', 'div');
-
-        return Html::openTag($this->tagName, $options);
+        return $new;
     }
 
     /**
-     * @throws InvalidConfigException
-     * @throws JsonException
-     * @return string
+     * Adds one or more CSS classes to the existing classes of the dropdown component.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $dropdown->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
      */
-    public function render(): string
+    public function addClass(BackedEnum|string|null ...$value): self
     {
-        if ($this->tagName) {
-            return Html::closeTag($this->tagName);
-        }
+        $new = clone $this;
+        $new->cssClasses = array_merge($new->cssClasses, $value);
 
-        $layout = $this->prepareDropdownLayout();
-
-        if (is_array($this->items)) {
-            /** @var Ul $layout */
-            return $this->renderItems($layout, $this->items);
-        }
-        /** @var CustomTag $layout */
-        return $layout
-            ->content((string) $this->items)
-            ->render();
+        return $new;
     }
 
     /**
-     * List of menu items in the dropdown. Each array element can be either an HTML string, or an array representing a
-     * single menu with the following structure:
+     * Adds a CSS style for the dropdown component.
      *
-     * - label: string, required, the label of the item link.
-     * - encode: bool, optional, whether to HTML-encode item label.
-     * - url: string|array, optional, the URL of the item link. This will be processed by {@see currentPath}.
-     *   If not set, the item will be treated as a menu header when the item has no sub-menu.
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item link.
-     * - options: array, optional, the HTML attributes of the item.
-     * - items: array, optional, the submenu items. The structure is the same as this property.
-     *   Note that Bootstrap doesn't support dropdown submenu. You have to add your own CSS styles to support it.
-     * - submenuOptions: array, optional, the HTML attributes for sub-menu container tag. If specified it will be
-     *   merged with {@see submenuOptions}.
+     * @param array|string $value The CSS style for the dropdown component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
      *
-     * To insert divider use `-`.
+     * @return self A new instance with the specified CSS style value added.
      */
-    public function items(array|string|Stringable|null $value): self
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
+
+        return $new;
+    }
+
+    /**
+     * Sets the alignment of the dropdown component.
+     *
+     * @param DropdownAlignment|null ...$value The alignment of the dropdown component. If `null`, the alignment will
+     * not be set.
+     *
+     * @return self A new instance with the specified alignment of the dropdown component.
+     */
+    public function alignment(DropdownAlignment|null ...$value): self
+    {
+        $new = clone $this;
+        $new->alignmentClasses = $value;
+
+        return $new;
+    }
+
+    /**
+     * Adds a set of attributes for the dropdown toggle button.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addToggleAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->toggleAttributes = array_merge($this->toggleAttributes, $values);
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the dropdown component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets the auto-close setting for the dropdown component.
+     *
+     * @param DropdownAutoClose $value The auto-close setting for the dropdown component.
+     *
+     * @return self A new instance with the specified auto-close setting.
+     */
+    public function autoClose(DropdownAutoClose $value): self
+    {
+        return $this->addToggleAttributes(['data-bs-auto-close' => $value->value]);
+    }
+
+    /**
+     * Replaces all existing CSS classes of the dropdown component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $dropdown->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(BackedEnum|string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClasses = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether to render the dropdown in a container `<div>` tag.
+     *
+     * @param bool $value Whether to render the dropdown in a container `<div>` tag. By default, it will be rendered in
+     * a container `<div>` tag. If set to `false`, the container will not be rendered.
+     *
+     * @return self A new instance with the specified container setting.
+     */
+    public function container(bool $value): self
+    {
+        $new = clone $this;
+        $new->container = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the CSS classes for the dropdown container.
+     *
+     * @param BackedEnum|string ...$values The CSS class for the dropdown container.
+     *
+     * @return self A new instance with the specified CSS class for the dropdown container.
+     */
+    public function containerClasses(BackedEnum|string ...$values): self
+    {
+        $new = clone $this;
+        $new->containerClasses = $values;
+
+        return $new;
+    }
+
+    /**
+     * Set the direction of the dropdown component.
+     *
+     * @param DropdownDirection $value The direction of the dropdown component.
+     *
+     * @return self A new instance with the specified direction of the dropdown component.
+     */
+    public function direction(DropdownDirection $value): self
+    {
+        $new = clone $this;
+        $new->containerClasses = [$value];
+
+        return $new;
+    }
+
+    /**
+     * List of links to appear in the dropdown. If this property is empty, the widget will not render anything.
+     *
+     * @param array $value The links to appear in the dropdown.
+     *
+     * @return self A new instance with the specified dropdown to appear in the dropdown.
+     *
+     * @psalm-param DropdownItem[] $value The links to appear in the dropdown.
+     */
+    public function items(DropdownItem ...$value): self
     {
         $new = clone $this;
         $new->items = $value;
-        $new->tagName = null;
 
         return $new;
     }
 
     /**
-     * Set dropdown alignment
-     * @see https://getbootstrap.com/docs/5.3/components/dropdowns/#menu-alignment
-     */
-    public function withAlignment(string ...$alignment): self
-    {
-        $new = clone $this;
-        $new->alignment = array_unique($alignment);
-
-        return $new;
-    }
-
-    /**
-     * When tags Labels HTML should not be encoded.
-     */
-    public function withoutEncodeLabels(): self
-    {
-        $new = clone $this;
-        $new->encodeLabels = false;
-
-        return $new;
-    }
-
-    public function withEncodeTags(bool $encode): self
-    {
-        $new = clone $this;
-        $new->encodeTags = $encode;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes for sub-menu container tags.
-     */
-    public function submenuOptions(array $value): self
-    {
-        $new = clone $this;
-        $new->submenuOptions = $value;
-
-        return $new;
-    }
-
-    /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
-     * recognized.
+     * Sets the theme for the dropdown component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $new = clone $this;
-        $new->options = $value;
-        $new->tagName = null;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item if not present in self
-     */
-    public function itemOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->itemOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item link if not present in current item
-     */
-    public function linkOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->linkOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Renders menu items.
+     * @param string $value The theme for the dropdown component.
      *
-     * @param array $items the menu items to be rendered
-     *
-     * @throws InvalidConfigException|JsonException|RuntimeException if the label option is not specified in one of the
-     * items.
-     * @return string the rendering result.
+     * @return self A new instance with the specified theme.
      */
-    private function renderItems(Ul $layout, array $items): string
+    public function theme(string $value): self
     {
-        $lines = [];
+        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
+    }
 
-        foreach ($items as $item) {
-            if (is_string($item)) {
-                $item = ['label' => $item, 'encode' => false, 'enclose' => false];
-            }
+    /**
+     * Sets the HTML attributes for the dropdown toggle button.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the dropdown toggle button.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function toggleAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->toggleAttributes = $values;
 
-            if (isset($item['visible']) && !$item['visible']) {
-                continue;
-            }
+        return $new;
+    }
 
-            if (!array_key_exists('label', $item)) {
-                throw new RuntimeException("The 'label' option is required.");
-            }
+    /**
+     * Replaces all existing CSS classes of the dropdown toggle button with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $dropdown->toggleClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function toggleClass(BackedEnum|string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->toggleClasses = $value;
 
-            $lines[] = $this->renderItem($item);
+        return $new;
+    }
+
+    /**
+     * Sets the toggle button custom tag.
+     *
+     * @param string|Stringable $value The toggle button custom tag.
+     *
+     * @return self A new instance with the specified toggle button custom tag.
+     */
+    public function toggleTag(string|Stringable $value): self
+    {
+        $new = clone $this;
+        $new->toggleButton = (string) $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the content of the dropdown toggle button.
+     *
+     * @param string|Stringable $value The content of the dropdown toggle button.
+     *
+     * @return self A new instance with the specified content of the dropdown toggle button.
+     */
+    public function toggleContent(string|Stringable $value): self
+    {
+        $new = clone $this;
+        $new->toggleContent = (string) $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the toggle button for the dropdown component.
+     *
+     * @param bool|string $value The ID of the dropdown component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
+     * @return self A new instance with the specified ID of the toggle button for the dropdown component.
+     */
+    public function toggleId(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->toggleId = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether to render the dropdown toggle as a link.
+     *
+     * @param bool $value Whether to render the dropdown toggle as a link. If set to `true`, the dropdown toggle will be
+     * rendered as a link. If set to `false`, the dropdown toggle will be rendered as a button.
+     *
+     * @return self A new instance with the specified dropdown toggle as a link setting.
+     */
+    public function toggleAsLink(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->toggleLink = $value;
+
+        return $new;
+    }
+
+    /**
+     * Whether to render the dropdown toggle button as a large button.
+     *
+     * @param bool $value Whether to render the dropdown toggle button as a large button. If set to `true`, the dropdown
+     * toggle button will be rendered as a large button. If set to `false`, the dropdown toggle button will be rendered
+     * as a normal-sized button.
+     *
+     * @return self A new instance with the specified dropdown toggle button size large setting.
+     */
+    public function toggleSizeLarge(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->toggleSize = $value === true ? 'btn-lg' : null;
+
+        return $new;
+    }
+
+    /**
+     * Whether to render the dropdown toggle button as a small button.
+     *
+     * @param bool $value Whether to render the dropdown toggle button as a small button. If set to `true`, the dropdown
+     * toggle button will be rendered as a small button. If set to `false`, the dropdown toggle button will be rendered
+     * as a normal-sized button.
+     *
+     * @return self A new instance with the specified dropdown toggle button size small setting.
+     */
+    public function toggleSizeSmall(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->toggleSize = $value === true ? 'btn-sm' : null;
+
+        return $new;
+    }
+
+    /**
+     * Whether to render the dropdown toggle button as a split button.
+     *
+     * @param bool $value Whether to render the dropdown toggle button as a split button. If set to `true`, the dropdown
+     * toggle button will be rendered as a split button. If set to `false`, the dropdown toggle button will be rendered
+     * as a normal button.
+     *
+     * @return self A new instance with the specified dropdown toggle button split setting.
+     */
+    public function toggleSplit(bool $value = true): self
+    {
+        $new = clone $this;
+        $new->toggleSplit = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the content of the dropdown toggle split button.
+     *
+     * @param string|Stringable $value The content of the dropdown toggle split button.
+     *
+     * @return self A new instance with the specified content of the dropdown toggle split button.
+     */
+    public function toggleSplitContent(string|Stringable $value): self
+    {
+        $new = clone $this;
+        $new->toggleSplitContent = (string) $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the URL for the dropdown toggle link.
+     *
+     * @param string $value The URL for the dropdown toggle link.
+     *
+     * @return self A new instance with the specified URL for the dropdown toggle link.
+     */
+    public function toggleUrl(string $value): self
+    {
+        $new = clone $this;
+        $new->toggleUrl = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the variant for the dropdown toggle button.
+     *
+     * @param DropdownToggleVariant $value The variant for the dropdown toggle button.
+     *
+     * @return self A new instance with the specified variant for the dropdown toggle button.
+     */
+    public function toggleVariant(DropdownToggleVariant $value): self
+    {
+        $new = clone $this;
+        $new->toggleVariant = $value;
+
+        return $new;
+    }
+
+    public function render(): string
+    {
+        $attributes = $this->attributes;
+        $classes = $attributes['class'] ?? null;
+        $containerClasses = $this->containerClasses;
+
+        unset($attributes['class']);
+
+        if ($this->items === []) {
+            return '';
         }
 
-        return $layout
-            ->items(...$lines)
+        /** @psalm-var non-empty-string|null $id */
+        $toggleId = match ($this->toggleId) {
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->toggleId,
+        };
+
+        if ($this->toggleSplit === true) {
+            $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
+        }
+
+        Html::addCssClass($attributes, [...$containerClasses, $classes, ...$this->cssClasses]);
+
+        $renderToggle = match ($this->toggleSplit) {
+            true => $this->renderToggleSplit() . "\n" . $this->renderToggle($toggleId),
+            false => $this->renderToggle($toggleId),
+        };
+
+        $renderItems = $this->renderItems($toggleId);
+
+        return match ($this->container) {
+            true => Div::tag()
+                ->addAttributes($attributes)
+                ->addContent(
+                    "\n",
+                    $renderToggle,
+                    "\n",
+                    $renderItems,
+                    "\n",
+                )
+                ->encode(false)
+                ->render(),
+            false => $renderToggle . "\n" . $renderItems,
+        };
+    }
+
+    /**
+     * @psalm-param non-empty-string|null $toggleId
+     */
+    private function renderItems(string|null $toggleId): string
+    {
+        $items = [];
+
+        foreach ($this->items as $item) {
+            $items[] = $item->getContent();
+        }
+
+        $ulTag = Ul::tag()
+            ->addAttributes(
+                [
+                    'aria-labelledby' => $toggleId,
+                ],
+            )
+            ->addClass(self::DROPDOWN_LIST_CLASS, ...$this->alignmentClasses)
+            ->items(...$items);
+
+        return $ulTag->render();
+    }
+
+    /**
+     * @psalm-param non-empty-string|null $toggleId
+     */
+    private function renderToggle(string|null $toggleId): string
+    {
+        if ($this->toggleButton !== '') {
+            return (string) $this->toggleButton;
+        }
+
+        $toggleContent = match ($this->toggleSplit) {
+            true => "\n" .
+                Span::tag()
+                    ->addContent($this->toggleContent)
+                    ->addClass(self::DROPDOWN_TOGGLE_SPAN_CLASS)
+                    ->render() .
+                "\n",
+            default => $this->toggleContent,
+        };
+
+        $toggleAttributes = $this->toggleAttributes;
+        $toggleClasses = $this->toggleClasses;
+        $classes = $toggleAttributes['class'] ?? null;
+
+        unset($toggleAttributes['class']);
+
+        match ($toggleClasses) {
+            [] => Html::addCssClass(
+                $toggleAttributes,
+                [
+                    self::DROPDOWN_TOGGLE_BUTTON_CLASS,
+                    $this->toggleVariant,
+                    $this->toggleSize,
+                    self::DROPDOWN_TOGGLE_CLASS,
+                    $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                    $classes,
+                ],
+            ),
+            default => Html::addCssClass($toggleAttributes, $toggleClasses),
+        };
+
+        if ($this->toggleLink) {
+            return $this->renderToggleLink($toggleAttributes, $toggleContent);
+        }
+
+        $toggleAttributes['data-bs-toggle'] = 'dropdown';
+        $toggleAttributes['aria-expanded'] = 'false';
+
+        return Button::button('')
+            ->addAttributes($toggleAttributes)
+            ->addContent($toggleContent)
+            ->encode(false)
+            ->id($toggleId)
             ->render();
     }
 
-    /**
-     * Render current dropdown item
-     */
-    private function renderItem(array $item): Li
+    private function renderToggleLink(array $toggleAttributes, string $toggleContent): string
     {
-        $url = $item['url'] ?? null;
-        $encodeLabel = $item['encode'] ?? $this->encodeLabels;
-        $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
-        $itemOptions = ArrayHelper::getValue($item, 'options', $this->itemOptions);
-        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', $this->linkOptions);
-        $active = ArrayHelper::getValue($item, 'active', false);
-        $disabled = ArrayHelper::getValue($item, 'disabled', false);
-        $enclose = ArrayHelper::getValue($item, 'enclose', true);
+        $toggleAttributes['role'] = 'button';
+        $toggleAttributes['data-bs-toggle'] = 'dropdown';
+        $toggleAttributes['aria-expanded'] = 'false';
 
-        if ($url !== null) {
-            Html::addCssClass($linkOptions, ['widget' => 'dropdown-item']);
+        return A::tag()
+            ->addAttributes($toggleAttributes)
+            ->addContent($toggleContent)
+            ->encode(false)
+            ->url($this->toggleUrl)
+            ->render();
+    }
 
-            if ($disabled) {
-                ArrayHelper::setValue($linkOptions, 'tabindex', '-1');
-                ArrayHelper::setValue($linkOptions, 'aria-disabled', 'true');
-                Html::addCssClass($linkOptions, ['disable' => 'disabled']);
-            } elseif ($active) {
-                Html::addCssClass($linkOptions, ['active' => 'active']);
-            }
+    private function renderToggleSplit(): string
+    {
+        if ($this->toggleLink) {
+            return A::tag()
+                ->addAttributes(
+                    [
+                        'role' => 'button',
+                    ],
+                )
+                ->addClass(
+                    self::DROPDOWN_TOGGLE_BUTTON_CLASS,
+                    $this->toggleVariant,
+                    $this->toggleSize,
+                )
+                ->addContent($this->toggleSplitContent)
+                ->encode(false)
+                ->render();
         }
 
-        /** @psalm-suppress ConflictingReferenceConstraint */
-        if (empty($item['items'])) {
-            if ($url !== null) {
-                $content = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
-            } elseif ($label === '-') {
-                Html::addCssClass($linkOptions, ['widget' => 'dropdown-divider']);
-                $content = Html::tag('hr', '', $linkOptions);
-            } elseif ($enclose === false) {
-                $content = $label;
-            } else {
-                Html::addCssClass($linkOptions, ['widget' => 'dropdown-header']);
-                $tag = ArrayHelper::remove($linkOptions, 'tag', 'h6');
-                $content = Html::tag($tag, $label, $linkOptions);
-            }
-
-            return Li::tag()
-                ->content($content)
-                ->attributes($itemOptions)
-                ->encode(false);
-        }
-
-        $submenuOptions = $this->submenuOptions;
-
-        if (isset($item['submenuOptions'])) {
-            $submenuOptions = array_merge($submenuOptions, $item['submenuOptions']);
-        }
-
-        Html::addCssClass($submenuOptions, ['submenu' => 'dropdown-menu']);
-        Html::addCssClass($linkOptions, [
-            'widget' => 'dropdown-item',
-            'toggle' => 'dropdown-toggle',
-        ]);
-
-        $itemOptions = array_merge_recursive(['class' => ['dropdown'], 'aria-expanded' => 'false'], $itemOptions);
-
-        $dropdown = self::widget()
-            ->items($item['items'])
-            ->options($submenuOptions)
-            ->submenuOptions($submenuOptions);
-
-        if ($this->encodeLabels === false) {
-            $dropdown = $dropdown->withoutEncodeLabels();
-        }
-
-        ArrayHelper::setValue($linkOptions, 'data-bs-toggle', 'dropdown');
-        ArrayHelper::setValue($linkOptions, 'data-bs-auto-close', 'outside');
-        ArrayHelper::setValue($linkOptions, 'aria-haspopup', 'true');
-        ArrayHelper::setValue($linkOptions, 'aria-expanded', 'false');
-        ArrayHelper::setValue($linkOptions, 'role', 'button');
-
-        $toggle = Html::a($label, $url, $linkOptions)->encode($this->encodeTags);
-
-        return Li::tag()
-            ->content($toggle . $dropdown->render())
-            ->attributes($itemOptions)
-            ->encode(false);
+        return Button::button('')
+            ->addClass(
+                self::DROPDOWN_TOGGLE_BUTTON_CLASS,
+                $this->toggleVariant,
+                $this->toggleSize,
+            )
+            ->addContent($this->toggleSplitContent)
+            ->encode(false)
+            ->render();
     }
 }
