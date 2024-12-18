@@ -11,7 +11,7 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 
 /**
- * Represents a Bootstrap Nav link.
+ * Represents a Bootstrap Nav item and link.
  */
 final class NavLink
 {
@@ -22,10 +22,24 @@ final class NavLink
     /** @psalm-suppress PropertyNotSetInConstructor */
     private A|Li $content;
 
-    public function __construct()
+    final public function __construct()
     {
     }
 
+    /**
+     * Creates a nav item with a link.
+     *
+     * @param string|Stringable $label The label of the link.
+     * @param string|null $url The URL of the link.
+     * @param bool $active Whether the link is active.
+     * @param bool $disabled Whether the link is disabled.
+     * @param array $attributes Additional HTML attributes for the list item.
+     * @param array $linkAttributes Additional HTML attributes for the link.
+     *
+     * @throws InvalidArgumentException If the link is both active and disabled.
+     *
+     * @return self A new instance with the specified attributes.
+     */
     public static function item(
         string|Stringable $label = '',
         string|null $url = null,
@@ -73,6 +87,19 @@ final class NavLink
         return $navlink;
     }
 
+    /**
+     * Creates a nav link.
+     *
+     * @param string|Stringable $label The label of the link.
+     * @param string|null $url The URL of the link.
+     * @param bool $active Whether the link is active.
+     * @param bool $disabled Whether the link is disabled.
+     * @param array $attributes Additional HTML attributes for the link.
+     *
+     * @throws InvalidArgumentException If the link is both active and disabled.
+     *
+     * @return self A new instance with the specified attributes.
+     */
     public static function to(
         string|Stringable $label = '',
         string|null $url = null,
