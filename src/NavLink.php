@@ -22,7 +22,7 @@ final class NavLink
     /** @psalm-suppress PropertyNotSetInConstructor */
     private A|Li $content;
 
-    final public function __construct()
+    public function __construct()
     {
     }
 
