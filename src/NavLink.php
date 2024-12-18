@@ -20,13 +20,60 @@ final class NavLink
     private const NAV_LINK_CLASS = 'nav-link';
     private const NAV_ITEM_CLASS = 'nav-item';
     /** @psalm-suppress PropertyNotSetInConstructor */
-    private Li $content;
+    private A|Li $content;
 
     public function __construct()
     {
     }
 
-    public static function create(
+    public static function item(
+        string|Stringable $label = '',
+        string|null $url = null,
+        bool $active = false,
+        bool $disabled = false,
+        array $attributes = [],
+        array $linkAttributes = [],
+    ): self {
+        $navlink = new self();
+
+        $classes = $attributes['class'] ?? null;
+        $linkClasses = $linkAttributes['class'] ?? null;
+
+        unset($attributes['class'], $linkAttributes['class']);
+
+        if ($active === true && $disabled === true) {
+            throw new InvalidArgumentException('The nav item cannot be active and disabled at the same time.');
+        }
+
+        Html::addCssClass($linkAttributes, [self::NAV_LINK_CLASS]);
+
+        if ($active === true) {
+            Html::addCssClass($linkAttributes, [self::NAV_LINK_ACTIVE_CLASS]);
+
+            $linkAttributes['aria-current'] = 'page';
+        }
+
+        if ($disabled === true) {
+            Html::addCssClass($linkAttributes, [self::NAV_LINK_DISABLED_CLASS]);
+
+            $linkAttributes['aria-disabled'] = 'true';
+        }
+
+        $navlink->content = Li::tag()
+            ->addClass(
+                self::NAV_ITEM_CLASS,
+                $classes,
+            )
+            ->addContent(
+                "\n",
+                A::tag()->addAttributes($linkAttributes)->addClass($linkClasses)->addContent($label)->href($url),
+                "\n",
+            );
+
+        return $navlink;
+    }
+
+    public static function to(
         string|Stringable $label = '',
         string|null $url = null,
         bool $active = false,
@@ -35,8 +82,12 @@ final class NavLink
     ): self {
         $navlink = new self();
 
+        $classes = $attributes['class'] ?? null;
+
+        unset($attributes['class']);
+
         if ($active === true && $disabled === true) {
-            throw new InvalidArgumentException('The link cannot be active and disabled at the same time.');
+            throw new InvalidArgumentException('The nav link cannot be active and disabled at the same time.');
         }
 
         Html::addCssClass($attributes, [self::NAV_LINK_CLASS]);
@@ -53,21 +104,15 @@ final class NavLink
             $attributes['aria-disabled'] = 'true';
         }
 
-        $navlink->content = Li::tag()
-            ->addClass(self::NAV_ITEM_CLASS)
-            ->addContent(
-                "\n",
-                A::tag()->addAttributes($attributes)->addContent($label)->href($url),
-                "\n",
-            );
+        $navlink->content = A::tag()->addAttributes($attributes)->addClass($classes)->addContent($label)->href($url);
 
         return $navlink;
     }
 
     /**
-     * @return Li Returns the encoded label content.
+     * @return A|Li Returns the encoded label content.
      */
-    public function getContent(): Li
+    public function getContent(): A|Li
     {
         return $this->content;
     }

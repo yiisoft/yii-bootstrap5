@@ -11,9 +11,11 @@ namespace Yiisoft\Yii\Bootstrap5;
  */
 enum NavStyles: string
 {
-    case HORIZONTAL = 'nav justify-content-center';
-    case PILLS = 'nav nav-pills';
-    case TABS = 'nav nav-tabs';
-    case UNDERLINE = 'nav nav-underline';
-    case VERTICAL = 'nav flex-column';
+    case FILL = 'nav-fill';
+    case HORIZONTAL_ALIGNMENT = 'justify-content-center';
+    case JUSTIFY = 'nav-justified';
+    case PILLS = 'nav-pills';
+    case TABS = 'nav-tabs';
+    case UNDERLINE = 'nav-underline';
+    case VERTICAL = 'flex-column';
 }
