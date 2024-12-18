@@ -9,7 +9,7 @@ namespace Yiisoft\Yii\Bootstrap5;
  *
  * @see https://getbootstrap.com/docs/5.3/components/navs-tabs/#horizontal-alignment
  */
-enum NavStyles: string
+enum NavStyle: string
 {
     /**
      * Take that same HTML, but use `.nav-borders` instead.

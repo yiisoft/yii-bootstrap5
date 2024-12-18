@@ -8,7 +8,7 @@ use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
 use Yiisoft\Yii\Bootstrap5\NavLink;
-use Yiisoft\Yii\Bootstrap5\NavStyles;
+use Yiisoft\Yii\Bootstrap5\NavStyle;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
@@ -326,7 +326,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::HORIZONTAL_ALIGNMENT)
+                ->styles(NavStyle::HORIZONTAL_ALIGNMENT)
                 ->render(),
         );
     }
@@ -340,7 +340,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($navWidget, $navWidget->addCssStyle(''));
         $this->assertNotSame($navWidget, $navWidget->class(''));
         $this->assertNotSame($navWidget, $navWidget->items(NavLink::item('')));
-        $this->assertNotSame($navWidget, $navWidget->styles(NavStyles::FILL));
+        $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::FILL));
     }
 
     /**
@@ -372,7 +372,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::PILLS)
+                ->styles(NavStyle::PILLS)
                 ->render(),
         );
     }
@@ -430,7 +430,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::PILLS)
+                ->styles(NavStyle::PILLS)
                 ->render(),
         );
     }
@@ -464,7 +464,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::PILLS, NavStyles::FILL)
+                ->styles(NavStyle::PILLS, NavStyle::FILL)
                 ->render(),
         );
     }
@@ -498,7 +498,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::PILLS, NavStyles::JUSTIFY)
+                ->styles(NavStyle::PILLS, NavStyle::JUSTIFY)
                 ->render(),
         );
     }
@@ -532,7 +532,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::TABS)
+                ->styles(NavStyle::TABS)
                 ->render(),
         );
     }
@@ -590,7 +590,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::TABS)
+                ->styles(NavStyle::TABS)
             ->render(),
         );
     }
@@ -624,7 +624,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::UNDERLINE)
+                ->styles(NavStyle::UNDERLINE)
                 ->render(),
         );
     }
@@ -658,7 +658,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::item('Link', url: '#'),
                     NavLink::item('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::VERTICAL)
+                ->styles(NavStyle::VERTICAL)
                 ->render(),
         );
     }
@@ -685,7 +685,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyles::PILLS, NavStyles::VERTICAL)
+                ->styles(NavStyle::PILLS, NavStyle::VERTICAL)
                 ->tag('nav')
                 ->render(),
         );

@@ -33,7 +33,7 @@ use function implode;
  *         NavLink::create('Link', url: '#'),
  *         NavLink::create('Disabled', '#', disabled: true),
  *     )
- *     ->styles(NavStyles::TABS)
+ *     ->styles(NavStyle::TABS)
  *     ->render(),
  * ```
  */
@@ -154,16 +154,16 @@ final class Nav extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param NavStyles|null ...$value One or more CSS style class names to add. Pass `null` to skip adding a class.
+     * @param NavStyle|null ...$value One or more CSS style class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
-     * $nav->styles(NavStyles::TABS, NavStyles::VERTICAL);
+     * $nav->styles(NavStyle::TABS, NavStyle::VERTICAL);
      * ```
      *
      * @return self A new instance with the specified CSS style classes added.
      */
-    public function styles(NavStyles|null ...$value): self
+    public function styles(NavStyle|null ...$value): self
     {
         $new = clone $this;
 
