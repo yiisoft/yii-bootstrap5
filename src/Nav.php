@@ -36,7 +36,6 @@ use Yiisoft\Html\Tag\Ul;
  */
 final class Nav extends \Yiisoft\Widget\Widget
 {
-
     private const NAV_CLASS = 'collapse navbar-collapse';
     private const NAV_ITEM_CLASS = 'nav-item';
     private const NAV_ITEM_DROPDOWN_CLASS = 'dropdown';

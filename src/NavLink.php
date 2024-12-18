@@ -22,7 +22,7 @@ final class NavLink
     /** @psalm-suppress PropertyNotSetInConstructor */
     private Li $content;
 
-    final public function __construct()
+    public function __construct()
     {
     }
 
@@ -32,8 +32,7 @@ final class NavLink
         bool $active = false,
         bool $disabled = false,
         array $attributes = [],
-    ): self
-    {
+    ): self {
         $navlink = new self();
 
         if ($active === true && $disabled === true) {
