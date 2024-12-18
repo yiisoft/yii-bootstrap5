@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
@@ -239,6 +240,14 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testBaseNavException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The nav item cannot be a link.');
+
+        Nav::widget()->items(NavLink::to('Active', '#', active: true))->render();
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#base-nav
      */
@@ -263,6 +272,14 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->tag('nav')
                 ->render(),
         );
+    }
+
+    public function testBaseNavWithTagException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The nav item cannot be a dropdown or a list item.');
+
+        Nav::widget()->items(NavLink::item('Active', '#', active: true))->tag('nav')->render();
     }
 
     public function testClass(): void

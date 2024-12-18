@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
+use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
 
@@ -205,13 +207,11 @@ final class Nav extends \Yiisoft\Widget\Widget
 
         Html::addCssClass($attributes, [self::NAV_CLASS, ...$this->styleClasses, ...$this->cssClasses, $classes]);
 
-        $renderItems = $this->renderItems();
-
         return $this->tag === ''
-            ? Ul::tag()->addAttributes($attributes)->items(...$renderItems)->render()
+            ? Ul::tag()->addAttributes($attributes)->items(...$this->renderItems())->render()
             : Html::tag($this->tag)
                 ->addAttributes($attributes)
-                ->addContent("\n", implode("\n", $renderItems), "\n")
+                ->addContent("\n", implode("\n", $this->renderLinks()), "\n")
                 ->encode(false)
                 ->render();
     }
@@ -226,10 +226,34 @@ final class Nav extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
+            if ($item instanceof NavLink && $item->getContent() instanceof A) {
+                throw new InvalidArgumentException('The nav item cannot be a link.');
+            }
+
             $items[] = $item instanceof Dropdown ? $this->renderItemsDropdown($item) : $item->getContent();
         }
 
         return $items;
+    }
+
+    /**
+     * Renders the links for the nav component.
+     *
+     * @return array The rendered links.
+     */
+    private function renderLinks(): array
+    {
+        $links = [];
+
+        foreach ($this->items as $item) {
+            if ($item instanceof Dropdown || $item->getContent() instanceof Li) {
+                throw new InvalidArgumentException('The nav item cannot be a dropdown or a list item.');
+            }
+
+            $links[] = $item->getContent();
+        }
+
+        return $links;
     }
 
     /**
