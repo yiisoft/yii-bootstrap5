@@ -54,6 +54,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /** @psalm-var DropdownItem[] */
     private array $items = [];
     private array $toggleAttributes = [];
+    private array $toggleClasses = [];
     private string|Stringable $toggleButton = '';
     private string $toggleContent = 'Dropdown button';
     private bool|string $toggleId = false;
@@ -295,6 +296,29 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->toggleAttributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the dropdown toggle button with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $dropdown->toggleClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function toggleClass(BackedEnum|string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->toggleClasses = $value;
 
         return $new;
     }
@@ -549,27 +573,34 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         };
 
         $toggleAttributes = $this->toggleAttributes;
-
+        $toggleClasses = $this->toggleClasses;
         $classes = $toggleAttributes['class'] ?? null;
 
         unset($toggleAttributes['class']);
 
+        match ($toggleClasses) {
+            [] => Html::addCssClass(
+                $toggleAttributes,
+                [
+                    self::DROPDOWN_TOGGLE_BUTTON_CLASS,
+                    $this->toggleVariant,
+                    $this->toggleSize,
+                    self::DROPDOWN_TOGGLE_CLASS,
+                    $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                    $classes,
+                ],
+            ),
+            default => Html::addCssClass($toggleAttributes, $toggleClasses),
+        };
+
         if ($this->toggleLink) {
-            return $this->renderToggleLink($toggleAttributes, $toggleContent, $classes);
+            return $this->renderToggleLink($toggleAttributes, $toggleContent);
         }
 
         $toggleAttributes['data-bs-toggle'] = 'dropdown';
         $toggleAttributes['aria-expanded'] = 'false';
 
         return Button::button('')
-            ->addClass(
-                self::DROPDOWN_TOGGLE_BUTTON_CLASS,
-                $this->toggleVariant,
-                $this->toggleSize,
-                self::DROPDOWN_TOGGLE_CLASS,
-                $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
-                $classes,
-            )
             ->addAttributes($toggleAttributes)
             ->addContent($toggleContent)
             ->encode(false)
@@ -577,21 +608,13 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             ->render();
     }
 
-    private function renderToggleLink(array $toggleAttributes, string $toggleContent, string|null $classes): string
+    private function renderToggleLink(array $toggleAttributes, string $toggleContent): string
     {
         $toggleAttributes['role'] = 'button';
         $toggleAttributes['data-bs-toggle'] = 'dropdown';
         $toggleAttributes['aria-expanded'] = 'false';
 
         return A::tag()
-            ->addClass(
-                self::DROPDOWN_TOGGLE_BUTTON_CLASS,
-                $this->toggleVariant,
-                $this->toggleSize,
-                self::DROPDOWN_TOGGLE_CLASS,
-                $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
-                $classes,
-            )
             ->addAttributes($toggleAttributes)
             ->addContent($toggleContent)
             ->encode(false)

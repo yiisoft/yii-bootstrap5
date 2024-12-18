@@ -1043,6 +1043,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAsLink(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleClass(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleContent(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleId(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeLarge());
@@ -1250,6 +1251,41 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
+                ->render(),
+        );
+    }
+
+    public function testNavBar(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            HTML,
+            Dropdown::widget()
+                ->container(false)
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::divider(),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggleAsLink()
+                ->toggleClass('nav-link', 'dropdown-toggle')
+                ->toggleContent('Dropdown')
                 ->render(),
         );
     }
