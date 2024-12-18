@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.1",
         "yiisoft/arrays": "^1.0|^2.0|^3.0",
-        "yiisoft/assets": "^4.0",
+        "yiisoft/assets": "^5.0",
         "yiisoft/files": "^2.0",
         "yiisoft/html": "^3.0",
         "yiisoft/json": "^1.0",
