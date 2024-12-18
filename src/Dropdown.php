@@ -108,10 +108,10 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     /**
      * Adds a CSS style for the dropdown component.
      *
-     * @param array|string $value The CSS style for the dropdown component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
-     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
-     * 'color: red; font-weight: bold;'.
+     * @param array|string $value The CSS style for the dropdown component.
+     * If a string is used, it's added as is. For example, `color: red;`.
+     * If the value is an array, the values are separated by a space,
+     * e.g., `['color' => 'red', 'font-weight' => 'bold']` is rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
