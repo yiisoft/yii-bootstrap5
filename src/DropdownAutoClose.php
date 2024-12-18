@@ -14,12 +14,12 @@ enum DropdownAutoClose: string
     /**
      * The dropdown will be closed by clicking outside or inside the dropdown menu.
      */
-    case DEFAULT = 'true';
+    case TRUE = 'true';
     /**
      * The dropdown will be closed by clicking the toggle button and manually calling hide or toggle method.
      * (Also will not be closed by pressing `Esc` key)
      */
-    case MANUAL = 'false';
+    case FALSE = 'false';
     /**
      * The dropdown will be closed (only) by clicking inside the dropdown menu.
      */

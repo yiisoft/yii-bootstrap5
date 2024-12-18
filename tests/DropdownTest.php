@@ -658,7 +658,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoClose(DropdownAutoClose::DEFAULT)
+                ->autoClose(DropdownAutoClose::TRUE)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -726,7 +726,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             </div>
             HTML,
             Dropdown::widget()
-                ->autoClose(DropdownAutoClose::MANUAL)
+                ->autoClose(DropdownAutoClose::FALSE)
                 ->items(
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
@@ -1034,7 +1034,7 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(DropdownAutoClose::DEFAULT));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(DropdownAutoClose::TRUE));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->container(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->containerClasses(''));
