@@ -1025,6 +1025,29 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testDropdownItemWithListContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li><share class="dropdown-item text-nowrap" :link="fullLocation" v-memo="[fullLocation]" url="https://api.whatsapp.com/send?text={title} {link}"><svg class="me-2 rounded-circle bi" width="1rem" height="1rem" style="background-color: #25D366;" viewbox="0 0 16 16" fill="#fff"><use xlink:href="/assets/74b80618/bootstrap-icons.svg#whatsapp"></use></svg>WhatsApp</share></li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::listContent(
+                        <<<HTML
+                        <share class="dropdown-item text-nowrap" :link="fullLocation" v-memo="[fullLocation]" url="https://api.whatsapp.com/send?text={title} {link}"><svg class="me-2 rounded-circle bi" width="1rem" height="1rem" style="background-color: #25D366;" viewbox="0 0 16 16" fill="#fff"><use xlink:href="/assets/74b80618/bootstrap-icons.svg#whatsapp"></use></svg>WhatsApp</share>
+                        HTML
+                    ),
+                )
+                ->render(),
+        );
+    }
+
     public function testImmutability(): void
     {
         $dropdownWidget = Dropdown::widget();

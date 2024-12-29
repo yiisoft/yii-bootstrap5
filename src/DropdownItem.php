@@ -13,6 +13,15 @@ use Yiisoft\Html\Tag\Hr;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Span;
 
+/**
+ * DropdownItem renders a single dropdown item.
+ *
+ * For example,
+ *
+ * ```php
+ * echo DropdownItem::link('Dropdown link', '#');
+ * ```
+ */
 final class DropdownItem
 {
     private const DROPDOWN_DIVIDER_CLASS = 'dropdown-divider';
@@ -28,6 +37,14 @@ final class DropdownItem
     {
     }
 
+    /**
+     * Create a new dropdown item with a divider.
+     *
+     * @param array $attributes The HTML attributes of the list.
+     * @param array $dividerAttributes The HTML attributes of the divider.
+     *
+     * @return self A new instance with the dropdown item with a divider.
+     */
     public static function divider(array $attributes = [], array $dividerAttributes = []): self
     {
         $dropdownItem = new self();
@@ -47,6 +64,16 @@ final class DropdownItem
         return $dropdownItem;
     }
 
+    /**
+     * Create a new dropdown item with a header.
+     *
+     * @param string|Stringable $content The content of the header.
+     * @param array $attributes The HTML attributes of the list.
+     * @param string $headerTag The tag of the header.
+     * @param array $headerAttributes The HTML attributes of the header.
+     *
+     * @return self A new instance with the dropdown item with a header.
+     */
     public static function header(
         string|Stringable $content = '',
         array $attributes = [],
@@ -76,6 +103,19 @@ final class DropdownItem
         return $dropdownItem;
     }
 
+    /**
+     * Create a new dropdown item with a link.
+     *
+     * @param string|Stringable $content The content of the link.
+     * @param string $url The URL of the link.
+     * @param bool $active Whether the dropdown item is active.
+     * @param bool $disabled Whether the dropdown item is disabled.
+     * @param array $attributes The HTML attributes of the the list.
+     * @param array $linkAttributes The HTML attributes of the link.
+     * @param bool $button Whether the dropdown item is a button.
+     *
+     * @return self A new instance with the dropdown item with a link.
+     */
     public static function link(
         string|Stringable $content = '',
         string $url = '',
@@ -117,6 +157,32 @@ final class DropdownItem
         return $dropdownItem;
     }
 
+    /**
+     * Create a new dropdown item with custom list content.
+     *
+     * @param string|Stringable $content The content of the list.
+     * @param array $attributes The HTML attributes of the list.
+     *
+     * @return self A new instance with the dropdown item with a list.
+     */
+    public static function listContent(string|Stringable $content = '', array $attributes = []): self
+    {
+        $dropdownItem = new self();
+
+        $dropdownItem->content = Li::tag()->addAttributes($attributes)->addContent($content)->encode(false);
+
+        return $dropdownItem;
+    }
+
+    /**
+     * Create a new drodown item with text content.
+     *
+     * @param string|Stringable $content The text content.
+     * @param array $attributes The HTML attributes of the list.
+     * @param array $textAttributes The HTML attributes of the text.
+     *
+     * @return self A new instance with the dropdown item with text content.
+     */
     public static function text(
         string|Stringable $content = '',
         array $attributes = [],
