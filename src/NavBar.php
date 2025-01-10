@@ -458,7 +458,6 @@ final class NavBar extends \Yiisoft\Widget\Widget
         return $htmlRender;
     }
 
-
     /**
      * Renders the brand section of the navbar.
      *
