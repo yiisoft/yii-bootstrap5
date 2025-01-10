@@ -57,7 +57,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
     private string|Stringable $brandText = '';
     private string|Stringable $brandImage = '';
     private array $brandImageAttributes = [];
-    private string|Stringable $brandUrl = '';
+    private string $brandUrl = '';
     private array $cssClass = [];
     private bool $container = false;
     private array $containerAttributes = [];
@@ -198,12 +198,12 @@ final class NavBar extends \Yiisoft\Widget\Widget
     /**
      * Sets the brand URL for the navbar component.
      *
-     * @param string|Stringable $value The brand URL for the navbar component. If `null`, the brand URL will not be
+     * @param string $value The brand URL for the navbar component. If `null`, the brand URL will not be
      * displayed.
      *
      * @return self A new instance with the specified brand URL.
      */
-    public function brandUrl(string|Stringable $value): self
+    public function brandUrl(string $value): self
     {
         $new = clone $this;
         $new->brandUrl = $value;
@@ -455,7 +455,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
             return (string) $this->brand;
         }
 
-        if ($this->brandImage === null && $this->brandText === null) {
+        if ($this->brandImage === '' && $this->brandText === '') {
             return '';
         }
 
@@ -506,7 +506,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
     private function renderToggle(string $id): string
     {
         if ($this->toggle !== '') {
-            return (string) $this->toggle;
+            return $this->toggle;
         }
 
         return Button::button('')
