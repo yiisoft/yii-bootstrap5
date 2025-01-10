@@ -217,9 +217,9 @@ final class DropdownItem
     }
 
     /**
-     * @return string Returns the dropdown item content.
+     * @return string|Stringable Returns the dropdown item content.
      */
-    public function getContent(): string
+    public function getContent(): string|Stringable
     {
         return $this->content;
     }

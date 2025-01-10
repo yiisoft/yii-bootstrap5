@@ -19,7 +19,7 @@ final class NavLink
     private bool $active = false;
     private array $attributes = [];
     private bool $disabled = false;
-    private string $label = '';
+    private string|Stringable $label = '';
     private string|null $url = '';
     private array $urlAttributes = [];
 
@@ -106,9 +106,9 @@ final class NavLink
     /**
      * Returns the label of the nav item.
      *
-     * @return string The label of the nav item.
+     * @return string|Stringable The label of the nav item.
      */
-    public function getLabel(): string
+    public function getLabel(): string|Stringable
     {
         return $this->label;
     }
