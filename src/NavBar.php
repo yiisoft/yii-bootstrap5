@@ -239,7 +239,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether to use container for navigation content.
      * If `true` navigation content will be wrapped in a container.
-     * If `false` navigation content will span full width.
+     * If `false` navigation content spans full width.
      *
      * @return self A new instance with the specified container setting.
      */

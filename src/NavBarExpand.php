@@ -28,7 +28,7 @@ enum NavBarExpand: string
      */
     case XL = 'navbar-expand-xl';
     /**
-     * Expand on extra extra large devices (≥1400px).
+     * Expand on extra-extra large devices (≥1400px).
      */
     case XXL = 'navbar-expand-xxl';
 }
