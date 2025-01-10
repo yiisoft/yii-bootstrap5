@@ -16,6 +16,8 @@ use Yiisoft\Yii\Bootstrap5\NavStyle;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
+use function trim;
+
 /**
  * Tests for `NavBar` widget.
  *
@@ -23,16 +25,148 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
  */
 final class NavBarTest extends \PHPUnit\Framework\TestCase
 {
+    public function testAddAttributes(): void
+    {
+        $navbar = NavBar::widget()
+            ->addAttributes(['data-id' => '123'])
+            ->id('navbar')
+            ->begin();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg" data-id="123">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar),
+        );
+    }
+
+    public function testAddClass(): void
+    {
+        $navbar = NavBar::widget()
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
+            ->id('navbar');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg test-class bg-primary">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->begin()),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg test-class bg-primary test-class-1 test-class-2">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->addClass('test-class-1', 'test-class-2')->begin()),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $navbar = NavBar::widget()
+            ->addCssStyle('color: red;')
+            ->id('navbar');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg" style="color: red;">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->begin()),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg" style="color: red; font-weight: bold;">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->addCssStyle('font-weight: bold;')->begin()),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $navbar = NavBar::widget()
+            ->addCssStyle('color: red;')
+            ->id('navbar');
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg" style="color: red;">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->begin()),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg" style="color: red;">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar->addCssStyle('color: blue;', false)->begin()),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        $navbar = NavBar::widget()
+            ->attributes(['class' => 'test-class'])
+            ->id('navbar')
+            ->begin();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg test-class">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navbar/#text
      */
     public function testBrandText(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -43,12 +177,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -57,12 +187,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testBrandTextAsLink(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->brandUrl('#')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -73,12 +202,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -87,7 +212,7 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testBrandAsImage(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandImage('/docs/5.3/assets/brand/bootstrap-logo.svg')
             ->brandImageAttributes(
                 [
@@ -99,7 +224,6 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             ->brandUrl('#')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -112,12 +236,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -126,7 +246,7 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testBrandAsImageWithStringable(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandImage(
                 Img::tag()
                     ->alt('bootstrap')
@@ -137,7 +257,6 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             ->brandUrl('#')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -150,12 +269,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -164,7 +279,7 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testBrandAsImageAndText(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandImage('/docs/5.3/assets/brand/bootstrap-logo.svg')
             ->brandImageAttributes(
                 [
@@ -177,7 +292,6 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             ->brandUrl('#')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -191,12 +305,29 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
+        );
+    }
+
+    public function testClass(): void
+    {
+        $navbar = NavBar::widget()
+            ->addClass('test-class')
+            ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
+            ->id('navbar')
+            ->begin();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg custom-class another-class bg-primary">
+            <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar),
         );
     }
 
@@ -205,13 +336,12 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testContainer(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->container(true)
             ->containerAttributes(['class' => 'container'])
             ->brandText('NavBar')
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -223,13 +353,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
-            </div>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -238,12 +363,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testContainerResponsive(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->innerContainerAttributes(['class' => 'container-md'])
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -254,12 +378,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -268,12 +388,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpandWithSm(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->expand(NavBarExpand::SM)
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -284,12 +403,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -298,12 +413,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpandWithMd(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->expand(NavBarExpand::MD)
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -314,12 +428,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -328,12 +438,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpandWithLg(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->expand(NavBarExpand::LG)
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -344,12 +453,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -358,12 +463,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpandWithXl(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->expand(NavBarExpand::XL)
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -374,12 +478,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -388,12 +488,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpandWithXxl(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->expand(NavBarExpand::XXL)
             ->id('navbar')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -404,13 +503,32 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
+    }
+
+    public function testImmutability(): void
+    {
+        $navBar = NavBar::widget();
+
+        $this->assertNotSame($navBar, $navBar->addAttributes([]));
+        $this->assertNotSame($navBar, $navBar->addClass(''));
+        $this->assertNotSame($navBar, $navBar->addCssStyle(''));
+        $this->assertNotSame($navBar, $navBar->attributes([]));
+        $this->assertNotSame($navBar, $navBar->brandImage(''));
+        $this->assertNotSame($navBar, $navBar->brandImageAttributes([]));
+        $this->assertNotSame($navBar, $navBar->brandText(''));
+        $this->assertNotSame($navBar, $navBar->brandUrl(''));
+        $this->assertNotSame($navBar, $navBar->class(''));
+        $this->assertNotSame($navBar, $navBar->container(false));
+        $this->assertNotSame($navBar, $navBar->containerAttributes([]));
+        $this->assertNotSame($navBar, $navBar->expand(NavBarExpand::LG));
+        $this->assertNotSame($navBar, $navBar->id(false));
+        $this->assertNotSame($navBar, $navBar->innerContainerAttributes(['class' => 'container-md']));
+        $this->assertNotSame($navBar, $navBar->placement(NavBarPlacement::FIXED_TOP));
+        $this->assertNotSame($navBar, $navBar->tag(''));
+        $this->assertNotSame($navBar, $navBar->theme('dark'));
     }
 
     /**
@@ -418,12 +536,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testPlacementWithFixedBottom(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->id('navbar')
             ->placement(NavBarPlacement::FIXED_BOTTOM)
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -434,12 +551,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -448,12 +561,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testPlacementWithFixedTop(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->id('navbar')
             ->placement(NavBarPlacement::FIXED_TOP)
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -464,12 +576,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -478,12 +586,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testPlacementWithStickyBottom(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->id('navbar')
             ->placement(NavBarPlacement::STICKY_BOTTOM)
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -494,12 +601,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -508,12 +611,11 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testPlacementWithStickyTop(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->brandText('NavBar')
             ->id('navbar')
             ->placement(NavBarPlacement::STICKY_TOP)
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -524,12 +626,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
@@ -538,14 +636,13 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
      */
     public function testTheme(): void
     {
-        $html = NavBar::widget()
+        $navbar = NavBar::widget()
             ->addClass(BackgroundColor::BODY_TERTIARY)
             ->brandText('NavBar')
             ->brandUrl('#')
             ->id('navbar')
             ->theme('dark')
             ->begin();
-        $html .= NavBar::end();
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -556,40 +653,13 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbar" class="collapse navbar-collapse">
-
-            </div>
-            </div>
-            </nav>
             HTML,
-            $html,
+            trim($navbar),
         );
     }
 
     public function testRender(): void
     {
-        $html = NavBar::widget()
-            ->addClass(BackgroundColor::BODY_TERTIARY)
-            ->brandText('NavBar')
-            ->brandUrl('#')
-            ->id('navbarSupportedContent')
-            ->begin();
-        $html .= Nav::widget()
-            ->items(
-                NavLink::item('Home', '#', active: true),
-                NavLink::item(label: 'Link', url: '#'),
-                Dropdown::widget()
-                    ->items(
-                        DropdownItem::link('Action', '#'),
-                        DropdownItem::link('Another action', '#'),
-                        DropdownItem::divider(),
-                        DropdownItem::link('Something else here', '#'),
-                    ),
-                NavLink::item('Disabled', '#', disabled: true),
-            )
-            ->styles(NavStyle::NAVBAR)
-            ->render();
-        $html .= NavBar::end();
-
         Assert::equalsWithoutLE(
             <<<HTML
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -631,7 +701,28 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             </div>
             </nav>
             HTML,
-            $html,
+            NavBar::widget()
+                ->addClass(BackgroundColor::BODY_TERTIARY)
+                ->brandText('NavBar')
+                ->brandUrl('#')
+                ->id('navbarSupportedContent')
+                ->begin() .
+                Nav::widget()
+                    ->items(
+                        NavLink::item('Home', '#', active: true),
+                        NavLink::item(label: 'Link', url: '#'),
+                        Dropdown::widget()
+                            ->items(
+                                DropdownItem::link('Action', '#'),
+                                DropdownItem::link('Another action', '#'),
+                                DropdownItem::divider(),
+                            DropdownItem::link('Something else here', '#'),
+                        ),
+                        NavLink::item('Disabled', '#', disabled: true),
+                    )
+                    ->styles(NavStyle::NAVBAR)
+                    ->render() .
+            NavBar::end(),
         );
     }
 }

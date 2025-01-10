@@ -79,7 +79,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -104,12 +104,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-
-        foreach ($value as $class) {
-            if ($class !== null) {
-                $new->cssClass[] = $class instanceof BackedEnum ? $class->value : $class;
-            }
-        }
+        $new->cssClass = [...$this->cssClass, ...$value];
 
         return $new;
     }
@@ -234,12 +229,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
     public function class(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-
-        foreach ($value as $class) {
-            if ($class !== null) {
-                $new->cssClass = $class instanceof BackedEnum ? $class->value : $class;
-            }
-        }
+        $new->cssClass = $value;
 
         return $new;
     }
