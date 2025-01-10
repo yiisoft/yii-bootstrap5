@@ -205,7 +205,11 @@ final class Nav extends \Yiisoft\Widget\Widget
             return '';
         }
 
-        Html::addCssClass($attributes, [self::NAV_CLASS, ...$this->styleClasses, ...$this->cssClasses, $classes]);
+        if (in_array(NavStyle::NAVBAR, $this->styleClasses, true)) {
+            Html::addCssClass($attributes, [...$this->styleClasses, ...$this->cssClasses, $classes]);
+        } else {
+            Html::addCssClass($attributes, [self::NAV_CLASS, ...$this->styleClasses, ...$this->cssClasses, $classes]);
+        }
 
         return $this->tag === ''
             ? Ul::tag()->addAttributes($attributes)->items(...$this->renderItems())->render()

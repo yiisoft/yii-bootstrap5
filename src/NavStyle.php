@@ -26,6 +26,11 @@ enum NavStyle: string
      */
     case JUSTIFY = 'nav-justified';
     /**
+     * Horizontal navigation component for the top of an application. It is the most common navigation pattern for
+     * desktop apps. Use it with `.navbar-nav` to apply the default styling.
+     */
+    case NAVBAR = 'navbar-nav me-auto mb-2 mb-lg-0';
+    /**
      * Take that same HTML, but use `.nav-pills` instead.
      */
     case PILLS = 'nav-pills';
