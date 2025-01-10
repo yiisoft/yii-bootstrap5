@@ -4,145 +4,145 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use JsonException;
-use RuntimeException;
-use Yiisoft\Arrays\ArrayHelper;
+use BackedEnum;
+use InvalidArgumentException;
+use Stringable;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Li;
+use Yiisoft\Html\Tag\Ul;
 
-use function is_array;
-use function is_string;
+use function array_merge;
+use function implode;
 
 /**
- * Nav renders a nav HTML component.
+ * Nav renders a Bootstrap nav component.
  *
  * For example:
  *
  * ```php
- *    $menuItems = [
- *        [
- *            'label' => 'About',
- *            'url' => '/about',
- *        ],
- *        [
- *            'label' => 'Contact',
- *            'url' => '/contact',
- *        ],
- *        [
- *            'label' => 'Login',
- *            'url' => '/login',
- *            'visible' => $user->getId() === null,
- *        ],
- *        [
- *            'label' => 'Logout' . ' ' . '(' . $user->getUsername() . ')',
- *            'url' => '/logout',
- *            'visible' => $user->getId() !== null,
- *        ],
- *    ];
- *
- *    echo Nav::widget()
- *        ->currentPath($currentPath)
- *        ->items($menuItems)
- *        ->options([
- *            'class' => 'navbar-nav float-right ml-auto'
- *        ]);
- *
- * Note: Multilevel dropdowns beyond Level 1 are not supported in Bootstrap 3.
- * Note: $currentPath it must be injected from each controller to the main controller.
- *
- * SiteController.php
- *
- * ```php
- *
- *    public function index(ServerRequestInterface $request): ResponseInterface
- *    {
- *        $response = $this->responseFactory->createResponse();
- *        $currentPath = $request
- *           ->getUri()
- *          ->getPath();
- *        $output = $this->render('index', ['currentPath' => $currentPath]);
- *        $response
- *          ->getBody()
- *          ->write($output);
- *
- *        return $response;
- *    }
+ * echo Nav::widget()
+ *     ->items(
+ *         NavLink::item('Active', '#', active: true),
+ *         Dropdown::widget()
+ *             ->items(
+ *                 DropdownItem::link('Action', '#'),
+ *                 DropdownItem::link('Another action', '#'),
+ *                 DropdownItem::link('Something else here', '#'),
+ *                 DropdownItem::divider(),
+ *                 DropdownItem::link('Separated link', '#'),
+ *             ),
+ *         NavLink::item('Link', url: '#'),
+ *         NavLink::item('Disabled', '#', disabled: true),
+ *     )
+ *     ->styles(NavStyle::TABS)
+ *     ->render(),
  * ```
- *
- * Controller.php
- *
- * ```php
- *    private function renderContent($content, array $parameters = []): string
- *    {
- *        $user = $this->user->getIdentity();
- *        $layout = $this->findLayoutFile($this->layout);
- *
- *        if ($layout !== null) {
- *            return $this->view->renderFile(
- *                $layout,
- *                    [
- *                        'aliases' => $this->aliases,
- *                        'content' => $content,
- *                        'user' => $user,
- *                        'params' => $this->params,
- *                        'currentPath' => !isset($parameters['currentPath']) ?: $parameters['currentPath']
- *                    ],
- *                $this
- *            );
- *        }
- *
- *        return $content;
- *    }
- * ```
- *
- * {@see https://getbootstrap.com/components/#dropdowns}
- * {@see https://getbootstrap.com/components/#nav}
  */
-final class Nav extends Widget
+final class Nav extends \Yiisoft\Widget\Widget
 {
+    private const NAV_CLASS = 'nav';
+    private const NAV_ITEM_DROPDOWN_CLASS = 'nav-item dropdown';
+    private array $attributes = [];
+    private array $cssClasses = [];
+    /** @psalm-var Dropdown[]|NavLink[] */
     private array $items = [];
-    private bool $encodeLabels = true;
-    private bool $encodeTags = false;
-    private bool $activateItems = true;
-    private bool $activateParents = false;
-    private ?string $activeClass = null;
-    private string $currentPath = '';
-    /** @psalm-var class-string  */
-    private string $dropdownClass = Dropdown::class;
-    private array $options = [];
-    private array $itemOptions = [];
-    private array $linkOptions = [];
-    private array $dropdownOptions = [];
+    private array $styleClasses = [];
+    private string $tag = '';
 
-    public function render(): string
+    /**
+     * Adds a set of attributes for the nav component.
+     *
+     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-nav']`.
+     *
+     * @return self A new instance with the specified attributes added.
+     */
+    public function addAttributes(array $values): self
     {
-        if (!isset($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
+        $new = clone $this;
+        $new->attributes = array_merge($this->attributes, $values);
 
-        Html::addCssClass($this->options, ['widget' => 'nav']);
-
-        return $this->renderItems();
+        return $new;
     }
 
     /**
-     * List of items in the nav widget. Each array element represents a single  menu item which can be either a string
-     * or an array with the following structure:
+     * Adds one or more CSS classes to the existing classes of the nav component.
      *
-     * - label: string, required, the nav item label.
-     * - url: optional, the item's URL. Defaults to "#".
-     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
-     * - linkOptions: array, optional, the HTML attributes of the item's link.
-     * - options: array, optional, the HTML attributes of the item container (LI).
-     * - active: bool, optional, whether the item should be on active state or not.
-     * - dropdownOptions: array, optional, the HTML options that will passed to the {@see Dropdown} widget.
-     * - items: array|string, optional, the configuration array for creating a {@see Dropdown} widget, or a string
-     *   representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
-     * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for
-     *   only this item.
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
      *
-     * If a menu item is a string, it will be rendered directly without HTML encoding.
+     * @param BackedEnum|string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $nav->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
      */
-    public function items(array $value): self
+    public function addClass(BackedEnum|string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClasses = array_merge($new->cssClasses, $value);
+
+        return $new;
+    }
+
+    /**
+     * Adds a CSS style for the nav component.
+     *
+     * @param array|string $value The CSS style for the nav component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the nav component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $nav->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(BackedEnum|string|null ...$value): self
+    {
+        $new = clone $this;
+        $new->cssClasses = $value;
+
+        return $new;
+    }
+
+    /**
+     * List of links to appear in the nav. If this property is empty, the widget will not render anything.
+     *
+     * @param array $value The links to appear in the nav.
+     *
+     * @return self A new instance with the specified links to appear in the nav.
+     *
+     * @psalm-param Dropdown[]|NavLink[] $value The links to appear in the nav.
+     */
+    public function items(Dropdown|NavLink ...$value): self
     {
         $new = clone $this;
         $new->items = $value;
@@ -151,286 +151,136 @@ final class Nav extends Widget
     }
 
     /**
-     * When tags Labels HTML should not be encoded.
-     */
-    public function withoutEncodeLabels(): self
-    {
-        $new = clone $this;
-        $new->encodeLabels = false;
-
-        return $new;
-    }
-
-    /**
-     * Disable activate items according to whether their currentPath.
+     * Change the style of `.navs` component with modifiers and utilities. Mix and match as needed, or build your own.
      *
-     * {@see isItemActive}
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param NavStyle|null ...$value One or more CSS style class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $nav->styles(NavStyle::TABS, NavStyle::VERTICAL);
+     * ```
+     *
+     * @return self A new instance with the specified CSS style classes added.
      */
-    public function withoutActivateItems(): self
+    public function styles(NavStyle|null ...$value): self
     {
         $new = clone $this;
-        $new->activateItems = false;
+
+        $new->styleClasses = array_merge($new->styleClasses, $value);
 
         return $new;
     }
 
     /**
-     * Whether to activate parent menu items when one of the corresponding child menu items is active.
+     * Set the tag name for the nav component.
+     *
+     * @param string|Stringable $value The tag name for the nav component.
+     *
+     * @return self A new instance with the specified tag name.
      */
-    public function activateParents(): self
+    public function tag(string|Stringable $value): self
     {
         $new = clone $this;
-        $new->activateParents = true;
+        $new->tag = (string) $value;
 
         return $new;
     }
 
     /**
-     * Additional CSS class for active item. Like "bg-success", "bg-primary" etc
+     * Run the nav widget.
+     *
+     * @return string The HTML representation of the element.
      */
-    public function activeClass(?string $className): self
+    public function render(): string
     {
-        if ($this->activeClass === $className) {
-            return $this;
+        $attributes = $this->attributes;
+        $classes = $attributes['class'] ?? null;
+
+        unset($attributes['class']);
+
+        if ($this->items === []) {
+            return '';
         }
 
-        $new = clone $this;
-        $new->activeClass = $className;
+        if (in_array(NavStyle::NAVBAR, $this->styleClasses, true)) {
+            Html::addCssClass($attributes, [...$this->styleClasses, ...$this->cssClasses, $classes]);
+        } else {
+            Html::addCssClass($attributes, [self::NAV_CLASS, ...$this->styleClasses, ...$this->cssClasses, $classes]);
+        }
 
-        return $new;
+        return $this->tag === ''
+            ? Ul::tag()->addAttributes($attributes)->items(...$this->renderItems())->render()
+            : Html::tag($this->tag)
+                ->addAttributes($attributes)
+                ->addContent("\n", implode("\n", $this->renderLinks()), "\n")
+                ->encode(false)
+                ->render();
     }
 
     /**
-     * Allows you to assign the current path of the url from request controller.
-     */
-    public function currentPath(string $value): self
-    {
-        $new = clone $this;
-        $new->currentPath = $value;
-
-        return $new;
-    }
-
-    /**
-     * Name of a class to use for rendering dropdowns within this widget. Defaults to {@see Dropdown}.
+     * Renders the items for the nav component.
      *
-     * @psalm-param class-string $value
+     * @return array The rendered items.
      */
-    public function dropdownClass(string $value): self
-    {
-        $new = clone $this;
-        $new->dropdownClass = $value;
-
-        return $new;
-    }
-
-    /**
-     * Options for dropdownClass if not present in current item
-     *
-     * {@see Nav::renderDropdown()} for details on how this options will be used
-     */
-    public function dropdownOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->dropdownOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
-     *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function options(array $value): self
-    {
-        $new = clone $this;
-        $new->options = $value;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item if not present in self
-     */
-    public function itemOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->itemOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Options for each item link if not present in current item
-     */
-    public function linkOptions(array $options): self
-    {
-        $new = clone $this;
-        $new->linkOptions = $options;
-
-        return $new;
-    }
-
-    /**
-     * Renders widget items.
-     *
-     * @throws JsonException|RuntimeException
-     */
-    private function renderItems(): string
+    private function renderItems(): array
     {
         $items = [];
 
-        foreach ($this->items as $i => $item) {
-            if (isset($item['visible']) && !$item['visible']) {
-                continue;
+        foreach ($this->items as $item) {
+            if ($item instanceof NavLink && $item->getContent() instanceof A) {
+                throw new InvalidArgumentException('The nav item cannot be a link.');
             }
 
-            $items[] = $this->renderItem($item);
-        }
-
-        return Html::tag('ul', implode("\n", $items), $this->options)
-            ->encode($this->encodeTags)
-            ->render();
-    }
-
-    /**
-     * Renders a widget's item.
-     *
-     * @param array|string $item the item to render.
-     *
-     * @throws JsonException|RuntimeException
-     *
-     * @return string the rendering result.
-     */
-    private function renderItem(array|string $item): string
-    {
-        if (is_string($item)) {
-            return $item;
-        }
-
-        if (!isset($item['label'])) {
-            throw new RuntimeException("The 'label' option is required.");
-        }
-
-        $encodeLabel = $item['encode'] ?? $this->encodeLabels;
-        $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
-        $options = ArrayHelper::getValue($item, 'options', $this->itemOptions);
-        $items = ArrayHelper::getValue($item, 'items');
-        $url = ArrayHelper::getValue($item, 'url', '#');
-        $linkOptions = ArrayHelper::getValue($item, 'linkOptions', $this->linkOptions);
-        $disabled = ArrayHelper::getValue($item, 'disabled', false);
-        $active = $this->isItemActive($item);
-
-        if (empty($items)) {
-            $items = '';
-        } else {
-            $linkOptions['data-bs-toggle'] = 'dropdown';
-
-            Html::addCssClass($options, ['widget' => 'dropdown']);
-            Html::addCssClass($linkOptions, ['widget' => 'dropdown-toggle']);
-
-            if (is_array($items)) {
-                $items = $this->isChildActive($items, $active);
-                $items = $this->renderDropdown($items, $item);
-            }
-        }
-
-        Html::addCssClass($options, ['nav' => 'nav-item']);
-        Html::addCssClass($linkOptions, ['linkOptions' => 'nav-link']);
-
-        if ($disabled) {
-            $linkOptions['tabindex'] = '-1';
-            $linkOptions['aria-disabled'] = 'true';
-            Html::addCssClass($linkOptions, ['disabled' => 'disabled']);
-        } elseif ($this->activateItems && $active) {
-            Html::addCssClass($linkOptions, ['active' => rtrim('active ' . $this->activeClass)]);
-        }
-
-        return Html::tag(
-            'li',
-            Html::a($label, $url, $linkOptions)->encode($this->encodeTags) . $items,
-            $options
-        )
-            ->encode($this->encodeTags)
-            ->render();
-    }
-
-    /**
-     * Renders the given items as a dropdown.
-     *
-     * This method is called to create sub-menus.
-     *
-     * @param array $items the given items. Please refer to {@see Dropdown::items} for the array structure.
-     * @param array $parentItem the parent item information. Please refer to {@see items} for the structure of this
-     * array.
-     *
-     * @return string the rendering result.
-     */
-    private function renderDropdown(array $items, array $parentItem): string
-    {
-        $dropdownClass = $this->dropdownClass;
-
-        $dropdown = $dropdownClass::widget()
-            ->items($items)
-            ->options(ArrayHelper::getValue($parentItem, 'dropdownOptions', $this->dropdownOptions));
-
-        if ($this->encodeLabels === false) {
-            $dropdown->withoutEncodeLabels();
-        }
-
-        return $dropdown->render();
-    }
-
-    /**
-     * Check to see if a child item is active optionally activating the parent.
-     *
-     * @param bool $active should the parent be active too
-     * {@see items}
-     */
-    private function isChildActive(array $items, bool &$active): array
-    {
-        foreach ($items as $i => $child) {
-            if ($this->isItemActive($child)) {
-                ArrayHelper::setValue($items[$i], 'active', true);
-                if ($this->activateParents) {
-                    $active = true;
-                }
-            }
-
-            if (is_array($child) && ($childItems = ArrayHelper::getValue($child, 'items')) && is_array($childItems)) {
-                $activeParent = false;
-                $items[$i]['items'] = $this->isChildActive($childItems, $activeParent);
-
-                if ($activeParent) {
-                    $items[$i]['linkOptions'] ??= [];
-                    Html::addCssClass($items[$i]['linkOptions'], ['active' => 'active']);
-                    $active = true;
-                }
-            }
+            $items[] = $item instanceof Dropdown ? $this->renderItemsDropdown($item) : $item->getContent();
         }
 
         return $items;
     }
 
     /**
-     * Checks whether a menu item is active.
+     * Renders the links for the nav component.
      *
-     * This is done by checking if {@see currentPath} match that specified in the `url` option of the menu item. When
-     * the `url` option of a menu item is specified in terms of an array, its first element is treated as the
-     * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
-     * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
-     *
-     * @param array|string $item the menu item to be checked
-     *
-     * @return bool whether the menu item is active
+     * @return array The rendered links.
      */
-    private function isItemActive(array|string $item): bool
+    private function renderLinks(): array
     {
-        if (isset($item['active'])) {
-            return ArrayHelper::getValue($item, 'active', false);
+        $links = [];
+
+        foreach ($this->items as $item) {
+            if ($item instanceof Dropdown || $item->getContent() instanceof Li) {
+                throw new InvalidArgumentException('The nav item cannot be a dropdown or a list item.');
+            }
+
+            $links[] = $item->getContent();
         }
 
-        return isset($item['url']) && $item['url'] === $this->currentPath && $this->activateItems;
+        return $links;
+    }
+
+    /**
+     * Renders a dropdown item for the nav component.
+     *
+     * @param Dropdown $item The dropdown item to render.
+     *
+     * @return Li The rendered dropdown item.
+     */
+    private function renderItemsDropdown(Dropdown $item): Li
+    {
+        return Li::tag()
+            ->addClass(self::NAV_ITEM_DROPDOWN_CLASS)
+            ->addContent(
+                "\n",
+                $item
+                    ->container(false)
+                    ->toggleAsLink()
+                    ->toggleClass('nav-link', 'dropdown-toggle')
+                    ->toggleContent('Dropdown')
+                    ->render(),
+                "\n"
+            )
+            ->encode(false);
     }
 }
