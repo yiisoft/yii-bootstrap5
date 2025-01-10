@@ -716,8 +716,8 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
                                 DropdownItem::link('Action', '#'),
                                 DropdownItem::link('Another action', '#'),
                                 DropdownItem::divider(),
-                            DropdownItem::link('Something else here', '#'),
-                        ),
+                                DropdownItem::link('Something else here', '#'),
+                            ),
                         NavLink::item('Disabled', '#', disabled: true),
                     )
                     ->styles(NavStyle::NAVBAR)
