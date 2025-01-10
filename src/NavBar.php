@@ -54,10 +54,10 @@ final class NavBar extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private string|Stringable $brand = '';
     private array $brandAttributes = [];
-    private string $brandText = '';
+    private string|Stringable $brandText = '';
     private string|Stringable $brandImage = '';
     private array $brandImageAttributes = [];
-    private string $brandUrl = '';
+    private string|Stringable $brandUrl = '';
     private array $cssClass = [];
     private bool $container = false;
     private array $containerAttributes = [];
@@ -149,12 +149,12 @@ final class NavBar extends \Yiisoft\Widget\Widget
     /**
      * Sets the brand image for the navbar component.
      *
-     * @param string|Stringable|null $value The brand image for the navbar component. If `null`, the brand image will not
+     * @param string|Stringable $value The brand image for the navbar component. If `null`, the brand image will not
      * be displayed.
      *
      * @return self A new instance with the specified brand image.
      */
-    public function brandImage(string|Stringable|null $value): self
+    public function brandImage(string|Stringable $value): self
     {
         $new = clone $this;
         $new->brandImage = $value;
@@ -182,12 +182,12 @@ final class NavBar extends \Yiisoft\Widget\Widget
     /**
      * Sets the brand text for the navbar component.
      *
-     * @param string|Stringable|null $value The brand text for the navbar component. If `null`, the brand text will not
+     * @param string|Stringable $value The brand text for the navbar component. If `null`, the brand text will not
      * be displayed.
      *
      * @return self A new instance with the specified brand text.
      */
-    public function brandText(string|Stringable|null $value): self
+    public function brandText(string|Stringable $value): self
     {
         $new = clone $this;
         $new->brandText = $value;
@@ -198,12 +198,12 @@ final class NavBar extends \Yiisoft\Widget\Widget
     /**
      * Sets the brand URL for the navbar component.
      *
-     * @param string|Stringable|null $value The brand URL for the navbar component. If `null`, the brand URL will not be
+     * @param string|Stringable $value The brand URL for the navbar component. If `null`, the brand URL will not be
      * displayed.
      *
      * @return self A new instance with the specified brand URL.
      */
-    public function brandUrl(string|Stringable|null $value): self
+    public function brandUrl(string|Stringable $value): self
     {
         $new = clone $this;
         $new->brandUrl = $value;
@@ -384,7 +384,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
 
         $id = match ($this->id) {
             true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
+            '', false => throw new InvalidArgumentException('The "id" property must be specified.'),
             default => $this->id,
         };
 
@@ -395,10 +395,6 @@ final class NavBar extends \Yiisoft\Widget\Widget
         }
 
         Html::addCssClass($attributes, [self::NAME, $this->expand, $classes, ...$this->cssClass]);
-
-        if ($this->tag === '') {
-            throw new InvalidArgumentException('Tag cannot be empty string.');
-        }
 
         if ($this->container) {
             $htmlBegin = Html::openTag('div', $this->containerAttributes) . "\n";
