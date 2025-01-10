@@ -280,10 +280,11 @@ final class Nav extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = match ($item instanceof Dropdown) {
-                true => $this->renderItemsDropdown($item),
-                default => $this->renderNavLink($item),
-            };
+            if ($item instanceof Dropdown) {
+                $items[] = $this->renderItemsDropdown($item);
+            } else {
+                $items[] = $this->renderNavLink($item);
+            }
         }
 
         return $items;

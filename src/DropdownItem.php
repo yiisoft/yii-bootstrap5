@@ -34,7 +34,7 @@ final class DropdownItem
     private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
     private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
     private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
-    private string $content = '';
+    private string|Stringable $content = '';
     /** @psalm-suppress PropertyNotSetInConstructor */
     private Li $liContent;
     private string|null $url = null;
