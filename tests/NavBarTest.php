@@ -671,25 +671,25 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
             <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link active" href="#" aria-current="page">Home</a>
+            <a class="nav-link active" href="/home" aria-current="page">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="/link">Link</a>
             </li>
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
             <ul class="dropdown-menu">
             <li>
-            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="/sub/action">Action</a>
             </li>
             <li>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="/sub/another-action">Another action</a>
             </li>
             <li>
             <hr class="dropdown-divider">
             </li>
             <li>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="/sub/something-else">Something else here</a>
             </li>
             </ul>
             </li>
@@ -708,17 +708,18 @@ final class NavBarTest extends \PHPUnit\Framework\TestCase
                 ->id('navbarSupportedContent')
                 ->begin() .
                 Nav::widget()
+                    ->currentPath('/home')
                     ->items(
-                        NavLink::item('Home', '#', active: true),
-                        NavLink::item(label: 'Link', url: '#'),
+                        NavLink::to('Home', '/home'),
+                        NavLink::to('Link', '/link'),
                         Dropdown::widget()
                             ->items(
-                                DropdownItem::link('Action', '#'),
-                                DropdownItem::link('Another action', '#'),
+                                DropdownItem::link('Action', '/sub/action'),
+                                DropdownItem::link('Another action', '/sub/another-action'),
                                 DropdownItem::divider(),
-                                DropdownItem::link('Something else here', '#'),
+                                DropdownItem::link('Something else here', '/sub/something-else'),
                             ),
-                        NavLink::item('Disabled', '#', disabled: true),
+                        NavLink::to('Disabled', '#', disabled: true),
                     )
                     ->styles(NavStyle::NAVBAR)
                     ->render() .
