@@ -75,7 +75,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, $values];
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -151,7 +151,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addToggleAttributes(array $values): self
     {
         $new = clone $this;
-        $new->toggleAttributes = [...$this->toggleAttributes, $values];
+        $new->toggleAttributes = [...$this->toggleAttributes, ...$values];
 
         return $new;
     }
