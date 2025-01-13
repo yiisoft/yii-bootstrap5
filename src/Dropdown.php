@@ -75,7 +75,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -100,7 +100,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $value);
+        $new->cssClasses = [...$this->cssClasses, ...$value];
 
         return $new;
     }
@@ -151,7 +151,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function addToggleAttributes(array $values): self
     {
         $new = clone $this;
-        $new->toggleAttributes = array_merge($this->toggleAttributes, $values);
+        $new->toggleAttributes = [...$this->toggleAttributes, ...$values];
 
         return $new;
     }
@@ -252,6 +252,16 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $new->containerClasses = [$value];
 
         return $new;
+    }
+
+    /**
+     * Returns the list of links to appear in the dropdown.
+     *
+     * @return DropdownItem[] The links to appear in the dropdown.
+     */
+    public function getItems(): array
+    {
+        return $this->items;
     }
 
     /**
@@ -482,6 +492,11 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         return $new;
     }
 
+    /**
+     * Renders the dropdown component.
+     *
+     * @return string The rendering result.
+     */
     public function render(): string
     {
         $attributes = $this->attributes;
@@ -531,6 +546,12 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Renders the dropdown items.
+     *
+     * @param string|null $toggleId The ID of the toggle button.
+     *
+     * @return string The rendering result.
+     *
      * @psalm-param non-empty-string|null $toggleId
      */
     private function renderItems(string|null $toggleId): string
@@ -538,7 +559,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = $item->getContent();
+            $items[] = $item->getLiContent();
         }
 
         $ulTag = Ul::tag()
@@ -554,6 +575,12 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Renders the dropdown toggle button.
+     *
+     * @param string|null $toggleId The ID of the toggle button.
+     *
+     * @return string The rendering result.
+     *
      * @psalm-param non-empty-string|null $toggleId
      */
     private function renderToggle(string|null $toggleId): string
@@ -608,6 +635,14 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the dropdown toggle link.
+     *
+     * @param array $toggleAttributes The HTML attributes for the toggle link.
+     * @param string $toggleContent The content of the toggle link.
+     *
+     * @return string The rendering result.
+     */
     private function renderToggleLink(array $toggleAttributes, string $toggleContent): string
     {
         $toggleAttributes['role'] = 'button';
@@ -622,6 +657,11 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             ->render();
     }
 
+    /**
+     * Renders the dropdown split button.
+     *
+     * @return string The rendering result.
+     */
     private function renderToggleSplit(): string
     {
         if ($this->toggleLink) {

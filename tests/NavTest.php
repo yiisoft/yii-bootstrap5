@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
@@ -42,10 +41,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             Nav::widget()
                 ->addAttributes(['data-test' => 'test'])
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->render(),
         );
@@ -56,10 +55,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $navWidget = Nav::widget()
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->items(
-                NavLink::item('Active', '#', active: true),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Disabled', '#', disabled: true),
+                NavLink::to('Active', '#', active: true),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Disabled', '#', disabled: true),
             );
 
         Assert::equalsWithoutLE(
@@ -108,10 +107,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $navWidget = Nav::widget()
             ->addCssStyle(['color' => 'red'])
             ->items(
-                NavLink::item('Active', '#', active: true),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Disabled', '#', disabled: true),
+                NavLink::to('Active', '#', active: true),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Disabled', '#', disabled: true),
             );
 
         Assert::equalsWithoutLE(
@@ -160,10 +159,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $navWidget = Nav::widget()
             ->addCssStyle(['color' => 'red'])
             ->items(
-                NavLink::item('Active', '#', active: true),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Link', url: '#'),
-                NavLink::item('Disabled', '#', disabled: true),
+                NavLink::to('Active', '#', active: true),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Link', url: '#'),
+                NavLink::to('Disabled', '#', disabled: true),
             );
 
         Assert::equalsWithoutLE(
@@ -207,6 +206,23 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav" data-test="test">
+            <li class="nav-item">
+            <a class="nav-link active" href="#" aria-current="page">Active</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->attributes(['data-test' => 'test'])
+                ->items(NavLink::to('Active', '#', active: true))
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#base-nav
      */
@@ -231,21 +247,13 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->render(),
         );
-    }
-
-    public function testBaseNavException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The nav item cannot be a link.');
-
-        Nav::widget()->items(NavLink::to('Active', '#', active: true))->render();
     }
 
     /**
@@ -274,14 +282,6 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testBaseNavWithTagException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The nav item cannot be a dropdown or a list item.');
-
-        Nav::widget()->items(NavLink::item('Active', '#', active: true))->tag('nav')->render();
-    }
-
     public function testClass(): void
     {
         Assert::equalsWithoutLE(
@@ -305,10 +305,238 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->addClass('test-class')
                 ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testCurrentPath(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">Active</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link active" href="/test/link" aria-current="page">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link/another-link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->currentPath('/test/link')
+                ->items(
+                    NavLink::to('Active', '/test'),
+                    NavLink::to('Link', '/test/link'),
+                    NavLink::to('Link', '/test/link/another-link'),
+                    NavLink::to('Disabled', '/test/disabled', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testCurrentPathAndActivateItemsWithFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">Active</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link/another-link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->activateItems(false)
+                ->currentPath('/test/link')
+                ->items(
+                    NavLink::to('Active', '/test'),
+                    NavLink::to('Link', '/test/link'),
+                    NavLink::to('Link', '/test/link/another-link'),
+                    NavLink::to('Disabled', '/test/disabled', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testDropdownAndCurrentPath(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">Active</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="/test/link/action">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item active" href="/test/link/another-action" aria-current="true">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/something-else">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/separated-link">Separated link</a>
+            </li>
+            </ul>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->currentPath('/test/link/another-action')
+                ->items(
+                    NavLink::to('Active', '/test'),
+                    Dropdown::widget()
+                        ->items(
+                            DropdownItem::link('Action', '/test/link/action'),
+                            DropdownItem::link('Another action', '/test/link/another-action'),
+                            DropdownItem::link('Something else here', '/test/link/something-else'),
+                            DropdownItem::divider(),
+                            DropdownItem::link('Separated link', '/test/link/separated-link'),
+                        ),
+                    NavLink::to('Link', '/test/link'),
+                    NavLink::to('Disabled', '/test/disabled', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testDropdownAndCurrentPathAndActivateItemsWithFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">Active</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="/test/link/action">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/another-action">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/something-else">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/separated-link">Separated link</a>
+            </li>
+            </ul>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->activateItems(false)
+                ->currentPath('/test/link/another-action')
+                ->items(
+                    NavLink::to('Active', '/test'),
+                    Dropdown::widget()
+                        ->items(
+                            DropdownItem::link('Action', '/test/link/action'),
+                            DropdownItem::link('Another action', '/test/link/another-action'),
+                            DropdownItem::link('Something else here', '/test/link/something-else'),
+                            DropdownItem::divider(),
+                            DropdownItem::link('Separated link', '/test/link/separated-link'),
+                        ),
+                    NavLink::to('Link', '/test/link'),
+                    NavLink::to('Disabled', '/test/disabled', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testDropdownExplicitActive(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">Active</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="/test/link/action">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item active" href="/test/link/another-action" aria-current="true">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/something-else">Something else here</a>
+            </li>
+            <li>
+            <hr class="dropdown-divider">
+            </li>
+            <li>
+            <a class="dropdown-item" href="/test/link/separated-link">Separated link</a>
+            </li>
+            </ul>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/test/link">Link</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">Disabled</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(
+                    NavLink::to('Active', '/test'),
+                    Dropdown::widget()
+                        ->items(
+                            DropdownItem::link('Action', '/test/link/action'),
+                            DropdownItem::link('Another action', '/test/link/another-action', active: true),
+                            DropdownItem::link('Something else here', '/test/link/something-else'),
+                            DropdownItem::divider(),
+                            DropdownItem::link('Separated link', '/test/link/separated-link'),
+                        ),
+                    NavLink::to('Link', '/test/link'),
+                    NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
                 ->render(),
         );
@@ -338,10 +566,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::HORIZONTAL_ALIGNMENT)
                 ->render(),
@@ -352,12 +580,47 @@ final class NavTest extends \PHPUnit\Framework\TestCase
     {
         $navWidget = Nav::widget();
 
+        $this->assertNotSame($navWidget, $navWidget->activateItems(false));
         $this->assertNotSame($navWidget, $navWidget->addAttributes([]));
         $this->assertNotSame($navWidget, $navWidget->addClass(''));
         $this->assertNotSame($navWidget, $navWidget->addCssStyle(''));
+        $this->assertNotSame($navWidget, $navWidget->attributes([]));
         $this->assertNotSame($navWidget, $navWidget->class(''));
-        $this->assertNotSame($navWidget, $navWidget->items(NavLink::item('')));
+        $this->assertNotSame($navWidget, $navWidget->currentPath(''));
+        $this->assertNotSame($navWidget, $navWidget->items(NavLink::to('')));
         $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::FILL));
+    }
+
+    public function testNavLinkWithAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item" data-test="test">
+            <a class="nav-link active" href="#" aria-current="page">Active</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(NavLink::to('Active', '#', active: true)->attributes(['data-test' => 'test']))
+                ->render(),
+        );
+    }
+
+    public function testNavLinkWithUrlAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link active" href="#" data-test="test" aria-current="page">Active</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(NavLink::to('Active', '#', active: true)->urlAttributes(['data-test' => 'test']))
+                ->render(),
+        );
     }
 
     /**
@@ -384,10 +647,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::PILLS)
                 ->render(),
@@ -435,7 +698,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
+                    NavLink::to('Active', '#', active: true),
                     Dropdown::widget()
                         ->items(
                             DropdownItem::link('Action', '#'),
@@ -444,8 +707,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
                         ),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::PILLS)
                 ->render(),
@@ -476,10 +739,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    Navlink::item('Much longer nav link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    Navlink::to('Much longer nav link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::PILLS, NavStyle::FILL)
                 ->render(),
@@ -510,10 +773,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    Navlink::item('Much longer nav link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    Navlink::to('Much longer nav link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::PILLS, NavStyle::JUSTIFY)
                 ->render(),
@@ -527,7 +790,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <ul class="nav nav-tabs">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
             <a class="nav-link active" href="#" aria-current="page">Active</a>
             </li>
@@ -544,14 +807,19 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
-                ->styles(NavStyle::TABS)
+                ->styles(NavStyle::NAVBAR)
                 ->render(),
         );
+    }
+
+    public function testRenderWithEmptyItems(): void
+    {
+        $this->assertEmpty(Nav::widget()->render());
     }
 
     /**
@@ -578,10 +846,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::TABS)
                 ->render(),
@@ -629,7 +897,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
+                    NavLink::to('Active', '#', active: true),
                     Dropdown::widget()
                         ->items(
                             DropdownItem::link('Action', '#'),
@@ -638,8 +906,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
                         ),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::TABS)
             ->render(),
@@ -670,10 +938,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::UNDERLINE)
                 ->render(),
@@ -704,10 +972,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::item('Active', '#', active: true),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Link', url: '#'),
-                    NavLink::item('Disabled', '#', disabled: true),
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Link', url: '#'),
+                    NavLink::to('Disabled', '#', disabled: true),
                 )
                 ->styles(NavStyle::VERTICAL)
                 ->render(),

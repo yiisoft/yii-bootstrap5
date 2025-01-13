@@ -25,7 +25,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <hr class="dropdown-divider">
             </li>
             HTML,
-            $divider->getContent()->render(),
+            $divider->getLiContent()->render(),
         );
     }
 
@@ -39,7 +39,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <hr class="dropdown-divider">
             </li>
             HTML,
-            $divider->getContent()->render(),
+            $divider->getLiContent()->render(),
         );
     }
 
@@ -53,7 +53,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <hr class="dropdown-divider test-class">
             </li>
             HTML,
-            $divider->getContent()->render(),
+            $divider->getLiContent()->render(),
         );
     }
 
@@ -67,7 +67,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <h6 class="dropdown-header">content</h6>
             </li>
             HTML,
-            $header->getContent()->render(),
+            $header->getLiContent()->render(),
         );
     }
 
@@ -81,7 +81,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <h6 class="dropdown-header">content</h6>
             </li>
             HTML,
-            $header->getContent()->render(),
+            $header->getLiContent()->render(),
         );
     }
 
@@ -95,7 +95,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <h5 class="dropdown-header">content</h5>
             </li>
             HTML,
-            $header->getContent()->render(),
+            $header->getLiContent()->render(),
         );
     }
 
@@ -117,7 +117,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <h6 class="dropdown-header test-class">content</h6>
             </li>
             HTML,
-            $header->getContent()->render(),
+            $header->getLiContent()->render(),
         );
     }
 
@@ -131,7 +131,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item" href="url">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -145,7 +145,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item active" href="url" aria-current="true">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -159,7 +159,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item disabled" href="url" aria-disabled="true">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -173,7 +173,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item" href="url">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -187,7 +187,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item test-class" href="url">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -201,7 +201,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item active test-class" href="url" aria-current="true">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -215,7 +215,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <a class="dropdown-item disabled test-class" href="url" aria-disabled="true">label</a>
             </li>
             HTML,
-            $link->getContent()->render(),
+            $link->getLiContent()->render(),
         );
     }
 
@@ -237,7 +237,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <span class="dropdown-item-text">content</span>
             </li>
             HTML,
-            $text->getContent()->render(),
+            $text->getLiContent()->render(),
         );
     }
 
@@ -251,7 +251,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <span class="dropdown-item-text">content</span>
             </li>
             HTML,
-            $text->getContent()->render(),
+            $text->getLiContent()->render(),
         );
     }
 
@@ -265,7 +265,7 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
             <span class="dropdown-item-text test-class">content</span>
             </li>
             HTML,
-            $text->getContent()->render(),
+            $text->getLiContent()->render(),
         );
     }
 }

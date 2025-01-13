@@ -19,7 +19,11 @@ use Yiisoft\Html\Tag\Span;
  * For example,
  *
  * ```php
- * echo DropdownItem::link('Dropdown link', '#');
+ * DropdownItem::link('Dropdown link', '#');
+ * DropdownItem::divider();
+ * DropdownItem::header('Dropdown header');
+ * DropdownItem::text('Dropdown text');
+ * DropdownItem::listContent('<a href="#">Dropdown list content</a>');
  * ```
  */
 final class DropdownItem
@@ -30,8 +34,10 @@ final class DropdownItem
     private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
     private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
     private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
+    private string|Stringable $content = '';
     /** @psalm-suppress PropertyNotSetInConstructor */
-    private Li $content;
+    private Li $liContent;
+    private string|null $url = null;
 
     private function __construct()
     {
@@ -53,7 +59,7 @@ final class DropdownItem
 
         unset($dividerAttributes['class']);
 
-        $dropdownItem->content = Li::tag()
+        $dropdownItem->liContent = Li::tag()
             ->addAttributes($attributes)
             ->addContent(
                 "\n",
@@ -90,7 +96,7 @@ final class DropdownItem
 
         unset($headerAttributes['class']);
 
-        $dropdownItem->content = Li::tag()
+        $dropdownItem->liContent = Li::tag()
             ->addAttributes($attributes)
             ->addContent(
                 "\n",
@@ -152,7 +158,9 @@ final class DropdownItem
             default => A::tag()->addAttributes($linkAttributes)->addClass($classesLink)->content($content)->url($url),
         };
 
-        $dropdownItem->content = Li::tag()->addAttributes($attributes)->addContent("\n", $liContent, "\n");
+        $dropdownItem->content = $content;
+        $dropdownItem->liContent = Li::tag()->addAttributes($attributes)->addContent("\n", $liContent, "\n");
+        $dropdownItem->url = $url;
 
         return $dropdownItem;
     }
@@ -169,7 +177,7 @@ final class DropdownItem
     {
         $dropdownItem = new self();
 
-        $dropdownItem->content = Li::tag()->addAttributes($attributes)->addContent($content)->encode(false);
+        $dropdownItem->liContent = Li::tag()->addAttributes($attributes)->addContent($content)->encode(false);
 
         return $dropdownItem;
     }
@@ -194,7 +202,7 @@ final class DropdownItem
 
         unset($textAttributes['class']);
 
-        $dropdownItem->content = Li::tag()
+        $dropdownItem->liContent = Li::tag()
             ->addAttributes($attributes)
             ->addContent(
                 "\n",
@@ -209,10 +217,26 @@ final class DropdownItem
     }
 
     /**
-     * @return Li Returns the encoded label content.
+     * @return string|Stringable Returns the dropdown item content.
      */
-    public function getContent(): Li
+    public function getContent(): string|Stringable
     {
         return $this->content;
+    }
+
+    /**
+     * @return Li Returns the dropdown item <li> content.
+     */
+    public function getLiContent(): Li
+    {
+        return $this->liContent;
+    }
+
+    /**
+     * @return string|null Returns the URL of the dropdown item.
+     */
+    public function getUrl(): string|null
+    {
+        return $this->url;
     }
 }

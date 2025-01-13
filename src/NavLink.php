@@ -6,95 +6,68 @@ namespace Yiisoft\Yii\Bootstrap5;
 
 use InvalidArgumentException;
 use Stringable;
-use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\A;
-use Yiisoft\Html\Tag\Li;
 
 /**
  * Represents a Bootstrap Nav item and link.
+ *
+ * ```php
+ * NavLink::to('Home', '/', true)->attributes(['class' => 'nav-link']);
+ * NavLink::to('Home', '/', disabled: true)->urlAttributes(['class' => 'nav-link']);
  */
 final class NavLink
 {
-    private const NAV_LINK_ACTIVE_CLASS = 'active';
-    private const NAV_LINK_DISABLED_CLASS = 'disabled';
-    private const NAV_LINK_CLASS = 'nav-link';
-    private const NAV_ITEM_CLASS = 'nav-item';
-    /** @psalm-suppress PropertyNotSetInConstructor */
-    private A|Li $content;
+    private bool $active = false;
+    private array $attributes = [];
+    private bool $disabled = false;
+    private string|Stringable $label = '';
+    private string|null $url = '';
+    private array $urlAttributes = [];
 
     private function __construct()
     {
     }
 
     /**
-     * Creates a nav item with a link.
+     * Sets the HTML attributes for the nav item.
      *
-     * @param string|Stringable $label The label of the link.
-     * @param string|null $url The URL of the link.
-     * @param bool $active Whether the link is active.
-     * @param bool $disabled Whether the link is disabled.
-     * @param array $attributes Additional HTML attributes for the list item.
-     * @param array $linkAttributes Additional HTML attributes for the link.
-     *
-     * @throws InvalidArgumentException If the link is both active and disabled.
+     * @param array $values Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public static function item(
-        string|Stringable $label = '',
-        string|null $url = null,
-        bool $active = false,
-        bool $disabled = false,
-        array $attributes = [],
-        array $linkAttributes = [],
-    ): self {
-        $navlink = new self();
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
 
-        $classes = $attributes['class'] ?? null;
-        $linkClasses = $linkAttributes['class'] ?? null;
-
-        unset($attributes['class'], $linkAttributes['class']);
-
-        if ($active === true && $disabled === true) {
-            throw new InvalidArgumentException('The nav item cannot be active and disabled at the same time.');
-        }
-
-        Html::addCssClass($linkAttributes, [self::NAV_LINK_CLASS]);
-
-        if ($active === true) {
-            Html::addCssClass($linkAttributes, [self::NAV_LINK_ACTIVE_CLASS]);
-
-            $linkAttributes['aria-current'] = 'page';
-        }
-
-        if ($disabled === true) {
-            Html::addCssClass($linkAttributes, [self::NAV_LINK_DISABLED_CLASS]);
-
-            $linkAttributes['aria-disabled'] = 'true';
-        }
-
-        $navlink->content = Li::tag()
-            ->addClass(
-                self::NAV_ITEM_CLASS,
-                $classes,
-            )
-            ->addContent(
-                "\n",
-                A::tag()->addAttributes($linkAttributes)->addClass($linkClasses)->addContent($label)->href($url),
-                "\n",
-            );
-
-        return $navlink;
+        return $new;
     }
 
     /**
-     * Creates a nav link.
+     * Sets the HTML attributes for the nav item link.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function urlAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->urlAttributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Creates a nav item.
      *
      * @param string|Stringable $label The label of the link.
      * @param string|null $url The URL of the link.
      * @param bool $active Whether the link is active.
      * @param bool $disabled Whether the link is disabled.
-     * @param array $attributes Additional HTML attributes for the link.
      *
      * @throws InvalidArgumentException If the link is both active and disabled.
      *
@@ -105,42 +78,78 @@ final class NavLink
         string|null $url = null,
         bool $active = false,
         bool $disabled = false,
-        array $attributes = [],
     ): self {
         $navlink = new self();
 
-        $classes = $attributes['class'] ?? null;
-
-        unset($attributes['class']);
-
         if ($active === true && $disabled === true) {
-            throw new InvalidArgumentException('The nav link cannot be active and disabled at the same time.');
+            throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
         }
 
-        Html::addCssClass($attributes, [self::NAV_LINK_CLASS]);
-
-        if ($active === true) {
-            Html::addCssClass($attributes, [self::NAV_LINK_ACTIVE_CLASS]);
-
-            $attributes['aria-current'] = 'page';
-        }
-
-        if ($disabled === true) {
-            Html::addCssClass($attributes, [self::NAV_LINK_DISABLED_CLASS]);
-
-            $attributes['aria-disabled'] = 'true';
-        }
-
-        $navlink->content = A::tag()->addAttributes($attributes)->addClass($classes)->addContent($label)->href($url);
+        $navlink->active = $active;
+        $navlink->disabled = $disabled;
+        $navlink->label = $label;
+        $navlink->url = $url;
 
         return $navlink;
     }
 
     /**
-     * @return A|Li Returns the encoded label content.
+     * Returns the HTML attributes for the nav item.
+     *
+     * @return array The HTML attributes for the nav item.
      */
-    public function getContent(): A|Li
+    public function getAttributes(): array
     {
-        return $this->content;
+        return $this->attributes;
+    }
+
+    /**
+     * Returns the label of the nav item.
+     *
+     * @return string|Stringable The label of the nav item.
+     */
+    public function getLabel(): string|Stringable
+    {
+        return $this->label;
+    }
+
+    /**
+     * Returns the URL of the nav item.
+     *
+     * @return string|null The URL of the nav item.
+     */
+    public function getUrl(): string|null
+    {
+        return $this->url;
+    }
+
+    /**
+     * Returns the HTML attributes for the nav item link.
+     *
+     * @return array The HTML attributes for the nav item link.
+     */
+    public function getUrlAttributes(): array
+    {
+        return $this->urlAttributes;
+    }
+
+    /**
+     * Returns whether the nav item is active.
+     *
+     * @return bool Whether the nav item is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * Returns whether the nav item is disabled.
+     *
+     * @return bool Whether the nav item is disabled.
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 }
