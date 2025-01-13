@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
-use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
 
-use function array_merge;
 use function implode;
 
 /**
@@ -42,13 +40,34 @@ use function implode;
 final class Nav extends \Yiisoft\Widget\Widget
 {
     private const NAV_CLASS = 'nav';
+    private const NAV_ITEM_CLASS = 'nav-item';
     private const NAV_ITEM_DROPDOWN_CLASS = 'nav-item dropdown';
+    private const NAV_LINK_ACTIVE_CLASS = 'active';
+    private const NAV_LINK_CLASS = 'nav-link';
+    private const NAV_LINK_DISABLED_CLASS = 'disabled';
+    private bool $activateItems = true;
     private array $attributes = [];
     private array $cssClasses = [];
+    private string $currentPath = '';
     /** @psalm-var Dropdown[]|NavLink[] */
     private array $items = [];
     private array $styleClasses = [];
     private string $tag = '';
+
+    /**
+     * Whether to activate items by matching the currentPath with the `url` option in the nav items.
+     *
+     * @param bool $value Whether to activate items. Defaults to `true`.
+     *
+     * @return self A new instance with the specified activate items value.
+     */
+    public function activateItems(bool $value): self
+    {
+        $new = clone $this;
+        $new->activateItems = $value;
+
+        return $new;
+    }
 
     /**
      * Adds a set of attributes for the nav component.
@@ -60,7 +79,7 @@ final class Nav extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -85,7 +104,7 @@ final class Nav extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$value): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $value);
+        $new->cssClasses = [...$this->cssClasses, ...$value];
 
         return $new;
     }
@@ -111,6 +130,23 @@ final class Nav extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Sets the HTML attributes for the nav component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
      * Replaces all existing CSS classes of the nav component with the provided ones.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
@@ -129,6 +165,21 @@ final class Nav extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->cssClasses = $value;
+
+        return $new;
+    }
+
+    /**
+     * The currentPath to be used to check the active state of the nav items.
+     *
+     * @param string $value The currentPath to be used to check the active state of the nav items.
+     *
+     * @return self A new instance with the specified currentPath.
+     */
+    public function currentPath(string $value): self
+    {
+        $new = clone $this;
+        $new->currentPath = $value;
 
         return $new;
     }
@@ -168,8 +219,7 @@ final class Nav extends \Yiisoft\Widget\Widget
     public function styles(NavStyle|null ...$value): self
     {
         $new = clone $this;
-
-        $new->styleClasses = array_merge($new->styleClasses, $value);
+        $new->styleClasses = [...$this->styleClasses, ...$value];
 
         return $new;
     }
@@ -230,14 +280,68 @@ final class Nav extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            if ($item instanceof NavLink && $item->getContent() instanceof A) {
-                throw new InvalidArgumentException('The nav item cannot be a link.');
+            if ($item instanceof Dropdown) {
+                $items[] = $this->renderItemsDropdown($item);
+            } else {
+                $items[] = $this->renderNavLink($item);
             }
-
-            $items[] = $item instanceof Dropdown ? $this->renderItemsDropdown($item) : $item->getContent();
         }
 
         return $items;
+    }
+
+    /**
+     * Renders a dropdown item for the nav component.
+     *
+     * @param Dropdown $item The dropdown item to render.
+     *
+     * @return Li The rendered dropdown item.
+     */
+    private function renderItemsDropdown(Dropdown $items): Li
+    {
+        $dropDownItems = $this->isItemActiveDropdown($items);
+
+        return Li::tag()
+            ->addClass(self::NAV_ITEM_DROPDOWN_CLASS)
+            ->addContent(
+                "\n",
+                $dropDownItems
+                    ->container(false)
+                    ->toggleAsLink()
+                    ->toggleClass('nav-link', 'dropdown-toggle')
+                    ->toggleContent('Dropdown')
+                    ->render(),
+                "\n"
+            )
+            ->encode(false);
+    }
+
+    /**
+     * Renders a link for the nav component.
+     *
+     * @param NavLink $item The link to render.
+     *
+     * @return A The rendered link.
+     */
+    private function renderLink(NavLink $item): A
+    {
+        $attributes = $item->getUrlAttributes();
+
+        Html::addCssClass($attributes, [self::NAV_LINK_CLASS]);
+
+        if ($this->isItemActive($item)) {
+            Html::addCssClass($attributes, [self::NAV_LINK_ACTIVE_CLASS]);
+
+            $attributes['aria-current'] = 'page';
+        }
+
+        if ($item->isDisabled()) {
+            Html::addCssClass($attributes, [self::NAV_LINK_DISABLED_CLASS]);
+
+            $attributes['aria-disabled'] = 'true';
+        }
+
+        return A::tag()->addAttributes($attributes)->addContent($item->getLabel())->href($item->getUrl());
     }
 
     /**
@@ -250,37 +354,76 @@ final class Nav extends \Yiisoft\Widget\Widget
         $links = [];
 
         foreach ($this->items as $item) {
-            if ($item instanceof Dropdown || $item->getContent() instanceof Li) {
-                throw new InvalidArgumentException('The nav item cannot be a dropdown or a list item.');
+            if ($item instanceof NavLink) {
+                $links[] = $this->renderLink($item);
             }
-
-            $links[] = $item->getContent();
         }
 
         return $links;
     }
 
     /**
-     * Renders a dropdown item for the nav component.
+     * Renders a nav link for the nav component.
      *
-     * @param Dropdown $item The dropdown item to render.
+     * @param NavLink $item The nav link to render.
      *
-     * @return Li The rendered dropdown item.
+     * @return Li The rendered nav link.
      */
-    private function renderItemsDropdown(Dropdown $item): Li
+    private function renderNavLink(NavLink $item): Li
     {
         return Li::tag()
-            ->addClass(self::NAV_ITEM_DROPDOWN_CLASS)
+            ->addAttributes($item->getAttributes())
+            ->addClass(self::NAV_ITEM_CLASS)
             ->addContent(
                 "\n",
-                $item
-                    ->container(false)
-                    ->toggleAsLink()
-                    ->toggleClass('nav-link', 'dropdown-toggle')
-                    ->toggleContent('Dropdown')
-                    ->render(),
+                $this->renderLink($item),
                 "\n"
-            )
-            ->encode(false);
+            );
+    }
+
+    /**
+     * Checks whether a menu item is active.
+     *
+     * This is done by checking if {@see currentPath} match that specified in the `url` option of the menu item. When
+     * the `url` option of a menu item is specified in terms of an array, its first element is treated as the
+     * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
+     * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
+     *
+     * @param NavLink $item The menu item to be checked.
+     *
+     * @return bool Whether the menu item is active.
+     */
+    private function isItemActive(NavLink $item): bool
+    {
+        if ($item->isActive()) {
+            return true;
+        }
+
+        return $item->getUrl() === $this->currentPath && $this->activateItems;
+    }
+
+    /**
+     * Checks whether a dropdown item is active.
+     *
+     * This is done by checking if {@see currentPath} match that specified in the `url` option of the dropdown item.
+     * When the `url` option of a dropdown item is specified in terms of an array, its first element is treated as the
+     * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
+     * and parameters match {@see currentPath}, respectively, will a dropdown item be considered active.
+     *
+     * @param Dropdown $dropdown The dropdown item to be checked.
+     *
+     * @return Dropdown The active dropdown item.
+     */
+    private function isItemActiveDropdown(Dropdown $dropdown): Dropdown
+    {
+        $items = $dropdown->getItems();
+
+        foreach ($items as $key => $value) {
+            if ($value->getUrl() === $this->currentPath && $this->activateItems) {
+                $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
+            }
+        }
+
+        return $dropdown->items(...$items);
     }
 }
