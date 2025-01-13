@@ -389,9 +389,9 @@ final class Nav extends \Yiisoft\Widget\Widget
      * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
      * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
      *
-     * @param NavLink $item the menu item to be checked
+     * @param NavLink $item The menu item to be checked.
      *
-     * @return bool whether the menu item is active
+     * @return bool Whether the menu item is active.
      */
     private function isItemActive(NavLink $item): bool
     {
@@ -410,9 +410,9 @@ final class Nav extends \Yiisoft\Widget\Widget
      * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
      * and parameters match {@see currentPath}, respectively, will a dropdown item be considered active.
      *
-     * @param Dropdown $dropdown the dropdown item to be checked
+     * @param Dropdown $dropdown The dropdown item to be checked.
      *
-     * @return Dropdown the dropdown item with the active state set
+     * @return Dropdown The active dropdown item.
      */
     private function isItemActiveDropdown(Dropdown $dropdown): Dropdown
     {
