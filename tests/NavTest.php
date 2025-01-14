@@ -424,7 +424,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::link('Something else here', '/test/link/something-else'),
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
-                        ),
+                        )
+                        ->toggleContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -480,7 +481,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::link('Something else here', '/test/link/something-else'),
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
-                        ),
+                        )
+                        ->toggleContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -534,7 +536,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::link('Something else here', '/test/link/something-else'),
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
-                        ),
+                        )
+                        ->toggleContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -706,7 +709,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::link('Something else here', '#'),
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
-                        ),
+                        )
+                        ->toggleContent('Dropdown'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )
@@ -905,7 +909,8 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                             DropdownItem::link('Something else here', '#'),
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
-                        ),
+                        )
+                        ->toggleContent('Dropdown'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )

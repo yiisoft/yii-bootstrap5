@@ -309,7 +309,6 @@ final class Nav extends \Yiisoft\Widget\Widget
                     ->container(false)
                     ->toggleAsLink()
                     ->toggleClass('nav-link', 'dropdown-toggle')
-                    ->toggleContent('Dropdown')
                     ->render(),
                 "\n"
             )
