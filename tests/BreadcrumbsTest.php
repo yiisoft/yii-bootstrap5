@@ -215,7 +215,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 )
                 ->listId(false)
                 ->render(),
-            );
+        );
     }
 
     public function testEncodeLabelWithFalseValue(): void
@@ -238,7 +238,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 )
                 ->listId(false)
                 ->render(),
-            );
+        );
     }
 
     /**
