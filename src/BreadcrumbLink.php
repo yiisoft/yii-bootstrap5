@@ -9,15 +9,29 @@ use Yiisoft\Html\Html;
 /**
  * Represents a link.
  */
-final class Link
+final class BreadcrumbLink
 {
-    public function __construct(
-        private readonly string $label = '',
-        private readonly string|null $url = null,
-        private readonly bool $active = false,
-        private readonly bool $encodeLabel = true,
-        private readonly array $attributes = [],
-    ) {
+    private string $label = '';
+    private string|null $url = null;
+    private bool $active = false;
+    private bool $encodeLabel = true;
+    private array $attributes = [];
+
+    public static function to(
+        string $label,
+        string $url = null,
+        bool $active = false,
+        array $attributes = [],
+        bool $encodeLabel = true
+    ): self {
+        $new = new self();
+        $new->label = $label;
+        $new->url = $url;
+        $new->active = $active;
+        $new->attributes = $attributes;
+        $new->encodeLabel = $encodeLabel;
+
+        return $new;
     }
 
     /**
