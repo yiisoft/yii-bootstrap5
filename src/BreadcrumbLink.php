@@ -33,6 +33,13 @@ final class BreadcrumbLink
     private array $attributes = [];
 
     /**
+     * Use {@see BreadcrumbLink::to()} to create an instance.
+     */
+    private function __construct()
+    {
+    }
+
+    /**
      * Creates a new {@see BreadcrumbLink} instance.
      *
      * @param string $label The label text to display.
