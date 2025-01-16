@@ -60,7 +60,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 
     public function testAddCssClass(): void
     {
-        $alert = Breadcrumbs::widget()
+        $breadcrumb = Breadcrumbs::widget()
             ->ariaLabel('Basic example of breadcrumbs')
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->links(
@@ -80,7 +80,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             </ol>
             </nav>
             HTML,
-            $alert->render(),
+            $breadcrumb->render(),
         );
 
         Assert::equalsWithoutLE(
@@ -93,7 +93,85 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             </ol>
             </nav>
             HTML,
-            $alert->addClass('test-class-1', 'test-class-2')->render(),
+            $breadcrumb->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $breadcrumb = Breadcrumbs::widget()
+            ->addCssStyle('color: red;')
+            ->ariaLabel('Basic example of breadcrumbs')
+            ->links(
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#'),
+            )
+            ->listId(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red; font-weight: bold;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $breadcrumb = Breadcrumbs::widget()
+            ->addCssStyle('color: red;')
+            ->ariaLabel('Basic example of breadcrumbs')
+            ->links(
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#'),
+            )
+            ->listId(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->addCssStyle('color: blue;', false)->render(),
         );
     }
 

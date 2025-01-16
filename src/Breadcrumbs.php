@@ -12,7 +12,6 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
-use function array_merge;
 use function implode;
 
 /**
@@ -57,7 +56,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$new->attributes, ...$values];
 
         return $new;
     }
@@ -82,7 +81,27 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $values);
+        $new->cssClasses = [...$this->cssClasses, ...$values];
+
+        return $new;
+    }
+
+    /**
+     * Adds a CSS style for the breadcrumb component.
+     *
+     * @param array|string $value The CSS style for the breadcrumb component. If an array, the values will be separated
+     * by a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
 
         return $new;
     }
