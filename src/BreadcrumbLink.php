@@ -7,7 +7,22 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Html;
 
 /**
- * Represents a link.
+ * BreadcrumbLink represents a single breadcrumb navigation link.
+ *
+ * Each link can be either active or inactive, and can be rendered as a plain text (when active) or as a hyperlink
+ * (when inactive).
+ *
+ * Example:
+ * ```php
+ * // Create a standard link
+ * BreadcrumbLink::to('Home', '/');
+ *
+ * // Create an active link (current page)
+ * BreadcrumbLink::to('Current Page', null, true);
+ *
+ * // Create a link with custom attributes
+ * BreadcrumbLink::to('Link', '/path', false, ['class' => 'custom-link']);
+ * ```
  */
 final class BreadcrumbLink
 {
@@ -17,6 +32,17 @@ final class BreadcrumbLink
     private bool $encodeLabel = true;
     private array $attributes = [];
 
+    /**
+     * Creates a new {@see BreadcrumbLink} instance.
+     *
+     * @param string $label The label text to display.
+     * @param string|null $url The URL for the link.
+     * @param bool $active Whether this link represents the current page.
+     * @param array $attributes Additional HTML attributes for the link.
+     * @param bool $encodeLabel Whether to HTML encode the label.
+     *
+     * @return self A new instance with the specified configuration.
+     */
     public static function to(
         string $label,
         string $url = null,
@@ -25,19 +51,17 @@ final class BreadcrumbLink
         bool $encodeLabel = true
     ): self {
         $new = new self();
-        $new->label = $label;
-        $new->url = $url;
         $new->active = $active;
         $new->attributes = $attributes;
         $new->encodeLabel = $encodeLabel;
+        $new->label = $label;
+        $new->url = $url;
 
         return $new;
     }
 
     /**
-     * Returns the HTML attributes for the link.
-     *
-     * @return array The attributes.
+     * @return array Returns the HTML attributes for the link.
      */
     public function getAttributes(): array
     {
@@ -45,9 +69,8 @@ final class BreadcrumbLink
     }
 
     /**
-     * Returns the encoded label content.
-     *
-     * @return string The encoded label content.
+     * @return string Returns the encoded label content. For default behavior, the label will be HTML-encoded. You can
+     * disable this by setting `encodeLabel` to `false`.
      */
     public function getLabel(): string
     {
@@ -55,9 +78,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * Returns the URL for the link.
-     *
-     * @return string|null The URL.
+     * @return string|null  Returns the URL for the breadcrumb link.
      */
     public function getUrl(): string|null
     {
