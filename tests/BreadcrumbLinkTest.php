@@ -12,7 +12,7 @@ use Yiisoft\Yii\Bootstrap5\Link;
  *
  * @group breadcrumblink
  */
-final class BreadcrumLinkTest extends \PHPUnit\Framework\TestCase
+final class BreadcrumbLinkTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetAttributes(): void
     {
