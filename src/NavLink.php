@@ -153,7 +153,7 @@ final class NavLink
     /**
      * @return bool Whether the label should be encoded.
      */
-    public function isEncodeLabel(): bool
+    public function shouldEncodeLabel(): bool
     {
         return $this->encodeLabel;
     }

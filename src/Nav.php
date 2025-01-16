@@ -344,7 +344,7 @@ final class Nav extends \Yiisoft\Widget\Widget
             ->addAttributes($attributes)
             ->addContent($item->getLabel())
             ->href($item->getUrl())
-            ->encode($item->isEncodeLabel());
+            ->encode($item->shouldEncodeLabel());
     }
 
     /**
