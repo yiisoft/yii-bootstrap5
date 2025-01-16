@@ -219,7 +219,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified links to appear in the breadcrumbs.
      *
-     * @psalm-param Link[] $value The links to appear in the breadcrumbs.
+     * @psalm-param BreadcrumbLink[] $value The links to appear in the breadcrumbs.
      */
     public function links(BreadcrumbLink ...$value): self
     {
