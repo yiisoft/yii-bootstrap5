@@ -195,6 +195,52 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testEncodeLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">&lt;b&gt;Data&lt;/b&gt;</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('<b>Data</b>', active: true),
+                )
+                ->listId(false)
+                ->render(),
+            );
+    }
+
+    public function testEncodeLabelWithFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><b>Data</b></li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('<b>Data</b>', active: true, encodeLabel: false),
+                )
+                ->listId(false)
+                ->render(),
+            );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.2/components/breadcrumb/#dividers
      */
