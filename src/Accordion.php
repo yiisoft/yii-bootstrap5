@@ -11,7 +11,6 @@ use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
 use function array_key_exists;
-use function array_merge;
 use function implode;
 
 /**
@@ -21,10 +20,12 @@ use function implode;
  *
  * ```php
  * echo Accordion::widget()
- *     ->addItem('Accordion Item #1', '<strong>This is the first item\'s accordion body.</strong>')
- *     ->addItem('Accordion Item #2', '<strong>This is the second item\'s accordion body.</strong>')
- *     ->addItem('Accordion Item #3', '<strong>This is the third item\'s accordion body.</strong>')
- *     ->render(),
+ *     ->items(
+ *        AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.'),
+ *        AccordionItem::to('Accordion Item #2', 'This is the second item\'s accordion body.'),
+ *        AccordionItem::to('Accordion Item #3', 'This is the third item\'s accordion body.'),
+ *    )
+ *    ->render(),
  * ```
  *
  * @link https://getbootstrap.com/docs/5.3/components/accordion/
@@ -60,7 +61,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -85,7 +86,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $values);
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }

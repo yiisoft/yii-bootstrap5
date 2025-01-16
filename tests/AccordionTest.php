@@ -40,7 +40,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->addAttributes(['id' => 'accordion'])
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -52,7 +52,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->id('accordion')
             ->items(
-                new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
             );
 
         Assert::equalsWithoutLE(
@@ -101,7 +101,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $accordion = Accordion::widget()
             ->addCssStyle('color: red;')
             ->id('accordion')
-            ->items(new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
+            ->items(AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -149,7 +149,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $accordion = Accordion::widget()
             ->addCssStyle('color: red;')
             ->id('accordion')
-            ->items(new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
+            ->items(AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -215,7 +215,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->attributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -271,7 +271,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->alwaysOpen()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         '<strong>This is the first item\'s accordion body.</strong>' .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -282,7 +282,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         encodeBody: false,
                         active: true
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         '<strong>This is the second item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -292,7 +292,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         'accordion-2',
                         encodeBody: false
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #3',
                         '<strong>This is the third item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -330,7 +330,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->bodyAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -360,7 +360,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -389,7 +389,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->collapseAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -445,7 +445,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->flush()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         '<strong>This is the first item\'s accordion body.</strong>' .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -455,7 +455,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         'accordion-1',
                         encodeBody: false
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         '<strong>This is the second item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -465,7 +465,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         'accordion-2',
                         encodeBody: false
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #3',
                         '<strong>This is the third item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -530,7 +530,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->flush(false)
                 ->id('accordion')
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         '<strong>This is the first item\'s accordion body.</strong>' .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -541,7 +541,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         encodeBody: false,
                         active: true
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         '<strong>This is the second item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -551,7 +551,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         'accordion-2',
                         encodeBody: false
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #3',
                         '<strong>This is the third item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -589,7 +589,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->headerAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -618,7 +618,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->headerTag('h3')
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -646,7 +646,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -660,7 +660,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         Accordion::widget()
             ->id('')
             ->items(
-                new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
             )
             ->render();
     }
@@ -673,7 +673,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         Accordion::widget()
             ->id(false)
             ->items(
-                new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
             )
             ->render();
     }
@@ -700,7 +700,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->attributes(['id' => 'accordion'])
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->render(),
         );
@@ -722,7 +722,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($accordion, $accordion->headerAttributes([]));
         $this->assertNotSame($accordion, $accordion->headerTag(''));
         $this->assertNotSame($accordion, $accordion->id(''));
-        $this->assertNotSame($accordion, $accordion->items(new AccordionItem('', '')));
+        $this->assertNotSame($accordion, $accordion->items(AccordionItem::to('', '')));
         $this->assertNotSame($accordion, $accordion->toggleAttributes([]));
         $this->assertNotSame($accordion, $accordion->toggleTag(''));
     }
@@ -761,12 +761,12 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         'This is the first item\'s accordion body.',
                         'accordion-1'
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         'This is the second item\'s accordion body.',
                         'accordion-2',
@@ -810,13 +810,13 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             HTML,
             Accordion::widget()
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         'This is the first item\'s accordion body.',
                         'accordion-1',
                         active: true
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         'This is the second item\'s accordion body.',
                         'accordion-2',
@@ -849,7 +849,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             HTML,
             Accordion::widget()
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         '<strong>Accordion Item #1</strong>',
                         '<strong>This is the first item\'s accordion body.</strong>',
                         'accordion-1'
@@ -881,7 +881,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             HTML,
             Accordion::widget()
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         '<strong>Accordion Item #1</strong>',
                         '<strong>This is the first item\'s accordion body.</strong>',
                         'accordion-1',
@@ -942,7 +942,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             HTML,
             Accordion::widget()
                 ->items(
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #1',
                         '<strong>This is the first item\'s accordion body.</strong>' .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -953,7 +953,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         encodeBody: false,
                         active: true
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #2',
                         '<strong>This is the second item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -963,7 +963,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                         'accordion-2',
                         encodeBody: false
                     ),
-                    new AccordionItem(
+                    AccordionItem::to(
                         'Accordion Item #3',
                         '<strong>This is the third item\'s accordion body.</strong>' .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
@@ -1006,7 +1006,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['class' => 'btn-lg'])
                 ->render(),
@@ -1035,7 +1035,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-controls' => 'custom-value'])
                 ->render(),
@@ -1064,7 +1064,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-controls' => null])
                 ->render(),
@@ -1093,7 +1093,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-expanded' => 'custom-value'])
                 ->render(),
@@ -1122,7 +1122,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-expanded' => null])
                 ->render(),
@@ -1151,7 +1151,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-target' => 'custom-value'])
                 ->render(),
@@ -1180,7 +1180,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-target' => null])
                 ->render(),
@@ -1209,7 +1209,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-toggle' => 'custom-value'])
                 ->render(),
@@ -1238,7 +1238,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-toggle' => null])
                 ->render(),
@@ -1267,7 +1267,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
                 )
                 ->toggleTag('my-custom-tag')
                 ->render(),
@@ -1281,7 +1281,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
 
         Accordion::widget()
             ->items(
-                new AccordionItem('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
             )
             ->toggleTag('')
             ->render();
