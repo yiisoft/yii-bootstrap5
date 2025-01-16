@@ -340,7 +340,11 @@ final class Nav extends \Yiisoft\Widget\Widget
             $attributes['aria-disabled'] = 'true';
         }
 
-        return A::tag()->addAttributes($attributes)->addContent($item->getLabel())->href($item->getUrl());
+        return A::tag()
+            ->addAttributes($attributes)
+            ->addContent($item->getLabel())
+            ->href($item->getUrl())
+            ->encode($item->isEncodeLabel());
     }
 
     /**

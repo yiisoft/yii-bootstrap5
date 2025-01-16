@@ -8,21 +8,36 @@ use InvalidArgumentException;
 use Stringable;
 
 /**
- * Represents a Bootstrap Nav item and link.
+ * NavLink represents a navigation link item in a Bootstrap Nav component.
  *
+ * Each NavLink can be either active, disabled, or a regular link. The label can be either a string or a Stringable
+ * object, and can be optionally encoded.
+ *
+ * Example:
  * ```php
- * NavLink::to('Home', '/', true)->attributes(['class' => 'nav-link']);
- * NavLink::to('Home', '/', disabled: true)->urlAttributes(['class' => 'nav-link']);
+ * // Create a standard nav link
+ * NavLink::to('Home', '/');
+ *
+ * // Create an active nav link
+ * NavLink::to('Current Page', '#', true);
+ *
+ * // Create a disabled nav link
+ * NavLink::to('Disabled', '#', false, true);
+ * ```
  */
 final class NavLink
 {
     private bool $active = false;
     private array $attributes = [];
+    private bool $encodeLabel = true;
     private bool $disabled = false;
     private string|Stringable $label = '';
     private string|null $url = '';
     private array $urlAttributes = [];
 
+    /**
+     * Use {@see NavLink::to()} to create an instance.
+     */
     private function __construct()
     {
     }
@@ -78,6 +93,7 @@ final class NavLink
         string|null $url = null,
         bool $active = false,
         bool $disabled = false,
+        bool $encodeLabel = true
     ): self {
         $navlink = new self();
 
@@ -87,6 +103,7 @@ final class NavLink
 
         $navlink->active = $active;
         $navlink->disabled = $disabled;
+        $navlink->encodeLabel = $encodeLabel;
         $navlink->label = $label;
         $navlink->url = $url;
 
@@ -94,8 +111,6 @@ final class NavLink
     }
 
     /**
-     * Returns the HTML attributes for the nav item.
-     *
      * @return array The HTML attributes for the nav item.
      */
     public function getAttributes(): array
@@ -104,9 +119,7 @@ final class NavLink
     }
 
     /**
-     * Returns the label of the nav item.
-     *
-     * @return string|Stringable The label of the nav item.
+     * @return string|Stringable The label of Stringable object.
      */
     public function getLabel(): string|Stringable
     {
@@ -114,8 +127,6 @@ final class NavLink
     }
 
     /**
-     * Returns the URL of the nav item.
-     *
      * @return string|null The URL of the nav item.
      */
     public function getUrl(): string|null
@@ -124,8 +135,6 @@ final class NavLink
     }
 
     /**
-     * Returns the HTML attributes for the nav item link.
-     *
      * @return array The HTML attributes for the nav item link.
      */
     public function getUrlAttributes(): array
@@ -134,8 +143,6 @@ final class NavLink
     }
 
     /**
-     * Returns whether the nav item is active.
-     *
      * @return bool Whether the nav item is active.
      */
     public function isActive(): bool
@@ -144,8 +151,14 @@ final class NavLink
     }
 
     /**
-     * Returns whether the nav item is disabled.
-     *
+     * @return bool Whether the label should be encoded.
+     */
+    public function isEncodeLabel(): bool
+    {
+        return $this->encodeLabel;
+    }
+
+    /**
      * @return bool Whether the nav item is disabled.
      */
     public function isDisabled(): bool

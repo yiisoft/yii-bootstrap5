@@ -545,6 +545,50 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testEncodeLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test">&lt;b&gt;Active&lt;/b&gt;</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true">&lt;b&gt;Disabled&lt;b&gt;</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(
+                    NavLink::to('<b>Active</b>', '/test'),
+                    NavLink::to('<b>Disabled<b>', '/test/disabled', disabled: true),
+                )
+                ->render(),
+        );
+    }
+
+    public function testEncodeLabelWithFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/test"><b>Active</b></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="/test/disabled" aria-disabled="true"><b>Disabled<b></a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(
+                    NavLink::to('<b>Active</b>', '/test', encodeLabel: false),
+                    NavLink::to('<b>Disabled<b>', '/test/disabled', disabled: true, encodeLabel: false),
+                )
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#horizontal-alignment
      */
