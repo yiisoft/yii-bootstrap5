@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\Link;
+use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
@@ -33,9 +33,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#', active: true),
-                    new Link('Data', '#'),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#', active: true),
+                    BreadcrumbLink::to('Data', '#'),
                 )
                 ->listId(false)
                 ->render(),
@@ -50,9 +50,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         Breadcrumbs::widget()
             ->ariaLabel('Basic example of breadcrumbs')
             ->links(
-                new Link('Home', '/'),
-                new Link('Library', '#', active: true),
-                new Link('Data', '#', active: true),
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#', active: true),
             )
             ->listId(false)
             ->render();
@@ -60,13 +60,13 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 
     public function testAddCssClass(): void
     {
-        $alert = Breadcrumbs::widget()
+        $breadcrumb = Breadcrumbs::widget()
             ->ariaLabel('Basic example of breadcrumbs')
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->links(
-                new Link('Home', '/'),
-                new Link('Library', '#', active: true),
-                new Link('Data', '#'),
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#'),
             )
             ->listId(false);
 
@@ -80,7 +80,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             </ol>
             </nav>
             HTML,
-            $alert->render(),
+            $breadcrumb->render(),
         );
 
         Assert::equalsWithoutLE(
@@ -93,7 +93,85 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             </ol>
             </nav>
             HTML,
-            $alert->addClass('test-class-1', 'test-class-2')->render(),
+            $breadcrumb->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $breadcrumb = Breadcrumbs::widget()
+            ->addCssStyle('color: red;')
+            ->ariaLabel('Basic example of breadcrumbs')
+            ->links(
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#'),
+            )
+            ->listId(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red; font-weight: bold;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $breadcrumb = Breadcrumbs::widget()
+            ->addCssStyle('color: red;')
+            ->ariaLabel('Basic example of breadcrumbs')
+            ->links(
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#', active: true),
+                BreadcrumbLink::to('Data', '#'),
+            )
+            ->listId(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav style="color: red;" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            $breadcrumb->addCssStyle('color: blue;', false)->render(),
         );
     }
 
@@ -113,9 +191,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->addAttributes(['data-test' => 'test'])
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -137,9 +215,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->ariaLabel('Basic example of breadcrumbs')
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -161,9 +239,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->attributes(['class' => 'test-class'])
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -186,9 +264,55 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
                 ->addClass('test-class')
                 ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testEncodeLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">&lt;b&gt;Data&lt;/b&gt;</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('<b>Data</b>', active: true),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testEncodeLabelWithFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><b>Data</b></li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('<b>Data</b>', active: true, encodeLabel: false),
                 )
                 ->listId(false)
                 ->render(),
@@ -213,9 +337,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->divider('>')
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -243,7 +367,7 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($breacrumb, $breacrumb->itemActiveClass(''));
         $this->assertNotSame($breacrumb, $breacrumb->itemAttributes([]));
         $this->assertNotSame($breacrumb, $breacrumb->linkAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->links(new Link()));
+        $this->assertNotSame($breacrumb, $breacrumb->links(BreadcrumbLink::to('tests')));
         $this->assertNotSame($breacrumb, $breacrumb->listAttributes([]));
         $this->assertNotSame($breacrumb, $breacrumb->listId(''));
         $this->assertNotSame($breacrumb, $breacrumb->listTagName(''));
@@ -263,9 +387,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->itemActiveClass('test-active-class')
                 ->listId(false)
@@ -287,9 +411,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->itemAttributes(['class' => 'test-item-class'])
                 ->listId(false)
@@ -312,9 +436,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -336,9 +460,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             Breadcrumbs::widget()
                 ->linkAttributes(['class' => 'test-link-class'])
                 ->links(
-                    new Link('Home', '/', attributes: ['data-test' => 'test']),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/', attributes: ['data-test' => 'test']),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -359,9 +483,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listAttributes(['class' => 'test-list-class'])
                 ->listId(false)
@@ -383,9 +507,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId('test-id')
                 ->render(),
@@ -406,9 +530,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId('')
                 ->render(),
@@ -429,9 +553,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
@@ -452,9 +576,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listAttributes(['id' => 'test-id'])
                 ->render(),
@@ -475,9 +599,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '/'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->listTagName('footer')
@@ -492,9 +616,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
 
         Breadcrumbs::widget()
             ->links(
-                new Link('Home', '/'),
-                new Link('Library', '#'),
-                new Link('Data', active: true),
+                BreadcrumbLink::to('Home', '/'),
+                BreadcrumbLink::to('Library', '#'),
+                BreadcrumbLink::to('Data', active: true),
             )
             ->listTagName('')
             ->render();
@@ -522,9 +646,9 @@ final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
             HTML,
             Breadcrumbs::widget()
                 ->links(
-                    new Link('Home', '#'),
-                    new Link('Library', '#'),
-                    new Link('Data', active: true),
+                    BreadcrumbLink::to('Home', '#'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
                 )
                 ->listId(false)
                 ->render(),
