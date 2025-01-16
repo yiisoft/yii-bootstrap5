@@ -8,43 +8,74 @@ use InvalidArgumentException;
 use Yiisoft\Html\Html;
 
 /**
- * AccordionItem represents a single item in an {@see Accordion} widget.
+ * AccordionItem represents a single collapsible item within an Accordion widget.
+ *
+ * Each item consists of a header that can be clicked to show/hide the body content. The item can be set as active
+ * (expanded) by default and supports both raw and HTML content.
+ *
  *
  * For example:
  *
  * ```php
- * echo Accordion::widget()
- *     ->item(
- *         AccordionItem::widget()
- *             ->header('Collapsible Group Item #1')
- *             ->body('Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.')
- *     )
- *     ->item(
- *         AccordionItem::widget()
- *             ->header('Collapsible Group Item #2')
- *             ->body('Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.')
- *     )
- *     ->render();
+ * AccordionItem::to(
+ *     'Collapsible Group Item #1'
+ *     'Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.',
+ * );
  * ```
  */
 final class AccordionItem
 {
     private const DEFAULT_ID_PREFIX = 'collapse';
 
-    public function __construct(
-        private readonly string $header,
-        private readonly string $body,
-        private readonly bool|string $id = true,
-        private readonly bool $encodeHeader = true,
-        private readonly bool $encodeBody = true,
-        private readonly bool $active = false,
-    ) {
+    private bool $active = false;
+    private string $body = '';
+    private bool $encodeBody = true;
+    private bool $encodeHeader = true;
+    private string $header = '';
+    private bool|string $id = true;
+
+    /**
+     * Use {@see AccordionItem::to()} to create a new instance.
+     */
+    private function __construct()
+    {
     }
 
     /**
-     * Returns the encoded header content.
+     * Creates a new {@see AccordionItem} instance.
      *
-     * @return string The encoded header content.
+     * @param string $header The header content.
+     * @param string $body The body content.
+     * @param bool|string $id The ID of the accordion item. If `true`, an auto-generated ID will be used. If `false`, no
+     * ID will be set.
+     * @param bool $encodeHeader Whether to encode the header content.
+     * @param bool $encodeBody Whether to encode the body content.
+     * @param bool $active Whether the item is active.
+     *
+     * @return self A new instance with the specified configuration.
+     */
+    public static function to(
+        string $header = '',
+        string $body = '',
+        bool|string $id = true,
+        bool $encodeHeader = true,
+        bool $encodeBody = true,
+        bool $active = false
+    ): self {
+        $new = new self();
+        $new->active = $active;
+        $new->body = $body;
+        $new->encodeBody = $encodeBody;
+        $new->encodeHeader = $encodeHeader;
+        $new->header = $header;
+        $new->id = $id;
+
+        return $new;
+    }
+
+    /**
+     * @return string The encoded header content. If {@see encodeHeader} is `false`, the header content will not be
+     * encoded.
      */
     public function getHeader(): string
     {
@@ -52,9 +83,7 @@ final class AccordionItem
     }
 
     /**
-     * Returns the encoded body content.
-     *
-     * @return string The encoded body content.
+     * @return string The encoded body content. If {@see encodeBody} is `false`, the body content will not be encoded.
      */
     public function getBody(): string
     {

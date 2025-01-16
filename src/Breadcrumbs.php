@@ -12,7 +12,6 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
 
-use function array_merge;
 use function implode;
 
 /**
@@ -23,9 +22,9 @@ use function implode;
  * ```php
  * echo Breadcrumbs::widget()
  *     ->links(
- *         new Link('Home', '#'),
- *         new Link('Library', '#'),
- *         new Link('Data', active: true),
+ *         BreadcrumbLink::to('Home', '#'),
+ *         BreadcrumbLink::to('Library', '#'),
+ *         BreadcrumbLink::to('Data', active: true),
  *     )
  *     ->listId(false)
  *     ->render();
@@ -57,7 +56,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$new->attributes, ...$values];
 
         return $new;
     }
@@ -82,7 +81,27 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $values);
+        $new->cssClasses = [...$this->cssClasses, ...$values];
+
+        return $new;
+    }
+
+    /**
+     * Adds a CSS style for the breadcrumb component.
+     *
+     * @param array|string $value The CSS style for the breadcrumb component. If an array, the values will be separated
+     * by a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
+     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
+     * 'color: red; font-weight: bold;'.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
+     */
+    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $value, $overwrite);
 
         return $new;
     }
@@ -215,13 +234,13 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     /**
      * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything.
      *
-     * @param array $value The links to appear in the breadcrumbs.
+     * @param BreadcrumnLink ...$value The links to appear in the breadcrumbs.
      *
      * @return self A new instance with the specified links to appear in the breadcrumbs.
      *
-     * @psalm-param Link[] $value The links to appear in the breadcrumbs.
+     * @psalm-param BreadcrumbLink[] $value The links to appear in the breadcrumbs.
      */
-    public function links(Link ...$value): self
+    public function links(BreadcrumbLink ...$value): self
     {
         $new = clone $this;
         $new->links = $value;
@@ -358,21 +377,21 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     /**
      * Renders a single breadcrumb item.
      *
-     * @param Link $link The breadcrumb item to render.
+     * @param BreadcrumbLink $breadcrumbLink The breadcrumb item to render.
      *
      * @return string The rendering result.
      */
-    private function renderItem(Link $link): string
+    private function renderItem(BreadcrumbLink $breadcrumbLink): string
     {
         $itemsAttributes = $this->itemAttributes;
         $classes = $itemsAttributes['class'] ?? null;
 
         unset($itemsAttributes['class']);
 
-        $linkTag = $this->renderLink($link);
+        $linkTag = $this->renderLink($breadcrumbLink);
         Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
-        if ($link->isActive()) {
+        if ($breadcrumbLink->isActive()) {
             $itemsAttributes['aria-current'] = 'page';
 
             Html::addCssClass($itemsAttributes, $this->itemActiveClass);
@@ -384,20 +403,20 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
     /**
      * Renders a single breadcrumb link.
      *
-     * @param Link $link The breadcrumb link to render.
+     * @param BreadcrumbLink $breadcrumbLink The breadcrumb link to render.
      *
      * @return string The rendering result.
      */
-    private function renderLink(Link $link): string
+    private function renderLink(BreadcrumbLink $breadcrumbLink): string
     {
-        $label = $link->getLabel();
-        $url = $link->getUrl();
+        $label = $breadcrumbLink->getLabel();
+        $url = $breadcrumbLink->getUrl();
 
         return match ($url) {
             null => $label,
             default => A::tag()
                 ->attributes($this->linkAttributes)
-                ->addAttributes($link->getAttributes())
+                ->addAttributes($breadcrumbLink->getAttributes())
                 ->content($label)
                 ->url($url)
                 ->encode(false)

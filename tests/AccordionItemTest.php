@@ -16,35 +16,35 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
 {
     public function testEncodeBody(): void
     {
-        $accordionItem = new AccordionItem('header', '<strong>body</strong>');
+        $accordionItem = AccordionItem::to('header', '<strong>body</strong>');
 
         $this->assertSame('&lt;strong&gt;body&lt;/strong&gt;', $accordionItem->getBody());
     }
 
     public function testEncodeBodyWithFalse(): void
     {
-        $accordionItem = new AccordionItem('header', '<strong>body</strong>', encodeBody: false);
+        $accordionItem = AccordionItem::to('header', '<strong>body</strong>', encodeBody: false);
 
         $this->assertSame('<strong>body</strong>', $accordionItem->getBody());
     }
 
     public function testEncodeHeader(): void
     {
-        $accordionItem = new AccordionItem('<strong>header</strong>', 'body');
+        $accordionItem = AccordionItem::to('<strong>header</strong>', 'body');
 
         $this->assertSame('&lt;strong&gt;header&lt;/strong&gt;', $accordionItem->getHeader());
     }
 
     public function testEncodeHeaderWithFalse(): void
     {
-        $accordionItem = new AccordionItem('<strong>header</strong>', 'body', encodeHeader: false);
+        $accordionItem = AccordionItem::to('<strong>header</strong>', 'body', encodeHeader: false);
 
         $this->assertSame('<strong>header</strong>', $accordionItem->getHeader());
     }
 
     public function testId(): void
     {
-        $item = new AccordionItem('header', 'body');
+        $item = AccordionItem::to('header', 'body');
 
         $this->assertStringStartsWith('collapse-', $item->getId());
         $this->assertStringMatchesFormat('collapse-%x', $item->getId());
@@ -55,7 +55,7 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
 
-        $accordionItem = new AccordionItem('header', 'body', '');
+        $accordionItem = AccordionItem::to('header', 'body', '');
         $accordionItem->getId();
     }
 
@@ -64,13 +64,13 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
 
-        $accordionItem = new AccordionItem('header', 'body', false);
+        $accordionItem = AccordionItem::to('header', 'body', false);
         $accordionItem->getId();
     }
 
     public function testIdWithValue(): void
     {
-        $item = new AccordionItem('header', 'body', 'custom-id');
+        $item = AccordionItem::to('header', 'body', 'custom-id');
 
         $this->assertSame('custom-id', $item->getId());
     }
