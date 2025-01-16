@@ -68,7 +68,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * @return array Returns the HTML attributes for the link.
+     * @return array The HTML attributes for the link.
      */
     public function getAttributes(): array
     {
@@ -76,7 +76,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * @return string Returns the encoded label content. For default behavior, the label will be HTML-encoded. You can
+     * @return string The encoded label content. For default behavior, the label will be HTML-encoded. You can
      * disable this by setting `encodeLabel` to `false`.
      */
     public function getLabel(): string
@@ -85,7 +85,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * @return string|null  Returns the URL for the breadcrumb link.
+     * @return string|null The URL for the breadcrumb link.
      */
     public function getUrl(): string|null
     {
