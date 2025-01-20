@@ -1032,7 +1032,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             <div class="dropdown">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
             <ul class="dropdown-menu">
-            <li><share class="dropdown-item text-nowrap" :link="fullLocation" v-memo="[fullLocation]" url="https://api.whatsapp.com/send?text={title} {link}"><svg class="me-2 rounded-circle bi" width="1rem" height="1rem" style="background-color: #25D366;" viewbox="0 0 16 16" fill="#fff"><use xlink:href="/assets/74b80618/bootstrap-icons.svg#whatsapp"></use></svg>WhatsApp</share></li>
+            <li>
+            <share class="dropdown-item text-nowrap" :link="fullLocation" v-memo="[fullLocation]" url="https://api.whatsapp.com/send?text={title} {link}"><svg class="me-2 rounded-circle bi" width="1rem" height="1rem" style="background-color: #25D366;" viewbox="0 0 16 16" fill="#fff"><use xlink:href="/assets/74b80618/bootstrap-icons.svg#whatsapp"></use></svg>WhatsApp</share>
+            </li>
             </ul>
             </div>
             HTML,
@@ -1102,9 +1104,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             HTML,
             Dropdown::widget()
                 ->items(
-                    DropdownItem::link('Action', '#', button: true),
-                    DropdownItem::link('Another action', '#', button: true),
-                    DropdownItem::link('Something else here', '#', button: true),
+                    DropdownItem::button('Action'),
+                    DropdownItem::button('Another action'),
+                    DropdownItem::button('Something else here'),
                 )
                 ->render(),
         );
@@ -1202,9 +1204,9 @@ final class DropdownTest extends \PHPUnit\Framework\TestCase
             Dropdown::widget()
                 ->items(
                     DropdownItem::text('Dropdown item text'),
-                    DropdownItem::link('Action', '#', button: true),
-                    DropdownItem::link('Another action', '#', button: true),
-                    DropdownItem::link('Something else here', '#', button: true),
+                    DropdownItem::button('Action'),
+                    DropdownItem::button('Another action'),
+                    DropdownItem::button('Something else here'),
                 )
                 ->render(),
         );

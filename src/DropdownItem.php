@@ -1,223 +1,233 @@
 <?php
-
+// DropdownItem.php
 declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use InvalidArgumentException;
 use Stringable;
-use Yiisoft\Html\Html;
-use Yiisoft\Html\Tag\A;
-use Yiisoft\Html\Tag\Button;
-use Yiisoft\Html\Tag\Hr;
-use Yiisoft\Html\Tag\Li;
-use Yiisoft\Html\Tag\Span;
+use InvalidArgumentException;
 
 /**
- * DropdownItem renders a single dropdown item.
+ * DropdownItem represents a single item within a Bootstrap Dropdown menu.
  *
- * For example,
+ * Supports multiple item types:
+ * - Buttons: Button-style menu items.
+ * - Dividers: Horizontal separators.
+ * - Headers: Section headers.
+ * - Links: Standard clickable menu items.
+ * - Text: Plain text items.
  *
+ * Example usage:
  * ```php
- * DropdownItem::link('Dropdown link', '#');
+ * // Create a link item
+ * DropdownItem::link('Profile', '/profile');
+ *
+ * // Create an active item
+ * DropdownItem::link('Dashboard', '/dashboard', true);
+ *
+ * // Create a divider
  * DropdownItem::divider();
- * DropdownItem::header('Dropdown header');
- * DropdownItem::text('Dropdown text');
- * DropdownItem::listContent('<a href="#">Dropdown list content</a>');
+ *
+ * // Create a header
+ * DropdownItem::header('Section Title');
  * ```
  */
 final class DropdownItem
 {
-    private const DROPDOWN_DIVIDER_CLASS = 'dropdown-divider';
-    private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
-    private const DROPDOWN_ITEM_CLASS = 'dropdown-item';
-    private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
-    private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
-    private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
-    private string|Stringable $content = '';
-    /** @psalm-suppress PropertyNotSetInConstructor */
-    private Li $liContent;
-    private string|null $url = null;
-
-    private function __construct()
-    {
-    }
+    private const TYPE_BUTTON = 'button';
+    private const TYPE_CUSTOM_CONTENT = 'custom-content';
+    private const TYPE_DIVIDER = 'divider';
+    private const TYPE_HEADER = 'header';
+    private const TYPE_LINK = 'link';
+    private const TYPE_TEXT = 'text';
 
     /**
-     * Create a new dropdown item with a divider.
+     * Use {@see DropdownItem::button()} to create a new button instance.
+     * Use {@see DropdownItem::divider()} to create a new divider instance.
+     * Use {@see DropdownItem::header()} to create a new header instance.
+     * Use {@see DropdownItem::link()} to create a new link instance.
+     * Use {@see DropdownItem::text()} to create a new text instance.
      *
-     * @param array $attributes The HTML attributes of the list.
-     * @param array $dividerAttributes The HTML attributes of the divider.
-     *
-     * @return self A new instance with the dropdown item with a divider.
+     * @psalm-param non-empty-string $headerTag
      */
-    public static function divider(array $attributes = [], array $dividerAttributes = []): self
-    {
-        $dropdownItem = new self();
-
-        $classesDivider = $dividerAttributes['class'] ?? null;
-
-        unset($dividerAttributes['class']);
-
-        $dropdownItem->liContent = Li::tag()
-            ->addAttributes($attributes)
-            ->addContent(
-                "\n",
-                Hr::tag()->addAttributes($dividerAttributes)->addClass(self::DROPDOWN_DIVIDER_CLASS, $classesDivider),
-                "\n"
-            );
-
-        return $dropdownItem;
+    private function __construct(
+        private string $type = '',
+        private string|Stringable $content = '',
+        private string $url = '',
+        private bool $active = false,
+        private bool $disabled = false,
+        private array $attributes = [],
+        private array $itemAttributes = [],
+        private string $headerTag = 'h6',
+    ) {
     }
 
     /**
-     * Create a new dropdown item with a header.
+     * Creates a button-type dropdown item.
      *
-     * @param string|Stringable $content The content of the header.
-     * @param array $attributes The HTML attributes of the list.
-     * @param string $headerTag The tag of the header.
-     * @param array $headerAttributes The HTML attributes of the header.
+     * @param string|Stringable $content The button content.
+     * @param array $attributes The HTML attributes for the `<li>` tag.
+     * @param array $itemAttributes The HTML attributes for the `<button>` tag.
      *
-     * @return self A new instance with the dropdown item with a header.
+     * @throws InvalidArgumentException When item is set as both active and disabled.
+     *
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::button('Submit', active: true);
+     * ```
+     */
+    public static function button(
+        string|Stringable $content = '',
+        array $attributes = [],
+        array $itemAttributes = [],
+    ): self {
+        return new self(
+            self::TYPE_BUTTON,
+            $content,
+            attributes: $attributes,
+            itemAttributes: $itemAttributes,
+        );
+    }
+
+    /**
+     * Creates a divider dropdown item.
+     *
+     * @param array $attributes The HTML attributes for the `<li>` tag.
+     * @param array $itemAttributes The HTML attributes for the `<hr>` tag.
+     *
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::divider();
+     * ```
+     */
+    public static function divider(array $attributes = [], array $itemAttributes = []): self
+    {
+        return new self(self::TYPE_DIVIDER, attributes: $attributes, itemAttributes: $itemAttributes);
+    }
+
+    /**
+     * Creates a header dropdown item.
+     *
+     * @param string|Stringable $content The header text.
+     * @param string $tag The HTML tag to use (defaults to `h6`).
+     * @param array $attributes The HTML attributes for the `<li>` tag.
+     * @param array $itemAttributes The HTML attributes for the `<h6>` tag.
+     *
+     * @throws InvalidArgumentException When header tag is empty.
+     *
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::header('Section Title');
+     * ```
      */
     public static function header(
         string|Stringable $content = '',
-        array $attributes = [],
         string $headerTag = 'h6',
-        array $headerAttributes = []
+        array $attributes = [],
+        array $itemAttributes = [],
     ): self {
-        $dropdownItem = new self();
-
         if ($headerTag === '') {
             throw new InvalidArgumentException('The header tag cannot be empty.');
         }
 
-        $classesHeader = $headerAttributes['class'] ?? null;
-
-        unset($headerAttributes['class']);
-
-        $dropdownItem->liContent = Li::tag()
-            ->addAttributes($attributes)
-            ->addContent(
-                "\n",
-                Html::tag($headerTag, $content)
-                    ->addAttributes($headerAttributes)
-                    ->addClass(self::DROPDOWN_ITEM_HEADER_CLASS, $classesHeader),
-                "\n",
-            );
-
-        return $dropdownItem;
+        return new self(
+            self::TYPE_HEADER,
+            $content,
+            headerTag: $headerTag,
+            attributes: $attributes,
+            itemAttributes: $itemAttributes,
+        );
     }
 
     /**
-     * Create a new dropdown item with a link.
+     * Creates a link-type dropdown item.
      *
-     * @param string|Stringable $content The content of the link.
-     * @param string $url The URL of the link.
-     * @param bool $active Whether the dropdown item is active.
-     * @param bool $disabled Whether the dropdown item is disabled.
-     * @param array $attributes The HTML attributes of the the list.
-     * @param array $linkAttributes The HTML attributes of the link.
-     * @param bool $button Whether the dropdown item is a button.
+     * @param string|Stringable $content The link text.
+     * @param string $url The URL (defaults to '#').
+     * @param bool $active Whether the link is active.
+     * @param bool $disabled Whether the link is disabled.
+     * @param array $attributes The HTML attributes for the `<li>` tag.
+     * @param array $itemAttributes The HTML attributes for the `<a>` tag.
      *
-     * @return self A new instance with the dropdown item with a link.
+     * @throws InvalidArgumentException When item is set as both active and disabled.
+     *
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::link('Profile', '/profile');
+     * ```
      */
     public static function link(
         string|Stringable $content = '',
-        string $url = '',
+        string $url = '#',
         bool $active = false,
         bool $disabled = false,
         array $attributes = [],
-        array $linkAttributes = [],
-        bool $button = false
+        array $itemAttributes = [],
     ): self {
-        $dropdownItem = new self();
-
         if ($active && $disabled) {
             throw new InvalidArgumentException('The dropdown item cannot be active and disabled at the same time.');
         }
 
-        $classesLink = $linkAttributes['class'] ?? null;
-
-        unset($linkAttributes['class']);
-
-        Html::addCssClass($linkAttributes, self::DROPDOWN_ITEM_CLASS);
-
-        if ($active) {
-            Html::addCssClass($linkAttributes, self::DROPDOWN_ITEM_ACTIVE_CLASS);
-            $linkAttributes['aria-current'] = 'true';
-        }
-
-        if ($disabled) {
-            Html::addCssClass($linkAttributes, self::DROPDOWN_ITEM_DISABLED_CLASS);
-            $linkAttributes['aria-disabled'] = 'true';
-        }
-
-        $liContent = match ($button) {
-            true => Button::button('')->addAttributes($linkAttributes)->addContent($content)->addClass($classesLink),
-            default => A::tag()->addAttributes($linkAttributes)->addClass($classesLink)->content($content)->url($url),
-        };
-
-        $dropdownItem->content = $content;
-        $dropdownItem->liContent = Li::tag()->addAttributes($attributes)->addContent("\n", $liContent, "\n");
-        $dropdownItem->url = $url;
-
-        return $dropdownItem;
+        return new self(self::TYPE_LINK, $content, $url, $active, $disabled, $attributes, $itemAttributes);
     }
 
     /**
-     * Create a new dropdown item with custom list content.
+     * Creates a list with custom content dropdown item.
      *
-     * @param string|Stringable $content The content of the list.
-     * @param array $attributes The HTML attributes of the list.
+     * @param string|Stringable $content The list content.
+     * @param array $attributes The HTML attributes for the `<li>` tag.
      *
-     * @return self A new instance with the dropdown item with a list.
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::listContent('Simple list item');
+     * ```
      */
-    public static function listContent(string|Stringable $content = '', array $attributes = []): self
-    {
-        $dropdownItem = new self();
-
-        $dropdownItem->liContent = Li::tag()->addAttributes($attributes)->addContent($content)->encode(false);
-
-        return $dropdownItem;
+    public static function listContent(string|Stringable $content = '', array $attributes = []): self {
+        return new self(self::TYPE_CUSTOM_CONTENT, $content, attributes: $attributes);
     }
 
     /**
-     * Create a new drodown item with text content.
+     * Creates a text dropdown item.
      *
      * @param string|Stringable $content The text content.
-     * @param array $attributes The HTML attributes of the list.
-     * @param array $textAttributes The HTML attributes of the text.
+     * @param array $attributes The HTML attributes for the `<li>` tag.
+     * @param array $itemAttributes The HTML attributes for the `<span>` tag.
      *
-     * @return self A new instance with the dropdown item with text content.
+     * @return self A new instance with the specified configuration.
+     *
+     * Example:
+     * ```php
+     * DropdownItem::text('Simple text item');
+     * ```
      */
     public static function text(
         string|Stringable $content = '',
         array $attributes = [],
-        array $textAttributes = []
+        array $itemAttributes = [],
     ): self {
-        $dropdownItem = new self();
-
-        $classesText = $textAttributes['class'] ?? null;
-
-        unset($textAttributes['class']);
-
-        $dropdownItem->liContent = Li::tag()
-            ->addAttributes($attributes)
-            ->addContent(
-                "\n",
-                Span::tag()
-                    ->addAttributes($textAttributes)
-                    ->addClass(self::DROPDOWN_ITEM_TEXT_CLASS, $classesText)
-                    ->addContent($content),
-                "\n"
-            );
-
-        return $dropdownItem;
+        return new self(self::TYPE_TEXT, $content, attributes: $attributes, itemAttributes: $itemAttributes);
     }
 
     /**
-     * @return string|Stringable Returns the dropdown item content.
+     * @return array The HTML attributes for the `<li>` tag.
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @return string|Stringable The content of the dropdown item.
      */
     public function getContent(): string|Stringable
     {
@@ -225,18 +235,52 @@ final class DropdownItem
     }
 
     /**
-     * @return Li Returns the dropdown item <li> content.
+     * @return string The header tag for the dropdown item.
+     *
+     * @psalm-return non-empty-string
      */
-    public function getLiContent(): Li
+    public function getHeaderTag(): string
     {
-        return $this->liContent;
+        return $this->headerTag;
     }
 
     /**
-     * @return string|null Returns the URL of the dropdown item.
+     * @return array The HTML attributes for the item tag.
      */
-    public function getUrl(): string|null
+    public function getItemAttributes(): array
+    {
+        return $this->itemAttributes;
+    }
+
+    /**
+     * @return string The URL for the dropdown item.
+     */
+    public function getUrl(): string
     {
         return $this->url;
+    }
+
+    /**
+     * @return string The type of the dropdown item.
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return bool Whether the item is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @return bool Whether the item is disabled.
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 }
