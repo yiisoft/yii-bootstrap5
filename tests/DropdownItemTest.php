@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `DropdownItem`.

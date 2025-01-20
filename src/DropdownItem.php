@@ -1,4 +1,5 @@
 <?php
+
 // DropdownItem.php
 declare(strict_types=1);
 
@@ -192,7 +193,8 @@ final class DropdownItem
      * DropdownItem::listContent('Simple list item');
      * ```
      */
-    public static function listContent(string|Stringable $content = '', array $attributes = []): self {
+    public static function listContent(string|Stringable $content = '', array $attributes = []): self
+    {
         return new self(self::TYPE_CUSTOM_CONTENT, $content, attributes: $attributes);
     }
 
