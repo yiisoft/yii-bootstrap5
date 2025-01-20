@@ -16,7 +16,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetAttributes(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             attributes: ['class' => 'test'],
         );
@@ -26,7 +26,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetAutoPlayingInterval(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             autoPlayingInterval: 5000,
         );
@@ -36,7 +36,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaption(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             '<strong>First slide</strong>',
         );
@@ -46,7 +46,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaptionAttributes(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             captionAttributes: ['class' => 'test'],
         );
@@ -56,7 +56,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaptionEncodeWithFalse(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             caption: '<strong>First slide</strong>',
             encodeCaption: false,
@@ -67,7 +67,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaptionPlaceholder(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             captionPlaceholder: '<strong>Some representative placeholder content for the first slide.</strong>',
         );
@@ -80,7 +80,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaptionPlaceholderAttributes(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             captionPlaceholderAttributes: ['class' => 'test'],
         );
@@ -90,7 +90,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCaptionPlaceholderEncodeWithFalse(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             captionPlaceholder: '<strong>Some representative placeholder content for the first slide.</strong>',
             encodeCaptionPlaceholder: false,
@@ -105,14 +105,14 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
     public function testGetContent(): void
     {
         $image = Img::tag()->alt('First slide')->src('image-1.jpg');
-        $carouselItem = new CarouselItem($image);
+        $carouselItem = CarouselItem::to($image);
 
         $this->assertSame($image, $carouselItem->getContent());
     }
 
     public function testGetContentWithStringable(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             new class () implements \Stringable {
                 public function __toString(): string
                 {
@@ -126,7 +126,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
 
     public function testIsActive(): void
     {
-        $carouselItem = new CarouselItem(
+        $carouselItem = CarouselItem::to(
             Img::tag()->alt('First slide')->src('image-1.jpg'),
             active: true,
         );
