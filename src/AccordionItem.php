@@ -27,18 +27,17 @@ final class AccordionItem
 {
     private const DEFAULT_ID_PREFIX = 'collapse';
 
-    private bool $active = false;
-    private string $body = '';
-    private bool $encodeBody = true;
-    private bool $encodeHeader = true;
-    private string $header = '';
-    private bool|string $id = true;
-
     /**
      * Use {@see AccordionItem::to()} to create a new instance.
      */
-    private function __construct()
-    {
+    private function __construct(
+        private readonly bool $active = false,
+        private readonly string $body = '',
+        private readonly bool $encodeBody = true,
+        private readonly bool $encodeHeader = true,
+        private readonly string $header = '',
+        private readonly bool|string $id = true,
+    ) {
     }
 
     /**
@@ -62,15 +61,7 @@ final class AccordionItem
         bool $encodeBody = true,
         bool $active = false
     ): self {
-        $new = new self();
-        $new->active = $active;
-        $new->body = $body;
-        $new->encodeBody = $encodeBody;
-        $new->encodeHeader = $encodeHeader;
-        $new->header = $header;
-        $new->id = $id;
-
-        return $new;
+        return new self($active, $body, $encodeBody, $encodeHeader, $header, $id);
     }
 
     /**
