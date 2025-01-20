@@ -52,14 +52,14 @@ final class CarouselItem
     /**
      * Creates a new {@see CarouselItem} instance.
      *
-     * @param string|Stringable $content The content of the carrusel item.
-     * @param string|null $caption The caption content for the carrusel item.
-     * @param string|null $captionPlaceholder The caption placeholder content for the carrusel item.
-     * @param int|null $autoPlayingInterval The auto playing interval for the carrusel item.
+     * @param string|Stringable $content The content of the carousel item.
+     * @param string|null $caption The caption content for the carousel item.
+     * @param string|null $captionPlaceholder The caption placeholder content for the carousel item.
+     * @param int|null $autoPlayingInterval The auto playing interval for the carousel item.
      * @param bool $active Whether the item is active.
      * @param bool $encodeCaption Whether to encode the caption content.
      * @param bool $encodeCaptionPlaceholder Whether to encode the caption placeholder content.
-     * @param array $attributes The HTML attributes for the carrusel item.
+     * @param array $attributes The HTML attributes for the carousel item.
      * @param array $captionAttributes The HTML attributes for the caption.
      * @param array $captionPlaceholderAttributes The HTML attributes for the caption placeholder.
      *
