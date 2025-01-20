@@ -8,22 +8,87 @@ use Stringable;
 use Yiisoft\Html\Html;
 
 /**
- * Represents a carousel item.
+ * CarouselItem represents a single item within a Bootstrap Carousel widget.
+ *
+ * Each item can contain content, caption, and caption placeholder. The item can be set as active and supports
+ * auto-playing intervals.
+ *
+ * Example usage:
+ * ```php
+ * CarouselItem::to(
+ *     '<img src="example.jpg" alt="Example">',
+ *     'Image Caption',
+ *     'Caption Placeholder'
+ * );
+ *
+ * // Create an active carousel item with auto-play.
+ * CarouselItem::to(
+ *     content: '<img src="example.jpg">',
+ *     caption: 'Slide 1',
+ *     active: true,
+ *     autoPlayingInterval: 5000
+ * );
+ * ```
  */
 final class CarouselItem
 {
-    public function __construct(
-        private readonly string|Stringable $content = '',
-        private readonly string|null $caption = null,
-        private readonly string|null $captionPlaceholder = null,
-        private readonly int|null $autoPlayingInterval = null,
+    /**
+     * Use {@see CarouselItem::to()} to create a new instance.
+     */
+    private function __construct(
         private readonly bool $active = false,
+        private readonly array $attributes = [],
+        private readonly int|null $autoPlayingInterval = null,
+        private readonly string|null $caption = null,
+        private readonly array $captionAttributes = [],
+        private readonly string|null $captionPlaceholder = null,
+        private readonly array $captionPlaceholderAttributes = [],
+        private readonly string|Stringable $content = '',
         private readonly bool $encodeCaption = true,
         private readonly bool $encodeCaptionPlaceholder = true,
-        private readonly array $attributes = [],
-        private readonly array $captionAttributes = [],
-        private readonly array $captionPlaceholderAttributes = [],
     ) {
+    }
+
+    /**
+     * Creates a new {@see CarouselItem} instance.
+     *
+     * @param string|Stringable $content The content of the carrusel item.
+     * @param string|null $caption The caption content for the carrusel item.
+     * @param string|null $captionPlaceholder The caption placeholder content for the carrusel item.
+     * @param int|null $autoPlayingInterval The auto playing interval for the carrusel item.
+     * @param bool $active Whether the item is active.
+     * @param bool $encodeCaption Whether to encode the caption content.
+     * @param bool $encodeCaptionPlaceholder Whether to encode the caption placeholder content.
+     * @param array $attributes The HTML attributes for the carrusel item.
+     * @param array $captionAttributes The HTML attributes for the caption.
+     * @param array $captionPlaceholderAttributes The HTML attributes for the caption placeholder.
+     *
+     * @return self A new instance with the specified configuration.
+     */
+    public static function to(
+        string|Stringable $content = '',
+        string|null $caption = null,
+        string|null $captionPlaceholder = null,
+        int|null $autoPlayingInterval = null,
+        bool $active = false,
+        bool $encodeCaption = true,
+        bool $encodeCaptionPlaceholder = true,
+        array $attributes = [],
+        array $captionAttributes = [],
+        array $captionPlaceholderAttributes = [],
+    ): self {
+        return new self(
+            $active,
+            $attributes,
+            $autoPlayingInterval,
+            $caption,
+            $captionAttributes,
+            $captionPlaceholder,
+            $captionPlaceholderAttributes,
+            $content,
+            $encodeCaption,
+            $encodeCaptionPlaceholder,
+        );
     }
 
     /**
