@@ -26,17 +26,16 @@ use Yiisoft\Html\Html;
  */
 final class BreadcrumbLink
 {
-    private string $label = '';
-    private string|null $url = null;
-    private bool $active = false;
-    private bool $encodeLabel = true;
-    private array $attributes = [];
-
     /**
      * Use {@see BreadcrumbLink::to()} to create an instance.
      */
-    private function __construct()
-    {
+    private function __construct(
+        private readonly string $label = '',
+        private readonly string|null $url = null,
+        private readonly bool $active = false,
+        private readonly bool $encodeLabel = true,
+        private readonly array $attributes = [],
+    ) {
     }
 
     /**
@@ -57,14 +56,7 @@ final class BreadcrumbLink
         array $attributes = [],
         bool $encodeLabel = true
     ): self {
-        $new = new self();
-        $new->active = $active;
-        $new->attributes = $attributes;
-        $new->encodeLabel = $encodeLabel;
-        $new->label = $label;
-        $new->url = $url;
-
-        return $new;
+        return new self($label, $url, $active, $encodeLabel, $attributes);
     }
 
     /**
