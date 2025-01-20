@@ -10,8 +10,13 @@ use Yiisoft\Html\Html;
 /**
  * CarouselItem represents a single item within a Bootstrap Carousel widget.
  *
- * Each item can contain content, caption, and caption placeholder. The item can be set as active and supports
- * auto-playing intervals.
+ * Each item can contain content, caption, and caption placeholder.
+ *
+ * The item can be set as active and supports auto-playing intervals.
+ *
+ * - Active state: When is `true`, sets this item as the first visible slide.
+ * - Auto-playing: When is enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
+ * on carousel controls/indicators.
  *
  * Example usage:
  * ```php
