@@ -10,7 +10,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 enum ButtonType: string
 {
     /**
-     * Link button - Renders as `<a>` element.
+     * Link button, renders as `<a>` element.
      */
     case LINK = 'link';
     /**
