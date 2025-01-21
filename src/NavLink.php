@@ -42,7 +42,7 @@ final class NavLink
     }
 
     /**
-     * Creates a nav {@see NavLink} instance.
+     * Creates a {@see NavLink} instance.
      *
      * @param string|Stringable $label The label of the link.
      * @param string|null $url The URL of the link.
@@ -65,7 +65,7 @@ final class NavLink
         array $attributes = [],
         array $urlAttributes = [],
     ): self {
-        if ($active === true && $disabled === true) {
+        if ($active && $disabled) {
             throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
         }
 
@@ -122,7 +122,7 @@ final class NavLink
     /**
      * Sets whether to HTML-encode the label.
      *
-     * @param bool $value Whether to encode the label
+     * @param bool $value Whether to encode the label.
      *
      * @return self New instance with the specified encode setting.
      */
@@ -167,11 +167,11 @@ final class NavLink
     /**
      * Sets HTML attributes for the nav item link.
      *
-     * @param array $values Attribute values indexed by attribute names
+     * @param array $values Attribute values indexed by attribute names.
      *
      * @return self New instance with the specified link attributes
      *
-     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered
+     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
      */
     public function urlAttributes(array $values): self
     {
