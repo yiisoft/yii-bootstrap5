@@ -169,7 +169,7 @@ final class NavLink
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self New instance with the specified link attributes
+     * @return self New instance with the specified link attributes.
      *
      * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
      */
