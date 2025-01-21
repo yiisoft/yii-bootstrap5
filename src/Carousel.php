@@ -201,7 +201,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
         $new = clone $this;
         $new->cssClasses = $values;
 
-        return $new;;
+        return $new;
     }
 
     /**
