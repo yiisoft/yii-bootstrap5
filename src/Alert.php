@@ -12,7 +12,6 @@ use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 
 use function array_key_exists;
-use function array_merge;
 use function preg_replace;
 use function strtr;
 
@@ -56,7 +55,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -81,7 +80,7 @@ final class Alert extends \Yiisoft\Widget\Widget
     public function addClass(BackedEnum|string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClasses = array_merge($new->cssClasses, $values);
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }
