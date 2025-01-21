@@ -31,12 +31,12 @@ final class AccordionItem
      * Use {@see AccordionItem::to()} to create a new instance.
      */
     private function __construct(
-        private readonly bool $active = false,
-        private readonly string $body = '',
-        private readonly bool $encodeBody = true,
-        private readonly bool $encodeHeader = true,
-        private readonly string $header = '',
-        private readonly bool|string $id = true,
+        private bool $active = false,
+        private string $body = '',
+        private bool $encodeBody = true,
+        private bool $encodeHeader = true,
+        private string $header = '',
+        private bool|string $id = true,
     ) {
     }
 
@@ -62,6 +62,103 @@ final class AccordionItem
         bool $active = false
     ): self {
         return new self($active, $body, $encodeBody, $encodeHeader, $header, $id);
+    }
+
+    /**
+     * Sets the active state of the accordion item.
+     *
+     * @param bool $value Whether the accordion item is active.
+     *
+     * @return self A new instance with the specified active state.
+     */
+    public function active(bool $value): self
+    {
+        $new = clone $this;
+        $new->active = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the body content of the accordion item.
+     *
+     * @param string $value The body content.
+     *
+     * @return self A new instance with the specified body content.
+     */
+    public function body(string $value): self
+    {
+        $new = clone $this;
+        $new->body = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to encode the body content.
+     *
+     * @param bool $value Whether to encode the body content.
+     *
+     * @return self A new instance with the specified encoding setting.
+     */
+    public function encodeBody(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeBody = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to encode the header content.
+     *
+     * @param bool $value Whether to encode the header content.
+     *
+     * @return self A new instance with the specified encoding setting.
+     */
+    public function encodeHeader(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeHeader = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the header content of the accordion item.
+     *
+     * @param string $value The header content.
+     *
+     * @return self A new instance with the specified header content.
+     */
+    public function header(string $value): self
+    {
+        $new = clone $this;
+        $new->header = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the accordion item.
+     *
+     * @param bool|string $value The ID of the accordion item. If `true`, an auto-generated ID will be used. If `false`,
+     * no ID will be set.
+     *
+     * @throws InvalidArgumentException If the "id" property is empty or `false`.
+     *
+     * @return self A new instance with the specified ID.
+     */
+    public function id(bool|string $value): self
+    {
+        if ($value === '' || $value === false) {
+            throw new InvalidArgumentException('The "id" property must be a non-empty string or `true`.');
+        }
+
+        $new = clone $this;
+        $new->id = $value;
+
+        return $new;
     }
 
     /**
