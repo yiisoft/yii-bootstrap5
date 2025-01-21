@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `DropdownItem`.
@@ -15,109 +14,74 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  */
 final class DropdownItemTest extends \PHPUnit\Framework\TestCase
 {
+    public function testButton(): void
+    {
+        $button = DropdownItem::button('content');
+
+        $this->assertSame('button', $button->getType());
+        $this->assertSame('content', $button->getContent());
+    }
+
+    public function testButtonWithAttributes(): void
+    {
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::button('content', attributes: ['class' => 'test-class'])->getAttributes(),
+        );
+    }
+
+    public function testButtonWithItemAttributes(): void
+    {
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::button('content', itemAttributes: ['class' => 'test-class'])->getItemAttributes(),
+        );
+    }
+
     public function testDivider(): void
     {
-        $divider = DropdownItem::divider();
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <hr class="dropdown-divider">
-            </li>
-            HTML,
-            $divider->getLiContent()->render(),
-        );
+        $this->assertSame('divider', DropdownItem::divider()->getType());
     }
 
     public function testDividerWithAttributes(): void
     {
-        $divider = DropdownItem::divider(['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li class="test-class">
-            <hr class="dropdown-divider">
-            </li>
-            HTML,
-            $divider->getLiContent()->render(),
-        );
+        $this->assertSame(['class' => 'test-class'], DropdownItem::divider(['class' => 'test-class'])->getAttributes());
     }
 
-    public function testDividerWithDividerAttributes(): void
+    public function testDividerWithItemAttributes(): void
     {
-        $divider = DropdownItem::divider(dividerAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <hr class="dropdown-divider test-class">
-            </li>
-            HTML,
-            $divider->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::divider(itemAttributes: ['class' => 'test-class'])->getItemAttributes(),
         );
     }
 
     public function testHeader(): void
     {
-        $header = DropdownItem::header('content');
+        $dropdownItem = DropdownItem::header('content');
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <h6 class="dropdown-header">content</h6>
-            </li>
-            HTML,
-            $header->getLiContent()->render(),
-        );
+        $this->assertSame('header', $dropdownItem->getType());
+        $this->assertSame('content', $dropdownItem->getContent());
     }
 
     public function testHeaderWithAttributes(): void
     {
-        $header = DropdownItem::header('content', ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li class="test-class">
-            <h6 class="dropdown-header">content</h6>
-            </li>
-            HTML,
-            $header->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::header('content', attributes: ['class' => 'test-class'])->getAttributes(),
         );
     }
 
     public function testHeaderWithHeaderTag(): void
     {
-        $header = DropdownItem::header('content', headerTag: 'h5');
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <h5 class="dropdown-header">content</h5>
-            </li>
-            HTML,
-            $header->getLiContent()->render(),
-        );
+        $this->assertSame('h6', DropdownItem::header('content', headerTag: 'h6')->getHeaderTag());
     }
 
-    public function testHeaderWithHeaderTagEmpty(): void
+    public function testHeaderWithItemAttributes(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The header tag cannot be empty.');
-
-        DropdownItem::header('content', headerTag: '');
-    }
-
-    public function testHeaderWithHeaderAttributes(): void
-    {
-        $header = DropdownItem::header('content', headerAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <h6 class="dropdown-header test-class">content</h6>
-            </li>
-            HTML,
-            $header->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::header('content', itemAttributes: ['class' => 'test-class'])->getItemAttributes(),
         );
     }
 
@@ -125,147 +89,90 @@ final class DropdownItemTest extends \PHPUnit\Framework\TestCase
     {
         $link = DropdownItem::link('label', 'url');
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item" href="url">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
-        );
+        $this->assertSame('link', $link->getType());
+        $this->assertSame('label', $link->getContent());
+        $this->assertSame('url', $link->getUrl());
     }
 
     public function testLinkWithActive(): void
     {
-        $link = DropdownItem::link('label', 'url', active: true);
+        $this->assertTrue(DropdownItem::link('label', 'url', active: true)->isActive());
+    }
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item active" href="url" aria-current="true">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
+    public function testLinkWithAttributes(): void
+    {
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::link('label', 'url', attributes: ['class' => 'test-class'])->getAttributes(),
         );
     }
 
     public function testLinkWithDisabled(): void
     {
-        $link = DropdownItem::link('label', 'url', disabled: true);
+        $this->assertTrue(DropdownItem::link('label', 'url', disabled: true)->isDisabled());
+    }
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item disabled" href="url" aria-disabled="true">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
+    public function testLinkWithItemAttributes(): void
+    {
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::link('label', 'url', itemAttributes: ['class' => 'test-class'])->getItemAttributes(),
         );
     }
 
-    public function testLinkWithAttributes(): void
+    public function testListContent(): void
     {
-        $link = DropdownItem::link('label', 'url', attributes: ['class' => 'test-class']);
+        $listContent = DropdownItem::listContent('content');
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li class="test-class">
-            <a class="dropdown-item" href="url">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
-        );
+        $this->assertSame('custom-content', $listContent->getType());
+        $this->assertSame('content', $listContent->getContent());
     }
 
-    public function testLinkWithLinkAttributes(): void
+    public function testListContentWithAttributes(): void
     {
-        $link = DropdownItem::link('label', 'url', linkAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item test-class" href="url">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::listContent('content', attributes: ['class' => 'test-class'])->getAttributes(),
         );
-    }
-
-    public function testLinkWithLinkAttributesAndActive(): void
-    {
-        $link = DropdownItem::link('label', 'url', active: true, linkAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item active test-class" href="url" aria-current="true">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
-        );
-    }
-
-    public function testLinkWithLinkAttributesAndDisabled(): void
-    {
-        $link = DropdownItem::link('label', 'url', disabled: true, linkAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <a class="dropdown-item disabled test-class" href="url" aria-disabled="true">label</a>
-            </li>
-            HTML,
-            $link->getLiContent()->render(),
-        );
-    }
-
-    public function testLinkWithActiveAndDisabled(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
-
-        DropdownItem::link('label', 'url', active: true, disabled: true);
     }
 
     public function testText(): void
     {
         $text = DropdownItem::text('content');
 
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <span class="dropdown-item-text">content</span>
-            </li>
-            HTML,
-            $text->getLiContent()->render(),
-        );
+        $this->assertSame('text', $text->getType());
+        $this->assertSame('content', $text->getContent());
     }
 
     public function testTextWithAttributes(): void
     {
-        $text = DropdownItem::text('content', ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li class="test-class">
-            <span class="dropdown-item-text">content</span>
-            </li>
-            HTML,
-            $text->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::text('content', attributes: ['class' => 'test-class'])->getAttributes(),
         );
     }
 
-    public function testTextWithTextAttributes(): void
+    public function testTextWithItemAttributes(): void
     {
-        $text = DropdownItem::text('content', textAttributes: ['class' => 'test-class']);
-
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <li>
-            <span class="dropdown-item-text test-class">content</span>
-            </li>
-            HTML,
-            $text->getLiContent()->render(),
+        $this->assertSame(
+            ['class' => 'test-class'],
+            DropdownItem::text('content', itemAttributes: ['class' => 'test-class'])->getItemAttributes(),
         );
+    }
+
+    public function testThrowExceptionForHeaderWithTagEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The header tag cannot be empty.');
+
+        DropdownItem::header('content', headerTag: '');
+    }
+
+    public function testThrowExceptionForLinkWithActiveAndDisabled(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        DropdownItem::link('label', 'url', active: true, disabled: true);
     }
 }

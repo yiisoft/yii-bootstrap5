@@ -422,7 +422,7 @@ final class Nav extends \Yiisoft\Widget\Widget
         $items = $dropdown->getItems();
 
         foreach ($items as $key => $value) {
-            if ($value->getUrl() === $this->currentPath && $this->activateItems) {
+            if ($value->getType() === 'link' && $value->getUrl() === $this->currentPath && $this->activateItems) {
                 $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
             }
         }

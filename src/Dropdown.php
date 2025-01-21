@@ -11,6 +11,8 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Hr;
+use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Html\Tag\Ul;
 
@@ -39,6 +41,12 @@ use Yiisoft\Html\Tag\Ul;
 final class Dropdown extends \Yiisoft\Widget\Widget
 {
     private const DROPDOWN_CLASS = 'dropdown';
+    private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
+    private const DROPDOWN_ITEM_CLASS = 'dropdown-item';
+    private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
+    private const DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-divider';
+    private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
+    private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
     private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
     private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
     private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
@@ -546,6 +554,153 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Renders the dropdown item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItem(DropdownItem $item): Li
+    {
+        return match ($item->getType()) {
+            'button' => $this->renderItemButton($item),
+            'custom-content' => $this->renderListContentItem($item),
+            'divider' => $this->renderItemDivider($item),
+            'header' => $this->renderItemHeader($item),
+            'link' => $this->renderItemLink($item),
+            'text' => $this->renderItemText($item),
+        };
+    }
+
+    /**
+     * Renders the dropdown button item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItemButton(DropdownItem $item): Li
+    {
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent(
+                "\n",
+                Button::button('')
+                    ->addAttributes($item->getItemAttributes())
+                    ->addContent($item->getContent())
+                    ->addClass(self::DROPDOWN_ITEM_CLASS),
+                "\n"
+            );
+    }
+
+    /**
+     * Renders the dropdown divider item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItemDivider(DropdownItem $item): Li
+    {
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent(
+                "\n",
+                Hr::tag()->addAttributes($item->getItemAttributes())->addClass(self::DROPDOWN_ITEM_DIVIDER_CLASS),
+                "\n"
+            );
+    }
+
+    /**
+     * Renders the dropdown header item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItemHeader(DropdownItem $item): Li
+    {
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent(
+                "\n",
+                Html::tag($item->getHeaderTag())
+                    ->addAttributes($item->getItemAttributes())
+                    ->addClass(self::DROPDOWN_ITEM_HEADER_CLASS)
+                    ->content($item->getContent()),
+                "\n"
+            );
+    }
+
+    /**
+     * Renders the dropdown link item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItemLink(DropdownItem $item): Li
+    {
+        $itemAttributes = $item->getItemAttributes();
+        Html::addCssClass($itemAttributes, self::DROPDOWN_ITEM_CLASS);
+
+        if ($item->isActive()) {
+            Html::addCssClass($itemAttributes, self::DROPDOWN_ITEM_ACTIVE_CLASS);
+            $itemAttributes['aria-current'] = 'true';
+        }
+
+        if ($item->isDisabled()) {
+            Html::addCssClass($itemAttributes, self::DROPDOWN_ITEM_DISABLED_CLASS);
+            $itemAttributes['aria-disabled'] = 'true';
+        }
+
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent(
+                "\n",
+                A::tag()->addAttributes($itemAttributes)->content($item->getContent())->url($item->getUrl()),
+                "\n",
+            );
+    }
+
+    /**
+     * Renders the dropdown custom content item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderListContentItem(DropdownItem $item): Li
+    {
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent("\n", $item->getContent(), "\n")
+            ->encode(false);
+    }
+
+    /**
+     * Renders the dropdown text item.
+     *
+     * @param DropdownItem $item The dropdown item.
+     *
+     * @return Li The list item tag.
+     */
+    private function renderItemText(DropdownItem $item): Li
+    {
+        return Li::tag()
+            ->addAttributes($item->getAttributes())
+            ->addContent(
+                "\n",
+                Span::tag()
+                    ->addAttributes($item->getItemAttributes())
+                    ->addClass(self::DROPDOWN_ITEM_TEXT_CLASS)
+                    ->content($item->getContent())
+                    ->encode(false),
+                "\n"
+            );
+    }
+
+    /**
      * Renders the dropdown items.
      *
      * @param string|null $toggleId The ID of the toggle button.
@@ -559,15 +714,11 @@ final class Dropdown extends \Yiisoft\Widget\Widget
         $items = [];
 
         foreach ($this->items as $item) {
-            $items[] = $item->getLiContent();
+            $items[] = $this->renderItem($item);
         }
 
         $ulTag = Ul::tag()
-            ->addAttributes(
-                [
-                    'aria-labelledby' => $toggleId,
-                ],
-            )
+            ->addAttributes(['aria-labelledby' => $toggleId])
             ->addClass(self::DROPDOWN_LIST_CLASS, ...$this->alignmentClasses)
             ->items(...$items);
 
