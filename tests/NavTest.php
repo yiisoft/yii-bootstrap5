@@ -649,7 +649,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             </ul>
             HTML,
             Nav::widget()
-                ->items(NavLink::to('Active', '#', active: true)->attributes(['data-test' => 'test']))
+                ->items(NavLink::to('Active', '#', active: true, attributes: ['data-test' => 'test']))
                 ->render(),
         );
     }
@@ -665,7 +665,7 @@ final class NavTest extends \PHPUnit\Framework\TestCase
             </ul>
             HTML,
             Nav::widget()
-                ->items(NavLink::to('Active', '#', active: true)->urlAttributes(['data-test' => 'test']))
+                ->items(NavLink::to('Active', '#', active: true, urlAttributes: ['data-test' => 'test']))
                 ->render(),
         );
     }
