@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
-use Yiisoft\Yii\Bootstrap5\Link;
 
 /**
  * Tests for `Link`.
  *
- * @group breadcrumblink
+ * @group breadcrumb
  */
 final class BreadcrumbLinkTest extends \PHPUnit\Framework\TestCase
 {
@@ -47,5 +46,16 @@ final class BreadcrumbLinkTest extends \PHPUnit\Framework\TestCase
         $active = BreadcrumbLink::to('label', 'url', active: true);
 
         $this->assertTrue($active->isActive());
+    }
+
+    public function testImmutability(): void
+    {
+        $link = BreadcrumbLink::to('');
+
+        $this->assertNotSame($link, $link->active(false));
+        $this->assertNotSame($link, $link->attributes([]));
+        $this->assertNotSame($link, $link->encodeLabel(false));
+        $this->assertNotSame($link, $link->label(''));
+        $this->assertNotSame($link, $link->url(''));
     }
 }
