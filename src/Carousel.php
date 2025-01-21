@@ -12,7 +12,6 @@ use Yiisoft\Html\Tag\Img;
 use Yiisoft\Html\Tag\Span;
 
 use function array_filter;
-use function array_merge;
 use function count;
 use function implode;
 
@@ -55,7 +54,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     private const CLASS_SLIDE = 'slide';
     private const NAME = 'carousel';
     private array $attributes = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private bool $controls = true;
     private string $captionTagName = 'h5';
     private string $captionPlaceholderTagName = 'p';
@@ -76,7 +75,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -87,7 +86,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -98,13 +97,10 @@ final class Carousel extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }
@@ -191,7 +187,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -200,10 +196,10 @@ final class Carousel extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -293,7 +289,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     public function crossfade(bool $value = true): self
     {
         $new = clone $this;
-        $new->cssClass['crossfade'] = $value === true ? 'carousel-fade' : null;
+        $new->cssClasses['crossfade'] = $value === true ? 'carousel-fade' : null;
 
         return $new;
     }
@@ -394,7 +390,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
             default => $this->id,
         };
 
-        Html::addCssClass($attributes, [self::NAME, self::CLASS_SLIDE, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, self::CLASS_SLIDE, $classes, ...$this->cssClasses]);
 
         return Div::tag()
             ->attributes($attributes)
