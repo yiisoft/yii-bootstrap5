@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Types for the Bootstrap5 {@see \Yiisoft\Yii\Button} component.
+ * Types for the {@see \Yiisoft\Yii\Bootstrap5\Button} component.
  */
 enum ButtonType: string
 {
@@ -14,19 +14,19 @@ enum ButtonType: string
      */
     case LINK = 'link';
     /**
-     * Reset button - Renders as `<button type="reset">`.
+     * Reset button, renders as `<button type="reset">`.
      */
     case RESET = 'reset';
     /**
-     * Reset input - Renders as `<input type="reset">`.
+     * Reset input, renders as `<input type="reset">`.
      */
     case RESET_INPUT = 'reset-input';
     /**
-     * Submit button - Renders as `<button type="submit">`.
+     * Submit button, renders as `<button type="submit">`.
      */
     case SUBMIT = 'submit';
     /**
-     * Submit input - Renders as `<input type="submit">`.
+     * Submit input, renders as `<input type="submit">`.
      */
     case SUBMIT_INPUT = 'submit-input';
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Variants for the Bootstrap5 {@see \Yiisoft\Yii\Button} component.
+ * Variants for the {@see \Yiisoft\Yii\Bootstrap5\Button} component.
  *
  * @see https://getbootstrap.com/docs/5.3/components/buttons/#variants
  * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
