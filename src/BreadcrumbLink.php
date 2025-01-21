@@ -30,11 +30,11 @@ final class BreadcrumbLink
      * Use {@see BreadcrumbLink::to()} to create an instance.
      */
     private function __construct(
-        private readonly string $label = '',
-        private readonly string|null $url = null,
-        private readonly bool $active = false,
-        private readonly bool $encodeLabel = true,
-        private readonly array $attributes = [],
+        private string $label = '',
+        private string|null $url = null,
+        private bool $active = false,
+        private bool $encodeLabel = true,
+        private array $attributes = [],
     ) {
     }
 
@@ -51,12 +51,89 @@ final class BreadcrumbLink
      */
     public static function to(
         string $label,
-        string $url = null,
+        string|null $url = null,
         bool $active = false,
         array $attributes = [],
         bool $encodeLabel = true
     ): self {
         return new self($label, $url, $active, $encodeLabel, $attributes);
+    }
+
+    /**
+     * Sets the active state of the breadcrumb link.
+     *
+     * @param bool $value Whether the breadcrumb link is active.
+     *
+     * @return self A new instance with the specified active state.
+     */
+    public function active(bool $value): self
+    {
+        $new = clone $this;
+        $new->active = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the breadcrumb link.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $values): self
+    {
+        $new = clone $this;
+        $new->attributes = $values;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to HTML encode the label.
+     *
+     * @param bool $value Whether to HTML encode the label.
+     *
+     * @return self A new instance with the specified encoding behavior.
+     */
+    public function encodeLabel(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the label text to display.
+     *
+     * @param string $value The label text to display.
+     *
+     * @return self A new instance with the specified label.
+     */
+    public function label(string $value): self
+    {
+        $new = clone $this;
+        $new->label = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the URL for the breadcrumb link.
+     *
+     * @param string|null $value The URL for the link.
+     *
+     * @return self A new instance with the specified URL.
+     */
+    public function url(string|null $value): self
+    {
+        $new = clone $this;
+        $new->url = $value;
+
+        return $new;
     }
 
     /**
