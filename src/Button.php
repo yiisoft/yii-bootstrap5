@@ -10,9 +10,6 @@ use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Button as ButtonTag;
 use Yiisoft\Html\Tag\Input;
 
-use function array_merge;
-use function array_filter;
-
 /**
  * Button renders a bootstrap button.
  *
@@ -29,7 +26,7 @@ final class Button extends \Yiisoft\Widget\Widget
     private const NAME = 'btn';
     private array $attributes = [];
     private ButtonVariant|null $buttonVariant = ButtonVariant::SECONDARY;
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private bool $disabled = false;
     private bool|string $id = true;
     private string|Stringable $label = '';
@@ -147,7 +144,7 @@ final class Button extends \Yiisoft\Widget\Widget
 
         $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
-        $new->cssClass['active'] = $activeClass;
+        $new->cssClasses['active'] = $activeClass;
 
         return $new;
     }
@@ -162,7 +159,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -173,7 +170,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -184,13 +181,10 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }
@@ -256,7 +250,7 @@ final class Button extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -265,10 +259,10 @@ final class Button extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -281,7 +275,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function disableTextWrapping(): self
     {
         $new = clone $this;
-        $new->cssClass['text-nowrap'] = 'text-nowrap';
+        $new->cssClasses['text-nowrap'] = 'text-nowrap';
 
         return $new;
     }
@@ -345,7 +339,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function largeSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = 'btn-lg';
+        $new->cssClasses['size'] = 'btn-lg';
 
         return $new;
     }
@@ -358,7 +352,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function normalSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = null;
+        $new->cssClasses['size'] = null;
 
         return $new;
     }
@@ -371,7 +365,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function smallSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = 'btn-sm';
+        $new->cssClasses['size'] = 'btn-sm';
 
         return $new;
     }
@@ -395,12 +389,9 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Sets the button type. The following options are allowed:
-     * - `ButtonType::LINK`: A link button.
-     * - `ButtonType::RESET`: A reset button.
-     * - `ButtonType::RESET_INPUT`: A reset button input.
-     * - `ButtonType::SUBMIT`: A submit button.
-     * - `ButtonType::SUBMIT_INPUT`: A submit button input.
+     * Sets the button type.
+     *
+     * @param ButtonType $value The button type.
      */
     public function type(ButtonType $value): self
     {
@@ -432,26 +423,7 @@ final class Button extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Set the button variant. The following options are allowed:
-     *
-     * - `ButtonVariant::PRIMARY`: Primary button.
-     * - `ButtonVariant::SECONDARY`: Secondary button.
-     * - `ButtonVariant::SUCCESS`: Success button.
-     * - `ButtonVariant::DANGER`: Danger button.
-     * - `ButtonVariant::WARNING`: Warning button.
-     * - `ButtonVariant::INFO`: Info button.
-     * - `ButtonVariant::LIGHT`: Light button.
-     * - `ButtonVariant::DARK`: Dark button.
-     * - `ButtonVariant::LINK`: Link button.
-     * - `ButtonVariant::OUTLINE_PRIMARY`: Primary outline button.
-     * - `ButtonVariant::OUTLINE_SECONDARY`: Secondary outline button.
-     * - `ButtonVariant::OUTLINE_SUCCESS`: Success outline button.
-     * - `ButtonVariant::OUTLINE_DANGER`: Danger outline button.
-     * - `ButtonVariant::OUTLINE_WARNING`: Warning outline button.
-     * - `ButtonVariant::OUTLINE_INFO`: Info outline button.
-     * - `ButtonVariant::OUTLINE_LIGHT`: Light outline button.
-     * - `ButtonVariant::OUTLINE_DARK`: Dark outline button.
-     * - `null`: No variant set.
+     * Set the button variant.
      *
      * @param ButtonVariant $value The button variant. If `null`, the variant will not be set.
      *
@@ -488,7 +460,7 @@ final class Button extends \Yiisoft\Widget\Widget
         Html::addCssClass($attributes, [self::NAME, $this->buttonVariant?->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
-        $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClass)->id($id);
+        $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClasses)->id($id);
 
         if ($tag instanceof Input) {
             if ($this->label !== '') {
