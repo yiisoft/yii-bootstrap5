@@ -8,8 +8,6 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Div;
 
-use function array_filter;
-use function array_merge;
 use function implode;
 
 /**
@@ -56,7 +54,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     /** @psalm-var ButtonGroup[]|Tag[] $buttonGroups */
     private array $buttonGroups = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private bool|string $id = true;
 
     /**
@@ -69,7 +67,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$new->attributes, ...$values];
 
         return $new;
     }
@@ -80,7 +78,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -91,13 +89,10 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }
@@ -157,7 +152,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -166,10 +161,10 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -210,7 +205,7 @@ final class ButtonToolbar extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClasses]);
 
         $buttonGroup = implode("\n", $this->buttonGroups);
         $buttonsGroups = $buttonGroup === '' ? '' : "\n" . $buttonGroup . "\n";
