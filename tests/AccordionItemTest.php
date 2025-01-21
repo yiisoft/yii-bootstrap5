@@ -50,28 +50,54 @@ final class AccordionItemTest extends \PHPUnit\Framework\TestCase
         $this->assertStringMatchesFormat('collapse-%x', $item->getId());
     }
 
-    public function testIdWithEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
-
-        $accordionItem = AccordionItem::to('header', 'body', '');
-        $accordionItem->getId();
-    }
-
-    public function testIdWithFalse(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
-
-        $accordionItem = AccordionItem::to('header', 'body', false);
-        $accordionItem->getId();
-    }
-
     public function testIdWithValue(): void
     {
         $item = AccordionItem::to('header', 'body', 'custom-id');
 
         $this->assertSame('custom-id', $item->getId());
+    }
+
+    public function testImmutability(): void
+    {
+        $item = AccordionItem::to();
+
+        $this->assertNotSame($item, $item->active(false));
+        $this->assertNotSame($item, $item->body(''));
+        $this->assertNotSame($item, $item->encodeBody(false));
+        $this->assertNotSame($item, $item->encodeHeader(false));
+        $this->assertNotSame($item, $item->id('custom-id'));
+        $this->assertNotSame($item, $item->header(''));
+    }
+
+    public function testThrowExceptionForIdWithEmptyConstructor(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
+
+        AccordionItem::to('header', 'body', '')->getId();
+    }
+
+    public function testThrowExceptionForIdWithFalseConstructor(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
+
+        AccordionItem::to('header', 'body', false)->getId();
+    }
+
+    public function testThrowExceptionForIdWithEmptyMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
+
+        AccordionItem::to('header', 'body')->id('');
+    }
+
+    public function testThrowExceptionForIdWithFalseMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`.');
+
+        AccordionItem::to('header', 'body')->id(false);
     }
 }
