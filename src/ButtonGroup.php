@@ -9,8 +9,6 @@ use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
 
-use function array_filter;
-use function array_merge;
 use function implode;
 
 /**
@@ -40,7 +38,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     /** psalm-var Button[]|Checkbox[]|Radio[] $buttons */
     private array $buttons = [];
-    private array $cssClass = [];
+    private array $cssClasses = [];
     private bool|string $id = true;
 
     /**
@@ -53,7 +51,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function addAttributes(array $values): self
     {
         $new = clone $this;
-        $new->attributes = array_merge($this->attributes, $values);
+        $new->attributes = [...$this->attributes, ...$values];
 
         return $new;
     }
@@ -64,7 +62,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -75,13 +73,10 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$value): self
+    public function addClass(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_merge(
-            $new->cssClass,
-            array_filter($value, static fn ($v) => $v !== null)
-        );
+        $new->cssClasses = [...$this->cssClasses, ...$values];
 
         return $new;
     }
@@ -141,7 +136,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -150,10 +145,10 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$value): self
+    public function class(string|null ...$values): self
     {
         $new = clone $this;
-        $new->cssClass = array_filter($value, static fn ($v) => $v !== null);
+        $new->cssClasses = $values;
 
         return $new;
     }
@@ -181,7 +176,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function largeSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = 'btn-lg';
+        $new->cssClasses['size'] = 'btn-lg';
 
         return $new;
     }
@@ -194,7 +189,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function normalSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = null;
+        $new->cssClasses['size'] = null;
 
         return $new;
     }
@@ -207,7 +202,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function smallSize(): self
     {
         $new = clone $this;
-        $new->cssClass['size'] = 'btn-sm';
+        $new->cssClasses['size'] = 'btn-sm';
 
         return $new;
     }
@@ -220,7 +215,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
     public function vertical(): self
     {
         $new = clone $this;
-        $new->cssClass[] = 'btn-group-vertical';
+        $new->cssClasses[] = 'btn-group-vertical';
 
         return $new;
     }
@@ -245,7 +240,7 @@ final class ButtonGroup extends \Yiisoft\Widget\Widget
 
         unset($attributes['class'], $attributes['id']);
 
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClass]);
+        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClasses]);
 
         $button = implode("\n", $this->buttons);
         $buttons = $button === '' ? '' : "\n" . $button . "\n";
