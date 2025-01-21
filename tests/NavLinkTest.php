@@ -18,7 +18,12 @@ final class NavLinkTest extends \PHPUnit\Framework\TestCase
     {
         $navLink = NavLink::to('Home', '/', true);
 
+        $this->assertNotSame($navLink, $navLink->active(false));
         $this->assertNotSame($navLink, $navLink->attributes([]));
+        $this->assertNotSame($navLink, $navLink->disabled(false));
+        $this->assertNotSame($navLink, $navLink->encodeLabel(false));
+        $this->assertNotSame($navLink, $navLink->label(''));
+        $this->assertNotSame($navLink, $navLink->url(''));
         $this->assertNotSame($navLink, $navLink->urlAttributes([]));
     }
 

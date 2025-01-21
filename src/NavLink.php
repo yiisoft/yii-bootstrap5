@@ -27,19 +27,64 @@ use Stringable;
  */
 final class NavLink
 {
-    private bool $active = false;
-    private array $attributes = [];
-    private bool $encodeLabel = true;
-    private bool $disabled = false;
-    private string|Stringable $label = '';
-    private string|null $url = '';
-    private array $urlAttributes = [];
-
     /**
      * Use {@see NavLink::to()} to create an instance.
      */
-    private function __construct()
+    private function __construct(
+        private bool $active = false,
+        private array $attributes = [],
+        private bool $encodeLabel = true,
+        private bool $disabled = false,
+        private string|Stringable $label = '',
+        private string|null $url = '',
+        private array $urlAttributes = [],
+    ) {
+    }
+
+    /**
+     * Creates a {@see NavLink} instance.
+     *
+     * @param string|Stringable $label The label of the link.
+     * @param string|null $url The URL of the link.
+     * @param bool $active Whether the link is active.
+     * @param bool $disabled Whether the link is disabled.
+     * @param bool $encodeLabel Whether the label should be encoded.
+     * @param array $attributes The HTML attributes for the nav item.
+     * @param array $urlAttributes The HTML attributes for the nav item link.
+     *
+     * @throws InvalidArgumentException If the link is both active and disabled.
+     *
+     * @return self A new instance with the specified attributes.
+     */
+    public static function to(
+        string|Stringable $label = '',
+        string|null $url = null,
+        bool $active = false,
+        bool $disabled = false,
+        bool $encodeLabel = true,
+        array $attributes = [],
+        array $urlAttributes = [],
+    ): self {
+        if ($active && $disabled) {
+            throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
+        }
+
+        return new self($active, $attributes, $encodeLabel, $disabled, $label, $url, $urlAttributes);
+    }
+
+    /**
+     * Sets the active state of the nav item.
+     *
+     * @param bool $value Whether the nav item is active.
+     *
+     * @return self A new instance with the specified active state.
+     */
+    public function active(bool $value): self
     {
+        $new = clone $this;
+        $new->active = $value;
+
+        return $new;
     }
 
     /**
@@ -60,13 +105,73 @@ final class NavLink
     }
 
     /**
-     * Sets the HTML attributes for the nav item link.
+     * Sets the disabled state of the nav item.
+     *
+     * @param bool $value Whether the nav item is disabled.
+     *
+     * @return self A new instance with the specified disabled state.
+     */
+    public function disabled(bool $value): self
+    {
+        $new = clone $this;
+        $new->disabled = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to HTML-encode the label.
+     *
+     * @param bool $value Whether to encode the label.
+     *
+     * @return self New instance with the specified encode setting.
+     */
+    public function encodeLabel(bool $value): self
+    {
+        $new = clone $this;
+        $new->encodeLabel = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the label text for the nav item.
+     *
+     * @param string|Stringable $value The label text or Stringable object
+     *
+     * @return self New instance with the specified label text.
+     */
+    public function label(string|Stringable $value): self
+    {
+        $new = clone $this;
+        $new->label = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the URL for the nav item.
+     *
+     * @param string|null $value The URL or `null` for no URL.
+     *
+     * @return self New instance with the specified URL.
+     */
+    public function url(string|null $value): self
+    {
+        $new = clone $this;
+        $new->url = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets HTML attributes for the nav item link.
      *
      * @param array $values Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified attributes.
+     * @return self New instance with the specified link attributes.
      *
-     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
      */
     public function urlAttributes(array $values): self
     {
@@ -74,40 +179,6 @@ final class NavLink
         $new->urlAttributes = $values;
 
         return $new;
-    }
-
-    /**
-     * Creates a nav item.
-     *
-     * @param string|Stringable $label The label of the link.
-     * @param string|null $url The URL of the link.
-     * @param bool $active Whether the link is active.
-     * @param bool $disabled Whether the link is disabled.
-     *
-     * @throws InvalidArgumentException If the link is both active and disabled.
-     *
-     * @return self A new instance with the specified attributes.
-     */
-    public static function to(
-        string|Stringable $label = '',
-        string|null $url = null,
-        bool $active = false,
-        bool $disabled = false,
-        bool $encodeLabel = true
-    ): self {
-        $navlink = new self();
-
-        if ($active === true && $disabled === true) {
-            throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
-        }
-
-        $navlink->active = $active;
-        $navlink->disabled = $disabled;
-        $navlink->encodeLabel = $encodeLabel;
-        $navlink->label = $label;
-        $navlink->url = $url;
-
-        return $navlink;
     }
 
     /**
