@@ -670,6 +670,25 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testNavLinkWithVisibleFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav">
+            <li class="nav-item">
+            <a class="nav-link active" href="#" aria-current="page">Active</a>
+            </li>
+            </ul>
+            HTML,
+            Nav::widget()
+                ->items(
+                    NavLink::to('Active', '#', active: true),
+                    NavLink::to('Invisible', '#', visible: false),
+                )
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#pills
      */

@@ -38,6 +38,7 @@ final class NavLink
         private string|Stringable $label = '',
         private string|null $url = '',
         private array $urlAttributes = [],
+        private bool $visible = true,
     ) {
     }
 
@@ -51,6 +52,7 @@ final class NavLink
      * @param bool $encodeLabel Whether the label should be encoded.
      * @param array $attributes The HTML attributes for the nav item.
      * @param array $urlAttributes The HTML attributes for the nav item link.
+     * @param bool $visible Whether the nav item is visible.
      *
      * @throws InvalidArgumentException If the link is both active and disabled.
      *
@@ -64,12 +66,13 @@ final class NavLink
         bool $encodeLabel = true,
         array $attributes = [],
         array $urlAttributes = [],
+        bool $visible = true,
     ): self {
         if ($active && $disabled) {
             throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
         }
 
-        return new self($active, $attributes, $encodeLabel, $disabled, $label, $url, $urlAttributes);
+        return new self($active, $attributes, $encodeLabel, $disabled, $label, $url, $urlAttributes, $visible);
     }
 
     /**
@@ -182,6 +185,21 @@ final class NavLink
     }
 
     /**
+     * Sets the visibility of the nav item.
+     *
+     * @param bool $value Whether the nav item is visible.
+     *
+     * @return self A new instance with the specified visibility.
+     */
+    public function visible(bool $value): self
+    {
+        $new = clone $this;
+        $new->visible = $value;
+
+        return $new;
+    }
+
+    /**
      * @return array The HTML attributes for the nav item.
      */
     public function getAttributes(): array
@@ -219,6 +237,14 @@ final class NavLink
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    /**
+     * @return bool Whether the nav item is visible.
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 
     /**

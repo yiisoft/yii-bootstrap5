@@ -282,7 +282,7 @@ final class Nav extends \Yiisoft\Widget\Widget
         foreach ($this->items as $item) {
             if ($item instanceof Dropdown) {
                 $items[] = $this->renderItemsDropdown($item);
-            } else {
+            } elseif ($item->isVisible()) {
                 $items[] = $this->renderNavLink($item);
             }
         }
