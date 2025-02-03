@@ -174,7 +174,7 @@ final class Nav extends \Yiisoft\Widget\Widget
         return $new;
     }
 
-        /**
+    /**
      * Sets the HTML attributes for the content of the nav component.
      *
      * @param array $values Attribute values indexed by attribute names.
