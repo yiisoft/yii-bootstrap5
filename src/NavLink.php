@@ -45,7 +45,7 @@ final class NavLink
         private string|null $url = '',
         private array $urlAttributes = [],
         private bool $visible = true,
-        private string|Stringable|null $content = null,
+        private string|Stringable $content = '',
         private array $paneAttributes = [],
     ) {
     }
@@ -209,7 +209,7 @@ final class NavLink
     /**
      * @return string|Stringable|null The content of the tab pane.
      */
-    public function getContent(): string|Stringable|null
+    public function getContent(): string|Stringable
     {
         return $this->content;
     }
@@ -251,7 +251,7 @@ final class NavLink
      */
     public function hasContent(): bool
     {
-        return $this->content !== null;
+        return $this->content !== '';
     }
 
     /**
