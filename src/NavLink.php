@@ -207,7 +207,7 @@ final class NavLink
     }
 
     /**
-     * @return string|Stringable|null The content of the tab pane.
+     * @return string|Stringable The content of the tab pane.
      */
     public function getContent(): string|Stringable
     {
