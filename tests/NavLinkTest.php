@@ -23,12 +23,13 @@ final class NavLinkTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($navLink, $navLink->disabled(false));
         $this->assertNotSame($navLink, $navLink->encodeLabel(false));
         $this->assertNotSame($navLink, $navLink->label(''));
+        $this->assertNotSame($navLink, $navLink->paneAttributes([]));
         $this->assertNotSame($navLink, $navLink->url(''));
         $this->assertNotSame($navLink, $navLink->urlAttributes([]));
         $this->assertNotSame($navLink, $navLink->visible(false));
     }
 
-    public function testThrowExceptionwithActiveAndDisableTrueValue(): void
+    public function testThrowExceptionWithActiveAndDisableTrueValue(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A nav link cannot be both active and disabled.');

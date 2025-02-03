@@ -23,6 +23,12 @@ use Stringable;
  *
  * // Create a disabled nav link
  * NavLink::to('Disabled', '#', false, true);
+ *
+ * // Create a tab with content
+ * NavLink::tab('Tab 1', 'Content 1');
+ *
+ * // Create an active tab with content
+ * NavLink::tab('Tab 2', 'Content 2', true);
  * ```
  */
 final class NavLink
@@ -39,6 +45,8 @@ final class NavLink
         private string|null $url = '',
         private array $urlAttributes = [],
         private bool $visible = true,
+        private string|Stringable|null $content = null,
+        private array $paneAttributes = [],
     ) {
     }
 
@@ -76,6 +84,52 @@ final class NavLink
     }
 
     /**
+     * Creates a {@see NavLink} instance for a tab.
+     *
+     * @param string|Stringable $label The label of the tab.
+     * @param string|Stringable $content The content of the tab pane.
+     * @param bool $active Whether the tab is active.
+     * @param bool $disabled Whether the tab is disabled.
+     * @param bool $encodeLabel Whether the label should be encoded.
+     * @param array $attributes The HTML attributes for the nav item.
+     * @param array $urlAttributes The HTML attributes for the nav item link.
+     * @param array $paneAttributes The HTML attributes for the tab pane.
+     * @param bool $visible Whether the nav item is visible.
+     *
+     * @throws InvalidArgumentException If the tab is both active and disabled.
+     *
+     * @return self A new instance with the specified attributes.
+     */
+    public static function tab(
+        string|Stringable $label,
+        string|Stringable $content,
+        bool $active = false,
+        bool $disabled = false,
+        bool $encodeLabel = true,
+        array $attributes = [],
+        array $urlAttributes = [],
+        array $paneAttributes = [],
+        bool $visible = true,
+    ): self {
+        if ($active && $disabled) {
+            throw new InvalidArgumentException('A tab cannot be both active and disabled.');
+        }
+
+        return new self(
+            active: $active,
+            attributes: $attributes,
+            encodeLabel: $encodeLabel,
+            disabled: $disabled,
+            label: $label,
+            url: '#',
+            urlAttributes: $urlAttributes,
+            visible: $visible,
+            content: $content,
+            paneAttributes: $paneAttributes
+        );
+    }
+
+    /**
      * Sets the active state of the nav item.
      *
      * @param bool $value Whether the nav item is active.
@@ -108,6 +162,21 @@ final class NavLink
     }
 
     /**
+     * Sets the content of the tab pane.
+     *
+     * @param string|Stringable $value The content of the tab pane.
+     *
+     * @return self A new instance with the specified content.
+     */
+    public function content(string|Stringable $value): self
+    {
+        $new = clone $this;
+        $new->content = $value;
+
+        return $new;
+    }
+
+    /**
      * Sets the disabled state of the nav item.
      *
      * @param bool $value Whether the nav item is disabled.
@@ -123,11 +192,11 @@ final class NavLink
     }
 
     /**
-     * Sets whether to HTML-encode the label.
+     * Sets weather to HTML-encode the label.
      *
      * @param bool $value Whether to encode the label.
      *
-     * @return self New instance with the specified encode setting.
+     * @return self New instance with the specified encoded setting.
      */
     public function encodeLabel(bool $value): self
     {
@@ -135,6 +204,54 @@ final class NavLink
         $new->encodeLabel = $value;
 
         return $new;
+    }
+
+    /**
+     * @return string|Stringable|null The content of the tab pane.
+     */
+    public function getContent(): string|Stringable|null
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string|Stringable The label of Stringable object.
+     */
+    public function getLabel(): string|Stringable
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return array The HTML attributes for the tab pane.
+     */
+    public function getPaneAttributes(): array
+    {
+        return $this->paneAttributes;
+    }
+
+    /**
+     * @return string|null The URL of the nav item.
+     */
+    public function getUrl(): string|null
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return array The HTML attributes for the nav item link.
+     */
+    public function getUrlAttributes(): array
+    {
+        return $this->urlAttributes;
+    }
+
+    /**
+     * @return bool Whether the nav item has content.
+     */
+    public function hasContent(): bool
+    {
+        return $this->content !== null;
     }
 
     /**
@@ -148,6 +265,23 @@ final class NavLink
     {
         $new = clone $this;
         $new->label = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the tab pane.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self New instance with the specified pane attributes.
+     *
+     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
+     */
+    public function paneAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->paneAttributes = $values;
 
         return $new;
     }
@@ -208,35 +342,19 @@ final class NavLink
     }
 
     /**
-     * @return string|Stringable The label of Stringable object.
-     */
-    public function getLabel(): string|Stringable
-    {
-        return $this->label;
-    }
-
-    /**
-     * @return string|null The URL of the nav item.
-     */
-    public function getUrl(): string|null
-    {
-        return $this->url;
-    }
-
-    /**
-     * @return array The HTML attributes for the nav item link.
-     */
-    public function getUrlAttributes(): array
-    {
-        return $this->urlAttributes;
-    }
-
-    /**
      * @return bool Whether the nav item is active.
      */
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    /**
+     * @return bool Whether the nav item is disabled.
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 
     /**
@@ -253,13 +371,5 @@ final class NavLink
     public function shouldEncodeLabel(): bool
     {
         return $this->encodeLabel;
-    }
-
-    /**
-     * @return bool Whether the nav item is disabled.
-     */
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
     }
 }
