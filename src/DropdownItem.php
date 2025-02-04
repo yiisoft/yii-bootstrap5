@@ -35,10 +35,15 @@ use InvalidArgumentException;
 final class DropdownItem
 {
     private const TYPE_BUTTON = 'button';
+
     private const TYPE_CUSTOM_CONTENT = 'custom-content';
+
     private const TYPE_DIVIDER = 'divider';
+
     private const TYPE_HEADER = 'header';
+
     private const TYPE_LINK = 'link';
+
     private const TYPE_TEXT = 'text';
 
     /**

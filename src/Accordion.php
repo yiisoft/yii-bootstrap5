@@ -34,22 +34,39 @@ use function implode;
 final class Accordion extends Widget
 {
     private const CLASS_BODY = 'accordion-body';
+
     private const CLASS_COLLAPSE = 'accordion-collapse collapse';
+
     private const CLASS_HEADER = 'accordion-header';
+
     private const CLASS_ITEM = 'accordion-item';
+
     private const CLASS_TOGGLE = 'accordion-button';
+
     private const CLASS_TOGGLE_ACTIVE = 'collapsed';
+
     private const NAME = 'accordion';
+
     private bool $alwaysOpen = false;
+
     private array $attributes = [];
+
     private array $bodyAttributes = [];
+
     private array $collapseAttributes = [];
+
     private array $cssClasses = [];
+
     private array $headerAttributes = [];
+
     private string $headerTag = 'h2';
+
     private bool|string $id = true;
+
     private array $items = [];
+
     private array $toggleAttributes = [];
+
     private string|null $toggleTag = null;
 
     /**

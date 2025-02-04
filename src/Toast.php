@@ -43,13 +43,21 @@ final class Toast extends Widget
     use CloseButtonTrait;
 
     private string $body = '';
+
     private string $title = '';
+
     private string $dateTime = '';
+
     private array $titleOptions = [];
+
     private array $dateTimeOptions = [];
+
     private array $headerOptions = [];
+
     private array $bodyOptions = [];
+
     private array $options = [];
+
     private bool $encodeTags = false;
 
     #[Override]

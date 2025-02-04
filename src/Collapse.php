@@ -31,12 +31,17 @@ use function array_key_exists;
 final class Collapse extends AbstractToggleWidget
 {
     private array $options = [];
+
     private array $bodyOptions = [
         'tag' => 'div',
     ];
+
     private string|Stringable $content = '';
+
     private bool $horizontal = false;
+
     private bool $collapsed = false;
+
     private ?string $tagName = null;
 
     #[Override]

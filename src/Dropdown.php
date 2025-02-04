@@ -42,36 +42,66 @@ use Yiisoft\Html\Tag\Ul;
 final class Dropdown extends Widget
 {
     private const DROPDOWN_CLASS = 'dropdown';
+
     private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
+
     private const DROPDOWN_ITEM_CLASS = 'dropdown-item';
+
     private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
+
     private const DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-divider';
+
     private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
+
     private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
+
     private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
+
     private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
+
     private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
+
     private const DROPDOWN_TOGGLE_CONTAINER_CLASS = 'btn-group';
+
     private const DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
+
     private const DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
+
     private const NAME = 'dropdown';
+
     private array $alignmentClasses = [];
+
     private array $attributes = [];
+
     private array $cssClasses = [];
+
     private bool $container = true;
+
     private array $containerClasses = [self::DROPDOWN_CLASS];
+
     /** @psalm-var DropdownItem[] */
     private array $items = [];
+
     private array $toggleAttributes = [];
+
     private array $toggleClasses = [];
+
     private string|Stringable $toggleButton = '';
+
     private string $toggleContent = 'Dropdown button';
+
     private bool|string $toggleId = false;
+
     private bool $toggleLink = false;
+
     private string $toggleUrl = '#';
+
     private string|null $toggleSize = null;
+
     private bool $toggleSplit = false;
+
     private string $toggleSplitContent = 'Action';
+
     private DropdownToggleVariant $toggleVariant = DropdownToggleVariant::SECONDARY;
 
     /**

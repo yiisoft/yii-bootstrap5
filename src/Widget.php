@@ -13,13 +13,18 @@ abstract class Widget extends YiiWidget
      * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
      */
     final public const THEME_DARK = 'dark';
+
     /**
      * @psalm-suppress MissingClassConstType Remove suppress after fix https://github.com/vimeo/psalm/issues/11024
      */
     final public const THEME_LIGHT = 'light';
+
     private ?string $id = null;
+
     private bool $autoGenerate = true;
+
     private string $autoIdPrefix = 'bp5w';
+
     protected ?string $theme = null;
 
     /**
