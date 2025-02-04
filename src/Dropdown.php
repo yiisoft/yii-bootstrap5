@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
@@ -38,39 +39,69 @@ use Yiisoft\Html\Tag\Ul;
  *     ->render();
  * ```
  */
-final class Dropdown extends \Yiisoft\Widget\Widget
+final class Dropdown extends Widget
 {
-    private const DROPDOWN_CLASS = 'dropdown';
-    private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
-    private const DROPDOWN_ITEM_CLASS = 'dropdown-item';
-    private const DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
-    private const DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-divider';
-    private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
-    private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
-    private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
-    private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
-    private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
-    private const DROPDOWN_TOGGLE_CONTAINER_CLASS = 'btn-group';
-    private const DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
-    private const DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
-    private const NAME = 'dropdown';
+    private const string DROPDOWN_CLASS = 'dropdown';
+
+    private const string DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
+
+    private const string DROPDOWN_ITEM_CLASS = 'dropdown-item';
+
+    private const string DROPDOWN_ITEM_DISABLED_CLASS = 'disabled';
+
+    private const string DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-divider';
+
+    private const string DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
+
+    private const string DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
+
+    private const string DROPDOWN_LIST_CLASS = 'dropdown-menu';
+
+    private const string DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
+
+    private const string DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
+
+    private const string DROPDOWN_TOGGLE_CONTAINER_CLASS = 'btn-group';
+
+    private const string DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
+
+    private const string DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
+
+    private const string NAME = 'dropdown';
+
     private array $alignmentClasses = [];
+
     private array $attributes = [];
+
     private array $cssClasses = [];
+
     private bool $container = true;
+
     private array $containerClasses = [self::DROPDOWN_CLASS];
+
     /** @psalm-var DropdownItem[] */
     private array $items = [];
+
     private array $toggleAttributes = [];
+
     private array $toggleClasses = [];
+
     private string|Stringable $toggleButton = '';
+
     private string $toggleContent = 'Dropdown button';
+
     private bool|string $toggleId = false;
+
     private bool $toggleLink = false;
+
     private string $toggleUrl = '#';
+
     private string|null $toggleSize = null;
+
     private bool $toggleSplit = false;
+
     private string $toggleSplitContent = 'Action';
+
     private DropdownToggleVariant $toggleVariant = DropdownToggleVariant::SECONDARY;
 
     /**
@@ -416,7 +447,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function toggleSizeLarge(bool $value = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value === true ? 'btn-lg' : null;
+        $new->toggleSize = $value ? 'btn-lg' : null;
 
         return $new;
     }
@@ -433,7 +464,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function toggleSizeSmall(bool $value = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value === true ? 'btn-sm' : null;
+        $new->toggleSize = $value ? 'btn-sm' : null;
 
         return $new;
     }
@@ -524,7 +555,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             default => $this->toggleId,
         };
 
-        if ($this->toggleSplit === true) {
+        if ($this->toggleSplit) {
             $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
         }
 
@@ -764,7 +795,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
                     $this->toggleVariant,
                     $this->toggleSize,
                     self::DROPDOWN_TOGGLE_CLASS,
-                    $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                    $this->toggleSplit ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
                     $classes,
                 ],
             ),

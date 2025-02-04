@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Img;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
@@ -23,7 +24,7 @@ use function trim;
  *
  * @group navbar
  */
-final class NavBarTest extends \PHPUnit\Framework\TestCase
+final class NavBarTest extends TestCase
 {
     public function testAddAttributes(): void
     {

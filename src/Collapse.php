@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Override;
 use Stringable;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
@@ -30,14 +31,20 @@ use function array_key_exists;
 final class Collapse extends AbstractToggleWidget
 {
     private array $options = [];
+
     private array $bodyOptions = [
         'tag' => 'div',
     ];
+
     private string|Stringable $content = '';
+
     private bool $horizontal = false;
+
     private bool $collapsed = false;
+
     private ?string $tagName = null;
 
+    #[Override]
     public function getId(?string $suffix = '-collapse'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
@@ -122,6 +129,7 @@ final class Collapse extends AbstractToggleWidget
         return $options;
     }
 
+    #[Override]
     protected function prepareToggleOptions(): array
     {
         [$tagName, $options, $encode] = parent::prepareToggleOptions();
@@ -131,6 +139,7 @@ final class Collapse extends AbstractToggleWidget
         return [$tagName, $options, $encode];
     }
 
+    #[Override]
     public function begin(): ?string
     {
         parent::begin();

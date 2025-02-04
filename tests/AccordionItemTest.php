@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\AccordionItem;
 
@@ -12,7 +13,7 @@ use Yiisoft\Yii\Bootstrap5\AccordionItem;
  *
  * @group accordion
  */
-final class AccordionItemTest extends \PHPUnit\Framework\TestCase
+final class AccordionItemTest extends TestCase
 {
     public function testEncodeBody(): void
     {

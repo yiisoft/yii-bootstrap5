@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
@@ -17,7 +18,7 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
  *
  * @group nav
  */
-final class NavTest extends \PHPUnit\Framework\TestCase
+final class NavTest extends TestCase
 {
     public function testAddAttributes(): void
     {

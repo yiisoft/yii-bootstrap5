@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use BackedEnum;
 use InvalidArgumentException;
 use Yiisoft\Html\Html;
@@ -30,25 +31,42 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/accordion/
  */
-final class Accordion extends \Yiisoft\Widget\Widget
+final class Accordion extends Widget
 {
-    private const CLASS_BODY = 'accordion-body';
-    private const CLASS_COLLAPSE = 'accordion-collapse collapse';
-    private const CLASS_HEADER = 'accordion-header';
-    private const CLASS_ITEM = 'accordion-item';
-    private const CLASS_TOGGLE = 'accordion-button';
-    private const CLASS_TOGGLE_ACTIVE = 'collapsed';
-    private const NAME = 'accordion';
+    private const string CLASS_BODY = 'accordion-body';
+
+    private const string CLASS_COLLAPSE = 'accordion-collapse collapse';
+
+    private const string CLASS_HEADER = 'accordion-header';
+
+    private const string CLASS_ITEM = 'accordion-item';
+
+    private const string CLASS_TOGGLE = 'accordion-button';
+
+    private const string CLASS_TOGGLE_ACTIVE = 'collapsed';
+
+    private const string NAME = 'accordion';
+
     private bool $alwaysOpen = false;
+
     private array $attributes = [];
+
     private array $bodyAttributes = [];
+
     private array $collapseAttributes = [];
+
     private array $cssClasses = [];
+
     private array $headerAttributes = [];
+
     private string $headerTag = 'h2';
+
     private bool|string $id = true;
+
     private array $items = [];
+
     private array $toggleAttributes = [];
+
     private string|null $toggleTag = null;
 
     /**

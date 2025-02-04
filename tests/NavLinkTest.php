@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\NavLink;
 
@@ -12,7 +13,7 @@ use Yiisoft\Yii\Bootstrap5\NavLink;
  *
  * @group nav
  */
-final class NavLinkTest extends \PHPUnit\Framework\TestCase
+final class NavLinkTest extends TestCase
 {
     public function testImmutability(): void
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use BackedEnum;
 use InvalidArgumentException;
 use RuntimeException;
@@ -32,18 +33,28 @@ use function implode;
  *
  * @see https://getbootstrap.com/docs/5.3/components/breadcrumb/
  */
-final class Breadcrumbs extends \Yiisoft\Widget\Widget
+final class Breadcrumbs extends Widget
 {
-    private const LIST_NAME = 'breadcrumb';
-    private const ITEM_NAME = 'breadcrumb-item';
+    private const string LIST_NAME = 'breadcrumb';
+
+    private const string ITEM_NAME = 'breadcrumb-item';
+
     private array $attributes = [];
+
     private array $cssClasses = [];
+
     private string $itemActiveClass = 'active';
+
     private array $itemAttributes = [];
+
     private array $linkAttributes = [];
+
     private array $links = [];
+
     private array $listAttributes = [];
+
     private bool|string $listId = true;
+
     private string $listTagName = 'ol';
 
     /**
@@ -177,7 +188,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         }
 
         $new = clone $this;
-        $new->attributes['style'] = ['--bs-breadcrumb-divider' => "'$value'"];
+        $new->attributes['style'] = ['--bs-breadcrumb-divider' => sprintf("'%s'", $value)];
 
         return $new;
     }

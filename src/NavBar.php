@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
+use Override;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
@@ -42,31 +44,54 @@ use Yiisoft\Html\Tag\Span;
  * echo NavBar::end();
  * ```
  */
-final class NavBar extends \Yiisoft\Widget\Widget
+final class NavBar extends Widget
 {
-    private const NAME = 'navbar';
-    private const NAVBAR_BRAND = 'navbar-brand mb-0 h1';
-    private const NAVBAR_BRAND_LINK = 'navbar-brand';
-    private const NAV_CONTAINER = 'collapse navbar-collapse';
-    private const NAV_INNER_CONTAINER = 'container-fluid';
-    private const NAV_TOGGLE = 'navbar-toggler';
-    private const NAV_TOGGLE_ICON = 'navbar-toggler-icon';
+    private const string NAME = 'navbar';
+
+    private const string NAVBAR_BRAND = 'navbar-brand mb-0 h1';
+
+    private const string NAVBAR_BRAND_LINK = 'navbar-brand';
+
+    private const string NAV_CONTAINER = 'collapse navbar-collapse';
+
+    private const string NAV_INNER_CONTAINER = 'container-fluid';
+
+    private const string NAV_TOGGLE = 'navbar-toggler';
+
+    private const string NAV_TOGGLE_ICON = 'navbar-toggler-icon';
+
     private array $attributes = [];
+
     private string|Stringable $brand = '';
+
     private array $brandAttributes = [];
+
     private string|Stringable $brandText = '';
+
     private string|Stringable $brandImage = '';
+
     private array $brandImageAttributes = [];
+
     private string $brandUrl = '';
+
     private array $cssClass = [];
+
     private bool $container = false;
+
     private array $containerAttributes = [];
+
     private NavBarExpand $expand = NavBarExpand::LG;
+
     private bool $innerContainer = true;
+
     private array $innerContainerAttributes = [];
+
     private string $innerContainerTag = 'div';
+
     private bool|string $id = true;
+
     private string $tag = 'nav';
+
     private string $toggle = '';
 
     /**
@@ -372,6 +397,7 @@ final class NavBar extends \Yiisoft\Widget\Widget
      *
      * @return string The opening HTML tags for the navbar.
      */
+    #[Override]
     public function begin(): string
     {
         parent::begin();

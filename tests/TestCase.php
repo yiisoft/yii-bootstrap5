@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
-    private static function loadHtml(string $html): string
+    private function loadHtml(string $html): string
     {
         $output = str_replace(["\r", "\n"], '', $html);
         $output = str_replace(['>', '</'], [">\n", "\n</"], $output);
@@ -44,8 +44,8 @@ abstract class TestCase extends BaseTestCase
      */
     protected function assertEqualsHTML(string $expected, string $actual, string $message = ''): void
     {
-        $expected = self::loadHtml($expected);
-        $actual = self::loadHtml($actual);
+        $expected = $this->loadHtml($expected);
+        $actual = $this->loadHtml($actual);
 
         $this->assertEquals($expected, $actual, $message);
     }

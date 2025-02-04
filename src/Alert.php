@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
@@ -26,23 +27,38 @@ use function strtr;
  *
  * @link https://getbootstrap.com/docs/5.0/components/alerts/
  */
-final class Alert extends \Yiisoft\Widget\Widget
+final class Alert extends Widget
 {
-    private const CLASS_CLOSE_BUTTON = 'btn-close';
-    private const NAME = 'alert';
+    private const string CLASS_CLOSE_BUTTON = 'btn-close';
+
+    private const string NAME = 'alert';
+
     private array $attributes = [];
+
     private AlertVariant $alertType = AlertVariant::SECONDARY;
+
     private string|Stringable $body = '';
+
     private array $cssClasses = [];
+
     private array $closeButtonAttributes = [];
+
     private string|null $closeButtonTag = null;
+
     private string $closeButtonLabel = '';
+
     private bool $dismissable = false;
+
     private bool $fade = false;
+
     private string|null $header = null;
+
     private array $headerAttributes = [];
+
     private string $headerTag = 'h4';
+
     private bool|string $id = true;
+
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
     /**
@@ -133,7 +149,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     public function body(string|Stringable $value, bool $encode = true): self
     {
-        if ($encode === true) {
+        if ($encode) {
             $value = Html::encode($value);
         }
 
@@ -254,7 +270,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     public function header(string|null $value, bool $encode = true): self
     {
-        if ($encode === true) {
+        if ($encode) {
             $value = Html::encode($value);
         }
 

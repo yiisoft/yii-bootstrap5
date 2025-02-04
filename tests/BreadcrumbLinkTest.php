@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 
 /**
@@ -11,7 +12,7 @@ use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
  *
  * @group breadcrumb
  */
-final class BreadcrumbLinkTest extends \PHPUnit\Framework\TestCase
+final class BreadcrumbLinkTest extends TestCase
 {
     public function testGetAttributes(): void
     {

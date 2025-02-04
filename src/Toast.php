@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Override;
 use JsonException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
@@ -42,15 +43,24 @@ final class Toast extends Widget
     use CloseButtonTrait;
 
     private string $body = '';
+
     private string $title = '';
+
     private string $dateTime = '';
+
     private array $titleOptions = [];
+
     private array $dateTimeOptions = [];
+
     private array $headerOptions = [];
+
     private array $bodyOptions = [];
+
     private array $options = [];
+
     private bool $encodeTags = false;
 
+    #[Override]
     public function getId(?string $suffix = '-toast'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
@@ -61,6 +71,7 @@ final class Toast extends Widget
         return 'toast';
     }
 
+    #[Override]
     public function begin(): string
     {
         parent::begin();

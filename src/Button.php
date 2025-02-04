@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
@@ -21,15 +22,22 @@ use Yiisoft\Html\Tag\Input;
  *
  * @link https://getbootstrap.com/docs/5.3/components/buttons/
  */
-final class Button extends \Yiisoft\Widget\Widget
+final class Button extends Widget
 {
-    private const NAME = 'btn';
+    private const string NAME = 'btn';
+
     private array $attributes = [];
+
     private ButtonVariant|null $buttonVariant = ButtonVariant::SECONDARY;
+
     private array $cssClasses = [];
+
     private bool $disabled = false;
+
     private bool|string $id = true;
+
     private string|Stringable $label = '';
+
     private A|ButtonTag|Input|null $tag = null;
 
     /**
@@ -138,9 +146,9 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function active(bool $value = true): self
     {
-        $activeClass = $value === true ? 'active' : null;
-        $ariaPressed = $value === true ? 'true' : null;
-        $dataBsToggle = $value === true ? 'button' : null;
+        $activeClass = $value ? 'active' : null;
+        $ariaPressed = $value ? 'true' : null;
+        $dataBsToggle = $value ? 'button' : null;
 
         $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
@@ -222,7 +230,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function ariaExpanded(bool $value = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-expanded'] = $value === true ? 'true' : 'false';
+        $new->attributes['aria-expanded'] = $value ? 'true' : 'false';
 
         return $new;
     }

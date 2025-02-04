@@ -80,11 +80,7 @@ final class ProgressTest extends TestCase
             ->percent(90)
             ->barOptions(['class' => 'bg-danger']);
 
-        if ($striped === null) {
-            $widget = $widget->striped();
-        } else {
-            $widget = $widget->striped($striped);
-        }
+        $widget = $striped === null ? $widget->striped() : $widget->striped($striped);
 
         $html = $widget->render();
 
@@ -122,11 +118,7 @@ final class ProgressTest extends TestCase
             ->percent(90)
             ->barOptions(['class' => 'bg-danger']);
 
-        if ($animated === null) {
-            $widget = $widget->animated();
-        } else {
-            $widget = $widget->animated($animated);
-        }
+        $widget = $animated === null ? $widget->animated() : $widget->animated($animated);
 
         $html = $widget->render();
 

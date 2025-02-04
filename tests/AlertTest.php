@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
+use InvalidArgumentException;
 use Yiisoft\Yii\Bootstrap5\Alert;
 use Yiisoft\Yii\Bootstrap5\AlertVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
@@ -14,7 +16,7 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
  *
  * @group alert
  */
-final class AlertTest extends \PHPUnit\Framework\TestCase
+final class AlertTest extends TestCase
 {
     public function testAddAttributes(): void
     {
@@ -297,7 +299,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
     public function testDimissableWithCloseButtonWithTagNameEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Close button tag cannot be empty string.');
 
         Alert::widget()->closeButtonTag('')->dismissable(true)->render();
@@ -324,7 +326,7 @@ final class AlertTest extends \PHPUnit\Framework\TestCase
 
     public function testHeaderTagException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Header tag cannot be empty string.');
 
         Alert::widget()->header('Header')->headerTag('')->render();

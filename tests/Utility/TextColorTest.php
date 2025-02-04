@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests\Utility;
 
+use PHPUnit\Framework\TestCase;
 use BackedEnum;
 
 /**
@@ -11,7 +12,7 @@ use BackedEnum;
  *
  * @group utility
  */
-final class TextColorTest extends \PHPUnit\Framework\TestCase
+final class TextColorTest extends TestCase
 {
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\TextColorProvider::variant()

@@ -35,22 +35,22 @@ use Yiisoft\Html\Html;
  * );
  * ```
  */
-final class CarouselItem
+final readonly class CarouselItem
 {
     /**
      * Use {@see CarouselItem::to()} to create a new instance.
      */
     private function __construct(
-        private readonly bool $active = false,
-        private readonly array $attributes = [],
-        private readonly int|null $autoPlayingInterval = null,
-        private readonly string|null $caption = null,
-        private readonly array $captionAttributes = [],
-        private readonly string|null $captionPlaceholder = null,
-        private readonly array $captionPlaceholderAttributes = [],
-        private readonly string|Stringable $content = '',
-        private readonly bool $encodeCaption = true,
-        private readonly bool $encodeCaptionPlaceholder = true,
+        private bool $active = false,
+        private array $attributes = [],
+        private int|null $autoPlayingInterval = null,
+        private string|null $caption = null,
+        private array $captionAttributes = [],
+        private string|null $captionPlaceholder = null,
+        private array $captionPlaceholderAttributes = [],
+        private string|Stringable $content = '',
+        private bool $encodeCaption = true,
+        private bool $encodeCaptionPlaceholder = true,
     ) {
     }
 

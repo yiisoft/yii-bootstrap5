@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests\Utility;
 
+use PHPUnit\Framework\TestCase;
 use BackedEnum;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
@@ -12,7 +13,7 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
  *
  * @group utility
  */
-final class BackgroundColorTest extends \PHPUnit\Framework\TestCase
+final class BackgroundColorTest extends TestCase
 {
     /**
      * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\BackgroundColorProvider::variant()

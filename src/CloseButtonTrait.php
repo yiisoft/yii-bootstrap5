@@ -12,8 +12,11 @@ use Yiisoft\Html\Tag\Base\Tag;
 trait CloseButtonTrait
 {
     private array $closeButtonOptions = [];
+
     private string|Stringable $closeButtonLabel = '';
+
     private bool $encodeCloseButton = true;
+
     private bool $showCloseButton = true;
 
     abstract protected function toggleComponent(): string;
@@ -86,7 +89,7 @@ trait CloseButtonTrait
             $options['data-bs-target'] = '#' . $this->getId();
         }
 
-        if (empty($label) && !isset($options['aria-label']) && !isset($options['aria']['label'])) {
+        if (($label === '' || $label === '0') && !isset($options['aria-label']) && !isset($options['aria']['label'])) {
             $options['aria-label'] = 'Close';
         }
 

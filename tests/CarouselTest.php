@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\H2;
@@ -18,7 +19,7 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  *
  * @group carousel
  */
-final class CarouselTest extends \PHPUnit\Framework\TestCase
+final class CarouselTest extends TestCase
 {
     public function testAddAttributes(): void
     {

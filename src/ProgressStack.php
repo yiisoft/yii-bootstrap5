@@ -20,12 +20,13 @@ final class ProgressStack extends Widget
      * @var Progress[]
      */
     private array $bars = [];
+
     private array $options = [];
 
     public function bars(Progress ...$bars): self
     {
         $new = clone $this;
-        $new->bars = array_map(static fn (Progress $bar) => $bar->inStack(true), $bars);
+        $new->bars = array_map(static fn (Progress $bar): Progress => $bar->inStack(true), $bars);
 
         return $new;
     }

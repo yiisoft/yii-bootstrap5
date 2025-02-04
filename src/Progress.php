@@ -53,14 +53,23 @@ use const PHP_ROUND_HALF_UP;
 final class Progress extends Widget
 {
     private string $label = '';
+
     private string|Stringable $content = '';
+
     private int|float|null $percent = null;
+
     private int|float $min = 0;
+
     private int|float $max = 100;
+
     private array $options = [];
+
     private array $barOptions = [];
+
     private bool $striped = false;
+
     private bool $animated = false;
+
     private bool $inStack = false;
 
     public function render(): string
@@ -78,7 +87,7 @@ final class Progress extends Widget
 
         $options['role'] = 'progressbar';
 
-        if ($this->label) {
+        if ($this->label !== '' && $this->label !== '0') {
             $options['aria']['label'] = $this->label;
         }
 

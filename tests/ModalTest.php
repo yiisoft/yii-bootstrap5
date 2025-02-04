@@ -62,7 +62,7 @@ HTML;
         );
 
         $html = $modal->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
 <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -111,7 +111,7 @@ HTML;
                 )
             )
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Launch demo modal</button>
@@ -139,7 +139,7 @@ HTML;
             ->withCloseButtonOptions(['class' => 'btn-lg'])
             ->withToggleLabel('Show')
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -166,7 +166,7 @@ HTML;
             ->withoutCloseButton()
             ->withToggleLabel('Show')
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -192,7 +192,7 @@ HTML;
             ->footerOptions(['class' => 'text-dark'])
             ->withToggleLabel('Show')
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -219,7 +219,7 @@ HTML;
             ->withToggleLabel('Show')
             ->headerOptions(['class' => 'text-danger'])
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -246,7 +246,7 @@ HTML;
             ->withToggleLabel('Show')
             ->options(['class' => 'testMe'])
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -273,7 +273,7 @@ HTML;
             ->withToggleLabel('Show')
             ->title('My first modal.')
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -300,7 +300,7 @@ HTML;
             ->withToggleLabel('Show')
             ->title('')
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -328,7 +328,7 @@ HTML;
             ->title('My first modal.')
             ->titleOptions(['class' => 'text-center'])
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
@@ -354,7 +354,7 @@ HTML;
             ->id('test')
             ->withToggle(false)
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
 
@@ -446,7 +446,7 @@ HTML;
             ->withToggleLabel('Show')
             ->size($size)
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
 
         $this->assertEqualsHTML($expected, $html);
@@ -459,7 +459,7 @@ HTML;
             ->withToggleLabel('Show')
             ->fade(false)
             ->begin();
-        $html .= '<p>Woohoo, you\'re reading this text in a modal!</p>';
+        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
         $html .= Modal::end();
         $expected = <<<'HTML'
         <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Yiisoft\Widget\Widget;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Div;
@@ -48,13 +49,17 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/button-group/#button-toolbar
  */
-final class ButtonToolbar extends \Yiisoft\Widget\Widget
+final class ButtonToolbar extends Widget
 {
-    private const NAME = 'btn-toolbar';
+    private const string NAME = 'btn-toolbar';
+
     private array $attributes = [];
+
     /** @psalm-var ButtonGroup[]|Tag[] $buttonGroups */
     private array $buttonGroups = [];
+
     private array $cssClasses = [];
+
     private bool|string $id = true;
 
     /**

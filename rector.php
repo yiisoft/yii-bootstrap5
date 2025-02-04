@@ -2,15 +2,35 @@
 
 declare(strict_types=1);
 
-use Rector\Config\RectorConfig;
+return static function (\Rector\Config\RectorConfig $rectorConfig): void {
+    $rectorConfig->parallel();
 
-return RectorConfig::configure()
-    ->withPaths([
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
-    ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    ->withTypeCoverageLevel(0)
-    ->withDeadCodeLevel(0)
-    ->withCodeQualityLevel(0);
+    $rectorConfig->importNames();
+
+    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_83);
+
+    $rectorConfig->paths(
+        [
+            __DIR__ . '/src',
+            __DIR__ . '/tests',
+        ],
+    );
+
+    $rectorConfig->sets(
+        [
+            \Rector\Set\ValueObject\SetList::PHP_84,
+            \Rector\Set\ValueObject\LevelSetList::UP_TO_PHP_84,
+            \Rector\Set\ValueObject\SetList::CODE_QUALITY,
+            \Rector\Set\ValueObject\SetList::CODING_STYLE,
+            \Rector\Set\ValueObject\SetList::TYPE_DECLARATION,
+        ],
+    );
+
+    $rectorConfig->skip(
+        [
+            \Rector\Php73\Rector\String_\SensitiveHereNowDocRector::class,
+            \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
+            \Rector\Php81\Rector\Property\ReadOnlyPropertyRector::class,
+        ],
+    );
+};

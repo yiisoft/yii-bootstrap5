@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use Override;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Html\Html;
 
@@ -11,21 +12,33 @@ final class Offcanvas extends AbstractToggleWidget
 {
     use CloseButtonTrait;
 
-    public const PLACEMENT_TOP = 'offcanvas-top';
-    public const PLACEMENT_END = 'offcanvas-end';
-    public const PLACEMENT_BOTTOM = 'offcanvas-bottom';
-    public const PLACEMENT_START = 'offcanvas-start';
+    public const string PLACEMENT_TOP = 'offcanvas-top';
+
+    public const string PLACEMENT_END = 'offcanvas-end';
+
+    public const string PLACEMENT_BOTTOM = 'offcanvas-bottom';
+
+    public const string PLACEMENT_START = 'offcanvas-start';
 
     private array $options = [];
+
     private array $headerOptions = [];
+
     private array $titleOptions = [];
+
     private array $bodyOptions = [];
+
     private ?string $title = null;
+
     private string $placement = self::PLACEMENT_START;
+
     private bool $scroll = false;
+
     private bool $withoutBackdrop = false;
+
     protected bool $renderToggle = false;
 
+    #[Override]
     public function getId(?string $suffix = '-offcanvas'): ?string
     {
         return $this->options['id'] ?? parent::getId($suffix);
@@ -138,6 +151,7 @@ final class Offcanvas extends AbstractToggleWidget
         return $new;
     }
 
+    #[Override]
     public function begin(): string
     {
         parent::begin();
@@ -153,7 +167,7 @@ final class Offcanvas extends AbstractToggleWidget
         $options['id'] = $this->getId();
         $options['tabindex'] = -1;
 
-        if (!empty($this->title)) {
+        if ($this->title !== null && $this->title !== '' && $this->title !== '0') {
             if (isset($this->titleOptions['id'])) {
                 $options['aria-labelledby'] = $this->titleOptions['id'];
             } elseif ($options['id']) {

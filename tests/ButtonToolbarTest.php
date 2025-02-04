@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input;
 use Yiisoft\Yii\Bootstrap5\Button;
@@ -17,7 +18,7 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
  *
  * @group button-toolbar
  */
-final class ButtonToolbarTest extends \PHPUnit\Framework\TestCase
+final class ButtonToolbarTest extends TestCase
 {
     public function testAddAttributes(): void
     {
