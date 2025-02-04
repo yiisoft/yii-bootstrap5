@@ -20,7 +20,6 @@ final class ProgressStack extends Widget
      * @var Progress[]
      */
     private array $bars = [];
-
     private array $options = [];
 
     public function bars(Progress ...$bars): self

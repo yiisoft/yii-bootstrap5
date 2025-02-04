@@ -29,6 +29,7 @@ return static function (\Rector\Config\RectorConfig $rectorConfig): void {
     $rectorConfig->skip(
         [
             \Rector\CodingStyle\Rector\Property\SplitGroupedPropertiesRector::class,
+            \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
             \Rector\Php73\Rector\String_\SensitiveHereNowDocRector::class,
             \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
             \Rector\Php81\Rector\Property\ReadOnlyPropertyRector::class,

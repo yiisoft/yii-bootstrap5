@@ -47,51 +47,28 @@ use Yiisoft\Html\Tag\Span;
 final class NavBar extends Widget
 {
     private const NAME = 'navbar';
-
     private const NAVBAR_BRAND = 'navbar-brand mb-0 h1';
-
     private const NAVBAR_BRAND_LINK = 'navbar-brand';
-
     private const NAV_CONTAINER = 'collapse navbar-collapse';
-
     private const NAV_INNER_CONTAINER = 'container-fluid';
-
     private const NAV_TOGGLE = 'navbar-toggler';
-
     private const NAV_TOGGLE_ICON = 'navbar-toggler-icon';
-
     private array $attributes = [];
-
     private string|Stringable $brand = '';
-
     private array $brandAttributes = [];
-
     private string|Stringable $brandText = '';
-
     private string|Stringable $brandImage = '';
-
     private array $brandImageAttributes = [];
-
     private string $brandUrl = '';
-
     private array $cssClass = [];
-
     private bool $container = false;
-
     private array $containerAttributes = [];
-
     private NavBarExpand $expand = NavBarExpand::LG;
-
     private bool $innerContainer = true;
-
     private array $innerContainerAttributes = [];
-
     private string $innerContainerTag = 'div';
-
     private bool|string $id = true;
-
     private string $tag = 'nav';
-
     private string $toggle = '';
 
     /**
