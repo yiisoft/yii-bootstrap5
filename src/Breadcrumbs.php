@@ -36,15 +36,25 @@ use function implode;
 final class Breadcrumbs extends Widget
 {
     private const LIST_NAME = 'breadcrumb';
+
     private const ITEM_NAME = 'breadcrumb-item';
+
     private array $attributes = [];
+
     private array $cssClasses = [];
+
     private string $itemActiveClass = 'active';
+
     private array $itemAttributes = [];
+
     private array $linkAttributes = [];
+
     private array $links = [];
+
     private array $listAttributes = [];
+
     private bool|string $listId = true;
+
     private string $listTagName = 'ol';
 
     /**
