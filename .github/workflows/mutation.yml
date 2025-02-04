@@ -22,6 +22,6 @@ name: mutation test
 
 jobs:
   mutation:
-    uses: yiisoft/actions/.github/workflows/roave-infection.yml@master
+    uses: yiisoft/actions/.github/workflows/roave-infection.yml@add-php-84
     secrets:
       STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
