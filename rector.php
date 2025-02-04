@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-return static function (Rector\Config\RectorConfig $rectorConfig): void {
+return static function (\Rector\Config\RectorConfig $rectorConfig): void {
     $rectorConfig->parallel();
 
     $rectorConfig->importNames();
 
-    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_83);
+    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_81);
 
     $rectorConfig->paths(
         [
