@@ -44,46 +44,26 @@ use function implode;
 final class Carousel extends Widget
 {
     private const CLASS_CAROUSEL_CAPTION = 'carousel-caption d-none d-md-block';
-
     private const CLASS_CAROUSEL_CONTROL_NEXT = 'carousel-control-next';
-
     private const CLASS_CAROUSEL_CONTROL_NEXT_ICON = 'carousel-control-next-icon';
-
     private const CLASS_CAROUSEL_CONTROL_PREV = 'carousel-control-prev';
-
     private const CLASS_CAROUSEL_CONTROL_PREV_ICON = 'carousel-control-prev-icon';
-
     private const CLASS_CAROUSEL_INDICATORS = 'carousel-indicators';
-
     private const CLASS_CAROUSEL_INNER = 'carousel-inner';
-
     private const CLASS_CAROUSEL_ITEM = 'carousel-item';
-
     private const CLASS_IMAGE = 'd-block w-100';
-
     private const CLASS_SLIDE = 'slide';
-
     private const NAME = 'carousel';
-
     private array $attributes = [];
-
     private array $cssClasses = [];
-
     private bool $controls = true;
-
     private string $captionTagName = 'h5';
-
     private string $captionPlaceholderTagName = 'p';
-
     private string $controlNextLabel = 'Next';
-
     private string $controlPreviousLabel = 'Previous';
-
     private bool|string $id = true;
-
     /** @psalm-var CarouselItem[] */
     private array $items = [];
-
     private bool $showIndicators = false;
 
     /**

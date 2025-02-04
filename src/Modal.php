@@ -34,57 +34,31 @@ final class Modal extends AbstractToggleWidget
     use CloseButtonTrait;
 
     public const SIZE_SMALL = 'modal-sm';
-
     public const SIZE_DEFAULT = null;
-
     public const SIZE_LARGE = 'modal-lg';
-
     public const SIZE_EXTRA_LARGE = 'modal-xl';
-
     public const FULLSCREEN_ALWAYS = 'modal-fullscreen';
-
     public const FULLSCREEN_BELOW_SM = 'modal-fullscreen-sm-down';
-
     public const FULLSCREEN_BELOW_MD = 'modal-fullscreen-md-down';
-
     public const FULLSCREEN_BELOW_LG = 'modal-fullscreen-lg-down';
-
     public const FULLSCREEN_BELOW_XL = 'modal-fullscreen-xl-down';
-
     public const FULLSCREEN_BELOW_XXL = 'modal-fullscreen-xxl-down';
-
     private string|Stringable|null $title = null;
-
     private array $titleOptions = [];
-
     private array $headerOptions = [];
-
     private array $dialogOptions = [];
-
     private array $contentOptions = [];
-
     private array $bodyOptions = [];
-
     private ?string $footer = null;
-
     private array $footerOptions = [];
-
     private ?string $size = self::SIZE_DEFAULT;
-
     private array $options = [];
-
     private bool $encodeTags = false;
-
     private bool $fade = true;
-
     private bool $staticBackdrop = false;
-
     private bool $scrollable = false;
-
     private bool $centered = false;
-
     private ?string $fullscreen = null;
-
     protected string|Stringable $toggleLabel = 'Show';
 
     #[Override]

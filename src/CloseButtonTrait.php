@@ -12,11 +12,8 @@ use Yiisoft\Html\Tag\Base\Tag;
 trait CloseButtonTrait
 {
     private array $closeButtonOptions = [];
-
     private string|Stringable $closeButtonLabel = '';
-
     private bool $encodeCloseButton = true;
-
     private bool $showCloseButton = true;
 
     abstract protected function toggleComponent(): string;
