@@ -24,20 +24,13 @@ use Yiisoft\Html\Tag\Input;
  */
 final class Button extends Widget
 {
-    private const string NAME = 'btn';
-
+    private const NAME = 'btn';
     private array $attributes = [];
-
     private ButtonVariant|null $buttonVariant = ButtonVariant::SECONDARY;
-
     private array $cssClasses = [];
-
     private bool $disabled = false;
-
     private bool|string $id = true;
-
     private string|Stringable $label = '';
-
     private A|ButtonTag|Input|null $tag = null;
 
     /**

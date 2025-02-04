@@ -25,7 +25,7 @@ use Yiisoft\Html\Html;
  */
 final class AccordionItem
 {
-    private const string DEFAULT_ID_PREFIX = 'collapse';
+    private const DEFAULT_ID_PREFIX = 'collapse';
 
     /**
      * Use {@see AccordionItem::to()} to create a new instance.

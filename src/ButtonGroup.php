@@ -35,15 +35,11 @@ use function implode;
  */
 final class ButtonGroup extends Widget
 {
-    private const string NAME = 'btn-group';
-
+    private const NAME = 'btn-group';
     private array $attributes = [];
-
     /** psalm-var Button[]|Checkbox[]|Radio[] $buttons */
     private array $buttons = [];
-
     private array $cssClasses = [];
-
     private bool|string $id = true;
 
     /**

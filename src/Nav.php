@@ -42,35 +42,21 @@ use Stringable;
  */
 final class Nav extends Widget
 {
-    private const string NAV_CLASS = 'nav';
-
-    private const string NAV_ITEM_CLASS = 'nav-item';
-
-    private const string NAV_ITEM_DROPDOWN_CLASS = 'nav-item dropdown';
-
-    private const string NAV_LINK_ACTIVE_CLASS = 'active';
-
-    private const string NAV_LINK_CLASS = 'nav-link';
-
-    private const string NAV_LINK_DISABLED_CLASS = 'disabled';
-
+    private const NAV_CLASS = 'nav';
+    private const NAV_ITEM_CLASS = 'nav-item';
+    private const NAV_ITEM_DROPDOWN_CLASS = 'nav-item dropdown';
+    private const NAV_LINK_ACTIVE_CLASS = 'active';
+    private const NAV_LINK_CLASS = 'nav-link';
+    private const NAV_LINK_DISABLED_CLASS = 'disabled';
     private bool $activateItems = true;
-
     private array $attributes = [];
-
     private array $cssClasses = [];
-
     private array $contentAttributes = [];
-
     private string $currentPath = '';
-
     /** @var array<int, Dropdown|NavLink> */
     private array $items = [];
-
     private array $styleClasses = [];
-
     private string $tag = '';
-
     private bool $fade = false;
 
     /**

@@ -12,30 +12,18 @@ final class Offcanvas extends AbstractToggleWidget
 {
     use CloseButtonTrait;
 
-    public const string PLACEMENT_TOP = 'offcanvas-top';
-
-    public const string PLACEMENT_END = 'offcanvas-end';
-
-    public const string PLACEMENT_BOTTOM = 'offcanvas-bottom';
-
-    public const string PLACEMENT_START = 'offcanvas-start';
-
+    public const PLACEMENT_TOP = 'offcanvas-top';
+    public const PLACEMENT_END = 'offcanvas-end';
+    public const PLACEMENT_BOTTOM = 'offcanvas-bottom';
+    public const PLACEMENT_START = 'offcanvas-start';
     private array $options = [];
-
     private array $headerOptions = [];
-
     private array $titleOptions = [];
-
     private array $bodyOptions = [];
-
     private ?string $title = null;
-
     private string $placement = self::PLACEMENT_START;
-
     private bool $scroll = false;
-
     private bool $withoutBackdrop = false;
-
     protected bool $renderToggle = false;
 
     #[Override]
