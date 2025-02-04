@@ -383,7 +383,7 @@ final class Alert extends \Yiisoft\Widget\Widget
             ]
         );
 
-        $content = preg_replace("/\n{2}/", "\n", $content);
+        $content = preg_replace("/\n{2}/", "\n", $content) ?? '';
 
         return Div::tag()->addAttributes($attributes)->content($content)->encode(false)->id($id)->render();
     }
