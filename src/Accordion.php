@@ -443,7 +443,7 @@ final class Accordion extends \Yiisoft\Widget\Widget
     {
         $items = [];
 
-        foreach ($this->items as $key => $item) {
+        foreach ($this->items as $item) {
             $items[] = $this->renderItem($item, $idParent);
         }
 
