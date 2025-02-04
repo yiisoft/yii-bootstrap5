@@ -7,6 +7,8 @@ finder:
   exclude:
     - docs
     - vendor
+  not-name:
+    - "rector.php"
 
 enabled:
   - alpha_ordered_traits
