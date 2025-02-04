@@ -86,7 +86,7 @@ trait CloseButtonTrait
             $options['data-bs-target'] = '#' . $this->getId();
         }
 
-        if (($label === '' || $label === '0') && !isset($options['aria-label']) && !isset($options['aria']['label'])) {
+        if ($label === '' && !isset($options['aria-label']) && !isset($options['aria']['label'])) {
             $options['aria-label'] = 'Close';
         }
 

@@ -560,7 +560,7 @@ final class Carousel extends Widget
 
         $caption = $carouselItem->getCaption();
 
-        if (!($caption === null || $caption === '' || $caption === '0')) {
+        if ($caption !== null && $caption !== '') {
             if ($this->captionTagName === '' || $this->captionPlaceholderTagName === '') {
                 throw new InvalidArgumentException(
                     'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'

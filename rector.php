@@ -26,6 +26,13 @@ return static function (\Rector\Config\RectorConfig $rectorConfig): void {
         ],
     );
 
+    $rectorConfig::configure()->withConfiguredRule(
+        \Rector\CodeQuality\Rector\BooleanAnd\SimplifyEmptyArrayCheckRector::class,
+        [
+            'include_numeric_string_check' => false,
+        ],
+    );
+
     $rectorConfig->skip(
         [
             \Rector\CodingStyle\Rector\Property\SplitGroupedPropertiesRector::class,

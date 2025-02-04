@@ -155,7 +155,7 @@ final class Offcanvas extends AbstractToggleWidget
         $options['id'] = $this->getId();
         $options['tabindex'] = -1;
 
-        if ($this->title !== null && $this->title !== '' && $this->title !== '0') {
+        if ($this->title !== null && $this->title !== '') {
             if (isset($this->titleOptions['id'])) {
                 $options['aria-labelledby'] = $this->titleOptions['id'];
             } elseif ($options['id']) {

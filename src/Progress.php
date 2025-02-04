@@ -78,7 +78,7 @@ final class Progress extends Widget
 
         $options['role'] = 'progressbar';
 
-        if ($this->label !== '' && $this->label !== '0') {
+        if ($this->label !== '') {
             $options['aria']['label'] = $this->label;
         }
 
