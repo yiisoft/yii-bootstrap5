@@ -30,20 +30,35 @@ use function strtr;
 final class Alert extends Widget
 {
     private const CLASS_CLOSE_BUTTON = 'btn-close';
+
     private const NAME = 'alert';
+
     private array $attributes = [];
+
     private AlertVariant $alertType = AlertVariant::SECONDARY;
+
     private string|Stringable $body = '';
+
     private array $cssClasses = [];
+
     private array $closeButtonAttributes = [];
+
     private string|null $closeButtonTag = null;
+
     private string $closeButtonLabel = '';
+
     private bool $dismissable = false;
+
     private bool $fade = false;
+
     private string|null $header = null;
+
     private array $headerAttributes = [];
+
     private string $headerTag = 'h4';
+
     private bool|string $id = true;
+
     private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
 
     /**
