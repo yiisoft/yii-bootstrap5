@@ -51,15 +51,11 @@ use function implode;
  */
 final class ButtonToolbar extends Widget
 {
-    private const string NAME = 'btn-toolbar';
-
+    private const NAME = 'btn-toolbar';
     private array $attributes = [];
-
     /** @psalm-var ButtonGroup[]|Tag[] $buttonGroups */
     private array $buttonGroups = [];
-
     private array $cssClasses = [];
-
     private bool|string $id = true;
 
     /**

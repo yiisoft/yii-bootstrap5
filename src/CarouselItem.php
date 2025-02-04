@@ -35,7 +35,7 @@ use Yiisoft\Html\Html;
  * );
  * ```
  */
-final readonly class CarouselItem
+final class CarouselItem
 {
     /**
      * Use {@see CarouselItem::to()} to create a new instance.
