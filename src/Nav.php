@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Widget\Widget;
 use BackedEnum;
+use RuntimeException;
+use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
-use Stringable;
-use Yiisoft\Html\Tag\Button;
+use Yiisoft\Widget\Widget;
 
 /**
  * Nav renders a Bootstrap navigation component.
@@ -52,12 +53,12 @@ final class Nav extends Widget
     private bool $activateItems = true;
     private array $attributes = [];
     private array $cssClasses = [];
-    private array $contentAttributes = [];
     private string $currentPath = '';
     private bool $fade = true;
     private bool|string $id = false;
     /** @var array<int, Dropdown|NavLink> */
     private array $items = [];
+    private array $paneAttributes = [];
     private array $styleClasses = [];
     private string $tag = '';
 
@@ -177,23 +178,6 @@ final class Nav extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the content of the nav component.
-     *
-     * @param array $values Attribute values indexed by attribute names.
-     *
-     * @return self A new instance with the specified content attributes.
-     *
-     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
-     */
-    public function contentAttributes(array $values): self
-    {
-        $new = clone $this;
-        $new->contentAttributes = $values;
-
-        return $new;
-    }
-
-    /**
      * The currentPath to be used to check the active state of the nav items.
      *
      * @param string $value The currentPath to be used to check the active state of the nav items.
@@ -208,8 +192,19 @@ final class Nav extends Widget
         return $new;
     }
 
-    public function fade(bool $value = true): self
+    /**
+     * Whether to fade the nav items when toggling between them.
+     *
+     * @param bool $value Whether to fade the nav items when toggling between them. Defaults to `true`.
+     *
+     * @return self A new instance with the specified fade value.
+     */
+    public function fade(bool $value): self
     {
+        if ($this->isTabsOrPills() === false && $value) {
+            throw new RuntimeException('Fade effect can only be used with tabs or pills.');
+        }
+
         $new = clone $this;
         $new->fade = $value;
 
@@ -244,6 +239,23 @@ final class Nav extends Widget
     {
         $new = clone $this;
         $new->items = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the content panes of the nav component.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified pane attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function paneAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->paneAttributes = $values;
 
         return $new;
     }
@@ -535,7 +547,7 @@ final class Nav extends Widget
             return '';
         }
 
-        $paneAttributes = $this->contentAttributes;
+        $paneAttributes = $this->paneAttributes;
 
         Html::addCssClass($paneAttributes, ['widget' => 'tab-content']);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
@@ -634,8 +635,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($navWidget, $navWidget->attributes([]));
         $this->assertNotSame($navWidget, $navWidget->class(''));
         $this->assertNotSame($navWidget, $navWidget->currentPath(''));
+        $this->assertNotSame($navWidget, $navWidget->fade(false));
         $this->assertNotSame($navWidget, $navWidget->items(NavLink::to('')));
-        $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::FILL));
+        $this->assertNotSame($navWidget, $navWidget->paneAttributes([]));
+        $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::TABS));
     }
 
     public function testNavLinkWithAttributes(): void
@@ -1097,6 +1100,14 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->styles(NavStyle::TABS)
             ->render(),
         );
+    }
+
+    public function testThrowExceptionForFadeWithoutTabsOrPills(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Fade effect can only be used with tabs or pills.');
+
+        Nav::widget()->fade(true)->render();
     }
 
     /**
