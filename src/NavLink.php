@@ -47,7 +47,7 @@ final class NavLink
         private array $urlAttributes = [],
         private bool $visible = true,
         private string|Stringable $content = '',
-        private bool|string $idPane = false,
+        private bool|string $paneId = false,
         private array $paneAttributes = [],
     ) {
     }
@@ -91,7 +91,6 @@ final class NavLink
      * @param string|Stringable $label The label of the tab.
      * @param string|Stringable $content The content of the tab pane.
      * @param bool $active Whether the tab is active.
-     * @param bool $disabled Whether the tab is disabled.
      * @param bool $encodeLabel Whether the label should be encoded.
      * @param array $attributes The HTML attributes for the nav item.
      * @param array $urlAttributes The HTML attributes for the nav item link.
@@ -109,7 +108,7 @@ final class NavLink
         bool $encodeLabel = true,
         array $attributes = [],
         array $urlAttributes = [],
-        bool|string $idPane = true,
+        bool|string $paneId = true,
         array $paneAttributes = [],
         bool $visible = true,
     ): self {
@@ -123,7 +122,7 @@ final class NavLink
             urlAttributes: $urlAttributes,
             visible: $visible,
             content: $content,
-            idPane: $idPane,
+            paneId: $paneId,
             paneAttributes: $paneAttributes
         );
     }
@@ -216,10 +215,10 @@ final class NavLink
     public function getId(): string
     {
         /** @psalm-var non-empty-string|null $id */
-        return match ($this->idPane) {
+        return match ($this->paneId) {
             true => $this->paneAttributes['id'] ?? Html::generateId('pane'),
             '', false => throw new InvalidArgumentException('The tab pane ID must be specified.'),
-            default => $this->idPane,
+            default => $this->paneId,
         };
     }
 
@@ -270,10 +269,10 @@ final class NavLink
      *
      * @return self A new instance with the specified ID.
      */
-    public function idPane(bool|string $value): self
+    public function paneId(bool|string $value): self
     {
         $new = clone $this;
-        $new->idPane = $value;
+        $new->paneId = $value;
 
         return $new;
     }

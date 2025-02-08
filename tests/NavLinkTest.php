@@ -22,7 +22,7 @@ final class NavLinkTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($navLink, $navLink->attributes([]));
         $this->assertNotSame($navLink, $navLink->disabled(false));
         $this->assertNotSame($navLink, $navLink->encodeLabel(false));
-        $this->assertNotSame($navLink, $navLink->idPane(true));
+        $this->assertNotSame($navLink, $navLink->paneId(true));
         $this->assertNotSame($navLink, $navLink->label(''));
         $this->assertNotSame($navLink, $navLink->paneAttributes([]));
         $this->assertNotSame($navLink, $navLink->url(''));

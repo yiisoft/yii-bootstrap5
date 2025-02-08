@@ -889,22 +889,22 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                         'Home',
                         'This is some placeholder content the Home tab\'s associated content.',
                         true,
-                        idPane: 'pills-home-tab',
+                        paneId: 'pills-home-tab',
                     ),
                     NavLink::tab(
                         'Profile',
                         'This is some placeholder content the Profile tab\'s associated content.',
-                        idPane: 'pills-profile-tab',
+                        paneId: 'pills-profile-tab',
                     ),
                     NavLink::tab(
                         'Contact',
                         'This is some placeholder content the Contact tab\'s associated content.',
-                        idPane: 'pills-contact-tab',
+                        paneId: 'pills-contact-tab',
                     ),
                     NavLink::tab(
                         'Disabled',
                         'This is some placeholder content the Disabled tab\'s associated content.',
-                        idPane: 'pills-disabled-tab',
+                        paneId: 'pills-disabled-tab',
                     ),
                 )
                 ->styles(NavStyle::PILLS)
@@ -1079,22 +1079,22 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                         'Home',
                         'This is some placeholder content the Home tab\'s associated content.',
                         true,
-                        idPane: 'home-tab',
+                        paneId: 'home-tab',
                     ),
                     NavLink::tab(
                         'Profile',
                         'This is some placeholder content the Profile tab\'s associated content.',
-                        idPane: 'profile-tab',
+                        paneId: 'profile-tab',
                     ),
                     NavLink::tab(
                         'Contact',
                         'This is some placeholder content the Contact tab\'s associated content.',
-                        idPane: 'contact-tab',
+                        paneId: 'contact-tab',
                     ),
                     NavLink::tab(
                         'Disabled',
                         'This is some placeholder content the Disabled tab\'s associated content.',
-                        idPane: 'disabled-tab',
+                        paneId: 'disabled-tab',
                     ),
                 )
                 ->styles(NavStyle::TABS)
