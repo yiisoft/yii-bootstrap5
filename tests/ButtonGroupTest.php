@@ -365,14 +365,14 @@ final class ButtonGroupTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.2/components/button-group/#mixed-styles
      */
-    public function testRenderWithMizedStyle(): void
+    public function testRenderWithMixedStyle(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="btn-group" aria-label="Basic mixed styles example" role="group">
             <button type="button" class="btn btn-danger">Left</button>
             <button type="button" class="btn btn-warning">Middle</button>
-            <button type="button" class="btn btn-success">Rigth</button>
+            <button type="button" class="btn btn-success">Right</button>
             </div>
             HTML,
             ButtonGroup::widget()
@@ -380,7 +380,7 @@ final class ButtonGroupTest extends TestCase
                 ->buttons(
                     Button::widget()->label('Left')->id(false)->variant(ButtonVariant::DANGER),
                     Button::widget()->label('Middle')->id(false)->variant(ButtonVariant::WARNING),
-                    Button::widget()->label('Rigth')->id(false)->variant(ButtonVariant::SUCCESS),
+                    Button::widget()->label('Right')->id(false)->variant(ButtonVariant::SUCCESS),
                 )
                 ->id(false)
                 ->render(),

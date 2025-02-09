@@ -31,9 +31,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     private function loadHtml(string $html): string
     {
-        $output = str_replace(["\r", "\n"], '', $html);
-        $output = str_replace(['>', '</'], [">\n", "\n</"], $output);
-        $output = str_replace("\n\n", "\n", $output);
+        $output = str_replace(
+            ["\r", "\n", '>', '</', "\n\n"],
+            ['', '', ">\n", "\n</", "\n"],
+            $html
+        );
 
         return trim($output);
     }
@@ -50,7 +52,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Asserting two strings equality ignoring line endings.
+     * Asserting two strings are equal ignoring line endings.
      */
     protected function assertEqualsWithoutLE(string $expected, string $actual, string $message = ''): void
     {

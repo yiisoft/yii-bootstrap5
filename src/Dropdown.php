@@ -77,14 +77,14 @@ final class Dropdown extends Widget
     /**
      * Adds a set of attributes for the dropdown component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -95,7 +95,7 @@ final class Dropdown extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -106,10 +106,10 @@ final class Dropdown extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(BackedEnum|string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$value];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -117,8 +117,8 @@ final class Dropdown extends Widget
     /**
      * Adds a CSS style for the dropdown component.
      *
-     * @param array|string $value The CSS style for the dropdown component.
-     * If a string is used, it's added as is. For example, `color: red;`.
+     * @param array|string $style The CSS style for the dropdown component.
+     * If a string is used, it's added as is. For example, `color: red`.
      * If the value is an array, the values are separated by a space,
      * e.g., `['color' => 'red', 'font-weight' => 'bold']` is rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
@@ -126,10 +126,10 @@ final class Dropdown extends Widget
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -137,15 +137,15 @@ final class Dropdown extends Widget
     /**
      * Sets the alignment of the dropdown component.
      *
-     * @param DropdownAlignment|null ...$value The alignment of the dropdown component. If `null`, the alignment will
+     * @param DropdownAlignment|null ...$alignment The alignment of the dropdown component. If `null`, the alignment will
      * not be set.
      *
      * @return self A new instance with the specified alignment of the dropdown component.
      */
-    public function alignment(DropdownAlignment|null ...$value): self
+    public function alignment(DropdownAlignment|null ...$alignment): self
     {
         $new = clone $this;
-        $new->alignmentClasses = $value;
+        $new->alignmentClasses = $alignment;
 
         return $new;
     }
@@ -153,14 +153,14 @@ final class Dropdown extends Widget
     /**
      * Adds a set of attributes for the dropdown toggle button.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addToggleAttributes(array $values): self
+    public function addToggleAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->toggleAttributes = [...$this->toggleAttributes, ...$values];
+        $new->toggleAttributes = [...$this->toggleAttributes, ...$attributes];
 
         return $new;
     }
@@ -168,16 +168,16 @@ final class Dropdown extends Widget
     /**
      * Sets the HTML attributes for the dropdown component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -185,13 +185,13 @@ final class Dropdown extends Widget
     /**
      * Sets the auto-close setting for the dropdown component.
      *
-     * @param DropdownAutoClose $value The auto-close setting for the dropdown component.
+     * @param DropdownAutoClose $autoClose The auto-close setting for the dropdown component.
      *
      * @return self A new instance with the specified auto-close setting.
      */
-    public function autoClose(DropdownAutoClose $value): self
+    public function autoClose(DropdownAutoClose $autoClose): self
     {
-        return $this->addToggleAttributes(['data-bs-auto-close' => $value->value]);
+        return $this->addToggleAttributes(['data-bs-auto-close' => $autoClose->value]);
     }
 
     /**
@@ -200,7 +200,7 @@ final class Dropdown extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -209,10 +209,10 @@ final class Dropdown extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(BackedEnum|string|null ...$value): self
+    public function class(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $value;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -220,15 +220,15 @@ final class Dropdown extends Widget
     /**
      * Whether to render the dropdown in a container `<div>` tag.
      *
-     * @param bool $value Whether to render the dropdown in a container `<div>` tag. By default, it will be rendered in
+     * @param bool $enabled Whether to render the dropdown in a container `<div>` tag. By default, it will be rendered in
      * a container `<div>` tag. If set to `false`, the container will not be rendered.
      *
      * @return self A new instance with the specified container setting.
      */
-    public function container(bool $value): self
+    public function container(bool $enabled): self
     {
         $new = clone $this;
-        $new->container = $value;
+        $new->container = $enabled;
 
         return $new;
     }
@@ -236,14 +236,14 @@ final class Dropdown extends Widget
     /**
      * Sets the CSS classes for the dropdown container.
      *
-     * @param BackedEnum|string ...$values The CSS class for the dropdown container.
+     * @param BackedEnum|string ...$classes The CSS class for the dropdown container.
      *
      * @return self A new instance with the specified CSS class for the dropdown container.
      */
-    public function containerClasses(BackedEnum|string ...$values): self
+    public function containerClasses(BackedEnum|string ...$classes): self
     {
         $new = clone $this;
-        $new->containerClasses = $values;
+        $new->containerClasses = $classes;
 
         return $new;
     }
@@ -251,14 +251,14 @@ final class Dropdown extends Widget
     /**
      * Set the direction of the dropdown component.
      *
-     * @param DropdownDirection $value The direction of the dropdown component.
+     * @param DropdownDirection $direction The direction of the dropdown component.
      *
      * @return self A new instance with the specified direction of the dropdown component.
      */
-    public function direction(DropdownDirection $value): self
+    public function direction(DropdownDirection $direction): self
     {
         $new = clone $this;
-        $new->containerClasses = [$value];
+        $new->containerClasses = [$direction];
 
         return $new;
     }
@@ -276,16 +276,16 @@ final class Dropdown extends Widget
     /**
      * List of links to appear in the dropdown. If this property is empty, the widget will not render anything.
      *
-     * @param array $value The links to appear in the dropdown.
+     * @param array $items The links to appear in the dropdown.
      *
      * @return self A new instance with the specified dropdown to appear in the dropdown.
      *
-     * @psalm-param DropdownItem[] $value The links to appear in the dropdown.
+     * @psalm-param DropdownItem[] $items The links to appear in the dropdown.
      */
-    public function items(DropdownItem ...$value): self
+    public function items(DropdownItem ...$items): self
     {
         $new = clone $this;
-        $new->items = $value;
+        $new->items = $items;
 
         return $new;
     }
@@ -293,28 +293,28 @@ final class Dropdown extends Widget
     /**
      * Sets the theme for the dropdown component.
      *
-     * @param string $value The theme for the dropdown component.
+     * @param string $theme The theme for the dropdown component.
      *
      * @return self A new instance with the specified theme.
      */
-    public function theme(string $value): self
+    public function theme(string $theme): self
     {
-        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
+        return $this->addAttributes(['data-bs-theme' => $theme === '' ? null : $theme]);
     }
 
     /**
      * Sets the HTML attributes for the dropdown toggle button.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the dropdown toggle button.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function toggleAttributes(array $values): self
+    public function toggleAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->toggleAttributes = $values;
+        $new->toggleAttributes = $attributes;
 
         return $new;
     }
@@ -325,7 +325,7 @@ final class Dropdown extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -334,10 +334,10 @@ final class Dropdown extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function toggleClass(BackedEnum|string|null ...$value): self
+    public function toggleClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->toggleClasses = $value;
+        $new->toggleClasses = $class;
 
         return $new;
     }
@@ -345,14 +345,14 @@ final class Dropdown extends Widget
     /**
      * Sets the toggle button custom tag.
      *
-     * @param string|Stringable $value The toggle button custom tag.
+     * @param string|Stringable $tag The toggle button custom tag.
      *
      * @return self A new instance with the specified toggle button custom tag.
      */
-    public function toggleTag(string|Stringable $value): self
+    public function toggleTag(string|Stringable $tag): self
     {
         $new = clone $this;
-        $new->toggleButton = (string) $value;
+        $new->toggleButton = (string) $tag;
 
         return $new;
     }
@@ -360,14 +360,14 @@ final class Dropdown extends Widget
     /**
      * Sets the content of the dropdown toggle button.
      *
-     * @param string|Stringable $value The content of the dropdown toggle button.
+     * @param string|Stringable $content The content of the dropdown toggle button.
      *
      * @return self A new instance with the specified content of the dropdown toggle button.
      */
-    public function toggleContent(string|Stringable $value): self
+    public function toggleContent(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->toggleContent = (string) $value;
+        $new->toggleContent = (string) $content;
 
         return $new;
     }
@@ -375,16 +375,16 @@ final class Dropdown extends Widget
     /**
      * Sets the ID of the toggle button for the dropdown component.
      *
-     * @param bool|string $value The ID of the dropdown component. If `true`, an ID will be generated automatically.
-     *
-     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     * @param bool|string $id The ID of the dropdown component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID of the toggle button for the dropdown component.
+     *@throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
      */
-    public function toggleId(bool|string $value): self
+    public function toggleId(bool|string $id): self
     {
         $new = clone $this;
-        $new->toggleId = $value;
+        $new->toggleId = $id;
 
         return $new;
     }
@@ -392,15 +392,15 @@ final class Dropdown extends Widget
     /**
      * Whether to render the dropdown toggle as a link.
      *
-     * @param bool $value Whether to render the dropdown toggle as a link. If set to `true`, the dropdown toggle will be
+     * @param bool $enable Whether to render the dropdown toggle as a link. If set to `true`, the dropdown toggle will be
      * rendered as a link. If set to `false`, the dropdown toggle will be rendered as a button.
      *
      * @return self A new instance with the specified dropdown toggle as a link setting.
      */
-    public function toggleAsLink(bool $value = true): self
+    public function toggleAsLink(bool $enable = true): self
     {
         $new = clone $this;
-        $new->toggleLink = $value;
+        $new->toggleLink = $enable;
 
         return $new;
     }
@@ -408,16 +408,16 @@ final class Dropdown extends Widget
     /**
      * Whether to render the dropdown toggle button as a large button.
      *
-     * @param bool $value Whether to render the dropdown toggle button as a large button. If set to `true`, the dropdown
+     * @param bool $enable Whether to render the dropdown toggle button as a large button. If set to `true`, the dropdown
      * toggle button will be rendered as a large button. If set to `false`, the dropdown toggle button will be rendered
      * as a normal-sized button.
      *
      * @return self A new instance with the specified dropdown toggle button size large setting.
      */
-    public function toggleSizeLarge(bool $value = true): self
+    public function toggleSizeLarge(bool $enable = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value ? 'btn-lg' : null;
+        $new->toggleSize = $enable ? 'btn-lg' : null;
 
         return $new;
     }
@@ -425,16 +425,16 @@ final class Dropdown extends Widget
     /**
      * Whether to render the dropdown toggle button as a small button.
      *
-     * @param bool $value Whether to render the dropdown toggle button as a small button. If set to `true`, the dropdown
+     * @param bool $enable Whether to render the dropdown toggle button as a small button. If set to `true`, the dropdown
      * toggle button will be rendered as a small button. If set to `false`, the dropdown toggle button will be rendered
      * as a normal-sized button.
      *
      * @return self A new instance with the specified dropdown toggle button size small setting.
      */
-    public function toggleSizeSmall(bool $value = true): self
+    public function toggleSizeSmall(bool $enable = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value ? 'btn-sm' : null;
+        $new->toggleSize = $enable ? 'btn-sm' : null;
 
         return $new;
     }
@@ -442,16 +442,16 @@ final class Dropdown extends Widget
     /**
      * Whether to render the dropdown toggle button as a split button.
      *
-     * @param bool $value Whether to render the dropdown toggle button as a split button. If set to `true`, the dropdown
+     * @param bool $enable Whether to render the dropdown toggle button as a split button. If set to `true`, the dropdown
      * toggle button will be rendered as a split button. If set to `false`, the dropdown toggle button will be rendered
      * as a normal button.
      *
      * @return self A new instance with the specified dropdown toggle button split setting.
      */
-    public function toggleSplit(bool $value = true): self
+    public function toggleSplit(bool $enable = true): self
     {
         $new = clone $this;
-        $new->toggleSplit = $value;
+        $new->toggleSplit = $enable;
 
         return $new;
     }
@@ -459,14 +459,14 @@ final class Dropdown extends Widget
     /**
      * Sets the content of the dropdown toggle split button.
      *
-     * @param string|Stringable $value The content of the dropdown toggle split button.
+     * @param string|Stringable $content The content of the dropdown toggle split button.
      *
      * @return self A new instance with the specified content of the dropdown toggle split button.
      */
-    public function toggleSplitContent(string|Stringable $value): self
+    public function toggleSplitContent(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->toggleSplitContent = (string) $value;
+        $new->toggleSplitContent = (string) $content;
 
         return $new;
     }
@@ -474,14 +474,14 @@ final class Dropdown extends Widget
     /**
      * Sets the URL for the dropdown toggle link.
      *
-     * @param string $value The URL for the dropdown toggle link.
+     * @param string $url The URL for the dropdown toggle link.
      *
      * @return self A new instance with the specified URL for the dropdown toggle link.
      */
-    public function toggleUrl(string $value): self
+    public function toggleUrl(string $url): self
     {
         $new = clone $this;
-        $new->toggleUrl = $value;
+        $new->toggleUrl = $url;
 
         return $new;
     }
@@ -489,14 +489,14 @@ final class Dropdown extends Widget
     /**
      * Sets the variant for the dropdown toggle button.
      *
-     * @param DropdownToggleVariant $value The variant for the dropdown toggle button.
+     * @param DropdownToggleVariant $variant The variant for the dropdown toggle button.
      *
      * @return self A new instance with the specified variant for the dropdown toggle button.
      */
-    public function toggleVariant(DropdownToggleVariant $value): self
+    public function toggleVariant(DropdownToggleVariant $variant): self
     {
         $new = clone $this;
-        $new->toggleVariant = $value;
+        $new->toggleVariant = $variant;
 
         return $new;
     }

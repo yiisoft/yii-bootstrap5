@@ -55,14 +55,14 @@ final class Accordion extends Widget
     /**
      * Adds a sets of attributes to the accordion component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -73,7 +73,7 @@ final class Accordion extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -84,10 +84,10 @@ final class Accordion extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(BackedEnum|string|null ...$values): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$values];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -95,19 +95,19 @@ final class Accordion extends Widget
     /**
      * Adds a CSS style for the accordion component.
      *
-     * @param array|string $value The CSS style for the alert component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
-     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
-     * 'color: red; font-weight: bold;'.
+     * @param array|string $style The CSS style for the alert component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
+     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -115,16 +115,16 @@ final class Accordion extends Widget
     /**
      * Sets the HTML attributes for the accordion component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -132,16 +132,16 @@ final class Accordion extends Widget
     /**
      * Sets whether the accordion should always allow multiple items to be open simultaneously.
      *
-     * @param bool $value Whether the accordion should always be open.
+     * @param bool $enabled Whether the accordion should always be open.
      *
      * @return self A new instance with the updated alwaysOpen property.
      *
      * @see https://getbootstrap.com/docs/5.3/components/accordion/#always-open
      */
-    public function alwaysOpen(bool $value = true): self
+    public function alwaysOpen(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->alwaysOpen = $value;
+        $new->alwaysOpen = $enabled;
 
         return $new;
     }
@@ -149,16 +149,16 @@ final class Accordion extends Widget
     /**
      * Sets the HTML attributes for the accordion component in the body section.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function bodyAttributes(array $values): self
+    public function bodyAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->bodyAttributes = $values;
+        $new->bodyAttributes = $attributes;
 
         return $new;
     }
@@ -169,7 +169,7 @@ final class Accordion extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -178,10 +178,10 @@ final class Accordion extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(BackedEnum|string|null ...$values): self
+    public function class(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $values;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -189,16 +189,16 @@ final class Accordion extends Widget
     /**
      * Sets the HTML attributes for the accordion component in the collapse section.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function collapseAttributes(array $values): self
+    public function collapseAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->collapseAttributes = $values;
+        $new->collapseAttributes = $attributes;
 
         return $new;
     }
@@ -206,16 +206,16 @@ final class Accordion extends Widget
     /**
      * Sets whether the accordion should use the flush style.
      *
-     * @param bool $value Whether to apply the flush style.
+     * @param bool $enabled Whether to apply the flush style.
      *
      * @return self A new instance with the updated flush property.
      *
      * @see https://getbootstrap.com/docs/5.3/components/accordion/#flush
      */
-    public function flush(bool $value = true): self
+    public function flush(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->cssClasses['flush'] = $value ? 'accordion-flush' : null;
+        $new->cssClasses['flush'] = $enabled ? 'accordion-flush' : null;
 
         return $new;
     }
@@ -223,16 +223,16 @@ final class Accordion extends Widget
     /**
      * Sets the HTML attributes for the accordion component in the header section.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function headerAttributes(array $values): self
+    public function headerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->headerAttributes = $values;
+        $new->headerAttributes = $attributes;
 
         return $new;
     }
@@ -240,14 +240,14 @@ final class Accordion extends Widget
     /**
      * Sets the HTML tag to be used for the header section of the accordion component.
      *
-     * @param string $value The HTML tag name for the header section of the accordion component.
+     * @param string $tag The HTML tag name for the header section of the accordion component.
      *
      * @return self A new instance with the specified header tag.
      */
-    public function headerTag(string $value): self
+    public function headerTag(string $tag): self
     {
         $new = clone $this;
-        $new->headerTag = $value;
+        $new->headerTag = $tag;
 
         return $new;
     }
@@ -255,14 +255,14 @@ final class Accordion extends Widget
     /**
      * Sets the items of the accordion component.
      *
-     * @param AccordionItem ...$values The items of the accordion component.
+     * @param AccordionItem ...$items The items of the accordion component.
      *
      * @return self A new instance with the specified items.
      */
-    public function items(AccordionItem ...$values): self
+    public function items(AccordionItem ...$items): self
     {
         $new = clone $this;
-        $new->items = $values;
+        $new->items = $items;
 
         return $new;
     }
@@ -270,14 +270,14 @@ final class Accordion extends Widget
     /**
      * Sets the ID of the accordion component.
      *
-     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -285,30 +285,30 @@ final class Accordion extends Widget
     /**
      * Sets the HTML attributes for the toggle in the accordion component.
      *
-     * @param array $value Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified close button attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function toggleAttributes(array $value): self
+    public function toggleAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->toggleAttributes = $value;
+        $new->toggleAttributes = $attributes;
         return $new;
     }
 
     /**
      * Sets the HTML tag to be used for the toggle in the accordion component.
      *
-     * @param string $value The HTML tag name for the close button.
+     * @param string $tag The HTML tag name for the close button.
      *
      * @return self A new instance with the specified close button tag.
      */
-    public function toggleTag(string $value): self
+    public function toggleTag(string $tag): self
     {
         $new = clone $this;
-        $new->toggleTag = $value;
+        $new->toggleTag = $tag;
 
         return $new;
     }
@@ -354,15 +354,15 @@ final class Accordion extends Widget
      * Renders the body of the accordion item.
      *
      * @param AccordionItem $accordionItem The accordion item.
-     * @param string $idParent The ID of the parent element.
-     * @param string $idCollapse The ID of the collapse element.
+     * @param string $parentId The ID of the parent element.
+     * @param string $collapseId The ID of the collapse element.
      *
      * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string $idParent The ID of the parent element.
-     * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
+     * @psalm-param non-empty-string $parentId The ID of the parent element.
+     * @psalm-param non-empty-string $collapseId The ID of the collapse element.
      */
-    private function renderBody(AccordionItem $accordionItem, string $idParent, string $idCollapse): string
+    private function renderBody(AccordionItem $accordionItem, string $parentId, string $collapseId): string
     {
         $bodyAttributes = $this->bodyAttributes;
         $classesBodyAttributes = $bodyAttributes['class'] ?? null;
@@ -373,7 +373,7 @@ final class Accordion extends Widget
         unset($bodyAttributes['class'], $collapseAttributes['class']);
 
         if ($this->alwaysOpen === false) {
-            $collapseAttributes['data-bs-parent'] = '#' . $idParent;
+            $collapseAttributes['data-bs-parent'] = '#' . $parentId;
         }
 
         return Div::tag()
@@ -383,7 +383,7 @@ final class Accordion extends Widget
                 $accordionItem->isActive() ? 'show' : null,
                 $classesCollapseAttributes,
             )
-            ->id($idCollapse)
+            ->id($collapseId)
             ->addContent(
                 "\n",
                 Div::tag()
@@ -402,13 +402,13 @@ final class Accordion extends Widget
      * Renders the header of the accordion item.
      *
      * @param AccordionItem $accordionItem The accordion item.
-     * @param string $idCollapse The ID of the collapse element.
+     * @param string $collapseId The ID of the collapse element.
      *
      * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string $idCollapse The ID of the collapse element.
+     * @psalm-param non-empty-string $collapseId The ID of the collapse element.
      */
-    private function renderHeader(AccordionItem $accordionItem, string $idCollapse): string
+    private function renderHeader(AccordionItem $accordionItem, string $collapseId): string
     {
         $headerAttributes = $this->headerAttributes;
         $classesHeaderAttributes = $headerAttributes['class'] ?? null;
@@ -424,7 +424,7 @@ final class Accordion extends Widget
             ->addClass(self::CLASS_HEADER, $classesHeaderAttributes)
             ->addContent(
                 "\n",
-                $this->renderToggle($accordionItem->getHeader(), $idCollapse, $accordionItem->isActive()),
+                $this->renderToggle($accordionItem->getHeader(), $collapseId, $accordionItem->isActive()),
                 "\n",
             )
             ->encode(false)
@@ -434,18 +434,18 @@ final class Accordion extends Widget
     /**
      * Renders the items of the accordion component.
      *
-     * @param string $idParent The ID of the parent element.
+     * @param string $parentId The ID of the parent element.
      *
      * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string $idParent The ID of the parent element.
+     * @psalm-param non-empty-string $parentId The ID of the parent element.
      */
-    private function renderItems(string $idParent): string
+    private function renderItems(string $parentId): string
     {
         $items = [];
 
-        foreach ($this->items as $key => $item) {
-            $items[] = $this->renderItem($item, $idParent);
+        foreach ($this->items as $_key => $item) {
+            $items[] = $this->renderItem($item, $parentId);
         }
 
         return implode("\n", $items);
@@ -455,23 +455,23 @@ final class Accordion extends Widget
      * Renders an accordion item.
      *
      * @param AccordionItem $accordionItem The accordion item.
-     * @param string $idParent The ID of the parent element.
+     * @param string $parentId The ID of the parent element.
      *
      * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string $idParent The ID of the parent element.
+     * @psalm-param non-empty-string $parentId The ID of the parent element.
      */
-    private function renderItem(AccordionItem $accordionItem, string $idParent): string
+    private function renderItem(AccordionItem $accordionItem, string $parentId): string
     {
-        /** @psalm-var non-empty-string $idCollapse */
-        $idCollapse = $accordionItem->getId();
+        /** @psalm-var non-empty-string $collapseId */
+        $collapseId = $accordionItem->getId();
 
         return Div::tag()->addClass(self::CLASS_ITEM)
             ->addContent(
                 "\n",
-                $this->renderHeader($accordionItem, $idCollapse),
+                $this->renderHeader($accordionItem, $collapseId),
                 "\n",
-                $this->renderBody($accordionItem, $idParent, $idCollapse),
+                $this->renderBody($accordionItem, $parentId, $collapseId),
                 "\n",
             )
             ->encode(false)
@@ -482,16 +482,16 @@ final class Accordion extends Widget
      * Renders the toggle of the accordion item.
      *
      * @param string $header The header of the item.
-     * @param string $idCollpase The ID of the collapse element.
+     * @param string $collapseId The ID of the collapse element.
      * @param bool $active Whether the item is active.
-     *
-     * @throws InvalidArgumentException if the toggle tag is an empty string.
      *
      * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string $idCollpase The ID of the collapse element.
+     * @psalm-param non-empty-string $collapseId The ID of the collapse element.
+     *@throws InvalidArgumentException if the toggle tag is an empty string.
+     *
      */
-    private function renderToggle(string $header, string $idCollpase, bool $active): string
+    private function renderToggle(string $header, string $collapseId, bool $active): string
     {
         $toggleTag = match ($this->toggleTag) {
             null => Button::button(''),
@@ -514,7 +514,7 @@ final class Accordion extends Widget
         }
 
         if (array_key_exists('data-bs-target', $toggleAttributes) === false) {
-            $toggleAttributes['data-bs-target'] = '#' . $idCollpase;
+            $toggleAttributes['data-bs-target'] = '#' . $collapseId;
         }
 
         if (array_key_exists('aria-expanded', $toggleAttributes) === false) {
@@ -522,7 +522,7 @@ final class Accordion extends Widget
         }
 
         if (array_key_exists('aria-controls', $toggleAttributes) === false) {
-            $toggleAttributes['aria-controls'] = $idCollpase;
+            $toggleAttributes['aria-controls'] = $collapseId;
         }
 
         return $toggleTag->addAttributes($toggleAttributes)->addContent("\n", $header, "\n")->encode(false)->render();

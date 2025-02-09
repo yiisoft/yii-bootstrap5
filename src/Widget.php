@@ -43,10 +43,10 @@ abstract class Widget extends YiiWidget
      *
      * @return static
      */
-    public function id(string $value): static
+    public function id(string $id): static
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -58,10 +58,10 @@ abstract class Widget extends YiiWidget
      *
      * @see getId()
      */
-    public function autoIdPrefix(string $value): static
+    public function autoIdPrefix(string $prefix): static
     {
         $new = clone $this;
-        $new->autoIdPrefix = $value;
+        $new->autoIdPrefix = $prefix;
 
         return $new;
     }

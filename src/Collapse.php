@@ -40,6 +40,7 @@ final class Collapse extends AbstractToggleWidget
 
     public function getId(?string $suffix = '-collapse'): ?string
     {
+        // TODO: fix the method call, there's no suffix anymore.
         return $this->options['id'] ?? parent::getId($suffix);
     }
 

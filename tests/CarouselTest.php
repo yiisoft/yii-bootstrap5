@@ -790,7 +790,7 @@ final class CarouselTest extends TestCase
             </div>
             HTML,
             Carousel::widget()
-                ->disableTouchSwiping()
+                ->touchSwiping(false)
                 ->id('carouselExampleControlsNoTouching')
                 ->items(
                     CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
@@ -880,7 +880,7 @@ final class CarouselTest extends TestCase
         $this->assertNotSame($carousel, $carousel->controlPreviousLabel(''));
         $this->assertNotSame($carousel, $carousel->controls(false));
         $this->assertNotSame($carousel, $carousel->crossfade(false));
-        $this->assertNotSame($carousel, $carousel->disableTouchSwiping(false));
+        $this->assertNotSame($carousel, $carousel->touchSwiping(false));
         $this->assertNotSame($carousel, $carousel->id(''));
         $this->assertNotSame(
             $carousel,
@@ -937,7 +937,7 @@ final class CarouselTest extends TestCase
         $this->assertEmpty(Carousel::widget()->render());
     }
 
-    public function testRenderWithItemsActiveDiferentFromFirst(): void
+    public function testRenderWithItemsActiveDifferentFromFirst(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML

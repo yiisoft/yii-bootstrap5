@@ -69,14 +69,14 @@ final class Nav extends Widget
     /**
      * Whether to activate items by matching the currentPath with the `url` option in the nav items.
      *
-     * @param bool $value Whether to activate items. Defaults to `true`.
+     * @param bool $enabled Whether to activate items. Defaults to `true`.
      *
      * @return self A new instance with the specified activated items value.
      */
-    public function activateItems(bool $value): self
+    public function activateItems(bool $enabled): self
     {
         $new = clone $this;
-        $new->activateItems = $value;
+        $new->activateItems = $enabled;
 
         return $new;
     }
@@ -84,14 +84,14 @@ final class Nav extends Widget
     /**
      * Adds a set of attributes for the nav component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-nav']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-nav']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -102,7 +102,7 @@ final class Nav extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -113,10 +113,10 @@ final class Nav extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(BackedEnum|string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$value];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -124,19 +124,19 @@ final class Nav extends Widget
     /**
      * Adds a CSS style for the nav component.
      *
-     * @param array|string $value The CSS style for the nav component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
-     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
-     * 'color: red; font-weight: bold;'.
+     * @param array|string $style The CSS style for the nav component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
+     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -144,16 +144,16 @@ final class Nav extends Widget
     /**
      * Sets the HTML attributes for the nav component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -164,7 +164,7 @@ final class Nav extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -173,10 +173,10 @@ final class Nav extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(BackedEnum|string|null ...$value): self
+    public function class(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $value;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -184,14 +184,14 @@ final class Nav extends Widget
     /**
      * The currentPath to be used to check the active state of the nav items.
      *
-     * @param string $value The currentPath to be used to check the active state of the nav items.
+     * @param string $path The current path to be used to check the active state of the nav items.
      *
-     * @return self A new instance with the specified currentPath.
+     * @return self A new instance with the specified current path.
      */
-    public function currentPath(string $value): self
+    public function currentPath(string $path): self
     {
         $new = clone $this;
-        $new->currentPath = $value;
+        $new->currentPath = $path;
 
         return $new;
     }
@@ -199,18 +199,18 @@ final class Nav extends Widget
     /**
      * Whether to fade the navigation items when toggling between them.
      *
-     * @param bool $value Whether to fade the navigation items when toggling between them.
+     * @param bool $enabled Whether to fade the navigation items when toggling between them.
      *
      * @return self A new instance with the specified fade value.
      */
-    public function fade(bool $value): self
+    public function fade(bool $enabled): self
     {
-        if ($this->isTabsOrPills() === false && $value) {
+        if ($enabled && $this->isTabsOrPills() === false) {
             throw new RuntimeException('Fade effect can only be used with tabs or pills.');
         }
 
         $new = clone $this;
-        $new->fade = $value;
+        $new->fade = $enabled;
 
         return $new;
     }
@@ -218,14 +218,14 @@ final class Nav extends Widget
     /**
      * Sets the ID of the component.
      *
-     * @param bool|string $value The ID of the component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -233,16 +233,16 @@ final class Nav extends Widget
     /**
      * List of links to appear in the nav. If this property is empty, the widget will not render anything.
      *
-     * @param array $value The links to appear in the nav.
+     * @param array $items The links to appear in the nav.
      *
      * @return self A new instance with the specified links to appear in the nav.
      *
-     * @psalm-param Dropdown[]|NavLink[] $value The links to appear in the nav.
+     * @psalm-param Dropdown[]|NavLink[] $items The links to appear in the nav.
      */
-    public function items(Dropdown|NavLink ...$value): self
+    public function items(Dropdown|NavLink ...$items): self
     {
         $new = clone $this;
-        $new->items = $value;
+        $new->items = $items;
 
         return $new;
     }
@@ -250,16 +250,16 @@ final class Nav extends Widget
     /**
      * Sets the HTML attributes for the content panes.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified pane attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function paneAttributes(array $values): self
+    public function paneAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->paneAttributes = $values;
+        $new->paneAttributes = $attributes;
 
         return $new;
     }
@@ -270,7 +270,7 @@ final class Nav extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param NavStyle|null ...$value One or more CSS style class names to add. Pass `null` to skip adding a class.
+     * @param NavStyle|null ...$styles One or more CSS style class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -279,10 +279,10 @@ final class Nav extends Widget
      *
      * @return self A new instance with the specified CSS style classes added.
      */
-    public function styles(NavStyle|null ...$value): self
+    public function styles(NavStyle|null ...$styles): self
     {
         $new = clone $this;
-        $new->styleClasses = [...$this->styleClasses, ...$value];
+        $new->styleClasses = [...$this->styleClasses, ...$styles];
 
         return $new;
     }
@@ -290,14 +290,14 @@ final class Nav extends Widget
     /**
      * Set the tag name for the nav component.
      *
-     * @param string|Stringable $value The tag name for the nav component.
+     * @param string|Stringable $tag The tag name for the nav component.
      *
      * @return self A new instance with the specified tag name.
      */
-    public function tag(string|Stringable $value): self
+    public function tag(string|Stringable $tag): self
     {
         $new = clone $this;
-        $new->tag = (string) $value;
+        $new->tag = (string) $tag;
 
         return $new;
     }
@@ -394,12 +394,12 @@ final class Nav extends Widget
      *
      * @return Dropdown The active dropdown item.
      */
-    private function isItemActiveDropdown(Dropdown $dropdown): Dropdown
+    private function isDropdownActive(Dropdown $dropdown): Dropdown
     {
         $items = $dropdown->getItems();
 
         foreach ($items as $key => $value) {
-            if ($value->getType() === 'link' && $value->getUrl() === $this->currentPath && $this->activateItems) {
+            if ($this->activateItems && $value->getType() === 'link' && $value->getUrl() === $this->currentPath) {
                 $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
             }
         }
@@ -496,7 +496,7 @@ final class Nav extends Widget
      */
     private function renderItemsDropdown(Dropdown $items): Li
     {
-        $dropDownItems = $this->isItemActiveDropdown($items);
+        $dropDownItems = $this->isDropdownActive($items);
 
         return Li::tag()
             ->addClass(self::NAV_ITEM_DROPDOWN_CLASS)

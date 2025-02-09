@@ -39,46 +39,46 @@ There are several ways to install the assets, they are:
 
 1. Using the [AssetPackagist](https://asset-packagist.org/) package manager.
 
-Add to composer.json the following:
-
-```json
-{
-    "require": {
-        "npm-asset/bootstrap": "^5.3",
-        "oomphinc/composer-installers-extender": "^2.0"
-    },
-    "extra": {
-        "installer-types": [
-            "npm-asset"
-        ],
-        "installer-paths": {
-            "./node_modules/{$name}": [
-                "type:npm-asset"
-            ]
-        }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ]
-}
-```
-
-Once the changes are made, you can install the assets using the following command:
-
-```shell
-composer update
-```
+    Add to composer.json the following:
+    
+    ```json
+    {
+        "require": {
+            "npm-asset/bootstrap": "^5.3",
+            "oomphinc/composer-installers-extender": "^2.0"
+        },
+        "extra": {
+            "installer-types": [
+                "npm-asset"
+            ],
+            "installer-paths": {
+                "./node_modules/{$name}": [
+                    "type:npm-asset"
+                ]
+            }
+        },
+        "repositories": [
+            {
+                "type": "composer",
+                "url": "https://asset-packagist.org"
+            }
+        ]
+    }
+    ```
+    
+    Once the changes are made, you can install the assets using the following command:
+    
+    ```shell
+    composer update
+    ```
 
 2. Using the [npm-asset](https://www.npmjs.com/) package manager.
 
-Run the following command at the root directory of your application.
-
-```shell
-npm i bootstrap@5.3.1
-```
+    Run the following command at the root directory of your application.
+    
+    ```shell
+    npm i bootstrap@5.3.1
+    ```
 
 ## General usage
 

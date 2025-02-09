@@ -17,7 +17,7 @@ use function count;
 use function implode;
 
 /**
- * Carousel renders a carousel bootstrap javascript component.
+ * Carousel renders a carousel bootstrap JavaScript component.
  *
  * For example:
  *
@@ -69,14 +69,14 @@ final class Carousel extends Widget
     /**
      * Adds a set of attributes for the carousel component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-carousel']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-carousel']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -87,7 +87,7 @@ final class Carousel extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -98,10 +98,10 @@ final class Carousel extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$values): self
+    public function addClass(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$values];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -109,19 +109,19 @@ final class Carousel extends Widget
     /**
      * Adds a CSS style for the carousel component.
      *
-     * @param array|string $value The CSS style for the carousel component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
-     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
-     * 'color: red; font-weight: bold;'.
+     * @param array|string $style The CSS style for the carousel component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
+     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -129,16 +129,16 @@ final class Carousel extends Widget
     /**
      * Sets the HTML attributes for the carousel component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -146,12 +146,12 @@ final class Carousel extends Widget
     /**
      * Sets whether and how the carousel should automatically cycle through slides.
      *
-     * Bootstrap supports three modes of auto-playing for carousels:
-     * - 'carousel': Starts cycling when the page loads (recommended).
-     * - 'true': Like 'carousel', but waits until the first manual interaction before cycling.
-     * - 'false'/'empty string': Disables auto-playing completely.
+     * Bootstrap supports three modes of autoplaying for carousels:
+     * - `carousel': Starts cycling when the page loads (recommended).
+     * - `true`: Like `carousel`, but waits until the first manual interaction before cycling.
+     * - `false` or empty string: Disables autoplaying completely.
      *
-     * When auto-playing is enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
+     * When autoplaying is enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
      * on carousel controls/indicators.
      *
      * Example:
@@ -166,13 +166,13 @@ final class Carousel extends Widget
      * $carousel->autoPlaying(false)
      * ```
      *
-     * @return self A new instance with the specified auto-playing value.
+     * @return self A new instance with the specified autoplaying value.
      *
      * @see https://getbootstrap.com/docs/5.3/components/carousel/#autoplaying-carousels
      */
-    public function autoPlaying(bool|string $value = 'carousel'): self
+    public function autoPlaying(bool|string $mode = 'carousel'): self
     {
-        $dataBsRide = match ($value) {
+        $dataBsRide = match ($mode) {
             '', 'false', false => null,
             'true' => 'true',
             true => 'true',
@@ -188,7 +188,7 @@ final class Carousel extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -197,10 +197,10 @@ final class Carousel extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$values): self
+    public function class(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $values;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -208,14 +208,14 @@ final class Carousel extends Widget
     /**
      * Sets the tag name for the content caption.
      *
-     * @param string $value The tag name for the content caption.
+     * @param string $tag The tag name for the content caption.
      *
      * @return self A new instance with the specified tag name for the content caption.
      */
-    public function captionTagName(string $value): self
+    public function captionTagName(string $tag): self
     {
         $new = clone $this;
-        $new->captionTagName = $value;
+        $new->captionTagName = $tag;
 
         return $new;
     }
@@ -223,14 +223,14 @@ final class Carousel extends Widget
     /**
      * Sets the tag name for the content caption placeholder.
      *
-     * @param string $value The tag name for the content caption placeholder.
+     * @param string $tag The tag name for the content caption placeholder.
      *
      * @return self A new instance with the specified tag name for the content caption placeholder.
      */
-    public function captionPlaceholderTagName(string $value): self
+    public function captionPlaceholderTagName(string $tag): self
     {
         $new = clone $this;
-        $new->captionPlaceholderTagName = $value;
+        $new->captionPlaceholderTagName = $tag;
 
         return $new;
     }
@@ -238,14 +238,14 @@ final class Carousel extends Widget
     /**
      * Sets the label for the next control button.
      *
-     * @param string $value The label for the next control button.
+     * @param string $label The label for the next control button.
      *
      * @return self A new instance with the specified label for the next control button.
      */
-    public function controlNextLabel(string $value): self
+    public function controlNextLabel(string $label): self
     {
         $new = clone $this;
-        $new->controlNextLabel = $value;
+        $new->controlNextLabel = $label;
 
         return $new;
     }
@@ -253,14 +253,14 @@ final class Carousel extends Widget
     /**
      * Sets the label for the previous control button.
      *
-     * @param string $value The label for the previous control button.
+     * @param string $label The label for the previous control button.
      *
      * @return self A new instance with the specified label for the previous control button.
      */
-    public function controlPreviousLabel(string $value): self
+    public function controlPreviousLabel(string $label): self
     {
         $new = clone $this;
-        $new->controlPreviousLabel = $value;
+        $new->controlPreviousLabel = $label;
 
         return $new;
     }
@@ -268,14 +268,14 @@ final class Carousel extends Widget
     /**
      * Whether to show the carousel controls or not.
      *
-     * @param bool $value Whether to show the carousel controls or not. Default is `true`.
+     * @param bool $enabled Whether to show the carousel controls or not. Default is `true`.
      *
      * @return self A new instance with the specified value.
      */
-    public function controls(bool $value = true): self
+    public function controls(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->controls = !$value;
+        $new->controls = !$enabled;
 
         return $new;
     }
@@ -283,43 +283,43 @@ final class Carousel extends Widget
     /**
      * Set the carousel to crossfade slides instead of sliding.
      *
-     * @param bool $value Whether to crossfade slides or not. Default is `true`.
+     * @param bool $enabled Whether to crossfade slides or not. Default is `true`.
      *
      * @return self A new instance with the specified crossfade value.
      */
-    public function crossfade(bool $value = true): self
+    public function crossfade(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->cssClasses['crossfade'] = $value ? 'carousel-fade' : null;
+        $new->cssClasses['crossfade'] = $enabled ? 'carousel-fade' : null;
 
         return $new;
     }
 
     /**
-     * Disables the touch swipe functionality of the carousel.
+     * Toggles the touch swipe functionality of the carousel.
      *
-     * @param bool $value Whether to disable the touch swipe functionality or not. Default is `true`.
+     * @param bool $enabled Whether to enable the touch swipe functionality or not. Default is `true`.
      *
      * @return self A new instance with the touch swipe functionality disabled.
      */
-    public function disableTouchSwiping(bool $value = true): self
+    public function touchSwiping(bool $enabled = true): self
     {
-        return $this->addAttributes(['data-bs-touch' => $value ? 'false' : null]);
+        return $this->addAttributes(['data-bs-touch' => $enabled ? null : 'false']);
     }
 
     /**
      * Sets the ID of the carousel component.
      *
-     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
-     *
-     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
+     *@throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -327,14 +327,14 @@ final class Carousel extends Widget
     /**
      * Sets the items of the carousel component.
      *
-     * @param CarouselItem ...$value Items of the carousel component.
+     * @param CarouselItem ...$items Items of the carousel component.
      *
      * @return self A new instance with the specified items.
      */
-    public function items(CarouselItem ...$value): self
+    public function items(CarouselItem ...$items): self
     {
         $new = clone $this;
-        $new->items = $value;
+        $new->items = $items;
 
         return $new;
     }
@@ -342,14 +342,14 @@ final class Carousel extends Widget
     /**
      * Whether to show indicators or not.
      *
-     * @param bool $value Whether to show indicators or not. Default is `true`.
+     * @param bool $enabled Whether to show indicators or not. Default is `true`.
      *
      * @return self A new instance with the specified value.
      */
-    public function showIndicators(bool $value = true): self
+    public function showIndicators(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->showIndicators = $value;
+        $new->showIndicators = $enabled;
 
         return $new;
     }
@@ -357,13 +357,13 @@ final class Carousel extends Widget
     /**
      * Sets the theme for the carousel component.
      *
-     * @param string $value The theme for the carousel component.
+     * @param string $theme The theme for the carousel component.
      *
      * @return self A new instance with the specified theme.
      */
-    public function theme(string $value): self
+    public function theme(string $theme): self
     {
-        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
+        return $this->addAttributes(['data-bs-theme' => $theme === '' ? null : $theme]);
     }
 
     /**
@@ -487,7 +487,7 @@ final class Carousel extends Widget
                     'data-bs-target' => '#' . $id,
                     'data-bs-slide-to' => (string) $key,
                     'aria-current' => $carouselItem->isActive() || $active ? 'true' : null,
-                    'aria-label' => 'Slide ' . (string) ($key + 1),
+                    'aria-label' => 'Slide ' . ($key + 1),
                 ],
             )
             ->addClass($carouselItem->isActive() || $active ? 'active' : null)

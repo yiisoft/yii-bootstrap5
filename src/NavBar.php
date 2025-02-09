@@ -73,14 +73,14 @@ final class NavBar extends Widget
     /**
      * Adds a set of attributes for the navbar component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-collapse']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-collapse']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -91,7 +91,7 @@ final class NavBar extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -102,10 +102,10 @@ final class NavBar extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(BackedEnum|string|null ...$value): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClass = [...$this->cssClass, ...$value];
+        $new->cssClass = [...$this->cssClass, ...$class];
 
         return $new;
     }
@@ -113,19 +113,19 @@ final class NavBar extends Widget
     /**
      * Adds a CSS style for the navbar component.
      *
-     * @param array|string $value The CSS style for the navbar component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
-     * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
-     * 'color: red; font-weight: bold;'.
+     * @param array|string $style The CSS style for the navbar component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
+     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -133,16 +133,16 @@ final class NavBar extends Widget
     /**
      * Sets the HTML attributes for the navbar component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -150,15 +150,15 @@ final class NavBar extends Widget
     /**
      * Sets the brand image for the navbar component.
      *
-     * @param string|Stringable $value The brand image for the navbar component. If `null`, the brand image will not
+     * @param string|Stringable $image The brand image for the navbar component. If `null`, the brand image will not
      * be displayed.
      *
      * @return self A new instance with the specified brand image.
      */
-    public function brandImage(string|Stringable $value): self
+    public function brandImage(string|Stringable $image): self
     {
         $new = clone $this;
-        $new->brandImage = $value;
+        $new->brandImage = $image;
 
         return $new;
     }
@@ -166,16 +166,16 @@ final class NavBar extends Widget
     /**
      * Sets the HTML attributes for the brand image of the navbar component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function brandImageAttributes(array $values): self
+    public function brandImageAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->brandImageAttributes = $values;
+        $new->brandImageAttributes = $attributes;
 
         return $new;
     }
@@ -183,15 +183,15 @@ final class NavBar extends Widget
     /**
      * Sets the brand text for the navbar component.
      *
-     * @param string|Stringable $value The brand text for the navbar component. If `null`, the brand text will not
+     * @param string|Stringable $text The brand text for the navbar component. If `null`, the brand text will not
      * be displayed.
      *
      * @return self A new instance with the specified brand text.
      */
-    public function brandText(string|Stringable $value): self
+    public function brandText(string|Stringable $text): self
     {
         $new = clone $this;
-        $new->brandText = $value;
+        $new->brandText = $text;
 
         return $new;
     }
@@ -199,15 +199,15 @@ final class NavBar extends Widget
     /**
      * Sets the brand URL for the navbar component.
      *
-     * @param string $value The brand URL for the navbar component. If `null`, the brand URL will not be
+     * @param string $url The brand URL for the navbar component. If `null`, the brand URL will not be
      * displayed.
      *
      * @return self A new instance with the specified brand URL.
      */
-    public function brandUrl(string $value): self
+    public function brandUrl(string $url): self
     {
         $new = clone $this;
-        $new->brandUrl = $value;
+        $new->brandUrl = $url;
 
         return $new;
     }
@@ -218,7 +218,7 @@ final class NavBar extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param BackedEnum|string|null ...$value One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -227,10 +227,10 @@ final class NavBar extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(BackedEnum|string|null ...$value): self
+    public function class(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClass = $value;
+        $new->cssClass = $class;
 
         return $new;
     }
@@ -238,16 +238,16 @@ final class NavBar extends Widget
     /**
      * Sets whether the navbar contains navigation content in a container.
      *
-     * @param bool $value Whether to use container for navigation content.
+     * @param bool $enabled Whether to use container for navigation content.
      * If `true` navigation content will be wrapped in a container.
      * If `false` navigation content spans full width.
      *
      * @return self A new instance with the specified container setting.
      */
-    public function container(bool $value): self
+    public function container(bool $enabled): self
     {
         $new = clone $this;
-        $new->container = $value;
+        $new->container = $enabled;
 
         return $new;
     }
@@ -255,16 +255,16 @@ final class NavBar extends Widget
     /**
      * Sets the HTML attributes for the container of the navbar component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function containerAttributes(array $values): self
+    public function containerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->containerAttributes = $values;
+        $new->containerAttributes = $attributes;
 
         return $new;
     }
@@ -272,14 +272,14 @@ final class NavBar extends Widget
     /**
      * Sets the expansion breakpoint class for the navigation bar.
      *
-     * @param NavBarExpand $value The breakpoint class at which the navbar will expand.
+     * @param NavBarExpand $class The breakpoint class at which the navbar will expand.
      *
      * @return self A new instance with the specified expansion breakpoint.
      */
-    public function expand(NavBarExpand $value): self
+    public function expand(NavBarExpand $class): self
     {
         $new = clone $this;
-        $new->expand = $value;
+        $new->expand = $class;
 
         return $new;
     }
@@ -287,16 +287,16 @@ final class NavBar extends Widget
     /**
      * Sets the ID of the navbar component.
      *
-     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
-     *
-     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
+     *@throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -304,15 +304,14 @@ final class NavBar extends Widget
     /**
      * Whether to use an inner container for the navbar component.
      *
-     * @param bool $value 'true' to use an inner container for the navbar component, 'false' otherwise. Defaults to
-     * 'true'.
+     * @param bool $enabled 'true' to use an inner container for the navbar component, 'false' otherwise.
      *
      * @return self A new instance with the specified inner container setting.
      */
-    public function innerContainer(bool $value): self
+    public function innerContainer(bool $enabled): self
     {
         $new = clone $this;
-        $new->innerContainer = $value;
+        $new->innerContainer = $enabled;
 
         return $new;
     }
@@ -320,16 +319,16 @@ final class NavBar extends Widget
     /**
      * Sets the HTML attributes for the inner container of the navbar component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function innerContainerAttributes(array $values): self
+    public function innerContainerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->innerContainerAttributes = $values;
+        $new->innerContainerAttributes = $attributes;
 
         return $new;
     }
@@ -342,14 +341,14 @@ final class NavBar extends Widget
     /**
      * Sets the tag name for the navbar component.
      *
-     * @param string $value The tag name for the navbar component.
+     * @param string $tag The tag name for the navbar component.
      *
      * @return self A new instance with the specified tag name.
      */
-    public function tag(string $value): self
+    public function tag(string $tag): self
     {
         $new = clone $this;
-        $new->tag = $value;
+        $new->tag = $tag;
 
         return $new;
     }
@@ -357,13 +356,13 @@ final class NavBar extends Widget
     /**
      * Sets the theme for the navbar component.
      *
-     * @param string $value The theme for the navbar component.
+     * @param string $theme The theme for the navbar component.
      *
      * @return self A new instance with the specified theme.
      */
-    public function theme(string $value): self
+    public function theme(string $theme): self
     {
-        return $this->addAttributes(['data-bs-theme' => $value === '' ? null : $value]);
+        return $this->addAttributes(['data-bs-theme' => $theme === '' ? null : $theme]);
     }
 
     /**

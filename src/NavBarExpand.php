@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * The expand sizes for a Bootstrap5 navbar.
+ * Expand sizes for a Bootstrap5 {@see NavBar}.
  *
  * @see https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works
  */

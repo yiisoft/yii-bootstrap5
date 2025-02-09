@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Types for the {@see \Yiisoft\Yii\Bootstrap5\Button} component.
+ * Types for the {@see Button} component.
  */
 enum ButtonType: string
 {

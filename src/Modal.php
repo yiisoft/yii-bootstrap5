@@ -41,7 +41,7 @@ final class Modal extends AbstractToggleWidget
     public const SIZE_EXTRA_LARGE = 'modal-xl';
 
     /**
-     * Fullsceen classes
+     * Fullscreen classes
      */
     public const FULLSCREEN_ALWAYS = 'modal-fullscreen';
     public const FULLSCREEN_BELOW_SM = 'modal-fullscreen-sm-down';
@@ -70,6 +70,7 @@ final class Modal extends AbstractToggleWidget
 
     public function getId(?string $suffix = '-modal'): ?string
     {
+        // TODO: fix the method call, there's no suffix anymore.
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
@@ -201,10 +202,10 @@ final class Modal extends AbstractToggleWidget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function bodyOptions(array $value): self
+    public function bodyOptions(array $options): self
     {
         $new = clone $this;
-        $new->bodyOptions = $value;
+        $new->bodyOptions = $options;
 
         return $new;
     }
@@ -212,10 +213,10 @@ final class Modal extends AbstractToggleWidget
     /**
      * The footer content in the modal window.
      */
-    public function footer(?string $value): self
+    public function footer(?string $content): self
     {
         $new = clone $this;
-        $new->footer = $value;
+        $new->footer = $content;
 
         return $new;
     }
@@ -225,10 +226,10 @@ final class Modal extends AbstractToggleWidget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function footerOptions(array $value): self
+    public function footerOptions(array $options): self
     {
         $new = clone $this;
-        $new->footerOptions = $value;
+        $new->footerOptions = $options;
 
         return $new;
     }
@@ -238,24 +239,24 @@ final class Modal extends AbstractToggleWidget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function headerOptions(array $value): self
+    public function headerOptions(array $options): self
     {
         $new = clone $this;
-        $new->headerOptions = $value;
+        $new->headerOptions = $options;
 
         return $new;
     }
 
     /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
+     * @param array $options the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function options(array $options): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->options = $options;
 
         return $new;
     }
@@ -263,10 +264,10 @@ final class Modal extends AbstractToggleWidget
     /**
      * The title content in the modal window.
      */
-    public function title(?string $value): self
+    public function title(?string $title): self
     {
         $new = clone $this;
-        $new->title = $value;
+        $new->title = $title;
 
         return $new;
     }
@@ -276,10 +277,10 @@ final class Modal extends AbstractToggleWidget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function titleOptions(array $value): self
+    public function titleOptions(array $options): self
     {
         $new = clone $this;
-        $new->titleOptions = $value;
+        $new->titleOptions = $options;
 
         return $new;
     }
@@ -289,10 +290,10 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#optional-sizes
      */
-    public function size(?string $value): self
+    public function size(?string $size): self
     {
         $new = clone $this;
-        $new->size = $value;
+        $new->size = $size;
 
         return $new;
     }
@@ -302,14 +303,14 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#static-backdrop
      */
-    public function staticBackdrop(bool $value = true): self
+    public function staticBackdrop(bool $enabled = true): self
     {
-        if ($value === $this->staticBackdrop) {
+        if ($enabled === $this->staticBackdrop) {
             return $this;
         }
 
         $new = clone $this;
-        $new->staticBackdrop = $value;
+        $new->staticBackdrop = $enabled;
 
         return $new;
     }
@@ -319,14 +320,14 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#scrolling-long-content
      */
-    public function scrollable(bool $scrollable = true): self
+    public function scrollable(bool $enabled = true): self
     {
-        if ($scrollable === $this->scrollable) {
+        if ($enabled === $this->scrollable) {
             return $this;
         }
 
         $new = clone $this;
-        $new->scrollable = $scrollable;
+        $new->scrollable = $enabled;
 
         return $new;
     }
@@ -336,14 +337,14 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#vertically-centered
      */
-    public function centered(bool $centered = true): self
+    public function centered(bool $enabled = true): self
     {
-        if ($centered === $this->centered) {
+        if ($enabled === $this->centered) {
             return $this;
         }
 
         $new = clone $this;
-        $new->centered = $centered;
+        $new->centered = $enabled;
 
         return $new;
     }
@@ -353,10 +354,10 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#remove-animation
      */
-    public function fade(bool $fade = true): self
+    public function fade(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->fade = $fade;
+        $new->fade = $enabled;
 
         return $new;
     }
@@ -366,10 +367,10 @@ final class Modal extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/modal/#fullscreen-modal
      */
-    public function fullscreen(?string $fullscreen): self
+    public function fullscreen(?string $enabled): self
     {
         $new = clone $this;
-        $new->fullscreen = $fullscreen;
+        $new->fullscreen = $enabled;
 
         return $new;
     }
