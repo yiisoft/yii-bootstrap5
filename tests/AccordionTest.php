@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Accordion;
 use Yiisoft\Yii\Bootstrap5\AccordionItem;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
@@ -12,10 +14,9 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Accordion` widget
- *
- * @group accordion
  */
-final class AccordionTest extends \PHPUnit\Framework\TestCase
+#[Group('accordion')]
+final class AccordionTest extends TestCase
 {
     public function testAddAttributes(): void
     {
@@ -40,7 +41,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->addAttributes(['id' => 'accordion'])
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -52,7 +53,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->id('accordion')
             ->items(
-                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
             );
 
         Assert::equalsWithoutLE(
@@ -101,7 +102,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $accordion = Accordion::widget()
             ->addCssStyle('color: red;')
             ->id('accordion')
-            ->items(AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
+            ->items(AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -149,7 +150,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         $accordion = Accordion::widget()
             ->addCssStyle('color: red;')
             ->id('accordion')
-            ->items(AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'));
+            ->items(AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -215,7 +216,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->attributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -273,32 +274,32 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        '<strong>This is the first item\'s accordion body.</strong>' .
+                        "<strong>This is the first item's accordion body.</strong>" .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-1',
                         encodeBody: false,
                         active: true
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        '<strong>This is the second item\'s accordion body.</strong>' .
+                        "<strong>This is the second item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-2',
                         encodeBody: false
                     ),
                     AccordionItem::to(
                         'Accordion Item #3',
-                        '<strong>This is the third item\'s accordion body.</strong>' .
+                        "<strong>This is the third item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-3',
                         encodeBody: false
                     )
@@ -330,7 +331,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->bodyAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -360,7 +361,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -389,7 +390,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->collapseAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -447,31 +448,31 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        '<strong>This is the first item\'s accordion body.</strong>' .
+                        "<strong>This is the first item's accordion body.</strong>" .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-1',
                         encodeBody: false
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        '<strong>This is the second item\'s accordion body.</strong>' .
+                        "<strong>This is the second item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-2',
                         encodeBody: false
                     ),
                     AccordionItem::to(
                         'Accordion Item #3',
-                        '<strong>This is the third item\'s accordion body.</strong>' .
+                        "<strong>This is the third item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-3',
                         encodeBody: false
                     ),
@@ -532,32 +533,32 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        '<strong>This is the first item\'s accordion body.</strong>' .
+                        "<strong>This is the first item's accordion body.</strong>" .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-1',
                         encodeBody: false,
                         active: true
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        '<strong>This is the second item\'s accordion body.</strong>' .
+                        "<strong>This is the second item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-2',
                         encodeBody: false
                     ),
                     AccordionItem::to(
                         'Accordion Item #3',
-                        '<strong>This is the third item\'s accordion body.</strong>' .
+                        "<strong>This is the third item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-3',
                         encodeBody: false
                     ),
@@ -589,7 +590,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->headerAttributes(['class' => 'test-class'])
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -618,7 +619,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->headerTag('h3')
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -646,7 +647,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -660,7 +661,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         Accordion::widget()
             ->id('')
             ->items(
-                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
             )
             ->render();
     }
@@ -673,7 +674,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
         Accordion::widget()
             ->id(false)
             ->items(
-                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
             )
             ->render();
     }
@@ -700,7 +701,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->attributes(['id' => 'accordion'])
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->render(),
         );
@@ -763,12 +764,12 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        'This is the first item\'s accordion body.',
+                        "This is the first item's accordion body.",
                         'accordion-1'
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        'This is the second item\'s accordion body.',
+                        "This is the second item's accordion body.",
                         'accordion-2',
                         active: true
                     ),
@@ -812,13 +813,13 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        'This is the first item\'s accordion body.',
+                        "This is the first item's accordion body.",
                         'accordion-1',
                         active: true
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        'This is the second item\'s accordion body.',
+                        "This is the second item's accordion body.",
                         'accordion-2',
                         active: true
                     ),
@@ -851,7 +852,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         '<strong>Accordion Item #1</strong>',
-                        '<strong>This is the first item\'s accordion body.</strong>',
+                        "<strong>This is the first item's accordion body.</strong>",
                         'accordion-1'
                     )
                 )
@@ -883,7 +884,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         '<strong>Accordion Item #1</strong>',
-                        '<strong>This is the first item\'s accordion body.</strong>',
+                        "<strong>This is the first item's accordion body.</strong>",
                         'accordion-1',
                         encodeHeader: false,
                         encodeBody: false
@@ -944,32 +945,32 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     AccordionItem::to(
                         'Accordion Item #1',
-                        '<strong>This is the first item\'s accordion body.</strong>' .
+                        "<strong>This is the first item's accordion body.</strong>" .
                         ' It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-1',
                         encodeBody: false,
                         active: true
                     ),
                     AccordionItem::to(
                         'Accordion Item #2',
-                        '<strong>This is the second item\'s accordion body.</strong>' .
+                        "<strong>This is the second item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-2',
                         encodeBody: false
                     ),
                     AccordionItem::to(
                         'Accordion Item #3',
-                        '<strong>This is the third item\'s accordion body.</strong>' .
+                        "<strong>This is the third item's accordion body.</strong>" .
                         ' It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. ' .
                         ' These classes control the overall appearance, as well as the showing and hiding via CSS transitions. ' .
                         ' You can modify any of this with custom CSS or overriding our default variables. ' .
-                        ' It\'s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.',
+                        " It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.",
                         'accordion-3',
                         encodeBody: false
                     ),
@@ -1006,7 +1007,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['class' => 'btn-lg'])
                 ->render(),
@@ -1035,7 +1036,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-controls' => 'custom-value'])
                 ->render(),
@@ -1064,7 +1065,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-controls' => null])
                 ->render(),
@@ -1093,7 +1094,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-expanded' => 'custom-value'])
                 ->render(),
@@ -1122,7 +1123,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['aria-expanded' => null])
                 ->render(),
@@ -1151,7 +1152,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-target' => 'custom-value'])
                 ->render(),
@@ -1180,7 +1181,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-target' => null])
                 ->render(),
@@ -1209,7 +1210,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-toggle' => 'custom-value'])
                 ->render(),
@@ -1238,7 +1239,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleAttributes(['data-bs-toggle' => null])
                 ->render(),
@@ -1267,7 +1268,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
             Accordion::widget()
                 ->id('accordion')
                 ->items(
-                    AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
                 ->toggleTag('my-custom-tag')
                 ->render(),
@@ -1281,7 +1282,7 @@ final class AccordionTest extends \PHPUnit\Framework\TestCase
 
         Accordion::widget()
             ->items(
-                AccordionItem::to('Accordion Item #1', 'This is the first item\'s accordion body.', 'accordion-1'),
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
             )
             ->toggleTag('')
             ->render();

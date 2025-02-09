@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
+use Stringable;
 use Yiisoft\Html\Tag\Img;
 use Yiisoft\Yii\Bootstrap5\CarouselItem;
 
 /**
  * Tests for `CarouselItem`.
- *
- * @group carousel
  */
-final class CarouselItemTest extends \PHPUnit\Framework\TestCase
+#[Group('carousel')]
+final class CarouselItemTest extends TestCase
 {
     public function testGetAttributes(): void
     {
@@ -113,7 +115,7 @@ final class CarouselItemTest extends \PHPUnit\Framework\TestCase
     public function testGetContentWithStringable(): void
     {
         $carouselItem = CarouselItem::to(
-            new class () implements \Stringable {
+            new class () implements Stringable {
                 public function __toString(): string
                 {
                     return 'First slide';

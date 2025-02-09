@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
 use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
@@ -13,10 +15,9 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Breadcrumbs` widget
- *
- * @group breadcrumb
  */
-final class BreadcrumbsTest extends \PHPUnit\Framework\TestCase
+#[Group('breadcrumb')]
+final class BreadcrumbsTest extends TestCase
 {
     public function testActive(): void
     {

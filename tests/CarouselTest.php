@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\H2;
 use Yiisoft\Html\Tag\Img;
@@ -15,10 +17,9 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `Carousel` widget.
- *
- * @group carousel
  */
-final class CarouselTest extends \PHPUnit\Framework\TestCase
+#[Group('carousel')]
+final class CarouselTest extends TestCase
 {
     public function testAddAttributes(): void
     {

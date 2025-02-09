@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
@@ -15,10 +17,9 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Nav` widget.
- *
- * @group nav
  */
-final class NavTest extends \PHPUnit\Framework\TestCase
+#[Group('nav')]
+final class NavTest extends TestCase
 {
     public function testAddAttributes(): void
     {
@@ -887,23 +888,23 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     NavLink::tab(
                         'Home',
-                        'This is some placeholder content the Home tab\'s associated content.',
+                        "This is some placeholder content the Home tab's associated content.",
                         true,
                         paneId: 'pills-home-tab',
                     ),
                     NavLink::tab(
                         'Profile',
-                        'This is some placeholder content the Profile tab\'s associated content.',
+                        "This is some placeholder content the Profile tab's associated content.",
                         paneId: 'pills-profile-tab',
                     ),
                     NavLink::tab(
                         'Contact',
-                        'This is some placeholder content the Contact tab\'s associated content.',
+                        "This is some placeholder content the Contact tab's associated content.",
                         paneId: 'pills-contact-tab',
                     ),
                     NavLink::tab(
                         'Disabled',
-                        'This is some placeholder content the Disabled tab\'s associated content.',
+                        "This is some placeholder content the Disabled tab's associated content.",
                         paneId: 'pills-disabled-tab',
                     ),
                 )
@@ -1077,23 +1078,23 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->items(
                     NavLink::tab(
                         'Home',
-                        'This is some placeholder content the Home tab\'s associated content.',
+                        "This is some placeholder content the Home tab's associated content.",
                         true,
                         paneId: 'home-tab',
                     ),
                     NavLink::tab(
                         'Profile',
-                        'This is some placeholder content the Profile tab\'s associated content.',
+                        "This is some placeholder content the Profile tab's associated content.",
                         paneId: 'profile-tab',
                     ),
                     NavLink::tab(
                         'Contact',
-                        'This is some placeholder content the Contact tab\'s associated content.',
+                        "This is some placeholder content the Contact tab's associated content.",
                         paneId: 'contact-tab',
                     ),
                     NavLink::tab(
                         'Disabled',
-                        'This is some placeholder content the Disabled tab\'s associated content.',
+                        "This is some placeholder content the Disabled tab's associated content.",
                         paneId: 'disabled-tab',
                     ),
                 )

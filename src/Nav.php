@@ -15,6 +15,10 @@ use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
 use Yiisoft\Widget\Widget;
 
+use function in_array;
+use function implode;
+use function sprintf;
+
 /**
  * Nav renders a Bootstrap navigation component.
  *
@@ -331,9 +335,9 @@ final class Nav extends Widget
 
             $attributes['id'] = $paneId;
             $attributes['data-bs-toggle'] = in_array(NavStyle::TABS, $this->styleClasses, true) ? 'tab' : 'pill';
-            $attributes['data-bs-target'] = "#{$paneId}-pane";
+            $attributes['data-bs-target'] = sprintf('#%s-pane', $paneId);
             $attributes['role'] = 'tab';
-            $attributes['aria-controls'] = "{$paneId}-pane";
+            $attributes['aria-controls'] = $paneId . '-pane';
             $attributes['aria-selected'] = $item->isActive() ? 'true' : 'false';
         }
 
@@ -597,7 +601,7 @@ final class Nav extends Widget
                 ]
             )
             ->content($item->getContent())
-            ->id("{$item->getId()}-pane")
+            ->id($item->getId() . '-pane')
             ->render();
     }
 }

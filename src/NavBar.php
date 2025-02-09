@@ -10,6 +10,7 @@ use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Span;
+use Yiisoft\Widget\Widget;
 
 /**
  * `NavBar` renders a navbar HTML component.
@@ -42,7 +43,7 @@ use Yiisoft\Html\Tag\Span;
  * echo NavBar::end();
  * ```
  */
-final class NavBar extends \Yiisoft\Widget\Widget
+final class NavBar extends Widget
 {
     private const NAME = 'navbar';
     private const NAVBAR_BRAND = 'navbar-brand mb-0 h1';

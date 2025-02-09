@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Widget\Widget;
 
 use function array_key_exists;
 use function implode;
@@ -30,7 +31,7 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/accordion/
  */
-final class Accordion extends \Yiisoft\Widget\Widget
+final class Accordion extends Widget
 {
     private const CLASS_BODY = 'accordion-body';
     private const CLASS_COLLAPSE = 'accordion-collapse collapse';

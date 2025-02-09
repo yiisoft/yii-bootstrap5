@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<phpunit bootstrap="vendor/autoload.php"
-         colors="true" verbose="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         stopOnFailure="false">
-
-  <coverage>
+<phpunit
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  bootstrap="vendor/autoload.php"
+  colors="true"
+  stopOnFailure="false"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+  cacheDirectory=".phpunit.cache"
+>
+  <testsuites>
+    <testsuite name="yiiBootstrap5">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <source>
     <include>
       <directory>./src</directory>
     </include>
@@ -15,11 +20,5 @@
       <directory>./tests</directory>
       <directory>./vendor</directory>
     </exclude>
-  </coverage>
-
-  <testsuites>
-    <testsuite name="yiiBootstrap5">
-      <directory>./tests</directory>
-    </testsuite>
-  </testsuites>
+  </source>
 </phpunit>

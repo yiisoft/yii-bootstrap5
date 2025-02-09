@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
 use Yiisoft\Yii\Bootstrap5\Toast;
 
 /**
  * Tests for `Toast` widget.
  */
+#[Group('toast')]
 final class ToastTest extends TestCase
 {
     public function testBodyOptions(): void
@@ -42,7 +44,7 @@ final class ToastTest extends TestCase
             ->dateTime('a minute ago')
             ->title('Toast title')
             ->begin();
-        $html .= 'Woohoo, you\'re reading this text in a toast!';
+        $html .= "Woohoo, you're reading this text in a toast!";
         $html .= Toast::end();
 
         $expected = <<<'HTML'

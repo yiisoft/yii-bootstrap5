@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use LogicException;
+use PHPUnit\Framework\Attributes\Group;
 use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Progress;
 
 /**
  * Tests for `Progress` widget.
  */
+#[Group('progress')]
 final class ProgressTest extends TestCase
 {
     public function testRender(): void
@@ -80,11 +82,7 @@ final class ProgressTest extends TestCase
             ->percent(90)
             ->barOptions(['class' => 'bg-danger']);
 
-        if ($striped === null) {
-            $widget = $widget->striped();
-        } else {
-            $widget = $widget->striped($striped);
-        }
+        $widget = $striped === null ? $widget->striped() : $widget->striped($striped);
 
         $html = $widget->render();
 
@@ -122,11 +120,7 @@ final class ProgressTest extends TestCase
             ->percent(90)
             ->barOptions(['class' => 'bg-danger']);
 
-        if ($animated === null) {
-            $widget = $widget->animated();
-        } else {
-            $widget = $widget->animated($animated);
-        }
+        $widget = $animated === null ? $widget->animated() : $widget->animated($animated);
 
         $html = $widget->render();
 

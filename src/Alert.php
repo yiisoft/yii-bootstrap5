@@ -10,6 +10,7 @@ use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Widget\Widget;
 
 use function array_key_exists;
 use function preg_replace;
@@ -26,7 +27,7 @@ use function strtr;
  *
  * @link https://getbootstrap.com/docs/5.0/components/alerts/
  */
-final class Alert extends \Yiisoft\Widget\Widget
+final class Alert extends Widget
 {
     private const CLASS_CLOSE_BUTTON = 'btn-close';
     private const NAME = 'alert';
@@ -133,7 +134,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     public function body(string|Stringable $value, bool $encode = true): self
     {
-        if ($encode === true) {
+        if ($encode) {
             $value = Html::encode($value);
         }
 
@@ -254,7 +255,7 @@ final class Alert extends \Yiisoft\Widget\Widget
      */
     public function header(string|null $value, bool $encode = true): self
     {
-        if ($encode === true) {
+        if ($encode) {
             $value = Html::encode($value);
         }
 
