@@ -33,7 +33,7 @@
         "rector/rector": "^2.0",
         "roave/infection-static-analysis-plugin": "^1.35",
         "spatie/phpunit-watcher": "^1.23",
-        "vimeo/psalm": "^6.4.1",
+        "vimeo/psalm": "^5.26.1|^6.4.1",
         "yiisoft/aliases": "^3.0",
         "yiisoft/di": "^1.0"
     },
