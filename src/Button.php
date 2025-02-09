@@ -112,14 +112,14 @@ final class Button extends Widget
     }
 
     /**
-     * Whether the button should be a submit button.
+     * Whether the button should be a "submit" button.
      *
-     * @param string|Stringable $value The content of the button. For default, it is 'Submit'.
+     * @param string|Stringable $value The content of the button. For default, it is "Submit".
      * @param array $constructorArguments The constructor arguments.
      * @param array $config The configuration.
      * @param string|null $theme The theme.
      *
-     * @return self A new instance with the button as a submit button.
+     * @return self A new instance with the button as a "submit" button.
      */
     public static function submit(
         string|Stringable $value = 'Submit',
@@ -133,15 +133,15 @@ final class Button extends Widget
     /**
      * Sets the button to be active.
      *
-     * @param bool $value Whether the button should be active.
+     * @param bool $enabled Whether the button should be active.
      *
      * @return self A new instance with the button active.
      */
-    public function active(bool $value = true): self
+    public function active(bool $enabled = true): self
     {
-        $activeClass = $value ? 'active' : null;
-        $ariaPressed = $value ? 'true' : null;
-        $dataBsToggle = $value ? 'button' : null;
+        $activeClass = $enabled ? 'active' : null;
+        $ariaPressed = $enabled ? 'true' : null;
+        $dataBsToggle = $enabled ? 'button' : null;
 
         $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
@@ -153,14 +153,14 @@ final class Button extends Widget
     /**
      * Adds a sets of attributes for the button component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-button']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-button']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$this->attributes, ...$values];
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
@@ -171,7 +171,7 @@ final class Button extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -182,10 +182,10 @@ final class Button extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$values): self
+    public function addClass(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$values];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -193,7 +193,7 @@ final class Button extends Widget
     /**
      * Adds a CSS style for the button component.
      *
-     * @param array|string $value The CSS style for the button component. If an array, the values will be separated by
+     * @param array|string $style The CSS style for the button component. If an array, the values will be separated by
      * a space. If a string, it will be added as is. For example, 'color: red;'. If the value is an array, the values
      * will be separated by a space. e.g., ['color' => 'red', 'font-weight' => 'bold'] will be rendered as
      * 'color: red; font-weight: bold;'.
@@ -202,10 +202,10 @@ final class Button extends Widget
      *
      * @return self A new instance with the specified CSS style value added.
      */
-    public function addCssStyle(array|string $value, bool $overwrite = true): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        Html::addCssStyle($new->attributes, $value, $overwrite);
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
@@ -214,16 +214,16 @@ final class Button extends Widget
      * Sets the 'aria-expanded' attribute for the button, indicating whether the element is currently expanded or
      * collapsed.
      *
-     * @param bool $value The value to set for the 'aria-expanded' attribute.
+     * @param bool $enabled The value to set for the 'aria-expanded' attribute.
      *
      * @return self A new instance with the specified 'aria-expanded' value.
      *
      * @link https://www.w3.org/TR/wai-aria-1.1/#aria-expanded
      */
-    public function ariaExpanded(bool $value = true): self
+    public function ariaExpanded(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-expanded'] = $value ? 'true' : 'false';
+        $new->attributes['aria-expanded'] = $enabled ? 'true' : 'false';
 
         return $new;
     }
@@ -231,16 +231,16 @@ final class Button extends Widget
     /**
      * Sets the HTML attributes for the button component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -251,7 +251,7 @@ final class Button extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -260,10 +260,10 @@ final class Button extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$values): self
+    public function class(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $values;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -284,14 +284,14 @@ final class Button extends Widget
     /**
      * Sets the button to be disabled.
      *
-     * @param bool $value Whether the button should be disabled.
+     * @param bool $enabled Whether the button should be disabled.
      *
      * @return self A new instance with the button disabled.
      */
-    public function disabled(bool $value = true): self
+    public function disabled(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->disabled = $value;
+        $new->disabled = $enabled;
 
         return $new;
     }
@@ -299,14 +299,14 @@ final class Button extends Widget
     /**
      * Sets the ID of the button component.
      *
-     * @param bool|string $value The ID of the button component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the button component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }
@@ -314,20 +314,20 @@ final class Button extends Widget
     /**
      * The button label.
      *
-     * @param string|Stringable $value The label to display on the button.
+     * @param string|Stringable $label The label to display on the button.
      * @param bool $encode Whether the label value should be HTML-encoded. Use this when rendering user-generated
      * content to prevent XSS attacks.
      *
      * @return self A new instance with the specified label value.
      */
-    public function label(string|Stringable $value, bool $encode = true): self
+    public function label(string|Stringable $label, bool $encode = true): self
     {
         if ($encode) {
-            $value = Html::encode($value);
+            $label = Html::encode($label);
         }
 
         $new = clone $this;
-        $new->label = $value;
+        $new->label = $label;
 
         return $new;
     }
@@ -375,16 +375,17 @@ final class Button extends Widget
      * Sets the Bootstrap toggle behavior by the `data-bs-toggle` attribute, enabling interactive functionality such as
      * `button`, `dropdown`, `modal`, and `tooltip`.
      *
-     * @param string|null $value The Bootstrap toggle type to be set. Common values include: `button`, `dropdown`,
+     * // TODO: should it be enum?
+     * @param string|null $type The Bootstrap toggle type to be set. Common values include: `button`, `dropdown`,
      * `modal`, `tooltip`, `popover`, `collapse`, or `null` to remove.
      * Defaults to `button`.
      *
      * @return self A new instance with the specified Bootstrap toggle behavior.
      */
-    public function toggle(string|null $value = 'button'): self
+    public function toggle(string|null $type = 'button'): self
     {
         $new = clone $this;
-        $new->attributes['data-bs-toggle'] = $value;
+        $new->attributes['data-bs-toggle'] = $type;
 
         return $new;
     }
@@ -392,12 +393,12 @@ final class Button extends Widget
     /**
      * Sets the button type.
      *
-     * @param ButtonType $value The button type.
+     * @param ButtonType $type The button type.
      */
-    public function type(ButtonType $value): self
+    public function type(ButtonType $type): self
     {
         $new = clone $this;
-        $new->tag = match ($value) {
+        $new->tag = match ($type) {
             ButtonType::LINK => A::tag(),
             ButtonType::RESET => ButtonTag::reset(''),
             ButtonType::RESET_INPUT => Input::resetButton(),
@@ -411,14 +412,14 @@ final class Button extends Widget
     /**
      * Sets the URL of the link button.
      *
-     * @param string|null $value The URL of the link button.
+     * @param string|null $url The URL of the link button.
      *
      * @return self A new instance with the specified URL.
      */
-    public function url(string|null $value): self
+    public function url(string|null $url): self
     {
         $new = clone $this;
-        $new->attributes['href'] = $value;
+        $new->attributes['href'] = $url;
 
         return $new;
     }
@@ -426,14 +427,14 @@ final class Button extends Widget
     /**
      * Set the button variant.
      *
-     * @param ButtonVariant $value The button variant. If `null`, the variant will not be set.
+     * @param ButtonVariant|null $variant The button variant. If `null`, the variant will not be set.
      *
      * @return self A new instance with the specified button variant.
      */
-    public function variant(ButtonVariant|null $value): self
+    public function variant(ButtonVariant|null $variant): self
     {
         $new = clone $this;
-        $new->buttonVariant = $value;
+        $new->buttonVariant = $variant;
 
         return $new;
     }

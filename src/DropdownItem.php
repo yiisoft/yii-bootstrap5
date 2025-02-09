@@ -51,14 +51,14 @@ final class DropdownItem
      * @psalm-param non-empty-string $headerTag
      */
     private function __construct(
-        private string $type = '',
-        private string|Stringable $content = '',
-        private string $url = '',
-        private bool $active = false,
-        private bool $disabled = false,
-        private array $attributes = [],
-        private array $itemAttributes = [],
-        private string $headerTag = 'h6',
+        private readonly string $type = '',
+        private readonly string|Stringable $content = '',
+        private readonly string $url = '',
+        private readonly bool $active = false,
+        private readonly bool $disabled = false,
+        private readonly array $attributes = [],
+        private readonly array $itemAttributes = [],
+        private readonly string $headerTag = 'h6',
     ) {
     }
 
@@ -113,7 +113,7 @@ final class DropdownItem
      * Creates a header dropdown item.
      *
      * @param string|Stringable $content The header text.
-     * @param string $tag The HTML tag to use (defaults to `h6`).
+     * @param string $headerTag The HTML tag to use (defaults to `h6`).
      * @param array $attributes The HTML attributes for the `<li>` tag.
      * @param array $itemAttributes The HTML attributes for the `<h6>` tag.
      *
@@ -139,9 +139,9 @@ final class DropdownItem
         return new self(
             self::TYPE_HEADER,
             $content,
-            headerTag: $headerTag,
             attributes: $attributes,
             itemAttributes: $itemAttributes,
+            headerTag: $headerTag,
         );
     }
 

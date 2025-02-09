@@ -130,14 +130,14 @@ final class NavLink
     /**
      * Sets the active state of the nav item.
      *
-     * @param bool $value Whether the nav item is active.
+     * @param bool $enabled Whether the nav item is active.
      *
      * @return self A new instance with the specified active state.
      */
-    public function active(bool $value): self
+    public function active(bool $enabled): self
     {
         $new = clone $this;
-        $new->active = $value;
+        $new->active = $enabled;
 
         return $new;
     }
@@ -145,16 +145,16 @@ final class NavLink
     /**
      * Sets the HTML attributes for the nav item.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -162,14 +162,14 @@ final class NavLink
     /**
      * Sets the content of the tab pane.
      *
-     * @param string|Stringable $value The content of the tab pane.
+     * @param string|Stringable $content The content of the tab pane.
      *
      * @return self A new instance with the specified content.
      */
-    public function content(string|Stringable $value): self
+    public function content(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->content = $value;
+        $new->content = $content;
 
         return $new;
     }
@@ -177,14 +177,14 @@ final class NavLink
     /**
      * Sets the disabled state of the nav item.
      *
-     * @param bool $value Whether the nav item is disabled.
+     * @param bool $disabled Whether the nav item is disabled.
      *
      * @return self A new instance with the specified disabled state.
      */
-    public function disabled(bool $value): self
+    public function disabled(bool $disabled): self
     {
         $new = clone $this;
-        $new->disabled = $value;
+        $new->disabled = $disabled;
 
         return $new;
     }
@@ -192,14 +192,14 @@ final class NavLink
     /**
      * Sets weather to HTML-encode the label.
      *
-     * @param bool $value Whether to encode the label.
+     * @param bool $enabled Whether to encode the label.
      *
      * @return self New instance with the specified encoded setting.
      */
-    public function encodeLabel(bool $value): self
+    public function encodeLabel(bool $enabled): self
     {
         $new = clone $this;
-        $new->encodeLabel = $value;
+        $new->encodeLabel = $enabled;
 
         return $new;
     }
@@ -265,14 +265,14 @@ final class NavLink
     /**
      * Sets the ID of the nav component.
      *
-     * @param bool|string $value The ID of the alert component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
      */
-    public function paneId(bool|string $value): self
+    public function paneId(bool|string $id): self
     {
         $new = clone $this;
-        $new->paneId = $value;
+        $new->paneId = $id;
 
         return $new;
     }
@@ -280,14 +280,14 @@ final class NavLink
     /**
      * Sets the label text for the nav item.
      *
-     * @param string|Stringable $value The label text or Stringable object
+     * @param string|Stringable $label The label text or Stringable object
      *
      * @return self New instance with the specified label text.
      */
-    public function label(string|Stringable $value): self
+    public function label(string|Stringable $label): self
     {
         $new = clone $this;
-        $new->label = $value;
+        $new->label = $label;
 
         return $new;
     }
@@ -295,16 +295,16 @@ final class NavLink
     /**
      * Sets the HTML attributes for the tab pane.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self New instance with the specified pane attributes.
      *
-     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are rendered.
      */
-    public function paneAttributes(array $values): self
+    public function paneAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->paneAttributes = $values;
+        $new->paneAttributes = $attributes;
 
         return $new;
     }
@@ -312,14 +312,14 @@ final class NavLink
     /**
      * Sets the URL for the nav item.
      *
-     * @param string|null $value The URL or `null` for no URL.
+     * @param string|null $url The URL or `null` for no URL.
      *
      * @return self New instance with the specified URL.
      */
-    public function url(string|null $value): self
+    public function url(string|null $url): self
     {
         $new = clone $this;
-        $new->url = $value;
+        $new->url = $url;
 
         return $new;
     }
@@ -327,16 +327,16 @@ final class NavLink
     /**
      * Sets HTML attributes for the nav item link.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self New instance with the specified link attributes.
      *
-     * @see \Yiisoft\Html\Html::renderTagAttributes() for details on how attributes are rendered.
+     * @see Html::renderTagAttributes() for details on how attributes are rendered.
      */
-    public function urlAttributes(array $values): self
+    public function urlAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->urlAttributes = $values;
+        $new->urlAttributes = $attributes;
 
         return $new;
     }
@@ -344,14 +344,14 @@ final class NavLink
     /**
      * Sets the visibility of the nav item.
      *
-     * @param bool $value Whether the nav item is visible.
+     * @param bool $enabled Whether the nav item is visible.
      *
      * @return self A new instance with the specified visibility.
      */
-    public function visible(bool $value): self
+    public function visible(bool $enabled): self
     {
         $new = clone $this;
-        $new->visible = $value;
+        $new->visible = $enabled;
 
         return $new;
     }

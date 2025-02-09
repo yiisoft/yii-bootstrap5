@@ -61,14 +61,14 @@ final class ButtonToolbar extends Widget
     /**
      * Adds a sets of attributes for the button toolbar component.
      *
-     * @param array $values Attribute values indexed by attribute names. e.g. `['id' => 'my-button-toolbar']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-button-toolbar']`.
      *
      * @return self A new instance with the specified attributes added.
      */
-    public function addAttributes(array $values): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = [...$new->attributes, ...$values];
+        $new->attributes = [...$new->attributes, ...$attributes];
 
         return $new;
     }
@@ -79,7 +79,7 @@ final class ButtonToolbar extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to add. Pass `null` to skip adding a class.
+     * @param string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      * For example:
      *
      * ```php
@@ -90,10 +90,10 @@ final class ButtonToolbar extends Widget
      *
      * @link https://html.spec.whatwg.org/#classes
      */
-    public function addClass(string|null ...$values): self
+    public function addClass(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = [...$this->cssClasses, ...$values];
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
@@ -101,16 +101,16 @@ final class ButtonToolbar extends Widget
     /**
      * Sets the ARIA label for the button toolbar component.
      *
-     * @param string $value The ARIA label for the button toolbar component.
+     * @param string $label The ARIA label for the button toolbar component.
      *
      * @return self A new instance with the specified ARIA label.
      *
      * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
      */
-    public function ariaLabel(string $value): self
+    public function ariaLabel(string $label): self
     {
         $new = clone $this;
-        $new->attributes['aria-label'] = $value;
+        $new->attributes['aria-label'] = $label;
 
         return $new;
     }
@@ -118,16 +118,16 @@ final class ButtonToolbar extends Widget
     /**
      * Sets the HTML attributes for the button toolbar component.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -135,14 +135,14 @@ final class ButtonToolbar extends Widget
     /**
      * List of buttons groups.
      *
-     * @param ButtonGroup|Tag ...$value The button group configuration.
+     * @param ButtonGroup|Tag ...$groups The button group configuration.
      *
      * @return self A new instance with the specified buttons groups.
      */
-    public function buttonGroups(ButtonGroup|Tag ...$value): self
+    public function buttonGroups(ButtonGroup|Tag ...$groups): self
     {
         $new = clone $this;
-        $new->buttonGroups = $value;
+        $new->buttonGroups = $groups;
 
         return $new;
     }
@@ -153,7 +153,7 @@ final class ButtonToolbar extends Widget
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$values One or more CSS class names to set. Pass `null` to skip setting a class.
+     * @param string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      * For example:
      *
      * ```php
@@ -162,10 +162,10 @@ final class ButtonToolbar extends Widget
      *
      * @return self A new instance with the specified CSS classes set.
      */
-    public function class(string|null ...$values): self
+    public function class(string|null ...$class): self
     {
         $new = clone $this;
-        $new->cssClasses = $values;
+        $new->cssClasses = $class;
 
         return $new;
     }
@@ -173,15 +173,15 @@ final class ButtonToolbar extends Widget
     /**
      * Sets the ID of the button toolbar component.
      *
-     * @param bool|string $value The ID of the button toolbar component. If `true`, an ID will be generated
+     * @param bool|string $id The ID of the button toolbar component. If `true`, an ID will be generated
      * automatically.
      *
      * @return self A new instance with the specified ID.
      */
-    public function id(bool|string $value): self
+    public function id(bool|string $id): self
     {
         $new = clone $this;
-        $new->id = $value;
+        $new->id = $id;
 
         return $new;
     }

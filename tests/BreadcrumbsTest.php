@@ -357,21 +357,21 @@ final class BreadcrumbsTest extends TestCase
 
     public function testImmutability(): void
     {
-        $breacrumb = Breadcrumbs::widget();
+        $breadcrumb = Breadcrumbs::widget();
 
-        $this->assertNotSame($breacrumb, $breacrumb->addAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->addClass(''));
-        $this->assertNotSame($breacrumb, $breacrumb->ariaLabel(''));
-        $this->assertNotSame($breacrumb, $breacrumb->attributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->class(''));
-        $this->assertNotSame($breacrumb, $breacrumb->divider('>'));
-        $this->assertNotSame($breacrumb, $breacrumb->itemActiveClass(''));
-        $this->assertNotSame($breacrumb, $breacrumb->itemAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->linkAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->links(BreadcrumbLink::to('tests')));
-        $this->assertNotSame($breacrumb, $breacrumb->listAttributes([]));
-        $this->assertNotSame($breacrumb, $breacrumb->listId(''));
-        $this->assertNotSame($breacrumb, $breacrumb->listTagName(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->addAttributes([]));
+        $this->assertNotSame($breadcrumb, $breadcrumb->addClass(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->ariaLabel(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->attributes([]));
+        $this->assertNotSame($breadcrumb, $breadcrumb->class(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->divider('>'));
+        $this->assertNotSame($breadcrumb, $breadcrumb->itemActiveClass(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->itemAttributes([]));
+        $this->assertNotSame($breadcrumb, $breadcrumb->linkAttributes([]));
+        $this->assertNotSame($breadcrumb, $breadcrumb->links(BreadcrumbLink::to('tests')));
+        $this->assertNotSame($breadcrumb, $breadcrumb->listAttributes([]));
+        $this->assertNotSame($breadcrumb, $breadcrumb->listId(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->listTagName(''));
     }
 
     public function testItemActiveClass(): void

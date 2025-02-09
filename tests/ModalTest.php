@@ -85,7 +85,7 @@ HTML;
         $this->assertEqualsHTML($expected, $html);
     }
 
-    public function testToogleButtom(): void
+    public function testToggleButton(): void
     {
         $html = Modal::widget()
             ->id('test')

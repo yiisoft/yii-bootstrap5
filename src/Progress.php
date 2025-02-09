@@ -90,7 +90,7 @@ final class Progress extends Widget
         Html::addCssClass($options, 'progress');
 
         if ($this->inStack) {
-            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+            Html::addCssStyle($options, ['width' => $this->percent . '%']);
         }
 
         return Html::tag($tag, $this->renderBar(), $options)
@@ -103,18 +103,18 @@ final class Progress extends Widget
      *
      * {@see Html::renderTagAttributes() for details on how attributes are being rendered}
      */
-    public function barOptions(array $value): self
+    public function barOptions(array $options): self
     {
         $new = clone $this;
-        $new->barOptions = $value;
+        $new->barOptions = $options;
 
         return $new;
     }
 
-    public function label(string $value): self
+    public function label(string $label): self
     {
         $new = clone $this;
-        $new->label = $value;
+        $new->label = $label;
 
         return $new;
     }
@@ -124,10 +124,10 @@ final class Progress extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function options(array $options): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->options = $options;
 
         return $new;
     }
@@ -196,18 +196,18 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function striped(bool $striped = true): self
+    public function striped(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->striped = $striped;
+        $new->striped = $enabled;
 
         return $new;
     }
 
-    public function animated(bool $animated = true): self
+    public function animated(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->animated = $animated;
+        $new->animated = $enabled;
 
         if ($new->animated) {
             $new->striped = true;
@@ -216,10 +216,10 @@ final class Progress extends Widget
         return $new;
     }
 
-    public function inStack(bool $inStack = true): self
+    public function inStack(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->inStack = $inStack;
+        $new->inStack = $enabled;
 
         return $new;
     }
@@ -249,7 +249,7 @@ final class Progress extends Widget
         Html::addCssClass($options, $classNames);
 
         if (!$this->inStack) {
-            Html::addCssStyle($options, ['width' => $this->percent . '%'], true);
+            Html::addCssStyle($options, ['width' => $this->percent . '%']);
         }
 
         return Html::tag($tag, $this->content, $options)

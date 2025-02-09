@@ -12,10 +12,10 @@ use Yiisoft\Html\Html;
  *
  * Each item can contain content, caption, and caption placeholder.
  *
- * The item can be set as active and supports auto-playing intervals.
+ * The item can be set as active and supports autoplaying intervals.
  *
  * - Active state: When is `true`, sets this item as the first visible slide.
- * - Auto-playing: When is enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
+ * - Auto-playing: When enabled, cycling can be paused by hovering over the carousel, focusing on it, or clicking
  * on carousel controls/indicators.
  *
  * Example usage:
@@ -26,7 +26,7 @@ use Yiisoft\Html\Html;
  *     'Caption Placeholder'
  * );
  *
- * // Create an active carousel item with auto-play.
+ * // Create an active carousel item with autoplay.
  * CarouselItem::to(
  *     content: '<img src="example.jpg">',
  *     caption: 'Slide 1',
@@ -60,7 +60,7 @@ final class CarouselItem
      * @param string|Stringable $content The content of the carousel item.
      * @param string|null $caption The caption content for the carousel item.
      * @param string|null $captionPlaceholder The caption placeholder content for the carousel item.
-     * @param int|null $autoPlayingInterval The auto playing interval for the carousel item.
+     * @param int|null $autoPlayingInterval The autoplaying interval for the carousel item.
      * @param bool $active Whether the item is active.
      * @param bool $encodeCaption Whether to encode the caption content.
      * @param bool $encodeCaptionPlaceholder Whether to encode the caption placeholder content.
@@ -97,7 +97,7 @@ final class CarouselItem
     }
 
     /**
-     * @return array Returns the HTML attributes for the carrusel item.
+     * @return array Returns the HTML attributes for the carousel item.
      */
     public function getAttributes(): array
     {
@@ -105,7 +105,7 @@ final class CarouselItem
     }
 
     /**
-     * @return int|null Returns the auto playing interval for the carrusel item.
+     * @return int|null Returns the autoplaying interval for the carousel item.
      */
     public function getAutoPlayingInterval(): int|null
     {
@@ -113,7 +113,7 @@ final class CarouselItem
     }
 
     /**
-     * @return string|null Returns the caption content for the carrusel item.
+     * @return string|null Returns the caption content for the carousel item.
      */
     public function getCaption(): string|null
     {
@@ -129,7 +129,7 @@ final class CarouselItem
     }
 
     /**
-     * @return string|null Returns the caption placeholder content for the carrusel item.
+     * @return string|null Returns the caption placeholder content for the carousel item.
      */
     public function getCaptionPlaceholder(): string|null
     {
@@ -145,7 +145,7 @@ final class CarouselItem
     }
 
     /**
-     * @return string|Stringable Returns the content for the carrusel item.
+     * @return string|Stringable Returns the content for the carousel item.
      */
     public function getContent(): string|Stringable
     {

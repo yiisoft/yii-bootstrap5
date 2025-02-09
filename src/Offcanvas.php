@@ -28,6 +28,7 @@ final class Offcanvas extends AbstractToggleWidget
 
     public function getId(?string $suffix = '-offcanvas'): ?string
     {
+        // TODO: fix the method call, there's no suffix anymore.
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
@@ -41,10 +42,10 @@ final class Offcanvas extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
-    public function scroll(bool $scroll = true): self
+    public function scroll(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->scroll = $scroll;
+        $new->scroll = $enabled;
 
         return $new;
     }
@@ -54,16 +55,16 @@ final class Offcanvas extends AbstractToggleWidget
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
      */
-    public function withoutBackdrop(bool $withoutBackdrop = true): self
+    public function withoutBackdrop(bool $enabled = true): self
     {
         $new = clone $this;
-        $new->withoutBackdrop = $withoutBackdrop;
+        $new->withoutBackdrop = $enabled;
 
         return $new;
     }
 
     /**
-     * Set placement for opened offcanvas
+     * Set placement for opened offcanvas.
      *
      * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#placement
      */

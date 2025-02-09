@@ -25,7 +25,7 @@ final class ProgressStack extends Widget
     public function bars(Progress ...$bars): self
     {
         $new = clone $this;
-        $new->bars = array_map(static fn (Progress $bar): Progress => $bar->inStack(true), $bars);
+        $new->bars = array_map(static fn (Progress $bar): Progress => $bar->inStack(), $bars);
 
         return $new;
     }

@@ -33,14 +33,14 @@ abstract class AbstractToggleWidget extends Widget
         return $new;
     }
 
-    public function withToggle(bool $value): static
+    public function withToggle(bool $enabled): static
     {
-        if ($this->renderToggle === $value) {
+        if ($this->renderToggle === $enabled) {
             return $this;
         }
 
         $new = clone $this;
-        $new->renderToggle = $value;
+        $new->renderToggle = $enabled;
 
         return $new;
     }

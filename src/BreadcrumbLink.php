@@ -62,14 +62,14 @@ final class BreadcrumbLink
     /**
      * Sets the active state of the breadcrumb link.
      *
-     * @param bool $value Whether the breadcrumb link is active.
+     * @param bool $enabled Whether the breadcrumb link is active.
      *
      * @return self A new instance with the specified active state.
      */
-    public function active(bool $value): self
+    public function active(bool $enabled): self
     {
         $new = clone $this;
-        $new->active = $value;
+        $new->active = $enabled;
 
         return $new;
     }
@@ -77,16 +77,16 @@ final class BreadcrumbLink
     /**
      * Sets the HTML attributes for the breadcrumb link.
      *
-     * @param array $values Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function attributes(array $values): self
+    public function attributes(array $attributes): self
     {
         $new = clone $this;
-        $new->attributes = $values;
+        $new->attributes = $attributes;
 
         return $new;
     }
@@ -94,14 +94,14 @@ final class BreadcrumbLink
     /**
      * Sets whether to HTML encode the label.
      *
-     * @param bool $value Whether to HTML encode the label.
+     * @param bool $enabled Whether to HTML encode the label.
      *
      * @return self A new instance with the specified encoding behavior.
      */
-    public function encodeLabel(bool $value): self
+    public function encodeLabel(bool $enabled): self
     {
         $new = clone $this;
-        $new->encodeLabel = $value;
+        $new->encodeLabel = $enabled;
 
         return $new;
     }
@@ -109,14 +109,14 @@ final class BreadcrumbLink
     /**
      * Sets the label text to display.
      *
-     * @param string $value The label text to display.
+     * @param string $label The label text to display.
      *
      * @return self A new instance with the specified label.
      */
-    public function label(string $value): self
+    public function label(string $label): self
     {
         $new = clone $this;
-        $new->label = $value;
+        $new->label = $label;
 
         return $new;
     }
@@ -124,14 +124,14 @@ final class BreadcrumbLink
     /**
      * Sets the URL for the breadcrumb link.
      *
-     * @param string|null $value The URL for the link.
+     * @param string|null $url The URL for the link.
      *
      * @return self A new instance with the specified URL.
      */
-    public function url(string|null $value): self
+    public function url(string|null $url): self
     {
         $new = clone $this;
-        $new->url = $value;
+        $new->url = $url;
 
         return $new;
     }

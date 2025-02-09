@@ -17,7 +17,7 @@ enum NavStyle: string
     case FILL = 'nav-fill';
     /**
      * Change the horizontal alignment of your nav with flexbox utilities. By default, navs are left-aligned, but you
-     * can easily change them to center or right-aligned.
+     * can change them to center or right-aligned.
      */
     case HORIZONTAL_ALIGNMENT = 'justify-content-center';
     /**

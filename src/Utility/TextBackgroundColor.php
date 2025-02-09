@@ -12,35 +12,35 @@ namespace Yiisoft\Yii\Bootstrap5\Utility;
 enum TextBackgroundColor: string
 {
     /**
-     * Primary text color background.
+     * "Primary text" color background.
      */
     case PRIMARY = 'text-bg-primary';
     /**
-     * Secondary text color background.
+     * "Secondary text" color background.
      */
     case SECONDARY = 'text-bg-secondary';
     /**
-     * Success text color background.
+     * "Success text" color background.
      */
     case SUCCESS = 'text-bg-success';
     /**
-     * Danger text color background.
+     * "Danger text" color background.
      */
     case DANGER = 'text-bg-danger';
     /**
-     * Warning text color background.
+     * "Warning text" color background.
      */
     case WARNING = 'text-bg-warning';
     /**
-     * Info text color background.
+     * "Info text" color background.
      */
     case INFO = 'text-bg-info';
     /**
-     * Light text color background.
+     * "Light text" color background.
      */
     case LIGHT = 'text-bg-light';
     /**
-     * Dark text color background.
+     * "Dark text" color background.
      */
     case DARK = 'text-bg-dark';
 }

@@ -53,6 +53,7 @@ final class Toast extends Widget
 
     public function getId(?string $suffix = '-toast'): ?string
     {
+        // TODO: fix the method call, there's no suffix anymore.
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
@@ -81,12 +82,12 @@ final class Toast extends Widget
     /**
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      *
-     * @param array $value Body options.
+     * @param array $options Body options.
      */
-    public function bodyOptions(array $value): self
+    public function bodyOptions(array $options): self
     {
         $new = clone $this;
-        $new->bodyOptions = $value;
+        $new->bodyOptions = $options;
 
         return $new;
     }
@@ -107,10 +108,10 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function dateTimeOptions(array $value): self
+    public function dateTimeOptions(array $options): self
     {
         $new = clone $this;
-        $new->dateTimeOptions = $value;
+        $new->dateTimeOptions = $options;
 
         return $new;
     }
@@ -120,24 +121,24 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function headerOptions(array $value): self
+    public function headerOptions(array $options): self
     {
         $new = clone $this;
-        $new->headerOptions = $value;
+        $new->headerOptions = $options;
 
         return $new;
     }
 
     /**
-     * @param array $value the HTML attributes for the widget container tag. The following special options are
+     * @param array $options the HTML attributes for the widget container tag. The following special options are
      * recognized.
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function options(array $value): self
+    public function options(array $options): self
     {
         $new = clone $this;
-        $new->options = $value;
+        $new->options = $options;
 
         return $new;
     }
@@ -145,10 +146,10 @@ final class Toast extends Widget
     /**
      * The title content in the toast window.
      */
-    public function title(string $value): self
+    public function title(string $title): self
     {
         $new = clone $this;
-        $new->title = $value;
+        $new->title = $title;
 
         return $new;
     }
@@ -158,10 +159,10 @@ final class Toast extends Widget
      *
      * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function titleOptions(array $value): self
+    public function titleOptions(array $options): self
     {
         $new = clone $this;
-        $new->titleOptions = $value;
+        $new->titleOptions = $options;
 
         return $new;
     }

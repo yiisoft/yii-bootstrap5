@@ -8,7 +8,7 @@ use Yiisoft\Assets\AssetBundle;
 use Yiisoft\Files\PathMatcher\PathMatcher;
 
 /**
- * Asset bundle for the Twitter bootstrap css files.
+ * Asset bundle for the Twitter bootstrap CSS files.
  *
  * BootstrapAsset.
  *

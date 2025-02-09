@@ -299,7 +299,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
-    public function testAligmentSMEnd(): void
+    public function testAlignmentSMEnd(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -333,7 +333,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
-    public function testAligmentMDEnd(): void
+    public function testAlignmentMDEnd(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -367,7 +367,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
-    public function testAligmentLGEnd(): void
+    public function testAlignmentLGEnd(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -401,7 +401,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
-    public function testAligmentXLEnd(): void
+    public function testAlignmentXLEnd(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -435,7 +435,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
-    public function testAligmentXXLEnd(): void
+    public function testAlignmentXXLEnd(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -678,7 +678,7 @@ final class DropdownTest extends TestCase
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="dropdown">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="inside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable inside</button>
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="inside" data-bs-toggle="dropdown" aria-expanded="false">Clickable inside</button>
             <ul class="dropdown-menu">
             <li>
             <a class="dropdown-item" href="#">Menu Item</a>
@@ -699,7 +699,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Clickeable inside')
+                ->toggleContent('Clickable inside')
                 ->render(),
         );
     }
@@ -746,7 +746,7 @@ final class DropdownTest extends TestCase
         Assert::equalsWithoutLE(
             <<<HTML
             <div class="dropdown">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">Clickeable outside</button>
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">Clickable outside</button>
             <ul class="dropdown-menu">
             <li>
             <a class="dropdown-item" href="#">Menu Item</a>
@@ -767,7 +767,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Clickeable outside')
+                ->toggleContent('Clickable outside')
                 ->render(),
         );
     }
