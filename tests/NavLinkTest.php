@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\NavLink;
 
 /**
- * Tests for `DropdownItem`.
- *
- * @group nav
+ * Tests for `NavLink`.
  */
-final class NavLinkTest extends \PHPUnit\Framework\TestCase
+#[Group('nav')]
+final class NavLinkTest extends TestCase
 {
     public function testImmutability(): void
     {

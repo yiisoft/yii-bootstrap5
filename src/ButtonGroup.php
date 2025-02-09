@@ -8,6 +8,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
+use Yiisoft\Widget\Widget;
 
 use function implode;
 
@@ -32,7 +33,7 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/button-group/
  */
-final class ButtonGroup extends \Yiisoft\Widget\Widget
+final class ButtonGroup extends Widget
 {
     private const NAME = 'btn-group';
     private array $attributes = [];

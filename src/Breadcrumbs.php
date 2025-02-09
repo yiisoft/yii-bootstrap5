@@ -11,8 +11,10 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Nav;
+use Yiisoft\Widget\Widget;
 
 use function implode;
+use function sprintf;
 
 /**
  * Button renders a bootstrap button.
@@ -32,7 +34,7 @@ use function implode;
  *
  * @see https://getbootstrap.com/docs/5.3/components/breadcrumb/
  */
-final class Breadcrumbs extends \Yiisoft\Widget\Widget
+final class Breadcrumbs extends Widget
 {
     private const LIST_NAME = 'breadcrumb';
     private const ITEM_NAME = 'breadcrumb-item';
@@ -177,7 +179,7 @@ final class Breadcrumbs extends \Yiisoft\Widget\Widget
         }
 
         $new = clone $this;
-        $new->attributes['style'] = ['--bs-breadcrumb-divider' => "'$value'"];
+        $new->attributes['style'] = ['--bs-breadcrumb-divider' => sprintf("'%s'", $value)];
 
         return $new;
     }

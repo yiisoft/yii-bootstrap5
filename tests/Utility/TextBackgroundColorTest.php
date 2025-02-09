@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests\Utility;
 
 use BackedEnum;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
+use Yiisoft\Yii\Bootstrap5\Tests\Provider\TextBackgroundColorProvider;
 
 /**
  * Tests for `TextBackgroundColor` enum.
- *
- * @group utility
  */
-final class TextBackgroundColorTest extends \PHPUnit\Framework\TestCase
+#[Group('utility')]
+final class TextBackgroundColorTest extends TestCase
 {
-    /**
-     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\TextBackgroundColorProvider::variant()
-     */
+    #[DataProviderExternal(TextBackgroundColorProvider::class, 'variant')]
     public function testTextColorBackground(BackedEnum $value, string $expected): void
     {
         $this->assertSame($expected, $value->value);

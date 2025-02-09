@@ -10,6 +10,7 @@ use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Img;
 use Yiisoft\Html\Tag\Span;
+use Yiisoft\Widget\Widget;
 
 use function array_filter;
 use function count;
@@ -40,7 +41,7 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/carousel/
  */
-final class Carousel extends \Yiisoft\Widget\Widget
+final class Carousel extends Widget
 {
     private const CLASS_CAROUSEL_CAPTION = 'carousel-caption d-none d-md-block';
     private const CLASS_CAROUSEL_CONTROL_NEXT = 'carousel-control-next';
@@ -289,7 +290,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
     public function crossfade(bool $value = true): self
     {
         $new = clone $this;
-        $new->cssClasses['crossfade'] = $value === true ? 'carousel-fade' : null;
+        $new->cssClasses['crossfade'] = $value ? 'carousel-fade' : null;
 
         return $new;
     }
@@ -507,7 +508,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
         $indicators = [];
         $renderIndicators = '';
 
-        $activeItems = array_filter($this->items, static fn (CarouselItem $item) => $item->isActive());
+        $activeItems = array_filter($this->items, static fn (CarouselItem $item): bool => $item->isActive());
 
         if (count($activeItems) > 1) {
             throw new InvalidArgumentException('Only one carousel item can be active at a time.');
@@ -557,7 +558,7 @@ final class Carousel extends \Yiisoft\Widget\Widget
 
         $caption = $carouselItem->getCaption();
 
-        if (empty($caption) !== true) {
+        if ($caption !== null && $caption !== '') {
             if ($this->captionTagName === '' || $this->captionPlaceholderTagName === '') {
                 throw new InvalidArgumentException(
                     'The "captionTagName" and "captionPlaceholderTagName" properties cannot be empty.'

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Input\Checkbox;
 use Yiisoft\Html\Tag\Input\Radio;
 use Yiisoft\Yii\Bootstrap5\Button;
@@ -13,10 +15,9 @@ use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `ButtonGroup` widget.
- *
- * @group button-group
  */
-final class ButtonGroupTest extends \PHPUnit\Framework\TestCase
+#[Group('button-group')]
+final class ButtonGroupTest extends TestCase
 {
     public function testAddAttributes(): void
     {

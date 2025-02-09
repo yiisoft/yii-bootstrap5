@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Base\Tag;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Widget\Widget;
 
 use function implode;
 
@@ -48,7 +49,7 @@ use function implode;
  *
  * @link https://getbootstrap.com/docs/5.3/components/button-group/#button-toolbar
  */
-final class ButtonToolbar extends \Yiisoft\Widget\Widget
+final class ButtonToolbar extends Widget
 {
     private const NAME = 'btn-toolbar';
     private array $attributes = [];

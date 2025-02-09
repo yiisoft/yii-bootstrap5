@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\AccordionItem;
 
 /**
  * Tests for `Accordion` widget
- *
- * @group accordion
  */
-final class AccordionItemTest extends \PHPUnit\Framework\TestCase
+#[Group('accordion')]
+final class AccordionItemTest extends TestCase
 {
     public function testEncodeBody(): void
     {

@@ -9,6 +9,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Button as ButtonTag;
 use Yiisoft\Html\Tag\Input;
+use Yiisoft\Widget\Widget;
 
 /**
  * Button renders a bootstrap button.
@@ -21,7 +22,7 @@ use Yiisoft\Html\Tag\Input;
  *
  * @link https://getbootstrap.com/docs/5.3/components/buttons/
  */
-final class Button extends \Yiisoft\Widget\Widget
+final class Button extends Widget
 {
     private const NAME = 'btn';
     private array $attributes = [];
@@ -138,9 +139,9 @@ final class Button extends \Yiisoft\Widget\Widget
      */
     public function active(bool $value = true): self
     {
-        $activeClass = $value === true ? 'active' : null;
-        $ariaPressed = $value === true ? 'true' : null;
-        $dataBsToggle = $value === true ? 'button' : null;
+        $activeClass = $value ? 'active' : null;
+        $ariaPressed = $value ? 'true' : null;
+        $dataBsToggle = $value ? 'button' : null;
 
         $new = $this->toggle($dataBsToggle);
         $new->attributes['aria-pressed'] = $ariaPressed;
@@ -222,7 +223,7 @@ final class Button extends \Yiisoft\Widget\Widget
     public function ariaExpanded(bool $value = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-expanded'] = $value === true ? 'true' : 'false';
+        $new->attributes['aria-expanded'] = $value ? 'true' : 'false';
 
         return $new;
     }

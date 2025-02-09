@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 
 /**
@@ -12,7 +14,8 @@ use Yiisoft\Yii\Bootstrap5\DropdownItem;
  *
  * @group dropdown
  */
-final class DropdownItemTest extends \PHPUnit\Framework\TestCase
+#[Group('dropdown')]
+final class DropdownItemTest extends TestCase
 {
     public function testButton(): void
     {

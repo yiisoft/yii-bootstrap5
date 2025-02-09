@@ -73,7 +73,7 @@ final class Modal extends AbstractToggleWidget
         return $this->options['id'] ?? parent::getId($suffix);
     }
 
-    public function toggleComponent(): string
+    protected function toggleComponent(): string
     {
         return 'modal';
     }

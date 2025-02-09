@@ -15,6 +15,7 @@ use Yiisoft\Html\Tag\Hr;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Html\Tag\Ul;
+use Yiisoft\Widget\Widget;
 
 /**
  * Dropdown renders a Bootstrap dropdown menu component.
@@ -38,7 +39,7 @@ use Yiisoft\Html\Tag\Ul;
  *     ->render();
  * ```
  */
-final class Dropdown extends \Yiisoft\Widget\Widget
+final class Dropdown extends Widget
 {
     private const DROPDOWN_CLASS = 'dropdown';
     private const DROPDOWN_ITEM_ACTIVE_CLASS = 'active';
@@ -416,7 +417,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function toggleSizeLarge(bool $value = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value === true ? 'btn-lg' : null;
+        $new->toggleSize = $value ? 'btn-lg' : null;
 
         return $new;
     }
@@ -433,7 +434,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
     public function toggleSizeSmall(bool $value = true): self
     {
         $new = clone $this;
-        $new->toggleSize = $value === true ? 'btn-sm' : null;
+        $new->toggleSize = $value ? 'btn-sm' : null;
 
         return $new;
     }
@@ -524,7 +525,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
             default => $this->toggleId,
         };
 
-        if ($this->toggleSplit === true) {
+        if ($this->toggleSplit) {
             $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
         }
 
@@ -764,7 +765,7 @@ final class Dropdown extends \Yiisoft\Widget\Widget
                     $this->toggleVariant,
                     $this->toggleSize,
                     self::DROPDOWN_TOGGLE_CLASS,
-                    $this->toggleSplit === true ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                    $this->toggleSplit ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
                     $classes,
                 ],
             ),

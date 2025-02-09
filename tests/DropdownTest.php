@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
@@ -16,10 +18,9 @@ use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Dropdown` widget.
- *
- * @group dropdown
  */
-final class DropdownTest extends \PHPUnit\Framework\TestCase
+#[Group('dropdown')]
+final class DropdownTest extends TestCase
 {
     public function testAddAttributes(): void
     {

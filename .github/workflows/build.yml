@@ -25,8 +25,3 @@ name: build
 jobs:
   phpunit:
     uses: yiisoft/actions/.github/workflows/phpunit.yml@master
-    with:
-      os: >-
-        ['ubuntu-latest', 'windows-latest']
-      php: >-
-        ['8.1', '8.2', '8.3']

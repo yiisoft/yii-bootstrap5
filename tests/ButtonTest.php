@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Yii\Bootstrap5\Button;
 use Yiisoft\Yii\Bootstrap5\ButtonType;
 use Yiisoft\Yii\Bootstrap5\ButtonVariant;
+use Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 
 /**
  * Tests for `Button` widget
- *
- * @group button
  */
-final class ButtonTest extends \PHPUnit\Framework\TestCase
+#[Group('button')]
+final class ButtonTest extends TestCase
 {
     public function testAddAttributes(): void
     {
@@ -704,11 +707,10 @@ final class ButtonTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider \Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider::variant
-     *
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#examples
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
      */
+    #[DataProviderExternal(ButtonProvider::class, 'variant')]
     public function testVariant(ButtonVariant|null $buttonVariant, string $expected): void
     {
         $variant = $buttonVariant->value ?? 'button';
