@@ -289,9 +289,8 @@ final class NavBar extends Widget
      *
      * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance with the specified ID.
      *@throws InvalidArgumentException if the ID is an empty string or `false`.
-     *
+     * @return self A new instance with the specified ID.
      */
     public function id(bool|string $id): self
     {

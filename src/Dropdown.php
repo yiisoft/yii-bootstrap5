@@ -377,9 +377,8 @@ final class Dropdown extends Widget
      *
      * @param bool|string $id The ID of the dropdown component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance with the specified ID of the toggle button for the dropdown component.
      *@throws InvalidArgumentException if the ID is an empty string or `false`.
-     *
+     * @return self A new instance with the specified ID of the toggle button for the dropdown component.
      */
     public function toggleId(bool|string $id): self
     {

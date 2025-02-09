@@ -485,11 +485,10 @@ final class Accordion extends Widget
      * @param string $collapseId The ID of the collapse element.
      * @param bool $active Whether the item is active.
      *
+     *@throws InvalidArgumentException if the toggle tag is an empty string.
      * @return string The HTML representation of the element.
      *
      * @psalm-param non-empty-string $collapseId The ID of the collapse element.
-     *@throws InvalidArgumentException if the toggle tag is an empty string.
-     *
      */
     private function renderToggle(string $header, string $collapseId, bool $active): string
     {

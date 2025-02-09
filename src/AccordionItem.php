@@ -145,9 +145,8 @@ final class AccordionItem
      * @param bool|string $id The ID of the accordion item. If `true`, an auto-generated ID will be used. If `false`,
      * no ID will be set.
      *
-     * @return self A new instance with the specified ID.
      * @throws InvalidArgumentException If the "id" property is empty or `false`.
-     *
+     * @return self A new instance with the specified ID.
      */
     public function id(bool|string $id): self
     {
