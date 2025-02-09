@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -709,7 +710,7 @@ final class ButtonTest extends TestCase
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#examples
      * @see https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons
      */
-    #[DataProviderExternal(Provider\ButtonProvider::class, 'variant')]
+    #[DataProviderExternal(ButtonProvider::class, 'variant')]
     public function testVariant(ButtonVariant|null $buttonVariant, string $expected): void
     {
         $variant = $buttonVariant->value ?? 'button';
