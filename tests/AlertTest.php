@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
@@ -509,7 +510,7 @@ final class AlertTest extends TestCase
         );
     }
 
-    #[DataProviderExternal(Provider\AlertProvider::class, 'variant')]
+    #[DataProviderExternal(AlertProvider::class, 'variant')]
     public function testVariant(AlertVariant $alertVariant, string $expected): void
     {
         Assert::equalsWithoutLE(
