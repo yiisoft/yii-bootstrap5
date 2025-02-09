@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests\Utility;
 
-use PHPUnit\Framework\TestCase;
 use BackedEnum;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Tests\Provider\TextColorProvider;
 
 /**

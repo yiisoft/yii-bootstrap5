@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
-use Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Alert;
 use Yiisoft\Yii\Bootstrap5\AlertVariant;
+use Yiisoft\Yii\Bootstrap5\Tests\Provider\AlertProvider;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
