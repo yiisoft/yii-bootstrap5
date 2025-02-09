@@ -5,41 +5,46 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
+use RuntimeException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Li;
 use Yiisoft\Html\Tag\Ul;
-
-use function implode;
+use Yiisoft\Widget\Widget;
 
 /**
- * Nav renders a Bootstrap nav component.
+ * Nav renders a Bootstrap navigation component.
  *
  * For example:
  *
  * ```php
+ * // Basic navigation
  * echo Nav::widget()
  *     ->items(
- *         NavLink::item('Active', '#', active: true),
- *         Dropdown::widget()
- *             ->items(
- *                 DropdownItem::link('Action', '#'),
- *                 DropdownItem::link('Another action', '#'),
- *                 DropdownItem::link('Something else here', '#'),
- *                 DropdownItem::divider(),
- *                 DropdownItem::link('Separated link', '#'),
- *             ),
- *         NavLink::item('Link', url: '#'),
- *         NavLink::item('Disabled', '#', disabled: true),
+ *         NavLink::to('Home', '#', active: true),
+ *         NavLink::to('Link', '#'),
+ *         NavLink::to('Disabled', '#', disabled: true),
+ *     )
+ *     ->render();
+ *
+ * // Tabs navigation
+ * echo Nav::widget()
+ *     ->items(
+ *         NavLink::tab('Tab 1', 'Content 1', active: true),
+ *         NavLink::tab('Tab 2', 'Content 2'),
+ *         NavLink::tab('Tab 3', 'Content 3', disabled: true),
  *     )
  *     ->styles(NavStyle::TABS)
- *     ->render(),
+ *     ->withFade()
+ *     ->render();
  * ```
  */
-final class Nav extends \Yiisoft\Widget\Widget
+final class Nav extends Widget
 {
-    private const NAV_CLASS = 'nav';
+    private const NAME = 'nav';
     private const NAV_ITEM_CLASS = 'nav-item';
     private const NAV_ITEM_DROPDOWN_CLASS = 'nav-item dropdown';
     private const NAV_LINK_ACTIVE_CLASS = 'active';
@@ -49,8 +54,11 @@ final class Nav extends \Yiisoft\Widget\Widget
     private array $attributes = [];
     private array $cssClasses = [];
     private string $currentPath = '';
-    /** @psalm-var Dropdown[]|NavLink[] */
+    private bool $fade = true;
+    private bool|string $id = false;
+    /** @var array<int, Dropdown|NavLink> */
     private array $items = [];
+    private array $paneAttributes = [];
     private array $styleClasses = [];
     private string $tag = '';
 
@@ -59,7 +67,7 @@ final class Nav extends \Yiisoft\Widget\Widget
      *
      * @param bool $value Whether to activate items. Defaults to `true`.
      *
-     * @return self A new instance with the specified activate items value.
+     * @return self A new instance with the specified activated items value.
      */
     public function activateItems(bool $value): self
     {
@@ -185,6 +193,40 @@ final class Nav extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Whether to fade the navigation items when toggling between them.
+     *
+     * @param bool $value Whether to fade the navigation items when toggling between them.
+     *
+     * @return self A new instance with the specified fade value.
+     */
+    public function fade(bool $value): self
+    {
+        if ($this->isTabsOrPills() === false && $value) {
+            throw new RuntimeException('Fade effect can only be used with tabs or pills.');
+        }
+
+        $new = clone $this;
+        $new->fade = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the component.
+     *
+     * @param bool|string $value The ID of the component. If `true`, an ID will be generated automatically.
+     *
+     * @return self A new instance with the specified ID.
+     */
+    public function id(bool|string $value): self
+    {
+        $new = clone $this;
+        $new->id = $value;
+
+        return $new;
+    }
+
+    /**
      * List of links to appear in the nav. If this property is empty, the widget will not render anything.
      *
      * @param array $value The links to appear in the nav.
@@ -197,6 +239,23 @@ final class Nav extends \Yiisoft\Widget\Widget
     {
         $new = clone $this;
         $new->items = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the content panes.
+     *
+     * @param array $values Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified pane attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function paneAttributes(array $values): self
+    {
+        $new = clone $this;
+        $new->paneAttributes = $values;
 
         return $new;
     }
@@ -240,34 +299,168 @@ final class Nav extends \Yiisoft\Widget\Widget
     }
 
     /**
+     * Create a link or button for the navigation component.
+     *
+     * @param NavLink $item The link or button to be created.
+     *
+     * @return A|Button The link or button for the navigation component.
+     */
+    private function createLink(NavLink $item): A|Button
+    {
+        $attributes = $item->getUrlAttributes();
+        $tag = A::tag()->href($item->getUrl());
+
+        Html::addCssClass($attributes, [self::NAV_LINK_CLASS]);
+
+        if ($this->isItemActive($item)) {
+            Html::addCssClass($attributes, [self::NAV_LINK_ACTIVE_CLASS]);
+
+            if ($item->hasContent() === false) {
+                $attributes['aria-current'] = 'page';
+            }
+        }
+
+        if ($item->isDisabled()) {
+            Html::addCssClass($attributes, [self::NAV_LINK_DISABLED_CLASS]);
+            $attributes['aria-disabled'] = 'true';
+        }
+
+        if ($item->hasContent()) {
+            $tag = Button::tag()->type('button');
+            $paneId = $item->getId();
+
+            $attributes['id'] = $paneId;
+            $attributes['data-bs-toggle'] = in_array(NavStyle::TABS, $this->styleClasses, true) ? 'tab' : 'pill';
+            $attributes['data-bs-target'] = "#{$paneId}-pane";
+            $attributes['role'] = 'tab';
+            $attributes['aria-controls'] = "{$paneId}-pane";
+            $attributes['aria-selected'] = $item->isActive() ? 'true' : 'false';
+        }
+
+        return $tag->addAttributes($attributes)->content($item->getLabel())->encode($item->shouldEncodeLabel());
+    }
+
+    /**
+     * Create the links for the navigation component.
+     *
+     * @return array The links for the navigation component.
+     */
+    private function createLinks(): array
+    {
+        $links = [];
+
+        foreach ($this->items as $item) {
+            if ($item instanceof NavLink) {
+                $links[] = $this->createLink($item);
+            }
+        }
+
+        return $links;
+    }
+
+    /**
+     * Checks whether a nav item is active.
+     *
+     * This is done by checking if {@see currentPath} match that specified in the `url` option of the nav item.
+     *
+     * @param NavLink $item The nav item to be checked.
+     *
+     * @return bool Whether the nav item is active.
+     */
+    private function isItemActive(NavLink $item): bool
+    {
+        if ($item->isActive()) {
+            return true;
+        }
+
+        return $item->getUrl() === $this->currentPath && $this->activateItems;
+    }
+
+    /**
+     * Checks whether a dropdown item is active.
+     *
+     * This is done by checking if {@see currentPath} match that specified in the `url` option of the dropdown item.
+     * When the `url` option of a dropdown item is specified in terms of an array, its first element is treated as the
+     * current path for the item, and the rest of the elements are the associated parameters.
+     *
+     * Only when its current path and parameters match {@see currentPath}, respectively, will a dropdown item be
+     * considered active.
+     *
+     * @param Dropdown $dropdown The dropdown item to be checked.
+     *
+     * @return Dropdown The active dropdown item.
+     */
+    private function isItemActiveDropdown(Dropdown $dropdown): Dropdown
+    {
+        $items = $dropdown->getItems();
+
+        foreach ($items as $key => $value) {
+            if ($value->getType() === 'link' && $value->getUrl() === $this->currentPath && $this->activateItems) {
+                $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
+            }
+        }
+
+        return $dropdown->items(...$items);
+    }
+
+    /**
+     * Checks whether the nav component is tabs or pills.
+     *
+     * @return bool Whether the nav component is tabs or pills.
+     */
+    private function isTabsOrPills(): bool
+    {
+        return in_array(NavStyle::TABS, $this->styleClasses, true) ||
+            in_array(NavStyle::PILLS, $this->styleClasses, true);
+    }
+
+    /**
      * Run the nav widget.
      *
      * @return string The HTML representation of the element.
      */
     public function render(): string
     {
-        $attributes = $this->attributes;
-        $classes = $attributes['class'] ?? null;
-
-        unset($attributes['class']);
-
         if ($this->items === []) {
             return '';
         }
 
+        $attributes = $this->attributes;
+        $classes = $attributes['class'] ?? null;
+        $tabContent = '';
+
+        /** @psalm-var non-empty-string|null $id */
+        $id = match ($this->id) {
+            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
+
+        unset($attributes['class'], $attributes['id']);
+
         if (in_array(NavStyle::NAVBAR, $this->styleClasses, true)) {
             Html::addCssClass($attributes, [...$this->styleClasses, ...$this->cssClasses, $classes]);
         } else {
-            Html::addCssClass($attributes, [self::NAV_CLASS, ...$this->styleClasses, ...$this->cssClasses, $classes]);
+            Html::addCssClass($attributes, [self::NAME, ...$this->styleClasses, ...$this->cssClasses, $classes]);
         }
 
-        return $this->tag === ''
-            ? Ul::tag()->addAttributes($attributes)->items(...$this->renderItems())->render()
+        if ($this->isTabsOrPills()) {
+            $tabContent = $this->renderTabContent();
+        }
+
+        if ($tabContent !== '') {
+            $attributes['role'] = 'tablist';
+        }
+
+        $html = $this->tag === ''
+            ? Ul::tag()->addAttributes($attributes)->id($id)->items(...$this->renderItems())->render()
             : Html::tag($this->tag)
                 ->addAttributes($attributes)
-                ->addContent("\n", implode("\n", $this->renderLinks()), "\n")
+                ->addContent("\n", implode("\n", $this->createLinks()), "\n")
                 ->encode(false)
                 ->render();
+
+        return $html . $tabContent;
     }
 
     /**
@@ -283,7 +476,7 @@ final class Nav extends \Yiisoft\Widget\Widget
             if ($item instanceof Dropdown) {
                 $items[] = $this->renderItemsDropdown($item);
             } elseif ($item->isVisible()) {
-                $items[] = $this->renderNavLink($item);
+                $items[] = $this->renderNavItem($item);
             }
         }
 
@@ -293,7 +486,7 @@ final class Nav extends \Yiisoft\Widget\Widget
     /**
      * Renders a dropdown item for the nav component.
      *
-     * @param Dropdown $item The dropdown item to render.
+     * @param Dropdown $items The dropdown items to render.
      *
      * @return Li The rendered dropdown item.
      */
@@ -316,117 +509,95 @@ final class Nav extends \Yiisoft\Widget\Widget
     }
 
     /**
-     * Renders a link for the nav component.
+     * Renders a nav item for the nav component.
      *
-     * @param NavLink $item The link to render.
+     * @param NavLink $item The nav item to render.
      *
-     * @return A The rendered link.
+     * @return Li The rendered nav item.
      */
-    private function renderLink(NavLink $item): A
+    private function renderNavItem(NavLink $item): Li
     {
-        $attributes = $item->getUrlAttributes();
+        $attributes = $item->getAttributes();
 
-        Html::addCssClass($attributes, [self::NAV_LINK_CLASS]);
+        Html::addCssClass($attributes, [self::NAV_ITEM_CLASS]);
 
-        if ($this->isItemActive($item)) {
-            Html::addCssClass($attributes, [self::NAV_LINK_ACTIVE_CLASS]);
-
-            $attributes['aria-current'] = 'page';
+        if ($item->hasContent()) {
+            $attributes['role'] = 'presentation';
         }
 
-        if ($item->isDisabled()) {
-            Html::addCssClass($attributes, [self::NAV_LINK_DISABLED_CLASS]);
-
-            $attributes['aria-disabled'] = 'true';
-        }
-
-        return A::tag()
-            ->addAttributes($attributes)
-            ->addContent($item->getLabel())
-            ->href($item->getUrl())
-            ->encode($item->shouldEncodeLabel());
+        return Li::tag()->addAttributes($attributes)->addContent("\n", $this->createLink($item), "\n");
     }
 
     /**
-     * Renders the links for the nav component.
+     * Renders the content for the tab component.
      *
-     * @return array The rendered links.
+     * @return string The rendered content.
      */
-    private function renderLinks(): array
+    private function renderTabContent(): string
     {
-        $links = [];
+        $panes = [];
 
-        foreach ($this->items as $item) {
-            if ($item instanceof NavLink) {
-                $links[] = $this->renderLink($item);
+        foreach ($this->items as $index => $item) {
+            if ($item instanceof NavLink && $item->hasContent()) {
+                $panes[] = $this->renderTabPane($item, $index);
             }
         }
 
-        return $links;
+        if ($panes === []) {
+            return '';
+        }
+
+        $paneAttributes = $this->paneAttributes;
+
+        Html::addCssClass($paneAttributes, ['widget' => 'tab-content']);
+
+        return "\n" .
+            Div::tag()
+                ->addAttributes($paneAttributes)
+                ->content("\n" . implode("\n", $panes) . "\n")
+                ->encode(false)
+                ->render();
     }
 
     /**
-     * Renders a nav link for the nav component.
+     * Renders a tab pane for the nav component.
      *
-     * @param NavLink $item The nav link to render.
+     * @param NavLink $item The tab pane to render.
+     * @param int $index The index of the tab pane.
      *
-     * @return Li The rendered nav link.
+     * @return string The rendered tab pane.
      */
-    private function renderNavLink(NavLink $item): Li
+    private function renderTabPane(NavLink $item, int $index): string
     {
-        return Li::tag()
-            ->addAttributes($item->getAttributes())
-            ->addClass(self::NAV_ITEM_CLASS)
-            ->addContent(
-                "\n",
-                $this->renderLink($item),
-                "\n"
-            );
-    }
+        $paneAttributes = $item->getPaneAttributes();
 
-    /**
-     * Checks whether a menu item is active.
-     *
-     * This is done by checking if {@see currentPath} match that specified in the `url` option of the menu item. When
-     * the `url` option of a menu item is specified in terms of an array, its first element is treated as the
-     * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
-     * and parameters match {@see currentPath}, respectively, will a menu item be considered active.
-     *
-     * @param NavLink $item The menu item to be checked.
-     *
-     * @return bool Whether the menu item is active.
-     */
-    private function isItemActive(NavLink $item): bool
-    {
+        Html::addCssClass($paneAttributes, ['widget' => 'tab-pane']);
+
+        if ($this->fade) {
+            Html::addCssClass($paneAttributes, ['transition' => 'fade']);
+        }
+
         if ($item->isActive()) {
-            return true;
+            Html::addCssClass(
+                $paneAttributes,
+                [
+                    'show' => $this->fade ? 'show' : '',
+                    'active' => 'active',
+                ],
+            );
         }
 
-        return $item->getUrl() === $this->currentPath && $this->activateItems;
-    }
-
-    /**
-     * Checks whether a dropdown item is active.
-     *
-     * This is done by checking if {@see currentPath} match that specified in the `url` option of the dropdown item.
-     * When the `url` option of a dropdown item is specified in terms of an array, its first element is treated as the
-     * currentPath for the item and the rest of the elements are the associated parameters. Only when its currentPath
-     * and parameters match {@see currentPath}, respectively, will a dropdown item be considered active.
-     *
-     * @param Dropdown $dropdown The dropdown item to be checked.
-     *
-     * @return Dropdown The active dropdown item.
-     */
-    private function isItemActiveDropdown(Dropdown $dropdown): Dropdown
-    {
-        $items = $dropdown->getItems();
-
-        foreach ($items as $key => $value) {
-            if ($value->getType() === 'link' && $value->getUrl() === $this->currentPath && $this->activateItems) {
-                $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
-            }
-        }
-
-        return $dropdown->items(...$items);
+        return Div::tag()
+            ->attributes($paneAttributes)
+            ->addAttributes(
+                [
+                    'role' => 'tabpanel',
+                    'aria-labelledby' => $item->getId(),
+                    'tabindex' => 0,
+                ]
+            )
+            ->content($item->getContent())
+            ->id("{$item->getId()}-pane")
+            ->render();
     }
 }

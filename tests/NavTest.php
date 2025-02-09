@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use RuntimeException;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
 use Yiisoft\Yii\Bootstrap5\Nav;
@@ -634,8 +635,10 @@ final class NavTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($navWidget, $navWidget->attributes([]));
         $this->assertNotSame($navWidget, $navWidget->class(''));
         $this->assertNotSame($navWidget, $navWidget->currentPath(''));
+        $this->assertNotSame($navWidget, $navWidget->fade(false));
         $this->assertNotSame($navWidget, $navWidget->items(NavLink::to('')));
-        $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::FILL));
+        $this->assertNotSame($navWidget, $navWidget->paneAttributes([]));
+        $this->assertNotSame($navWidget, $navWidget->styles(NavStyle::TABS));
     }
 
     public function testNavLinkWithAttributes(): void
@@ -851,6 +854,65 @@ final class NavTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#javascript-behavior
+     */
+    public function testPillsWithNavLinkTab(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul id="pills-tab" class="nav nav-pills mb-3" role="tablist">
+            <li class="nav-item" role="presentation">
+            <button type="button" id="pills-home-tab" class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-home-tab-pane" role="tab" aria-controls="pills-home-tab-pane" aria-selected="true">Home</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="pills-profile-tab" class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-profile-tab-pane" role="tab" aria-controls="pills-profile-tab-pane" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="pills-contact-tab" class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-contact-tab-pane" role="tab" aria-controls="pills-contact-tab-pane" aria-selected="false">Contact</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="pills-disabled-tab" class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-disabled-tab-pane" role="tab" aria-controls="pills-disabled-tab-pane" aria-selected="false">Disabled</button>
+            </li>
+            </ul>
+            <div class="tab-content">
+            <div id="pills-home-tab-pane" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">This is some placeholder content the Home tab's associated content.</div>
+            <div id="pills-profile-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">This is some placeholder content the Profile tab's associated content.</div>
+            <div id="pills-contact-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">This is some placeholder content the Contact tab's associated content.</div>
+            <div id="pills-disabled-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">This is some placeholder content the Disabled tab's associated content.</div>
+            </div>
+            HTML,
+            Nav::widget()
+                ->addClass('mb-3')
+                ->id('pills-tab')
+                ->items(
+                    NavLink::tab(
+                        'Home',
+                        'This is some placeholder content the Home tab\'s associated content.',
+                        true,
+                        paneId: 'pills-home-tab',
+                    ),
+                    NavLink::tab(
+                        'Profile',
+                        'This is some placeholder content the Profile tab\'s associated content.',
+                        paneId: 'pills-profile-tab',
+                    ),
+                    NavLink::tab(
+                        'Contact',
+                        'This is some placeholder content the Contact tab\'s associated content.',
+                        paneId: 'pills-contact-tab',
+                    ),
+                    NavLink::tab(
+                        'Disabled',
+                        'This is some placeholder content the Disabled tab\'s associated content.',
+                        paneId: 'pills-disabled-tab',
+                    ),
+                )
+                ->styles(NavStyle::PILLS)
+            ->render(),
+        );
+    }
+
+    /**
      * @link https://getbootstrap.com/docs/5.3/components/navbar/#supported-content
      */
     public function testNavBar(): void
@@ -980,6 +1042,72 @@ final class NavTest extends \PHPUnit\Framework\TestCase
                 ->styles(NavStyle::TABS)
             ->render(),
         );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#javascript-behavior
+     */
+    public function testTabsWithNavLinkTab(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul id="nav-tabs" class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+            <button type="button" id="home-tab" class="nav-link active" data-bs-toggle="tab" data-bs-target="#home-tab-pane" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="profile-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="contact-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="disabled-tab" class="nav-link" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Disabled</button>
+            </li>
+            </ul>
+            <div class="tab-content">
+            <div id="home-tab-pane" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab" tabindex="0">This is some placeholder content the Home tab's associated content.</div>
+            <div id="profile-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">This is some placeholder content the Profile tab's associated content.</div>
+            <div id="contact-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">This is some placeholder content the Contact tab's associated content.</div>
+            <div id="disabled-tab-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">This is some placeholder content the Disabled tab's associated content.</div>
+            </div>
+            HTML,
+            Nav::widget()
+                ->id('nav-tabs')
+                ->items(
+                    NavLink::tab(
+                        'Home',
+                        'This is some placeholder content the Home tab\'s associated content.',
+                        true,
+                        paneId: 'home-tab',
+                    ),
+                    NavLink::tab(
+                        'Profile',
+                        'This is some placeholder content the Profile tab\'s associated content.',
+                        paneId: 'profile-tab',
+                    ),
+                    NavLink::tab(
+                        'Contact',
+                        'This is some placeholder content the Contact tab\'s associated content.',
+                        paneId: 'contact-tab',
+                    ),
+                    NavLink::tab(
+                        'Disabled',
+                        'This is some placeholder content the Disabled tab\'s associated content.',
+                        paneId: 'disabled-tab',
+                    ),
+                )
+                ->styles(NavStyle::TABS)
+            ->render(),
+        );
+    }
+
+    public function testThrowExceptionForFadeWithoutTabsOrPills(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Fade effect can only be used with tabs or pills.');
+
+        Nav::widget()->fade(true)->render();
     }
 
     /**
