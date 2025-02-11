@@ -159,6 +159,28 @@ final class NavBarTest extends TestCase
         );
     }
 
+    public function testBrandAttributes(): void
+    {
+        $navbar = NavBar::widget()
+            ->brandText('NavBar')
+            ->brandAttributes(['class' => 'test-class'])
+            ->id('navbar')
+            ->begin();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 test-class">NavBar</span>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbar" class="collapse navbar-collapse">
+            HTML,
+            trim($navbar),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/navbar/#text
      */
@@ -520,6 +542,7 @@ final class NavBarTest extends TestCase
         $this->assertNotSame($navBar, $navBar->brandImage(''));
         $this->assertNotSame($navBar, $navBar->brandImageAttributes([]));
         $this->assertNotSame($navBar, $navBar->brandText(''));
+        $this->assertNotSame($navBar, $navBar->brandAttributes([]));
         $this->assertNotSame($navBar, $navBar->brandUrl(''));
         $this->assertNotSame($navBar, $navBar->class(''));
         $this->assertNotSame($navBar, $navBar->container(false));
