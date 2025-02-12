@@ -213,6 +213,23 @@ final class NavBar extends Widget
     }
 
     /**
+     * Sets the HTML attributes for the brand tag of the navbar component.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function brandAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->brandAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
      * Replaces all existing CSS classes of the navbar component with the provided ones.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
