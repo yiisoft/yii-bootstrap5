@@ -412,6 +412,7 @@ final class Offcanvas extends Widget
      * Generates the ID for the offcanvas component.
      *
      * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
      * @return string The generated ID.
      */
     private function getId(): string
