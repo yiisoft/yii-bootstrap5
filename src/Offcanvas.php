@@ -411,9 +411,8 @@ final class Offcanvas extends Widget
     /**
      * Generates the ID for the offcanvas component.
      *
-     * @return string The generated ID.
-     *
      * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     * @return string The generated ID.
      */
     private function getId(): string
     {
@@ -520,7 +519,6 @@ final class Offcanvas extends Widget
 
         return $html;
     }
-
 
     /**
      * Renders the offcanvas toggler.
