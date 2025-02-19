@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="2"
+    errorLevel="1"
+    ensureOverrideAttribute="false"
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
+    resolveFromConfigFile="true"
+    strictBinaryOperands="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -13,9 +16,12 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
     <issueHandlers>
         <MixedAssignment errorLevel="suppress" />
-        <NonInvariantDocblockPropertyType errorLevel="suppress" />
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <RedundantPropertyInitializationCheck errorLevel="suppress" />
         <RiskyTruthyFalsyComparison errorLevel="suppress" />
+        <MissingOverrideAttribute errorLevel="suppress" />
     </issueHandlers>
 </psalm>
