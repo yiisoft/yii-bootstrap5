@@ -22,10 +22,16 @@ final class BootstrapAsset extends AssetBundle
 
     public ?string $sourcePath = '@npm/bootstrap/dist';
 
+    /**
+     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::CssFile)>
+     */
     public array $css = [
         'css/bootstrap.css',
     ];
 
+    /**
+     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::JsFile)>
+     */
     public array $js = [
         'js/bootstrap.bundle.js',
     ];

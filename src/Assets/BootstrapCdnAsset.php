@@ -10,6 +10,9 @@ final class BootstrapCdnAsset extends AssetBundle
 {
     public bool $cdn = true;
 
+    /**
+     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::CssFile)>
+     */
     public array $css = [
         [
             'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css',
@@ -18,6 +21,9 @@ final class BootstrapCdnAsset extends AssetBundle
         ],
     ];
 
+    /**
+     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::JsFile)>
+     */
     public array $js = [
         [
             'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js',
