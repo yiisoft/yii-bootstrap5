@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Assets;
 
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;
 use Yiisoft\Files\PathMatcher\PathMatcher;
 
@@ -12,8 +13,8 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
  *
  * BootstrapAsset.
  *
- * @psalm-import-type CssFile from \Yiisoft\Assets\AssetManager
- * @psalm-import-type JsFile from Yiisoft\Assets\AssetManager
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
  */
 final class BootstrapAsset extends AssetBundle
 {

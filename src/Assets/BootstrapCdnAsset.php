@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Assets;
 
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;
 
 /**
@@ -11,8 +12,8 @@ use Yiisoft\Assets\AssetBundle;
  *
  * BootstrapAsset.
  *
- * @psalm-import-type CssFile from \Yiisoft\Assets\AssetManager
- * @psalm-import-type JsFile from Yiisoft\Assets\AssetManager
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
  */
 final class BootstrapCdnAsset extends AssetBundle
 {
