@@ -4,71 +4,243 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
-use Yiisoft\Arrays\ArrayHelper;
+use BackedEnum;
+use InvalidArgumentException;
+use Stringable;
 use Yiisoft\Html\Html;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\Div;
+use Yiisoft\Widget\Widget;
+use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
-final class Offcanvas extends AbstractToggleWidget
+/**
+ * Offcanvas renders a Bootstrap offcanvas component.
+ *
+ * For example:
+ * ```php
+ * echo Offcanvas::widget()
+ *     ->placement(OffcanvasPlacement::END)
+ *     ->title('Offcanvas Title')
+ *     ->togglerContent('Toggle Offcanvas')
+ *     ->begin();
+ *
+ * // contenido del offcanvas
+ * echo 'Offcanvas content here';
+ *
+ * echo Offcanvas::end();
+ * ```
+ */
+final class Offcanvas extends Widget
 {
-    use CloseButtonTrait;
+    private const NAME = 'offcanvas';
+    private const BODY_CLASS = 'offcanvas-body';
+    private const CLOSE_CLASS = 'btn-close';
+    private const HEADER_CLASS = 'offcanvas-header';
+    private const SHOW_CLASS = 'show';
+    private const TITLE_CLASS = 'offcanvas-title';
+    private const TOGGLER_CLASS = 'btn btn-primary';
 
-    public const PLACEMENT_TOP = 'offcanvas-top';
-    public const PLACEMENT_END = 'offcanvas-end';
-    public const PLACEMENT_BOTTOM = 'offcanvas-bottom';
-    public const PLACEMENT_START = 'offcanvas-start';
-
-    private array $options = [];
-    private array $headerOptions = [];
-    private array $titleOptions = [];
-    private array $bodyOptions = [];
-    private ?string $title = null;
-    private string $placement = self::PLACEMENT_START;
-    private bool $scroll = false;
-    private bool $withoutBackdrop = false;
-    protected bool $renderToggle = false;
-
-    public function getId(?string $suffix = '-offcanvas'): ?string
-    {
-        // TODO: fix the method call, there's no suffix anymore.
-        return $this->options['id'] ?? parent::getId($suffix);
-    }
-
-    protected function toggleComponent(): string
-    {
-        return 'offcanvas';
-    }
+    private array $attributes = [];
+    private bool $backdrop = false;
+    private bool $backdropStatic = false;
+    private array $bodyAttributes = [];
+    private array $cssClasses = [];
+    private array $headerAttributes = [];
+    private array $titleAttributes = [];
+    private array $togglerAttributes = [];
+    private bool $scrollable = false;
+    private bool|string $id = true;
+    private OffcanvasPlacement|string $placement = OffcanvasPlacement::START;
+    private string $responsive = '';
+    private bool $show = false;
+    private string|Stringable $title = '';
+    private string|Stringable $togglerContent = '';
 
     /**
-     * Enable/disable body scroll when offcanvas show
+     * Adds a set of attributes for the offcanvas component.
      *
-     * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-offcanvas']`.
+     *
+     * @return self A new instance with the specified attributes added.
      */
-    public function scroll(bool $enabled = true): self
+    public function addAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->scroll = $enabled;
+        $new->attributes = [...$this->attributes, ...$attributes];
 
         return $new;
     }
 
     /**
-     * Enable/disable offcanvas backdrop
+     * Adds one or more CSS classes to the existing classes of the offcanvas component.
      *
-     * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#backdrop
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
+     * For example:
+     *
+     * ```php
+     * $carousel->addClass('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
      */
-    public function withoutBackdrop(bool $enabled = true): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->withoutBackdrop = $enabled;
+        $new->cssClasses = [...$this->cssClasses, ...$class];
 
         return $new;
     }
 
     /**
-     * Set placement for opened offcanvas.
+     * Adds a CSS style for the offcanvas component.
      *
-     * @link https://getbootstrap.com/docs/5.1/components/offcanvas/#placement
+     * @param array|string $style The CSS style for the offcanvas component. If an array, the values will be separated by
+     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
+     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
+     *
+     * @return self A new instance with the specified CSS style value added.
      */
-    public function placement(string $placement): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
+    {
+        $new = clone $this;
+        Html::addCssStyle($new->attributes, $style, $overwrite);
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the offcanvas component.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->attributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether the offcanvas component has a backdrop.
+     *
+     * @return self A new instance with the specified backdrop setting.
+     */
+    public function backdrop(): self
+    {
+        $new = clone $this;
+        $new->backdrop = true;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether the offcanvas component has a static backdrop.
+     *
+     * @return self A new instance with the specified static backdrop setting.
+     */
+    public function backdropStatic(): self
+    {
+        $new = clone $this;
+        $new->backdropStatic = true;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the offcanvas body component.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified body attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function bodyAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->bodyAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes of the offcanvas component with the provided ones.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
+     * For example:
+     *
+     * ```php
+     * $carousel->class('custom-class', null, 'another-class');
+     * ```
+     *
+     * @return self A new instance with the specified CSS classes set.
+     */
+    public function class(BackedEnum|string|null ...$class): self
+    {
+        $new = clone $this;
+        $new->cssClasses = $class;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the offcanvas header component.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified header attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function headerAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->headerAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the ID of the offcanvas component.
+     *
+     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
+     *
+     * @return self A new instance with the specified ID.
+     */
+    public function id(bool|string $id): self
+    {
+        $new = clone $this;
+        $new->id = $id;
+
+        return $new;
+    }
+
+    /**
+     * Sets the placement of the offcanvas component.
+     *
+     * @param OffcanvasPlacement|string $placement The placement of the offcanvas component.
+     *
+     * @return self A new instance with the specified placement.
+     */
+    public function placement(OffcanvasPlacement|string $placement): self
     {
         $new = clone $this;
         $new->placement = $placement;
@@ -77,35 +249,73 @@ final class Offcanvas extends AbstractToggleWidget
     }
 
     /**
-     * The HTML attributes for the widget container tag. The following special options are recognized.
+     * Sets the responsive size of the offcanvas component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @param Responsive|string $size The responsive size of the offcanvas component.
+     *
+     * @return self A new instance with the specified responsive size.
      */
-    public function options(array $options): self
+    public function responsive(Responsive|string $size): self
     {
+        $size = $size instanceof Responsive ? $size->value : $size;
+
         $new = clone $this;
-        $new->options = $options;
+        $new->responsive = match ($size) {
+            'sm', 'md', 'lg', 'xl', 'xxl' => $size,
+            default => '',
+        };
 
         return $new;
     }
 
     /**
-     * The HTML attributes for the widget header tag. The following special options are recognized.
+     * Sets whether the offcanvas component is scrollable.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @return self A new instance with the specified scrollable setting.
      */
-    public function headerOptions(array $options): self
+    public function scrollable(): self
     {
         $new = clone $this;
-        $new->headerOptions = $options;
+        $new->scrollable = true;
 
         return $new;
     }
 
     /**
-     * Set/remove offcanvas title
+     * Sets whether the offcanvas component is visible.
+     *
+     * @param bool $show Whether the offcanvas component is visible.
+     *
+     * @return self A new instance with the specified visibility setting.
      */
-    public function title(?string $title): self
+    public function show(): self
+    {
+        $new = clone $this;
+        $new->show = true;
+
+        return $new;
+    }
+
+    /**
+     * Sets the theme for the offcavas component.
+     *
+     * @param string $theme The theme for the offcanvas component.
+     *
+     * @return self A new instance with the specified theme.
+     */
+    public function theme(string $theme): self
+    {
+        return $this->addAttributes(['data-bs-theme' => $theme === '' ? null : $theme]);
+    }
+
+    /**
+     * Sets the title of the offcanvas component.
+     *
+     * @param string|Stringable $title The title of the offcanvas component.
+     *
+     * @return self A new instance with the specified title.
+     */
+    public function title(string|Stringable $title): self
     {
         $new = clone $this;
         $new->title = $title;
@@ -114,125 +324,225 @@ final class Offcanvas extends AbstractToggleWidget
     }
 
     /**
-     * The HTML attributes for the widget title tag. The following special options are recognized.
+     * Sets the HTML attributes for the offcanvas title component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified title attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function titleOptions(array $options): self
+    public function titleAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->titleOptions = $options;
+        $new->titleAttributes = $attributes;
 
         return $new;
     }
 
     /**
-     * The HTML attributes for the widget body tag. The following special options are recognized.
+     * Sets the HTML attributes for the offcanvas toggler component.
      *
-     * {@see Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified toggler attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function bodyOptions(array $options): self
+    public function togglerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->bodyOptions = $options;
+        $new->togglerAttributes = $attributes;
 
         return $new;
     }
 
+    /**
+     * Sets the content of the offcanvas toggler.
+     *
+     * @param string|Stringable $content The content of the offcanvas toggler.
+     *
+     * @return self A new instance with the specified toggler content.
+     */
+    public function togglerContent(string|Stringable $content): self
+    {
+        $new = clone $this;
+        $new->togglerContent = $content;
+
+        return $new;
+    }
+
+    /**
+     * Begins the rendering of the offcanvas component.
+     *
+     * @throws InvalidArgumentException if the tag is an empty string.
+     *
+     * @return string The opening HTML tags for the navbar.
+     */
     public function begin(): string
     {
         parent::begin();
 
-        $options = $this->options;
-        $bodyOptions = $this->bodyOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
-        $bodyTag = ArrayHelper::remove($bodyOptions, 'tag', 'div');
+        $id = $this->getId();
+        $html = '';
 
-        Html::addCssClass($options, ['widget' => 'offcanvas', 'placement' => $this->placement]);
-        Html::addCssClass($bodyOptions, ['widget' => 'offcanvas-body']);
-
-        $options['id'] = $this->getId();
-        $options['tabindex'] = -1;
-
-        if ($this->title !== null && $this->title !== '') {
-            if (isset($this->titleOptions['id'])) {
-                $options['aria-labelledby'] = $this->titleOptions['id'];
-            } elseif ($options['id']) {
-                $options['aria-labelledby'] = $options['id'] . '-title';
-            }
+        if ($this->togglerContent !== '' && $this->show === false) {
+            $html .= $this->renderToggler($id) . "\n";
         }
 
-        if ($this->scroll) {
-            $options['data-bs-scroll'] = 'true';
-        }
-
-        if ($this->withoutBackdrop) {
-            $options['data-bs-backdrop'] = 'false';
-        }
-
-        if ($this->theme) {
-            $options['data-bs-theme'] = $this->theme;
-        }
-
-        $html = $this->renderToggle ? $this->renderToggle() : '';
-        $html .= Html::openTag($tag, $options);
-        $html .= $this->renderHeader();
-        $html .= Html::openTag($bodyTag, $bodyOptions);
+        $html .= $this->renderOffcanvas($id);
 
         return $html;
     }
 
+    /**
+     * Run the offcanvas widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
-        $tag = $this->options['tag'] ?? 'div';
-        $bodyTag = $this->bodyOptions['tag'] ?? 'div';
+        $html = Html::closeTag('div') . "\n";
+        $html .= Html::closeTag('div');
 
-        return Html::closeTag($bodyTag) . Html::closeTag($tag);
+        return $html;
     }
 
     /**
-     * Renders offcanvas header.
+     * Generates the ID for the offcanvas component.
      *
-     * @return string the rendering header.
+     * @return string The generated ID.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
      */
-    private function renderHeader(): string
+    private function getId(): string
     {
-        $options = $this->headerOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'header');
+        return match ($this->id) {
+            true => Html::generateId(self::NAME . '-'),
+            '', false => throw new InvalidArgumentException('The "id" property must be specified.'),
+            default => $this->id,
+        };
+    }
 
-        Html::addCssClass($options, ['widget' => 'offcanvas-header']);
+    /**
+     * Renders the offcanvas body.
+     *
+     * @return string The rendering result.
+     */
+    private function renderBody(): string
+    {
+        $bodyAttributes = $this->bodyAttributes;
 
-        $title = (string) $this->renderTitle();
-        $closeButton = $this->renderCloseButton(true);
+        Html::addCssClass($bodyAttributes, [self::BODY_CLASS]);
 
-        return Html::tag($tag, $title . $closeButton, $options)
-            ->encode(false)
+        return Html::openTag('div', $bodyAttributes) . "\n";
+    }
+
+    /**
+     * Renders the offcanvas header.
+     *
+     * @param string $id The ID of the offcanvas component.
+     *
+     * @return string The rendering result.
+     */
+    private function renderHeader(string $id): string
+    {
+        $headerAttributes = $this->headerAttributes;
+
+        Html::addCssClass($headerAttributes, [self::HEADER_CLASS]);
+
+        $titleAttributes = $this->titleAttributes;
+        $titleAttributes['id'] = $id . '-label';
+
+        Html::addCssClass($titleAttributes, [self::TITLE_CLASS]);
+
+        return Div::tag()
+            ->attributes($headerAttributes)
+            ->content(
+                "\n",
+                Html::tag('h5', $this->title, $titleAttributes),
+                "\n",
+                Button::tag()
+                    ->attributes(
+                        [
+                            'aria-label' => 'Close',
+                            'class' => self::CLOSE_CLASS,
+                            'data-bs-dismiss' => 'offcanvas',
+                            'type' => 'button',
+                        ],
+                    ),
+                "\n",
+            )
             ->render();
     }
 
     /**
-     * Renders offcanvas title.
+     * Renders the offcanvas component.
      *
-     * @return string|null the rendering header.
+     * @param string $id The ID of the offcanvas component.
+     *
+     * @return string The rendering result.
      */
-    private function renderTitle(): ?string
+    private function renderOffcanvas(string $id): string
     {
-        if ($this->title === null) {
-            return null;
+        $attributes = $this->attributes;
+        $classes = $attributes['class'] ?? null;
+
+        unset($attributes['class']);
+
+        $class = $this->responsive !== '' ? 'offcanvas-' . $this->responsive : self::NAME;
+
+        Html::addCssClass($attributes, [$class, $this->placement, ...$this->cssClasses, $classes]);
+
+        if ($this->scrollable) {
+            $attributes['data-bs-scroll'] = 'true';
+
+            if ($this->backdrop === false) {
+                $attributes['data-bs-backdrop'] = 'false';
+            }
         }
 
-        $options = $this->titleOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'h5');
-        $encode = ArrayHelper::remove($options, 'encode');
-
-        Html::addCssClass($options, ['offcanvas-title']);
-
-        if (!isset($options['id']) && $id = $this->getId()) {
-            $options['id'] = $id . '-title';
+        if ($this->backdropStatic) {
+            $attributes['data-bs-backdrop'] = 'static';
         }
 
-        return Html::tag($tag, $this->title, $options)
-            ->encode($encode)
+        $attributes['aria-labelledby'] = $id . '-label';
+        $attributes['id'] = $id;
+        $attributes['tabindex'] = '-1';
+
+        if ($this->show) {
+            Html::addCssClass($attributes, self::SHOW_CLASS);
+        }
+
+        $html = Html::openTag('div', $attributes) . "\n";
+        $html .= $this->renderHeader($id) . "\n";
+        $html .= $this->renderBody();
+
+        return $html;
+    }
+
+
+    /**
+     * Renders the offcanvas toggler.
+     *
+     * @param string $id The ID of the offcanvas component.
+     *
+     * @return string The rendering result.
+     */
+    private function renderToggler(string $id): string
+    {
+        return Button::tag()
+            ->attributes($this->togglerAttributes)
+            ->addAttributes(
+                [
+                    'aria-controls' => $id,
+                    'class' => self::TOGGLER_CLASS,
+                    'data-bs-toggle' => 'offcanvas',
+                    'data-bs-target' => '#' . $id,
+                ]
+            )
+            ->content($this->togglerContent)
+            ->type('button')
             ->render();
     }
 }
