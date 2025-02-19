@@ -12,8 +12,8 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
  *
  * BootstrapAsset.
  *
- * @psalm-import-type CssFile from AssetManager
- * @psalm-import-type JsFile from AssetManager
+ * @psalm-import-type CssFile from \Yiisoft\Assets\AssetManager
+ * @psalm-import-type JsFile from Yiisoft\Assets\AssetManager
  */
 final class BootstrapAsset extends AssetBundle
 {
