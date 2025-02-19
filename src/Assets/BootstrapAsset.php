@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Assets;
 
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;
 use Yiisoft\Files\PathMatcher\PathMatcher;
 
 /**
- * Asset bundle for the Twitter bootstrap CSS files.
+ * Asset bundle for the Bootstrap files.
  *
- * BootstrapAsset.
- *
- * @package Bootstrap5
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
  */
 final class BootstrapAsset extends AssetBundle
 {
@@ -22,10 +22,16 @@ final class BootstrapAsset extends AssetBundle
 
     public ?string $sourcePath = '@npm/bootstrap/dist';
 
+    /**
+     * @psalm-var array<array-key, string|CssFile>
+     */
     public array $css = [
         'css/bootstrap.css',
     ];
 
+    /**
+     * @psalm-var array<array-key, string|JsFile>
+     */
     public array $js = [
         'js/bootstrap.bundle.js',
     ];

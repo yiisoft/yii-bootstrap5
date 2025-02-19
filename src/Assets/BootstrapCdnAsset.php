@@ -4,12 +4,22 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Assets;
 
+use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;
 
+/**
+ * Asset bundle for the Bootstrap files served via CDN.
+ *
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
+ */
 final class BootstrapCdnAsset extends AssetBundle
 {
     public bool $cdn = true;
 
+    /**
+     * @psalm-var array<array-key, string|CssFile>
+     */
     public array $css = [
         [
             'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css',
@@ -18,6 +28,9 @@ final class BootstrapCdnAsset extends AssetBundle
         ],
     ];
 
+    /**
+     * @psalm-var array<array-key, string|JsFile>
+     */
     public array $js = [
         [
             'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js',
