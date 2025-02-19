@@ -8,9 +8,7 @@ use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;
 
 /**
- * Asset bundle for the Twitter bootstrap CSS files via CDN.
- *
- * BootstrapAsset.
+ * Asset bundle for the Bootstrap files served via CDN.
  *
  * @psalm-import-type CssFile from AssetManager
  * @psalm-import-type JsFile from AssetManager

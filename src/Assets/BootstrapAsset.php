@@ -9,9 +9,7 @@ use Yiisoft\Assets\AssetBundle;
 use Yiisoft\Files\PathMatcher\PathMatcher;
 
 /**
- * Asset bundle for the Twitter bootstrap CSS files.
- *
- * BootstrapAsset.
+ * Asset bundle for the Bootstrap files.
  *
  * @psalm-import-type CssFile from AssetManager
  * @psalm-import-type JsFile from AssetManager

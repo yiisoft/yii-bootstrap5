@@ -26,9 +26,10 @@ use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
  *
  * // contenido del offcanvas
  * echo 'Offcanvas content here';
- *
  * echo Offcanvas::end();
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.3/components/offcanvas/#how-it-works
  */
 final class Offcanvas extends Widget
 {
@@ -57,7 +58,7 @@ final class Offcanvas extends Widget
     private string|Stringable $togglerContent = '';
 
     /**
-     * Adds a set of attributes for the offcanvas component.
+     * Adds a set of attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-offcanvas']`.
      *
@@ -72,7 +73,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the existing classes of the offcanvas component.
+     * Adds one or more CSS classes to the existing classes.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
@@ -97,11 +98,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Adds a CSS style for the offcanvas component.
+     * Adds a CSS style.
      *
-     * @param array|string $style The CSS style for the offcanvas component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
-     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * @param array|string $style The CSS style. If an array is provided, the values will be separated by a space. If a
+     * string is provided, it will be added as is. For example, `color: red`. If the value is an array, the values will
+     * be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
      * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
@@ -117,7 +118,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the offcanvas component.
+     * Sets the HTML attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -134,9 +135,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether the offcanvas component has a backdrop.
+     * Sets whether to use a backdrop.
      *
      * @return self A new instance with the specified backdrop setting.
+     *
+     * @link https://getbootstrap.com/docs/5.3/components/offcanvas/#body-scrolling-and-backdrop
      */
     public function backdrop(): self
     {
@@ -147,9 +150,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether the offcanvas component has a static backdrop.
+     * Sets whether to use a static backdrop.
      *
      * @return self A new instance with the specified static backdrop setting.
+     *
+     * @link https://getbootstrap.com/docs/5.3/components/offcanvas/#dark-offcanvas
      */
     public function backdropStatic(): self
     {
@@ -160,7 +165,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the offcanvas body component.
+     * Sets the HTML attributes for the body.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -177,7 +182,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Replaces all existing CSS classes of the offcanvas component with the provided ones.
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
@@ -200,7 +205,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the offcanvas header component.
+     * Sets the HTML attributes for the header.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -217,9 +222,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the ID of the offcanvas component.
+     * Sets the ID.
      *
-     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
      *
      * @throws InvalidArgumentException if the ID is an empty string or `false`.
      *
@@ -234,11 +239,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the placement of the offcanvas component.
+     * Sets the placement.
      *
-     * @param OffcanvasPlacement|string $placement The placement of the offcanvas component.
+     * @param OffcanvasPlacement|string $placement The placement.
      *
-     * @return self A new instance with the specified placement.
+     * @return self A new instance with the specified placement setting.
      */
     public function placement(OffcanvasPlacement|string $placement): self
     {
@@ -249,11 +254,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the responsive size of the offcanvas component.
+     * Sets the responsive size.
      *
-     * @param Responsive|string $size The responsive size of the offcanvas component.
+     * @param Responsive|string $size The responsive size.
      *
-     * @return self A new instance with the specified responsive size.
+     * @return self A new instance with the specified responsive size setting.
      */
     public function responsive(Responsive|string $size): self
     {
@@ -269,9 +274,11 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether the offcanvas component is scrollable.
+     * Sets whether is scrollable.
      *
      * @return self A new instance with the specified scrollable setting.
+     *
+     * @link https://getbootstrap.com/docs/5.3/components/offcanvas/#body-scrolling
      */
     public function scrollable(): self
     {
@@ -282,9 +289,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether the offcanvas component is visible.
+     * Sets whether is visible.
      *
-     * @param bool $show Whether the offcanvas component is visible.
+     * @param bool $show Whether is visible.
      *
      * @return self A new instance with the specified visibility setting.
      */
@@ -297,11 +304,14 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the theme for the offcavas component.
+     * Sets the theme.
      *
-     * @param string $theme The theme for the offcanvas component.
+     * @param string $theme The theme. If an empty string, the theme will be removed.
+     * Valid values are `dark` and `light`.
      *
      * @return self A new instance with the specified theme.
+     *
+     * @link https://getbootstrap.com/docs/5.3/components/offcanvas/#dark-offcanvas
      */
     public function theme(string $theme): self
     {
@@ -309,9 +319,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the title of the offcanvas component.
+     * Sets the title.
      *
-     * @param string|Stringable $title The title of the offcanvas component.
+     * @param string|Stringable $title The title.
      *
      * @return self A new instance with the specified title.
      */
@@ -324,7 +334,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the offcanvas title component.
+     * Sets the HTML attributes for the title.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -341,7 +351,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the offcanvas toggler component.
+     * Sets the HTML attributes for the toggler.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -358,9 +368,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets the content of the offcanvas toggler.
+     * Sets the content of the toggler.
      *
-     * @param string|Stringable $content The content of the offcanvas toggler.
+     * @param string|Stringable $content The content of the toggler.
      *
      * @return self A new instance with the specified toggler content.
      */
@@ -373,7 +383,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Begins the rendering of the offcanvas component.
+     * Begins the rendering.
      *
      * @throws InvalidArgumentException if the tag is an empty string.
      *
@@ -396,7 +406,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Run the offcanvas widget.
+     * Run the widget.
      *
      * @return string The HTML representation of the element.
      */
@@ -409,7 +419,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Generates the ID for the offcanvas component.
+     * Generates the ID.
      *
      * @throws InvalidArgumentException if the ID is an empty string or `false`.
      *
@@ -425,7 +435,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Renders the offcanvas body.
+     * Renders the body.
      *
      * @return string The rendering result.
      */
@@ -439,9 +449,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Renders the offcanvas header.
+     * Renders the header.
      *
-     * @param string $id The ID of the offcanvas component.
+     * @param string $id The ID.
      *
      * @return string The rendering result.
      */
@@ -479,7 +489,7 @@ final class Offcanvas extends Widget
     /**
      * Renders the offcanvas component.
      *
-     * @param string $id The ID of the offcanvas component.
+     * @param string $id The ID.
      *
      * @return string The rendering result.
      */
@@ -522,9 +532,9 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Renders the offcanvas toggler.
+     * Renders the toggler.
      *
-     * @param string $id The ID of the offcanvas component.
+     * @param string $id The ID.
      *
      * @return string The rendering result.
      */
