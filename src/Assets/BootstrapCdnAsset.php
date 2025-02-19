@@ -6,12 +6,20 @@ namespace Yiisoft\Yii\Bootstrap5\Assets;
 
 use Yiisoft\Assets\AssetBundle;
 
+/**
+ * Asset bundle for the Twitter bootstrap CSS files via CDN.
+ *
+ * BootstrapAsset.
+ *
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
+ */
 final class BootstrapCdnAsset extends AssetBundle
 {
     public bool $cdn = true;
 
     /**
-     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::CssFile)>
+     * @psalm-var array<array-key, string|CssFile>
      */
     public array $css = [
         [
@@ -22,7 +30,7 @@ final class BootstrapCdnAsset extends AssetBundle
     ];
 
     /**
-     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::JsFile)>
+     * @psalm-var array<array-key, string|JsFile>
      */
     public array $js = [
         [

@@ -12,7 +12,8 @@ use Yiisoft\Files\PathMatcher\PathMatcher;
  *
  * BootstrapAsset.
  *
- * @package Bootstrap5
+ * @psalm-import-type CssFile from AssetManager
+ * @psalm-import-type JsFile from AssetManager
  */
 final class BootstrapAsset extends AssetBundle
 {
@@ -23,14 +24,14 @@ final class BootstrapAsset extends AssetBundle
     public ?string $sourcePath = '@npm/bootstrap/dist';
 
     /**
-     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::CssFile)>
+     * @psalm-var array<array-key, string|CssFile>
      */
     public array $css = [
         'css/bootstrap.css',
     ];
 
     /**
-     * @psalm-var array<array-key, string|type-alias(\Yiisoft\Assets\AssetManager::JsFile)>
+     * @psalm-var array<array-key, string|JsFile>
      */
     public array $js = [
         'js/bootstrap.bundle.js',
