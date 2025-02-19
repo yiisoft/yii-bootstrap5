@@ -24,7 +24,7 @@ use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
  *     ->togglerContent('Toggle Offcanvas')
  *     ->begin();
  *
- * // contenido del offcanvas
+ * // content of the offcanvas
  * echo 'Offcanvas content here';
  * echo Offcanvas::end();
  * ```
@@ -256,19 +256,14 @@ final class Offcanvas extends Widget
     /**
      * Sets the responsive size.
      *
-     * @param Responsive|string $size The responsive size.
+     * @param Responsive $size The responsive size.
      *
      * @return self A new instance with the specified responsive size setting.
      */
-    public function responsive(Responsive|string $size): self
+    public function responsive(Responsive $size): self
     {
-        $size = $size instanceof Responsive ? $size->value : $size;
-
         $new = clone $this;
-        $new->responsive = match ($size) {
-            'sm', 'md', 'lg', 'xl', 'xxl' => $size,
-            default => '',
-        };
+        $new->responsive = $size->value;
 
         return $new;
     }
@@ -387,7 +382,7 @@ final class Offcanvas extends Widget
      *
      * @throws InvalidArgumentException if the tag is an empty string.
      *
-     * @return string The opening HTML tags for the navbar.
+     * @return string The opening HTML tags for the offcanvas.
      */
     public function begin(): string
     {
@@ -429,7 +424,7 @@ final class Offcanvas extends Widget
     {
         return match ($this->id) {
             true => Html::generateId(self::NAME . '-'),
-            '', false => throw new InvalidArgumentException('The "id" property must be specified.'),
+            '', false => throw new InvalidArgumentException('The "id" must be specified.'),
             default => $this->id,
         };
     }

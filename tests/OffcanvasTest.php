@@ -334,7 +334,7 @@ final class OffcanvasTest extends TestCase
         $this->assertNotSame($offcanvas, $offcanvas->headerAttributes([]));
         $this->assertNotSame($offcanvas, $offcanvas->id('value'));
         $this->assertNotSame($offcanvas, $offcanvas->placement('offcanvas-top'));
-        $this->assertNotSame($offcanvas, $offcanvas->responsive('sm'));
+        $this->assertNotSame($offcanvas, $offcanvas->responsive(Responsive::SM));
         $this->assertNotSame($offcanvas, $offcanvas->scrollable());
         $this->assertNotSame($offcanvas, $offcanvas->show());
         $this->assertNotSame($offcanvas, $offcanvas->theme('dark'));
@@ -824,7 +824,7 @@ final class OffcanvasTest extends TestCase
     public function testThrowExceptionForIdEmptyValue(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be specified.');
+        $this->expectExceptionMessage('The "id" must be specified.');
 
         Offcanvas::widget()->id('')->begin();
     }
@@ -832,7 +832,7 @@ final class OffcanvasTest extends TestCase
     public function testThrowExceptionForIdFalseValue(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be specified.');
+        $this->expectExceptionMessage('The "id" must be specified.');
 
         Offcanvas::widget()->id(false)->begin();
     }
