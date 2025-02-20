@@ -24,30 +24,15 @@ final class AlertTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="alert alert-secondary test-class-definition" role="alert">
+            <div class="alert alert-secondary" data-id="123" role="alert">
             Body
             </div>
             HTML,
-            Alert::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->addAttributes(['id' => 'test'])
-                ->body('Body')
-                ->render(),
+            Alert::widget()->addAttributes(['data-id' => '123'])->body('Body')->id(false)->render(),
         );
     }
 
-    public function testAttributes(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="alert alert-secondary test-class" role="alert">
-            Body
-            </div>
-            HTML,
-            Alert::widget()->attributes(['class' => 'test-class'])->body('Body')->id(false)->render(),
-        );
-    }
-
-    public function testAddCssClass(): void
+    public function testAddClass(): void
     {
         $alert = Alert::widget()->addClass('test-class', null, BackgroundColor::PRIMARY)->body('Body')->id(false);
 
@@ -113,6 +98,30 @@ final class AlertTest extends TestCase
             </div>
             HTML,
             $alert->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary" data-id="123" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->attribute('data-id', '123')->body('Body')->id(false)->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="alert alert-secondary test-class" role="alert">
+            Body
+            </div>
+            HTML,
+            Alert::widget()->attributes(['class' => 'test-class'])->body('Body')->id(false)->render(),
         );
     }
 
@@ -426,6 +435,8 @@ final class AlertTest extends TestCase
 
         $this->assertNotSame($alert, $alert->addAttributes([]));
         $this->assertNotSame($alert, $alert->addClass(''));
+        $this->assertNotSame($alert, $alert->addCssStyle(''));
+        $this->assertNotSame($alert, $alert->attribute('', ''));
         $this->assertNotSame($alert, $alert->attributes([]));
         $this->assertNotSame($alert, $alert->body('', true));
         $this->assertNotSame($alert, $alert->class(''));
@@ -505,7 +516,7 @@ final class AlertTest extends TestCase
                 ->body('Body')
                 ->dismissable(true)
                 ->id(false)
-                ->templateContent("\n{toggle}\n{body}\n")
+                ->templateContent("\n{toggler}\n{body}\n")
                 ->render(),
         );
     }
