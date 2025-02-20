@@ -22,7 +22,7 @@ final class AccordionTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion test-class-definition">
+            <div id="accordion" class="accordion" data-id="123">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
@@ -37,8 +37,8 @@ final class AccordionTest extends TestCase
             </div>
             </div>
             HTML,
-            Accordion::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->addAttributes(['id' => 'accordion'])
+            Accordion::widget()
+                ->addAttributes(['data-id' => '123'])
                 ->id('accordion')
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
@@ -190,6 +190,35 @@ final class AccordionTest extends TestCase
             </div>
             HTML,
             $accordion->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="accordion" class="accordion" data-id="123">
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
+            Accordion Item #1
+            </button>
+            </h2>
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+            This is the first item's accordion body.
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Accordion::widget()
+                ->attribute('data-id', '123')
+                ->id('accordion')
+                ->items(
+                    AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
+                )
+                ->render(),
         );
     }
 
@@ -653,32 +682,6 @@ final class AccordionTest extends TestCase
         );
     }
 
-    public function testIdWithEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
-
-        Accordion::widget()
-            ->id('')
-            ->items(
-                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
-            )
-            ->render();
-    }
-
-    public function testIdWithFalse(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
-
-        Accordion::widget()
-            ->id(false)
-            ->items(
-                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
-            )
-            ->render();
-    }
-
     public function testIdWithSetAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -715,6 +718,7 @@ final class AccordionTest extends TestCase
         $this->assertNotSame($accordion, $accordion->addClass(''));
         $this->assertNotSame($accordion, $accordion->addCssStyle(''));
         $this->assertNotSame($accordion, $accordion->alwaysOpen());
+        $this->assertNotSame($accordion, $accordion->attribute('', ''));
         $this->assertNotSame($accordion, $accordion->attributes([]));
         $this->assertNotSame($accordion, $accordion->bodyAttributes([]));
         $this->assertNotSame($accordion, $accordion->class(''));
@@ -724,8 +728,8 @@ final class AccordionTest extends TestCase
         $this->assertNotSame($accordion, $accordion->headerTag(''));
         $this->assertNotSame($accordion, $accordion->id(''));
         $this->assertNotSame($accordion, $accordion->items(AccordionItem::to('', '')));
-        $this->assertNotSame($accordion, $accordion->toggleAttributes([]));
-        $this->assertNotSame($accordion, $accordion->toggleTag(''));
+        $this->assertNotSame($accordion, $accordion->togglerAttributes([]));
+        $this->assertNotSame($accordion, $accordion->togglerTag(''));
     }
 
     public function testItemsWithActive(): void
@@ -985,7 +989,59 @@ final class AccordionTest extends TestCase
         $this->assertEmpty(Accordion::widget()->render());
     }
 
-    public function testToggleAttributes(): void
+    public function testThrowExceptionForIdWithEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Accordion::widget()
+            ->id('')
+            ->items(
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
+            )
+            ->render();
+    }
+
+    public function testThrowExceptionForIdWithFalseValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Accordion::widget()
+            ->id(false)
+            ->items(
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
+            )
+            ->render();
+    }
+
+    public function testThrowExceptionForHeaderTagEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Header tag cannot be empty string.');
+
+        Accordion::widget()
+            ->items(
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
+            )
+            ->headerTag('')
+            ->render();
+    }
+
+    public function testThrowExceptionForTogglerTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Toggler tag cannot be empty string.');
+
+        Accordion::widget()
+            ->items(
+                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
+            )
+            ->togglerTag('')
+            ->render();
+    }
+
+    public function testTogglerAttributes(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1009,12 +1065,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['class' => 'btn-lg'])
+                ->togglerAttributes(['class' => 'btn-lg'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithAriaControls(): void
+    public function testTogglerAttributesWithAriaControls(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1038,12 +1094,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['aria-controls' => 'custom-value'])
+                ->togglerAttributes(['aria-controls' => 'custom-value'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithAriaControlsWithNull(): void
+    public function testTogglerAttributesWithAriaControlsWithNull(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1067,12 +1123,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['aria-controls' => null])
+                ->togglerAttributes(['aria-controls' => null])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithAriaExpanded(): void
+    public function testTogglerAttributesWithAriaExpanded(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1096,12 +1152,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['aria-expanded' => 'custom-value'])
+                ->togglerAttributes(['aria-expanded' => 'custom-value'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithAriaExpandedNull(): void
+    public function testTogglerAttributesWithAriaExpandedNull(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1125,12 +1181,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['aria-expanded' => null])
+                ->togglerAttributes(['aria-expanded' => null])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithDataBsTarget(): void
+    public function testTogglerAttributesWithDataBsTarget(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1154,12 +1210,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['data-bs-target' => 'custom-value'])
+                ->togglerAttributes(['data-bs-target' => 'custom-value'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithDataBsTargetNull(): void
+    public function testTogglerAttributesWithDataBsTargetNull(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1183,12 +1239,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['data-bs-target' => null])
+                ->togglerAttributes(['data-bs-target' => null])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithDataBsToggle(): void
+    public function testTogglerAttributesWithDataBsToggle(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1212,12 +1268,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['data-bs-toggle' => 'custom-value'])
+                ->togglerAttributes(['data-bs-toggle' => 'custom-value'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithDataBsToggleNull(): void
+    public function testTogglerAttributesWithDataBsToggleNull(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1241,12 +1297,12 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleAttributes(['data-bs-toggle' => null])
+                ->togglerAttributes(['data-bs-toggle' => null])
                 ->render(),
         );
     }
 
-    public function testToggleTagName(): void
+    public function testTogglerTagName(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1270,21 +1326,8 @@ final class AccordionTest extends TestCase
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
-                ->toggleTag('my-custom-tag')
+                ->togglerTag('my-custom-tag')
                 ->render(),
         );
-    }
-
-    public function testToggleTagNameEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Toggle tag cannot be empty string.');
-
-        Accordion::widget()
-            ->items(
-                AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
-            )
-            ->toggleTag('')
-            ->render();
     }
 }

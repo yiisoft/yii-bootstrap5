@@ -31,12 +31,12 @@ final class AccordionItem
      * Use {@see AccordionItem::to()} to create a new instance.
      */
     private function __construct(
-        private bool $active = false,
-        private string $body = '',
-        private bool $encodeBody = true,
-        private bool $encodeHeader = true,
-        private string $header = '',
-        private bool|string $id = true,
+        private bool $active,
+        private string $body,
+        private bool $encodeBody,
+        private bool $encodeHeader,
+        private string $header,
+        private bool|string $id,
     ) {
     }
 
