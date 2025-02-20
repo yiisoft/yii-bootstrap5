@@ -44,14 +44,19 @@ final class Alert extends Widget
     private array $headerAttributes = [];
     private string $headerTag = 'h4';
     private bool|string $id = true;
-    private string $templateContent = "\n{header}\n{body}\n{toggle}\n";
+    private string $templateContent = "\n{header}\n{body}\n{toggler}\n";
 
     /**
-     * Adds a sets of attributes to the alert component.
+     * Adds a sets of attributes.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
      * @return self A new instance with the specified attributes added.
+     *
+     * Example usage:
+     * ```php
+     * $alert->addAttributes(['id' => 'my-id']);
+     * ```
      */
     public function addAttributes(array $attributes): self
     {
@@ -62,21 +67,21 @@ final class Alert extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the existing classes of the alert component.
+     * Adds one or more CSS classes to the existing classes.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
-     * For example:
-     *
-     * ```php
-     * $alert->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
-     * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
+     *
+     * Example usage:
+     * ```php
+     * $alert->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function addClass(BackedEnum|string|null ...$class): self
     {
@@ -87,16 +92,23 @@ final class Alert extends Widget
     }
 
     /**
-     * Adds a CSS style for the alert component.
+     * Adds a CSS style.
      *
-     * @param array|string $style The CSS style for the alert component. If an array, the values will be separated by
-     * a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
-     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
-     * `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
+     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
+     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
+     *
+     * Example usage:
+     * ```php
+     * $alert->addCssStyle('color: red');
+     *
+     * // or
+     * $alert->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
+     * ```
      */
     public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
@@ -107,13 +119,39 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the alert component.
+     * Adds a sets attribute value.
+     *
+     * @param string $name The attribute name.
+     * @param mixed $value The attribute value.
+     *
+     * @return self A new instance with the specified attribute added.
+     *
+     * Example usage:
+     * ```php
+     * $alert->attribute('id', 'my-id');
+     * ```
+     */
+    public function attribute(string $name, mixed $value): self
+    {
+        $new = clone $this;
+        $new->attributes[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $alert->attributes(['id' => 'my-accordion']);
+     * ```
      */
     public function attributes(array $attributes): self
     {
@@ -124,13 +162,18 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the body content of the alert component.
+     * Sets the body content.
      *
-     * @param string|Stringable $content The body content of the alert component.
+     * @param string|Stringable $content The body content.
      * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
      * to prevent XSS attacks.
      *
      * @return self A new instance with the specified body content.
+     *
+     * Example usage:
+     * ```php
+     * $alert->body('Say hello...');
+     * ```
      */
     public function body(string|Stringable $content, bool $encode = true): self
     {
@@ -145,19 +188,19 @@ final class Alert extends Widget
     }
 
     /**
-     * Replaces all existing CSS classes of the alert component with the provided ones.
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
-     * For example:
-     *
-     * ```php
-     * $alert->class('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
-     * ```
      *
      * @return self A new instance with the specified CSS classes set.
+     *
+     * Example usage:
+     * ```php
+     * $alert->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function class(BackedEnum|string|null ...$class): self
     {
@@ -168,13 +211,18 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the close button in the alert component.
+     * Sets the HTML attributes for the close button.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified close button attributes.
+     * @return self A new instance with the specified HTML attributes for the close button.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $alert->closeButtonAttributes(['class' => 'btn-close']);
+     * ```
      */
     public function closeButtonAttributes(array $attributes): self
     {
@@ -185,11 +233,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the label for the close button in the alert component.
+     * Sets the label for the close button.
      *
      * @param string $label The label for the close button.
      *
      * @return self A new instance with the specified close button label.
+     *
+     * Example usage:
+     * ```php
+     * $alert->closeButtonLabel('Close');
+     * ```
      */
     public function closeButtonLabel(string $label): self
     {
@@ -200,11 +253,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the HTML tag to be used for the close button in the alert component.
+     * Sets the HTML tag to be used for the close button.
      *
      * @param string $tag The HTML tag name for the close button.
      *
      * @return self A new instance with the specified close button tag.
+     *
+     * Example usage:
+     * ```php
+     * $alert->closeButtonTag('button');
+     * ```
      */
     public function closeButtonTag(string $tag): self
     {
@@ -220,6 +278,11 @@ final class Alert extends Widget
      * @param bool $enabled Whether to make the alert dismissible.
      *
      * @return self A new instance with the specified dismissable value.
+     *
+     * Example usage:
+     * ```php
+     * $alert->dismissable(true);
+     * ```
      */
     public function dismissable(bool $enabled): self
     {
@@ -230,11 +293,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Adds a fade effect to the alert.
+     * Adds a fade effect.
      *
-     * @param bool $enabled Whether to add a fade effect to the alert.
+     * @param bool $enabled Whether to add a fade effect.
      *
      * @return self A new instance with the specified fade value.
+     *
+     * Example usage:
+     * ```php
+     * $alert->fade(true);
+     * ```
      */
     public function fade(bool $enabled): self
     {
@@ -245,13 +313,18 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the header content of the alert component.
+     * Sets the header content.
      *
-     * @param string|null $content The header content of the alert component.
+     * @param string|null $content The header content.
      * @param bool $encode Whether the body value should be HTML-encoded. Use this when rendering user-generated content
      * to prevent XSS attacks.
      *
      * @return self A new instance with the specified header content.
+     *
+     * Example usage:
+     * ```php
+     * $alert->header('Header content');
+     * ```
      */
     public function header(string|null $content, bool $encode = true): self
     {
@@ -266,13 +339,18 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the header tag in the alert component.
+     * Sets the HTML attributes for the header section.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified header attributes.
+     * @return self A new instance with the specified attributes for the header section.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $alert->headerAttributes(['class' => 'alert-heading']);
+     * ```
      */
     public function headerAttributes(array $attributes): self
     {
@@ -283,11 +361,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the HTML tag to be used for the header.
+     * Sets the HTML tag to be used for the header section.
      *
-     * @param string $tag The HTML tag name for the header.
+     * @param string $tag The HTML tag name for the header section.
      *
      * @return self A new instance with the specified header tag.
+     *
+     * Example usage:
+     * ```php
+     * $alert->headerTag('h4');
+     * ```
      */
     public function headerTag(string $tag): self
     {
@@ -298,11 +381,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the ID of the alert component.
+     * Sets the ID.
      *
-     * @param bool|string $id The ID of the alert component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
+     *
+     * Example usage:
+     * ```php
+     * $alert->id('my-id');
+     * ```
      */
     public function id(bool|string $id): self
     {
@@ -313,11 +401,16 @@ final class Alert extends Widget
     }
 
     /**
-     * Sets the template content to be used for rendering the alert component.
+     * Sets the template content to be used for rendering.
      *
      * @param string $content The template content string.
      *
      * @return self A new instance with the specified template content.
+     *
+     * Example usage:
+     * ```php
+     * $alert->templateContent("\n{header}\n{body}\n{toggler}\n");
+     * ```
      */
     public function templateContent(string $content): self
     {
@@ -333,6 +426,11 @@ final class Alert extends Widget
      * @param AlertVariant $variant The alert variant.
      *
      * @return self A new instance with the specified alert variant.
+     *
+     * Example usage:
+     * ```php
+     * $alert->variant(AlertVariant::PRIMARY);
+     * ```
      */
     public function variant(AlertVariant $variant): self
     {
@@ -343,7 +441,7 @@ final class Alert extends Widget
     }
 
     /**
-     * Run the alert widget.
+     * Run the widget.
      *
      * @return string The HTML representation of the element.
      */
@@ -351,7 +449,7 @@ final class Alert extends Widget
     {
         $attributes = $this->attributes;
         $attributes['role'] = self::NAME;
-        $toggle = '';
+        $toggler = '';
         $classes = $attributes['class'] ?? null;
 
         /** @psalm-var non-empty-string|null $id */
@@ -367,7 +465,7 @@ final class Alert extends Widget
 
         if ($this->dismissable) {
             Html::addCssClass($attributes, 'alert-dismissible');
-            $toggle = $this->renderToggle();
+            $toggler = $this->renderToggler();
         }
 
         if ($this->fade) {
@@ -379,7 +477,7 @@ final class Alert extends Widget
             [
                 '{header}' => $this->renderHeader(),
                 '{body}' => $this->body,
-                '{toggle}' => $toggle,
+                '{toggler}' => $toggler,
             ]
         );
 
@@ -389,11 +487,11 @@ final class Alert extends Widget
     }
 
     /**
-     * Render header tag.
+     * Render the header.
      *
-     * @throws InvalidArgumentException if the header tag is an empty string.
+     * @throws InvalidArgumentException If the header tag is an empty string.
      *
-     * @return string The rendered header tag. Empty string if header is not set.
+     * @return string The HTML representation of the element.
      */
     private function renderHeader(): string
     {
@@ -413,13 +511,13 @@ final class Alert extends Widget
     }
 
     /**
-     * Render toggle component.
+     * Renders the toggler.
      *
-     * @throws InvalidArgumentException if the close button tag is an empty string.
+     * @throws InvalidArgumentException If the close button tag is an empty string.
      *
-     * @return string The rendered toggle component.
+     * @return string The HTML representation of the element.
      */
-    private function renderToggle(): string
+    private function renderToggler(): string
     {
         $buttonTag = match ($this->closeButtonTag) {
             null => Button::button(''),
@@ -428,21 +526,23 @@ final class Alert extends Widget
         };
 
         $closeButtonAttributes = $this->closeButtonAttributes;
-
         $classesButton = $closeButtonAttributes['class'] ?? null;
 
         unset($closeButtonAttributes['class']);
 
+        $buttonTag = $buttonTag
+            ->addClass(self::CLASS_CLOSE_BUTTON, $classesButton)
+            ->addAttributes($closeButtonAttributes)
+            ->addContent($this->closeButtonLabel);
+
         if (array_key_exists('data-bs-dismiss', $closeButtonAttributes) === false) {
-            $closeButtonAttributes['data-bs-dismiss'] = 'alert';
+            $buttonTag = $buttonTag->attribute('data-bs-dismiss', 'alert');
         }
 
         if (array_key_exists('aria-label', $closeButtonAttributes) === false) {
-            $closeButtonAttributes['aria-label'] = 'Close';
+            $buttonTag = $buttonTag->attribute('aria-label', 'Close');
         }
 
-        Html::addCssClass($closeButtonAttributes, [self::CLASS_CLOSE_BUTTON, $classesButton]);
-
-        return $buttonTag->addAttributes($closeButtonAttributes)->addContent($this->closeButtonLabel)->render();
+        return $buttonTag->render();
     }
 }
