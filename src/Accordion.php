@@ -55,7 +55,7 @@ final class Accordion extends Widget
     /**
      * Adds a sets of attributes.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
      * @return self A new instance with the specified attributes added.
      *
@@ -80,14 +80,14 @@ final class Accordion extends Widget
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     *
      * Example usage:
      * ```php
      * $accordion->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
-     *
-     * @return self A new instance with the specified CSS classes added to existing ones.
-     *
-     * @link https://html.spec.whatwg.org/#classes
      */
     public function addClass(BackedEnum|string|null ...$class): self
     {
@@ -131,6 +131,11 @@ final class Accordion extends Widget
      * @param mixed $value The attribute value.
      *
      * @return self A new instance with the specified attribute added.
+     *
+     * Example usage:
+     * ```php
+     * $accordion->attribute('id', 'my-id');
+     * ```
      */
     public function attribute(string $name, mixed $value): self
     {
@@ -489,6 +494,8 @@ final class Accordion extends Widget
      *
      * @param AccordionItem $accordionItem The accordion item.
      * @param string $collapseId The ID of the collapse element.
+     *
+     * @throws InvalidArgumentException If the header tag is an empty string.
      *
      * @return string The HTML representation of the element.
      *
