@@ -466,7 +466,7 @@ final class Accordion extends Widget
         unset($bodyAttributes['class'], $collapseAttributes['class']);
 
         return Div::tag()
-            ->attribute('data-bs-parent', $this->alwaysOpen ? null : "#{$parentId}")
+            ->attribute('data-bs-parent', $this->alwaysOpen ? null : '#' . $parentId)
             ->addAttributes($collapseAttributes)
             ->addClass(self::CLASS_COLLAPSE, $accordionItem->isActive() ? 'show' : null, $classesCollapseAttributes)
             ->id($collapseId)
@@ -601,7 +601,7 @@ final class Accordion extends Widget
         }
 
         if (array_key_exists('data-bs-target', $togglerAttributes) === false) {
-            $togglerTag = $togglerTag->attribute('data-bs-target', "#{$collapseId}");
+            $togglerTag = $togglerTag->attribute('data-bs-target', '#' . $collapseId);
         }
 
         if (array_key_exists('aria-expanded', $togglerAttributes) === false) {
