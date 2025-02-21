@@ -10,10 +10,13 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Span;
 use Yiisoft\Yii\Bootstrap5\Button;
+use Yiisoft\Yii\Bootstrap5\ButtonSize;
 use Yiisoft\Yii\Bootstrap5\ButtonType;
 use Yiisoft\Yii\Bootstrap5\ButtonVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Yii\Bootstrap5\Utility\TogglerType;
 
 /**
  * Tests for `Button` widget
@@ -25,30 +28,26 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary test-class-definition" data-test="test">Label</button>
+            <button type="button" class="btn btn-secondary" data-id="123"></button>
             HTML,
-            Button::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->addAttributes(['data-test' => 'test'])
-                ->label('Label')
-                ->id(false)
-                ->render(),
+            Button::widget()->addAttributes(['data-id' => '123'])->id(false)->render(),
         );
     }
 
     public function testAddClass(): void
     {
-        $buttonWidget = Button::widget()->addClass('test-class', null)->label('Label')->id(false);
+        $buttonWidget = Button::widget()->addClass('test-class', null, BackgroundColor::PRIMARY)->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary test-class">Label</button>
+            <button type="button" class="btn btn-secondary test-class bg-primary"></button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary test-class test-class-1 test-class-2">Label</button>
+            <button type="button" class="btn btn-secondary test-class bg-primary test-class-1 test-class-2"></button>
             HTML,
             $buttonWidget->addClass('test-class-1', 'test-class-2')->render(),
         );
@@ -56,57 +55,39 @@ final class ButtonTest extends TestCase
 
     public function testAddCssStyle(): void
     {
-        $buttonWidget = Button::widget()
-            ->addCssStyle(
-                [
-                    '--bs-btn-padding-y' => '.25rem',
-                    '--bs-btn-padding-x' => '.5rem',
-                    '--bs-btn-font-size' => '.75rem',
-                ]
-            )
-            ->label('Label')
-            ->id(false);
+        $buttonWidget = Button::widget()->addCssStyle('color: red;')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            <button type="button" class="btn btn-secondary" style="color: red;"></button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 12px;">Label</button>
+            <button type="button" class="btn btn-secondary" style="color: red; font-weight: bold;"></button>
             HTML,
-            $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;')->render(),
+            $buttonWidget->addCssStyle('font-weight: bold;')->render(),
         );
     }
 
     public function testAddCssStyleWithOverwriteFalse(): void
     {
-        $buttonWidget = Button::widget()
-            ->addCssStyle(
-                [
-                    '--bs-btn-padding-y' => '.25rem',
-                    '--bs-btn-padding-x' => '.5rem',
-                    '--bs-btn-font-size' => '.75rem',
-                ]
-            )
-            ->label('Label')
-            ->id(false);
+        $buttonWidget = Button::widget()->addCssStyle('color: red;')->id(false);
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            <button type="button" class="btn btn-secondary" style="color: red;"></button>
             HTML,
             $buttonWidget->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Label</button>
+            <button type="button" class="btn btn-secondary" style="color: red;"></button>
             HTML,
-            $buttonWidget->addCssStyle('--bs-btn-font-size: 12px;', false)->render(),
+            $buttonWidget->addCssStyle('color: blue;', false)->render(),
         );
     }
 
@@ -114,9 +95,9 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" aria-expanded="true">Label</button>
+            <button type="button" class="btn btn-secondary" aria-expanded="true"></button>
             HTML,
-            Button::widget()->ariaExpanded()->label('Label')->id(false)->render(),
+            Button::widget()->ariaExpanded()->id(false)->render(),
         );
     }
 
@@ -124,9 +105,19 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary" aria-expanded="false">Label</button>
+            <button type="button" class="btn btn-secondary" aria-expanded="false"></button>
             HTML,
-            Button::widget()->ariaExpanded(false)->label('Label')->id(false)->render(),
+            Button::widget()->ariaExpanded(false)->id(false)->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-secondary" data-id="123"></button>
+            HTML,
+            Button::widget()->attribute('data-id', '123')->id(false)->render(),
         );
     }
 
@@ -134,22 +125,9 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary test-class">Label</button>
+            <button type="button" class="btn btn-secondary test-class"></button>
             HTML,
-            Button::widget()->attributes(['class' => 'test-class'])->label('Label')->id(false)->render(),
-        );
-    }
-
-    public function testAttributesWithId(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <button type="button" id="test-id" class="btn btn-secondary test-class">Label</button>
-            HTML,
-            Button::widget()
-                ->attributes(['class' => 'test-class', 'id' => 'test-id'])
-                ->label('Label')
-                ->render(),
+            Button::widget()->attributes(['class' => 'test-class'])->id(false)->render(),
         );
     }
 
@@ -182,12 +160,11 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary custom-class another-class">Label</button>
+            <button type="button" class="btn btn-secondary custom-class another-class bg-primary"></button>
             HTML,
             Button::widget()
-                ->addClass('test-class-1', 'test-class-2')
-                ->class('custom-class', 'another-class')
-                ->label('Label')
+                ->addClass('test-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->id(false)
                 ->render(),
         );
@@ -241,9 +218,9 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" id="test" class="btn btn-secondary">Label</button>
+            <button type="button" id="test" class="btn btn-secondary"></button>
             HTML,
-            Button::widget()->id('test')->label('Label')->render(),
+            Button::widget()->id('test')->render(),
         );
     }
 
@@ -251,9 +228,9 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary">Label</button>
+            <button type="button" class="btn btn-secondary"></button>
             HTML,
-            Button::widget()->id('')->label('Label')->render(),
+            Button::widget()->id('')->render(),
         );
     }
 
@@ -261,9 +238,19 @@ final class ButtonTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <button type="button" class="btn btn-secondary">Label</button>
+            <button type="button" class="btn btn-secondary"></button>
             HTML,
-            Button::widget()->id(false)->label('Label')->render(),
+            Button::widget()->id(false)->render(),
+        );
+    }
+
+    public function testIdWithSetAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" id="test" class="btn btn-secondary"></button>
+            HTML,
+            Button::widget()->attributes(['id' => 'test'])->render(),
         );
     }
 
@@ -276,15 +263,14 @@ final class ButtonTest extends TestCase
         $this->assertNotSame($button, $button->addClass(''));
         $this->assertNotSame($button, $button->addCssStyle(''));
         $this->assertNotSame($button, $button->ariaExpanded());
+        $this->assertNotSame($button, $button->attribute('', ''));
         $this->assertNotSame($button, $button->attributes([]));
         $this->assertNotSame($button, $button->disabled());
         $this->assertNotSame($button, $button->disableTextWrapping());
         $this->assertNotSame($button, $button->id(false));
         $this->assertNotSame($button, $button->label('', false));
-        $this->assertNotSame($button, $button->largeSize());
-        $this->assertNotSame($button, $button->normalSize());
-        $this->assertNotSame($button, $button->smallSize());
-        $this->assertNotSame($button, $button->toggle(''));
+        $this->assertNotSame($button, $button->size(ButtonSize::LARGE));
+        $this->assertNotSame($button, $button->toggle(TogglerType::BUTTON));
         $this->assertNotSame($button, $button->type(ButtonType::LINK));
         $this->assertNotSame($button, $button->url(''));
         $this->assertNotSame($button, $button->variant(ButtonVariant::PRIMARY));
@@ -329,14 +315,23 @@ final class ButtonTest extends TestCase
             <<<HTML
             <button type="button" class="btn btn-primary btn-lg">Large button</button>
             HTML,
-            Button::widget()->id(false)->label('Large button')->largeSize()->variant(ButtonVariant::PRIMARY)->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Large button')
+                ->size(ButtonSize::LARGE)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
 
         Assert::equalsWithoutLE(
             <<<HTML
             <button type="button" class="btn btn-secondary btn-lg">Large button</button>
             HTML,
-            Button::widget()->id(false)->label('Large button')->largeSize()->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Large button')
+                ->size(ButtonSize::LARGE)
+                ->render(),
         );
     }
 
@@ -349,7 +344,7 @@ final class ButtonTest extends TestCase
             <<<HTML
             <button type="button" class="btn btn-secondary">Label</button>
             HTML,
-            Button::widget()->label('Label')->id(false)->largeSize()->normalSize()->render(),
+            Button::widget()->label('Label')->id(false)->size(null)->render(),
         );
     }
 
@@ -375,7 +370,12 @@ final class ButtonTest extends TestCase
             <<<HTML
             <button type="button" class="btn btn-primary btn-sm">Small button</button>
             HTML,
-            Button::widget()->id(false)->label('Small button')->smallSize()->variant(ButtonVariant::PRIMARY)->render(),
+            Button::widget()
+                ->id(false)
+                ->label('Small button')
+                ->size(ButtonSize::SMALL)
+                ->variant(ButtonVariant::PRIMARY)
+                ->render(),
         );
 
         Assert::equalsWithoutLE(
@@ -385,7 +385,7 @@ final class ButtonTest extends TestCase
             Button::widget()
                 ->id(false)
                 ->label('Small button')
-                ->smallSize()
+                ->size(ButtonSize::SMALL)
                 ->variant(ButtonVariant::SECONDARY)
                 ->render(),
         );
