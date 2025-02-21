@@ -171,12 +171,10 @@ final class Button extends Widget
      */
     public function active(bool $enabled = true): self
     {
-        $new = $this
-            ->toggle($enabled ? TogglerType::BUTTON : null)
-            ->attribute('aria-pressed', $enabled ? 'true' : null);
-        $new->cssClasses['active'] = $enabled ? 'active' : null;
-
-        return $new;
+        return $this
+            ->addClass($enabled ? 'active' : null)
+            ->attribute('aria-pressed', $enabled ? 'true' : null)
+            ->toggle($enabled ? TogglerType::BUTTON : null);
     }
 
     /**
@@ -267,10 +265,7 @@ final class Button extends Widget
      */
     public function ariaExpanded(bool $enabled = true): self
     {
-        $new = clone $this;
-        $new->attributes['aria-expanded'] = $enabled ? 'true' : 'false';
-
-        return $new;
+        return $this->attribute('aria-expanded', $enabled ? 'true' : 'false');
     }
 
     /**
@@ -351,10 +346,7 @@ final class Button extends Widget
      */
     public function disableTextWrapping(): self
     {
-        $new = clone $this;
-        $new->cssClasses['text-nowrap'] = 'text-nowrap';
-
-        return $new;
+        return $this->addClass('text-nowrap');
     }
 
     /**
@@ -437,10 +429,7 @@ final class Button extends Widget
      */
     public function size(ButtonSize|null $size): self
     {
-        $new = clone $this;
-        $new->cssClasses['size'] = $size?->value;
-
-        return $new;
+        return $this->addClass($size?->value);
     }
 
     /**
