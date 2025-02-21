@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5;
 
+use BackedEnum;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input\Checkbox;
@@ -43,11 +44,16 @@ final class ButtonGroup extends Widget
     private bool|string $id = true;
 
     /**
-     * Adds a sets of attributes for the button group component.
+     * Adds a sets of attributes.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-button-group']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
      * @return self A new instance with the specified attributes added.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->addAttributes(['data-id' => '123']);
+     * ```
      */
     public function addAttributes(array $attributes): self
     {
@@ -58,23 +64,23 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the existing classes of the button group component.
+     * Adds one or more CSS classes to the existing classes.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
-     * For example:
-     *
-     * ```php
-     * $buttonGroup->addClass('custom-class', null, 'another-class');
-     * ```
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
-    public function addClass(string|null ...$class): self
+    public function addClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
         $new->cssClasses = [...$this->cssClasses, ...$class];
@@ -83,30 +89,85 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Sets the ARIA label for the button group component.
+     * Adds a CSS style.
      *
-     * @param string $label The ARIA label for the button group component.
+     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
+     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
+     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
+     * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
+     * appended to the existing one.
      *
-     * @return self A new instance with the specified ARIA label.
+     * @return self A new instance with the specified CSS style value added.
      *
-     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
+     * Example usage:
+     * ```php
+     * $buttonGroup->addCssStyle('color: red');
+     *
+     * // or
+     * $buttonGroup->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
+     * ```
      */
-    public function ariaLabel(string $label): self
+    public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
         $new = clone $this;
-        $new->attributes['aria-label'] = $label;
+        Html::addCssStyle($new->attributes, $style, $overwrite);
 
         return $new;
     }
 
     /**
-     * Sets the HTML attributes for the button group component.
+     * Sets the ARIA label.
+     *
+     * @param string $label The ARIA label.
+     *
+     * @return self A new instance with the specified ARIA label.
+     *
+     * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->ariaLabel('Basic example');
+     * ```
+     */
+    public function ariaLabel(string $label): self
+    {
+        return $this->attribute('aria-label', $label);
+    }
+
+    /**
+     * Adds a sets attribute value.
+     *
+     * @param string $name The attribute name.
+     * @param mixed $value The attribute value.
+     *
+     * @return self A new instance with the specified attribute added.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->attribute('data-id', '123');
+     * ```
+     */
+    public function attribute(string $name, mixed $value): self
+    {
+        $new = clone $this;
+        $new->attributes[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->attributes(['data-id' => '123']);
+     * ```
      */
     public function attributes(array $attributes): self
     {
@@ -119,9 +180,18 @@ final class ButtonGroup extends Widget
     /**
      * List of buttons.
      *
-     * @param Button|Checkbox|Radio ...$buttons The button configuration.
+     * @param Button|Checkbox|Radio ...$buttons The button.
      *
      * @return self A new instance with the specified buttons.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->buttons(
+     *     Button::widget()->label('Left')->variant(ButtonVariant::PRIMARY),
+     *     Button::widget()->label('Middle')->variant(ButtonVariant::PRIMARY),
+     *     Button::widget()->label('Right')->variant(ButtonVariant::PRIMARY),
+     * );
+     * ```
      */
     public function buttons(Button|Checkbox|Radio ...$buttons): self
     {
@@ -132,21 +202,21 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Replaces all existing CSS classes of the button group component with the provided ones.
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
-     * @param string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
-     * For example:
-     *
-     * ```php
-     * $buttonGroup->class('custom-class', null, 'another-class');
-     * ```
+     * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      *
      * @return self A new instance with the specified CSS classes set.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
-    public function class(string|null ...$class): self
+    public function class(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
         $new->cssClasses = $class;
@@ -155,11 +225,16 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Sets the ID of the button group component.
+     * Sets the ID.
      *
-     * @param bool|string $id The ID of the button group component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
      *
      * @return self A new instance with the specified ID.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->id('my-id');
+     * ```
      */
     public function id(bool|string $id): self
     {
@@ -170,55 +245,35 @@ final class ButtonGroup extends Widget
     }
 
     /**
-     * Sets the button group size to be large.
+     * Sets the size.
      *
-     * @return self A new instance with the button as a large button.
-     */
-    public function largeSize(): self
-    {
-        $new = clone $this;
-        $new->cssClasses['size'] = 'btn-lg';
-
-        return $new;
-    }
-
-    /**
-     * Sets the button group size to be normal.
+     * @param ButtonSize|null $size The size. If `null`, the size will not be set.
      *
-     * @return self A new instance with the button as a normal button.
-     */
-    public function normalSize(): self
-    {
-        $new = clone $this;
-        $new->cssClasses['size'] = null;
-
-        return $new;
-    }
-
-    /**
-     * Sets the button group size to be small.
+     * @return self A new instance with the specified size.
      *
-     * @return self A new instance with the button as a small button.
+     * Example usage:
+     * ```php
+     * $buttonGroup->size(ButtonSize::LARGE);
+     * ```
      */
-    public function smallSize(): self
+    public function size(ButtonSize|null $size): self
     {
-        $new = clone $this;
-        $new->cssClasses['size'] = 'btn-sm';
-
-        return $new;
+        return $this->addClass($size?->value);
     }
 
     /**
      * Sets the button group to be vertical.
      *
      * @return self A new instance of the current class with the button group as vertical.
+     *
+     * Example usage:
+     * ```php
+     * $buttonGroup->vertical();
+     * ```
      */
     public function vertical(): self
     {
-        $new = clone $this;
-        $new->cssClasses[] = 'btn-group-vertical';
-
-        return $new;
+        return $this->addClass('btn-group-vertical');
     }
 
     /**
@@ -229,19 +284,9 @@ final class ButtonGroup extends Widget
     public function render(): string
     {
         $attributes = $this->attributes;
-        $attributes['role'] = 'group';
         $classes = $attributes['class'] ?? null;
 
-        /** @psalm-var non-empty-string|null $id */
-        $id = match ($this->id) {
-            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
-            default => $this->id,
-        };
-
         unset($attributes['class'], $attributes['id']);
-
-        Html::addCssClass($attributes, [self::NAME, $classes, ...$this->cssClasses]);
 
         $button = implode("\n", $this->buttons);
         $buttons = $button === '' ? '' : "\n" . $button . "\n";
@@ -250,6 +295,33 @@ final class ButtonGroup extends Widget
             return '';
         }
 
-        return Div::tag()->attributes($attributes)->content($buttons)->encode(false)->id($id)->render();
+        return Div::tag()
+            ->attributes($attributes)
+            ->attribute('role', 'group')
+            ->addClass(
+                self::NAME,
+                $classes,
+                ...$this->cssClasses,
+            )
+            ->content($buttons)
+            ->encode(false)
+            ->id($this->getId())
+            ->render();
+    }
+
+    /**
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getId(): string|null
+    {
+        return match ($this->id) {
+            true => $this->attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
     }
 }
