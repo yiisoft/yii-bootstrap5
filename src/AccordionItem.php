@@ -65,7 +65,7 @@ final class AccordionItem
     }
 
     /**
-     * Sets the active state of the accordion item.
+     * Sets the active state.
      *
      * @param bool $enabled Whether the accordion item is active.
      *
@@ -80,7 +80,7 @@ final class AccordionItem
     }
 
     /**
-     * Sets the body content of the accordion item.
+     * Sets the body content.
      *
      * @param string $content The body content.
      *
@@ -125,7 +125,7 @@ final class AccordionItem
     }
 
     /**
-     * Sets the header content of the accordion item.
+     * Sets the header content.
      *
      * @param string $content The header content.
      *
@@ -140,7 +140,7 @@ final class AccordionItem
     }
 
     /**
-     * Sets the ID of the accordion item.
+     * Sets the ID.
      *
      * @param bool|string $id The ID of the accordion item. If `true`, an auto-generated ID will be used. If `false`,
      * no ID will be set.
@@ -178,11 +178,11 @@ final class AccordionItem
     }
 
     /**
-     * Returns the ID of the accordion item.
+     * Returns the ID.
      *
      * @throws InvalidArgumentException If the "id" property is invalid.
      *
-     * @return bool|string The ID of the accordion item.
+     * @return bool|string The ID.
      */
     public function getId(): bool|string
     {

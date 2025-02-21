@@ -61,7 +61,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->addAttributes(['id' => 'my-accordion']);
+     * $accordion->addAttributes(['data-id' => '123']);
      * ```
      */
     public function addAttributes(array $attributes): self
@@ -134,7 +134,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->attribute('id', 'my-id');
+     * $accordion->attribute('data-id', '123');
      * ```
      */
     public function attribute(string $name, mixed $value): self
@@ -156,7 +156,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->attributes(['id' => 'my-accordion']);
+     * $accordion->attributes(['data-id' => '123']);
      * ```
      */
     public function attributes(array $attributes): self
@@ -200,7 +200,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->bodyAttributes(['id' => 'my-accordion-body']);
+     * $accordion->bodyAttributes(['class' => 'my-class']);
      * ```
      */
     public function bodyAttributes(array $attributes): self
@@ -245,7 +245,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->collapseAttributes(['id' => 'my-accordion-collapse']);
+     * $accordion->collapseAttributes(['class' => 'my-class']);
      * ```
      */
     public function collapseAttributes(array $attributes): self
@@ -289,7 +289,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->headerAttributes(['id' => 'my-accordion-header']);
+     * $accordion->headerAttributes(['class' => 'my-class']);
      * ```
      */
     public function headerAttributes(array $attributes): self
@@ -321,6 +321,30 @@ final class Accordion extends Widget
     }
 
     /**
+     * Sets the ID.
+     *
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException If the ID is an empty string or `false`.
+     *
+     * @return self A new instance with the specified ID.
+     *
+     * @psalm-param non-empty-string|false $id The ID of the component.
+     *
+     * Example usage:
+     * ```php
+     * $accordion->id('my-id');
+     * ```
+     */
+    public function id(bool|string $id): self
+    {
+        $new = clone $this;
+        $new->id = $id;
+
+        return $new;
+    }
+
+    /**
      * Sets the items.
      *
      * @param AccordionItem ...$items The items.
@@ -345,21 +369,6 @@ final class Accordion extends Widget
     }
 
     /**
-     * Sets the ID.
-     *
-     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
-     *
-     * @return self A new instance with the specified ID.
-     */
-    public function id(bool|string $id): self
-    {
-        $new = clone $this;
-        $new->id = $id;
-
-        return $new;
-    }
-
-    /**
      * Sets the HTML attributes for the toggler.
      *
      * @param array $attributes Attribute values indexed by attribute names.
@@ -370,7 +379,7 @@ final class Accordion extends Widget
      *
      * Example usage:
      * ```php
-     * $accordion->toggleAttributes(['id' => 'my-accordion-toggler']);
+     * $accordion->toggleAttributes(['class' => 'my-class']);
      * ```
      */
     public function togglerAttributes(array $attributes): self
