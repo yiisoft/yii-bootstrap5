@@ -417,6 +417,22 @@ final class Breadcrumbs extends Widget
     }
 
     /**
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getId(): string|null
+    {
+        return match ($this->listId) {
+            true => $this->listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
+            '', false => null,
+            default => $this->listId,
+        };
+    }
+
+    /**
      * Renders the list of items.
      *
      * @return string The HTML representation of the element..
@@ -460,22 +476,6 @@ final class Breadcrumbs extends Widget
             ->id($this->getId())
             ->encode(false)
             ->render();
-    }
-
-    /**
-     * Generates the ID.
-     *
-     * @return string|null The generated ID.
-     *
-     * @psalm-return non-empty-string|null The generated ID.
-     */
-    private function getId(): string|null
-    {
-        return match ($this->listId) {
-            true => $this->listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
-            '', false => null,
-            default => $this->listId,
-        };
     }
 
     /**
