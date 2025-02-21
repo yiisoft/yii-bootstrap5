@@ -30,11 +30,11 @@ final class BreadcrumbLink
      * Use {@see BreadcrumbLink::to()} to create an instance.
      */
     private function __construct(
-        private string $label = '',
-        private string|null $url = null,
-        private bool $active = false,
-        private bool $encodeLabel = true,
-        private array $attributes = [],
+        private string $label,
+        private string|null $url,
+        private bool $active,
+        private bool $encodeLabel,
+        private array $attributes,
     ) {
     }
 
@@ -60,7 +60,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * Sets the active state of the breadcrumb link.
+     * Sets the active state.
      *
      * @param bool $enabled Whether the breadcrumb link is active.
      *
@@ -75,7 +75,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * Sets the HTML attributes for the breadcrumb link.
+     * Sets the HTML attributes for the link.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
@@ -122,7 +122,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * Sets the URL for the breadcrumb link.
+     * Sets the URL for the link.
      *
      * @param string|null $url The URL for the link.
      *
@@ -154,7 +154,7 @@ final class BreadcrumbLink
     }
 
     /**
-     * @return string|null The URL for the breadcrumb link.
+     * @return string|null The URL for the link.
      */
     public function getUrl(): string|null
     {

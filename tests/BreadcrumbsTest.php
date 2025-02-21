@@ -59,6 +59,31 @@ final class BreadcrumbsTest extends TestCase
             ->render();
     }
 
+    public function testAddAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav data-id="123" aria-label="Basic example of breadcrumbs">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Library</a></li>
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->addAttributes(['data-id' => '123'])
+                ->ariaLabel('Basic example of breadcrumbs')
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#', active: true),
+                    BreadcrumbLink::to('Data', '#'),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
     public function testAddCssClass(): void
     {
         $breadcrumb = Breadcrumbs::widget()
@@ -176,31 +201,6 @@ final class BreadcrumbsTest extends TestCase
         );
     }
 
-    public function testAddAttributes(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <nav class="test-class-definition" data-test="test" aria-label="Basic example of breadcrumbs">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Library</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Data</li>
-            </ol>
-            </nav>
-            HTML,
-            Breadcrumbs::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->addAttributes(['data-test' => 'test'])
-                ->ariaLabel('Basic example of breadcrumbs')
-                ->links(
-                    BreadcrumbLink::to('Home', '/'),
-                    BreadcrumbLink::to('Library', '#'),
-                    BreadcrumbLink::to('Data', active: true),
-                )
-                ->listId(false)
-                ->render(),
-        );
-    }
-
     public function testAriaLabel(): void
     {
         Assert::equalsWithoutLE(
@@ -215,6 +215,30 @@ final class BreadcrumbsTest extends TestCase
             HTML,
             Breadcrumbs::widget()
                 ->ariaLabel('Basic example of breadcrumbs')
+                ->links(
+                    BreadcrumbLink::to('Home', '/'),
+                    BreadcrumbLink::to('Library', '#'),
+                    BreadcrumbLink::to('Data', active: true),
+                )
+                ->listId(false)
+                ->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <nav data-id="123" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumbs::widget()
+                ->attribute('data-id', '123')
                 ->links(
                     BreadcrumbLink::to('Home', '/'),
                     BreadcrumbLink::to('Library', '#'),
@@ -362,6 +386,7 @@ final class BreadcrumbsTest extends TestCase
         $this->assertNotSame($breadcrumb, $breadcrumb->addAttributes([]));
         $this->assertNotSame($breadcrumb, $breadcrumb->addClass(''));
         $this->assertNotSame($breadcrumb, $breadcrumb->ariaLabel(''));
+        $this->assertNotSame($breadcrumb, $breadcrumb->attribute('', ''));
         $this->assertNotSame($breadcrumb, $breadcrumb->attributes([]));
         $this->assertNotSame($breadcrumb, $breadcrumb->class(''));
         $this->assertNotSame($breadcrumb, $breadcrumb->divider('>'));
