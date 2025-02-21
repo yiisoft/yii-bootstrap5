@@ -55,7 +55,7 @@ final class Alert extends Widget
      *
      * Example usage:
      * ```php
-     * $alert->addAttributes(['id' => 'my-id']);
+     * $alert->addAttributes(['data-id' => '123']);
      * ```
      */
     public function addAttributes(array $attributes): self
@@ -128,7 +128,7 @@ final class Alert extends Widget
      *
      * Example usage:
      * ```php
-     * $alert->attribute('id', 'my-id');
+     * $alert->attribute('data-id', '123');
      * ```
      */
     public function attribute(string $name, mixed $value): self
@@ -150,7 +150,7 @@ final class Alert extends Widget
      *
      * Example usage:
      * ```php
-     * $alert->attributes(['id' => 'my-accordion']);
+     * $alert->attributes(['data-id' => '123']);
      * ```
      */
     public function attributes(array $attributes): self
@@ -221,7 +221,7 @@ final class Alert extends Widget
      *
      * Example usage:
      * ```php
-     * $alert->closeButtonAttributes(['class' => 'btn-close']);
+     * $alert->closeButtonAttributes(['class' => 'my-class']);
      * ```
      */
     public function closeButtonAttributes(array $attributes): self
@@ -349,7 +349,7 @@ final class Alert extends Widget
      *
      * Example usage:
      * ```php
-     * $alert->headerAttributes(['class' => 'alert-heading']);
+     * $alert->headerAttributes(['class' => 'my-class']);
      * ```
      */
     public function headerAttributes(array $attributes): self
@@ -452,13 +452,6 @@ final class Alert extends Widget
         $toggler = '';
         $classes = $attributes['class'] ?? null;
 
-        /** @psalm-var non-empty-string|null $id */
-        $id = match ($this->id) {
-            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
-            default => $this->id,
-        };
-
         unset($attributes['class'], $attributes['id']);
 
         Html::addCssClass($attributes, [self::NAME, $this->alertType->value, $classes, ...$this->cssClasses]);
@@ -483,7 +476,23 @@ final class Alert extends Widget
 
         $content = preg_replace("/\n{2}/", "\n", $content) ?? '';
 
-        return Div::tag()->addAttributes($attributes)->content($content)->encode(false)->id($id)->render();
+        return Div::tag()->addAttributes($attributes)->content($content)->encode(false)->id($this->getId())->render();
+    }
+
+    /**
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getId(): string|null
+    {
+        return match ($this->id) {
+            true => $this->attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
     }
 
     /**
