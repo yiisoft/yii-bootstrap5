@@ -447,7 +447,7 @@ final class Button extends Widget
      * Sets the toggle behavior by the `data-bs-toggle` attribute, enabling interactive functionality such as `button`,
      * `dropdown`, `modal`, and `tooltip`.
      *
-     * @param string|null $type The toggle type to be set. If `null`, the toggle behavior will not be set.
+     * @param TogglerType|null $type The toggle type to be set. If `null`, the toggle behavior will not be set.
      *
      * @return self A new instance with the specified toggle behavior.
      *
