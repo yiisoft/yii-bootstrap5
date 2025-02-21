@@ -161,7 +161,7 @@ final class CarouselItem
     /**
      * Sets the HTML attributes for the caption.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param array $captionAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the caption.
      *
@@ -193,7 +193,7 @@ final class CarouselItem
     /**
      * Sets the HTML attributes for the caption placeholder.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param array $captionPlaceholderAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the caption placeholder.
      *
