@@ -658,14 +658,14 @@ final class AccordionTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion">
+            <div id="test-id" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#test-id">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -674,7 +674,7 @@ final class AccordionTest extends TestCase
             </div>
             HTML,
             Accordion::widget()
-                ->id('accordion')
+                ->id('test-id')
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
@@ -686,14 +686,14 @@ final class AccordionTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="accordion" class="accordion">
+            <div id="test-id" class="accordion">
             <div class="accordion-item">
             <h2 class="accordion-header">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-1" aria-expanded="false" aria-controls="accordion-1">
             Accordion Item #1
             </button>
             </h2>
-            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div id="accordion-1" class="accordion-collapse collapse" data-bs-parent="#test-id">
             <div class="accordion-body">
             This is the first item's accordion body.
             </div>
@@ -702,7 +702,7 @@ final class AccordionTest extends TestCase
             </div>
             HTML,
             Accordion::widget()
-                ->attributes(['id' => 'accordion'])
+                ->attributes(['id' => 'test-id'])
                 ->items(
                     AccordionItem::to('Accordion Item #1', "This is the first item's accordion body.", 'accordion-1'),
                 )
