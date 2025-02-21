@@ -41,16 +41,16 @@ final class CarouselItem
      * Use {@see CarouselItem::to()} to create a new instance.
      */
     private function __construct(
-        private readonly bool $active = false,
-        private readonly array $attributes = [],
-        private readonly int|null $autoPlayingInterval = null,
-        private readonly string|null $caption = null,
-        private readonly array $captionAttributes = [],
-        private readonly string|null $captionPlaceholder = null,
-        private readonly array $captionPlaceholderAttributes = [],
-        private readonly string|Stringable $content = '',
-        private readonly bool $encodeCaption = true,
-        private readonly bool $encodeCaptionPlaceholder = true,
+        private bool $active,
+        private array $attributes,
+        private int|null $autoPlayingInterval,
+        private string|null $caption,
+        private array $captionAttributes,
+        private string|null $captionPlaceholder,
+        private array $captionPlaceholderAttributes,
+        private string|Stringable $content,
+        private bool $encodeCaption,
+        private bool $encodeCaptionPlaceholder,
     ) {
     }
 
@@ -94,6 +94,162 @@ final class CarouselItem
             $encodeCaption,
             $encodeCaptionPlaceholder,
         );
+    }
+
+    /**
+     * Sets the active state.
+     *
+     * @param bool $enabled Whether the breadcrumb link is active.
+     *
+     * @return self A new instance with the specified active state.
+     */
+    public function active(bool $enabled): self
+    {
+        $new = clone $this;
+        $new->active = $enabled;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the link.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->attributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the autoplaying interval.
+     *
+     * @param int $interval The autoplaying interval in milliseconds.
+     *
+     * @return self A new instance with the specified autoplaying interval.
+     */
+    public function autoPlayingInterval(int $interval): self
+    {
+        $new = clone $this;
+        $new->autoPlayingInterval = $interval;
+
+        return $new;
+    }
+
+    /**
+     * Sets the caption content.
+     *
+     * @param string $caption The caption content.
+     *
+     * @return self A new instance with the specified caption content.
+     */
+    public function caption(string $caption): self
+    {
+        $new = clone $this;
+        $new->caption = $caption;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the caption.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the caption.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function captionAttributes(array $captionAttributes): self
+    {
+        $new = clone $this;
+        $new->captionAttributes = $captionAttributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the caption placeholder content.
+     *
+     * @param string $captionPlaceholder The caption placeholder content.
+     *
+     * @return self A new instance with the specified caption placeholder content.
+     */
+    public function captionPlaceholder(string $captionPlaceholder): self
+    {
+        $new = clone $this;
+        $new->captionPlaceholder = $captionPlaceholder;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the caption placeholder.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the caption placeholder.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function captionPlaceholderAttributes(array $captionPlaceholderAttributes): self
+    {
+        $new = clone $this;
+        $new->captionPlaceholderAttributes = $captionPlaceholderAttributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the content.
+     *
+     * @param string|Stringable $content The content.
+     *
+     * @return self A new instance with the specified content.
+     */
+    public function content(string|Stringable $content): self
+    {
+        $new = clone $this;
+        $new->content = $content;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to encode the caption content.
+     *
+     * @param bool $encode Whether to encode the caption content.
+     *
+     * @return self A new instance with the specified encoding setting.
+     */
+    public function encodeCaption(bool $encode): self
+    {
+        $new = clone $this;
+        $new->encodeCaption = $encode;
+
+        return $new;
+    }
+
+    /**
+     * Sets whether to encode the caption placeholder content.
+     *
+     * @param bool $encode Whether to encode the caption placeholder content.
+     *
+     * @return self A new instance with the specified encoding setting.
+     */
+    public function encodeCaptionPlaceholder(bool $encode): self
+    {
+        $new = clone $this;
+        $new->encodeCaptionPlaceholder = $encode;
+
+        return $new;
     }
 
     /**
