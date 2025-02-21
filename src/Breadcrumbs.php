@@ -49,11 +49,16 @@ final class Breadcrumbs extends Widget
     private string $listTagName = 'ol';
 
     /**
-     * Adds a set of attributes to the alert component.
+     * Adds a sets of attributes.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-alert']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
      * @return self A new instance with the specified attributes added.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->addAttributes(['data-id' => '123']);
+     * ```
      */
     public function addAttributes(array $attributes): self
     {
@@ -64,21 +69,21 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the existing classes of the breadcrumb component.
+     * Adds one or more CSS classes to the existing classes.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
-     * For example:
-     *
-     * ```php
-     * $breadcrumb->addClass('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
-     * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function addClass(BackedEnum|string|null ...$class): self
     {
@@ -89,16 +94,23 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Adds a CSS style for the breadcrumb component.
+     * Adds a CSS style.
      *
-     * @param array|string $style The CSS style for the breadcrumb component. If an array, the values will be separated
-     * by a space. If a string, it will be added as is. For example, `color: red`. If the value is an array, the values
-     * will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
-     * `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
+     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
+     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->addCssStyle('color: red');
+     *
+     * // or
+     * $breadcrumb->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
+     * ```
      */
     public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
@@ -109,13 +121,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the ARIA label for the breadcrumb component.
+     * Sets the ARIA label.
      *
-     * @param string $label The ARIA label for the breadcrumb component.
+     * @param string $label The ARIA label.
      *
      * @return self A new instance with the specified ARIA label.
      *
      * @link https://www.w3.org/TR/wai-aria-1.1/#aria-label
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->ariaLabel('breadcrumb');
+     * ```
      */
     public function ariaLabel(string $label): self
     {
@@ -126,13 +143,39 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the breadcrumb component.
+     * Adds a sets attribute value.
+     *
+     * @param string $name The attribute name.
+     * @param mixed $value The attribute value.
+     *
+     * @return self A new instance with the specified attribute added.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->attribute('data-id', '123');
+     * ```
+     */
+    public function attribute(string $name, mixed $value): self
+    {
+        $new = clone $this;
+        $new->attributes[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->attributes(['data-id' => '123']);
+     * ```
      */
     public function attributes(array $attributes): self
     {
@@ -143,19 +186,19 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Replaces all existing CSS classes of the breadcrumb component with the provided ones.
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
-     * For example:
-     *
-     * ```php
-     * $breadcrumb->class('custom-class', null, 'another-class', BackgroundColor::PRIMARY);
-     * ```
      *
      * @return self A new instance with the specified CSS classes set.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function class(BackedEnum|string|null ...$class): self
     {
@@ -166,11 +209,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Set the divider for the breadcrumb component.
+     * Sets the divider.
      *
-     * @param string $content The divider for the breadcrumb component.
+     * @param string $content The divider.
+     *
+     * @throws InvalidArgumentException If the divider is an empty string.
      *
      * @return self A new instance with the specified divider.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->divider('/');
+     * ```
      */
     public function divider(string $content): self
     {
@@ -185,11 +235,16 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the active class for the items in the breadcrumbs.
+     * Sets the active class for the items.
      *
-     * @param string $class The active class for the items in the breadcrumbs.
+     * @param string $class The active class for the items.
      *
-     * @return self A new instance with the specified active class for the items in the breadcrumbs.
+     * @return self A new instance with the specified active class for the items.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->itemActiveClass('active');
+     * ```
      */
     public function itemActiveClass(string $class): self
     {
@@ -200,13 +255,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the items in the breadcrumbs.
+     * Sets the HTML attributes for the items.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified attributes for the items in the breadcrumbs.
+     * @return self A new instance with the specified attributes for the items.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->itemAttributes(['class' => 'my-class']);
+     * ```
      */
     public function itemAttributes(array $attributes): self
     {
@@ -217,13 +277,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the link of the items in the breadcrumbs.
+     * Sets the HTML attributes for the link of the items.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified attributes for the link of the items in the breadcrumbs.
+     * @return self A new instance with the specified attributes for the link of the items.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->linkAttributes(['class' => 'my-class']);
+     * ```
      */
     public function linkAttributes(array $attributes): self
     {
@@ -234,13 +299,22 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * List of links to appear in the breadcrumbs. If this property is empty, the widget will not render anything.
+     * List of links. If this property is empty, the widget will not render anything.
      *
-     * @param BreadcrumbLink ...$links The links to appear in the breadcrumbs.
+     * @param BreadcrumbLink ...$links The links.
      *
-     * @return self A new instance with the specified links to appear in the breadcrumbs.
+     * @return self A new instance with the specified links.
      *
-     * @psalm-param BreadcrumbLink[] $links The links to appear in the breadcrumbs.
+     * @psalm-param BreadcrumbLink[] $links The links.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->links(
+     *     BreadcrumbLink::to('Home', '#'),
+     *     BreadcrumbLink::to('Library', '#'),
+     *     BreadcrumbLink::to('Data', active: true),
+     * );
+     * ```
      */
     public function links(BreadcrumbLink ...$links): self
     {
@@ -251,13 +325,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the list of items in the breadcrumbs.
+     * Sets the HTML attributes for the list of items.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
-     * @return self A new instance with the specified attributes for the list of items in the breadcrumbs.
+     * @return self A new instance with the specified attributes for the list of items.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->listAttributes(['class' => 'my-class']);
+     * ```
      */
     public function listAttributes(array $attributes): self
     {
@@ -268,11 +347,16 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the ID of the items list in the breadcrumbs.
+     * Sets the ID of the items list.
      *
-     * @param bool|string $id The ID of the breadcrumb component. If `true`, an ID will be generated automatically.
+     * @param bool|string $id The ID. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance with the specified ID for the list of items in the breadcrumbs.
+     * @return self A new instance with the specified ID for the list of items.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->listId('my-id');
+     * ```
      */
     public function listId(bool|string $id): self
     {
@@ -283,11 +367,18 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Sets the HTML tag to be used for the list of items in the breadcrumbs.
+     * Sets the HTML tag to be used for the list of items.
      *
-     * @param string $tag The HTML tag name for the list of items in the breadcrumbs.
+     * @param string $tag The HTML tag name for the list of items.
+     *
+     * @throws InvalidArgumentException If the tag name is empty.
      *
      * @return self A new instance class with the specified list tag name.
+     *
+     * Example usage:
+     * ```php
+     * $breadcrumb->listTagName('ul');
+     * ```
      */
     public function listTagName(string $tag): self
     {
@@ -298,7 +389,7 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Run the breadcrumb widget.
+     * Run the widget.
      *
      * @return string The HTML representation of the element.
      */
@@ -326,21 +417,14 @@ final class Breadcrumbs extends Widget
     }
 
     /**
-     * Renders the list of items in the breadcrumbs.
+     * Renders the list of items.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element..
      */
     private function renderList(): string
     {
         $listAttributes = $this->listAttributes;
         $classes = $listAttributes['class'] ?? null;
-
-        /** @psalm-var non-empty-string|null $listId */
-        $listId = match ($this->listId) {
-            true => $listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
-            '', false => null,
-            default => $this->listId,
-        };
 
         unset($listAttributes['class'], $listAttributes['id']);
 
@@ -362,18 +446,36 @@ final class Breadcrumbs extends Widget
             return '';
         }
 
-        Html::addCssClass($listAttributes, [self::LIST_NAME, $classes]);
-
         if ($this->listTagName === '') {
             throw new InvalidArgumentException('List tag cannot be empty.');
         }
 
         return Html::tag($this->listTagName)
-            ->attributes($listAttributes)
+            ->addAttributes($listAttributes)
+            ->addClass(
+                self::LIST_NAME,
+                $classes,
+            )
             ->content("\n", $items, "\n")
-            ->id($listId)
+            ->id($this->getId())
             ->encode(false)
             ->render();
+    }
+
+    /**
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getId(): string|null
+    {
+        return match ($this->listId) {
+            true => $this->listAttributes['id'] ?? Html::generateId(self::LIST_NAME . '-'),
+            '', false => null,
+            default => $this->listId,
+        };
     }
 
     /**
@@ -381,7 +483,7 @@ final class Breadcrumbs extends Widget
      *
      * @param BreadcrumbLink $breadcrumbLink The breadcrumb item to render.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      */
     private function renderItem(BreadcrumbLink $breadcrumbLink): string
     {
@@ -391,15 +493,21 @@ final class Breadcrumbs extends Widget
         unset($itemsAttributes['class']);
 
         $linkTag = $this->renderLink($breadcrumbLink);
-        Html::addCssClass($itemsAttributes, [self::ITEM_NAME, $classes]);
 
         if ($breadcrumbLink->isActive()) {
             $itemsAttributes['aria-current'] = 'page';
-
-            Html::addCssClass($itemsAttributes, $this->itemActiveClass);
         }
 
-        return Li::tag()->attributes($itemsAttributes)->content($linkTag)->encode(false)->render();
+        return Li::tag()
+            ->addAttributes($itemsAttributes)
+            ->addClass(
+                self::ITEM_NAME,
+                $classes,
+                $breadcrumbLink->isActive() ? $this->itemActiveClass : null,
+            )
+            ->content($linkTag)
+            ->encode(false)
+            ->render();
     }
 
     /**
@@ -407,7 +515,7 @@ final class Breadcrumbs extends Widget
      *
      * @param BreadcrumbLink $breadcrumbLink The breadcrumb link to render.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      */
     private function renderLink(BreadcrumbLink $breadcrumbLink): string
     {
