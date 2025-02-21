@@ -535,19 +535,12 @@ final class Button extends Widget
         $classes = $attributes['class'] ?? null;
         $tag = $this->tag ?? ButtonTag::tag()->button('');
 
-        /** @psalm-var non-empty-string|null $id */
-        $id = match ($this->id) {
-            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
-            default => $this->id,
-        };
-
         unset($attributes['class'], $attributes['id']);
 
         Html::addCssClass($attributes, [self::NAME, $this->buttonVariant?->value, $classes]);
 
         $attributes = $this->setAttributes($attributes);
-        $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClasses)->id($id);
+        $tag = $tag->addAttributes($attributes)->addClass(...$this->cssClasses)->id($this->getId());
 
         if ($tag instanceof Input) {
             if ($this->label !== '') {
@@ -557,7 +550,23 @@ final class Button extends Widget
             return $tag->render();
         }
 
-        return $tag->addContent($this->label)->encode(false)->render();
+        return $tag->addContent($this->label)->addClass()->encode(false)->render();
+    }
+
+    /**
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getId(): string|null
+    {
+        return match ($this->id) {
+            true => $this->attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->id,
+        };
     }
 
     /**
