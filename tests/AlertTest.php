@@ -191,7 +191,7 @@ final class AlertTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="alert alert-secondary alert-dismissible" role="alert">
+            <div class="alert alert-secondary alert-dismissible" role="alert">
             Body
             <button type="button" class="btn-close btn-lg" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -200,7 +200,7 @@ final class AlertTest extends TestCase
                 ->body('Body')
                 ->closeButtonAttributes(['class' => 'btn-lg'])
                 ->dismissable(true)
-                ->id('test')
+                ->id(false)
                 ->render(),
         );
     }
@@ -308,14 +308,6 @@ final class AlertTest extends TestCase
         );
     }
 
-    public function testDimissableWithCloseButtonWithTagNameEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Close button tag cannot be empty string.');
-
-        Alert::widget()->closeButtonTag('')->dismissable(true)->render();
-    }
-
     public function testHeader(): void
     {
         Assert::equalsWithoutLE(
@@ -333,14 +325,6 @@ final class AlertTest extends TestCase
                 ->headerAttributes(['class' => 'header-class'])
                 ->render(),
         );
-    }
-
-    public function testHeaderTagException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Header tag cannot be empty string.');
-
-        Alert::widget()->header('Header')->headerTag('')->render();
     }
 
     public function testHeaderWithEncodeFalse(): void
@@ -385,11 +369,11 @@ final class AlertTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="alert alert-secondary" role="alert">
+            <div id="test-id" class="alert alert-secondary" role="alert">
             Body
             </div>
             HTML,
-            Alert::widget()->id('test')->body('Body')->render(),
+            Alert::widget()->id('test-id')->body('Body')->render(),
         );
     }
 
@@ -421,11 +405,11 @@ final class AlertTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="test" class="alert alert-secondary" role="alert">
+            <div id="test-id" class="alert alert-secondary" role="alert">
             Body
             </div>
             HTML,
-            Alert::widget()->attributes(['id' => 'test'])->body('Body')->render(),
+            Alert::widget()->attributes(['id' => 'test-id'])->body('Body')->render(),
         );
     }
 
@@ -519,6 +503,22 @@ final class AlertTest extends TestCase
                 ->templateContent("\n{toggler}\n{body}\n")
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForDimissableWithCloseButtonWithTagNameEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Close button tag cannot be empty string.');
+
+        Alert::widget()->closeButtonTag('')->dismissable(true)->render();
+    }
+
+    public function testThrowExceptionForHeaderTagException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Header tag cannot be empty string.');
+
+        Alert::widget()->header('Header')->headerTag('')->render();
     }
 
     #[DataProviderExternal(AlertProvider::class, 'variant')]
