@@ -172,9 +172,9 @@ final class Button extends Widget
     public function active(bool $enabled = true): self
     {
         return $this
+            ->toggle($enabled ? TogglerType::BUTTON : null)
             ->addClass($enabled ? 'active' : null)
-            ->attribute('aria-pressed', $enabled ? 'true' : null)
-            ->toggle($enabled ? TogglerType::BUTTON : null);
+            ->attribute('aria-pressed', $enabled ? 'true' : null);
     }
 
     /**
