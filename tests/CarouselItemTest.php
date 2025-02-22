@@ -135,4 +135,20 @@ final class CarouselItemTest extends TestCase
 
         $this->assertTrue($carouselItem->isActive());
     }
+
+    public function testImmutability(): void
+    {
+        $carouselItem = CarouselItem::to();
+
+        $this->assertNotSame($carouselItem, $carouselItem->active(false));
+        $this->assertNotSame($carouselItem, $carouselItem->attributes([]));
+        $this->assertNotSame($carouselItem, $carouselItem->autoPlayingInterval(0));
+        $this->assertNotSame($carouselItem, $carouselItem->caption(''));
+        $this->assertNotSame($carouselItem, $carouselItem->captionAttributes([]));
+        $this->assertNotSame($carouselItem, $carouselItem->captionPlaceholder(''));
+        $this->assertNotSame($carouselItem, $carouselItem->captionPlaceholderAttributes([]));
+        $this->assertNotSame($carouselItem, $carouselItem->content(''));
+        $this->assertNotSame($carouselItem, $carouselItem->encodeCaption(false));
+        $this->assertNotSame($carouselItem, $carouselItem->encodeCaptionPlaceholder(false));
+    }
 }

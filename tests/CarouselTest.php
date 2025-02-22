@@ -14,6 +14,7 @@ use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Carousel;
 use Yiisoft\Yii\Bootstrap5\CarouselItem;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Carousel` widget.
@@ -25,7 +26,7 @@ final class CarouselTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExample" class="carousel slide test-class-definition" data-test="test">
+            <div id="carouselExample" class="carousel slide" data-test="123">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -41,12 +42,10 @@ final class CarouselTest extends TestCase
             </button>
             </div>
             HTML,
-            Carousel::widget(config: ['attributes()' => [['class' => 'test-class-definition']]])
-                ->addAttributes(['data-test' => 'test'])
+            Carousel::widget()
+                ->addAttributes(['data-test' => '123'])
                 ->id('carouselExample')
-                ->items(
-                    CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-                )
+                ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
                 ->render(),
         );
     }
@@ -54,15 +53,13 @@ final class CarouselTest extends TestCase
     public function testAddClass(): void
     {
         $carouselWidget = Carousel::widget()
-            ->addClass('test-class', null)
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
             ->id('carouselExample')
-            ->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            );
+            ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')));
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExample" class="carousel slide test-class">
+            <div id="carouselExample" class="carousel slide test-class bg-primary">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -83,7 +80,7 @@ final class CarouselTest extends TestCase
 
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExample" class="carousel slide test-class test-class-1 test-class-2">
+            <div id="carouselExample" class="carousel slide test-class bg-primary test-class-1 test-class-2">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -108,9 +105,7 @@ final class CarouselTest extends TestCase
         $carouselWidget = Carousel::widget()
             ->addCssStyle(['color' => 'red'])
             ->id('carouselExample')
-            ->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            );
+            ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -160,9 +155,7 @@ final class CarouselTest extends TestCase
         $carouselWidget = Carousel::widget()
             ->addCssStyle(['color' => 'red'])
             ->id('carouselExample')
-            ->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            );
+            ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -230,38 +223,7 @@ final class CarouselTest extends TestCase
             Carousel::widget()
                 ->attributes(['class' => 'test-class'])
                 ->id('carouselExample')
-                ->items(
-                    CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-                )
-                ->render(),
-        );
-    }
-
-    public function testAttributesWithId(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div id="test-id" class="carousel slide test-class">
-            <div class="carousel-inner">
-            <div class="carousel-item active">
-            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
-            </div>
-            </div>
-            <button type="button" class="carousel-control-prev" data-bs-target="#test-id" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-            </button>
-            <button type="button" class="carousel-control-next" data-bs-target="#test-id" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-            </button>
-            </div>
-            HTML,
-            Carousel::widget()
-                ->attributes(['class' => 'test-class', 'id' => 'test-id'])
-                ->items(
-                    CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-                )
+                ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
                 ->render(),
         );
     }
@@ -661,7 +623,7 @@ final class CarouselTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExample" class="carousel slide custom-class another-class">
+            <div id="carouselExample" class="carousel slide custom-class another-class bg-primary">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -679,11 +641,9 @@ final class CarouselTest extends TestCase
             HTML,
             Carousel::widget()
                 ->addClass('test-class')
-                ->class('custom-class', 'another-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
                 ->id('carouselExample')
-                ->items(
-                    CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-                )
+                ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
                 ->render(),
         );
     }
@@ -712,9 +672,7 @@ final class CarouselTest extends TestCase
                 ->controlNextLabel('Следующий')
                 ->controlPreviousLabel('Предыдущий')
                 ->id('carouselExample')
-                ->items(
-                    CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-                )
+                ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
                 ->render(),
         );
     }
@@ -805,7 +763,7 @@ final class CarouselTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
-            <div id="carouselExample" class="carousel slide">
+            <div id="test-id" class="carousel slide">
             <div class="carousel-inner">
             <div class="carousel-item active">
             <img class="d-block w-100" src="image-1.jpg" alt="First slide">
@@ -817,18 +775,18 @@ final class CarouselTest extends TestCase
             <img class="d-block w-100" src="image-3.jpg" alt="Third slide">
             </div>
             </div>
-            <button type="button" class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <button type="button" class="carousel-control-prev" data-bs-target="#test-id" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
             </button>
-            <button type="button" class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <button type="button" class="carousel-control-next" data-bs-target="#test-id" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
             </button>
             </div>
             HTML,
             Carousel::widget()
-                ->id('carouselExample')
+                ->id('test-id')
                 ->items(
                     CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
                     CarouselItem::to(Img::tag()->alt('Second slide')->src('image-2.jpg')),
@@ -838,30 +796,31 @@ final class CarouselTest extends TestCase
         );
     }
 
-    public function testIdWithEmpty(): void
+    public function testIdWithSetAttributes(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
-
-        Carousel::widget()
-            ->id('')
-            ->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            )
-            ->render();
-    }
-
-    public function testIdWithFalse(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "id" property must be a non-empty string or `true`');
-
-        Carousel::widget()
-            ->id(false)
-            ->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            )
-            ->render();
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="carousel slide">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img class="d-block w-100" src="image-1.jpg" alt="First slide">
+            </div>
+            </div>
+            <button type="button" class="carousel-control-prev" data-bs-target="#test-id" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target="#test-id" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+            HTML,
+            Carousel::widget()
+                ->attributes(['id' => 'test-id'])
+                ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
+                ->render(),
+        );
     }
 
     public function testImmutability(): void
@@ -871,25 +830,21 @@ final class CarouselTest extends TestCase
         $this->assertNotSame($carousel, $carousel->addAttributes([]));
         $this->assertNotSame($carousel, $carousel->addClass(''));
         $this->assertNotSame($carousel, $carousel->addCssStyle(''));
+        $this->assertNotSame($carousel, $carousel->attribute('', ''));
         $this->assertNotSame($carousel, $carousel->attributes([]));
-        $this->assertNotSame($carousel, $carousel->autoPlaying('false'));
-        $this->assertNotSame($carousel, $carousel->class(''));
-        $this->assertNotSame($carousel, $carousel->captionTagName(''));
+        $this->assertNotSame($carousel, $carousel->autoPlaying());
         $this->assertNotSame($carousel, $carousel->captionPlaceholderTagName(''));
+        $this->assertNotSame($carousel, $carousel->captionTagName(''));
+        $this->assertNotSame($carousel, $carousel->class(''));
         $this->assertNotSame($carousel, $carousel->controlNextLabel(''));
         $this->assertNotSame($carousel, $carousel->controlPreviousLabel(''));
         $this->assertNotSame($carousel, $carousel->controls(false));
         $this->assertNotSame($carousel, $carousel->crossfade(false));
-        $this->assertNotSame($carousel, $carousel->touchSwiping(false));
         $this->assertNotSame($carousel, $carousel->id(''));
-        $this->assertNotSame(
-            $carousel,
-            $carousel->items(
-                CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')),
-            ),
-        );
+        $this->assertNotSame($carousel, $carousel->items(CarouselItem::to(Img::tag()->src('image-1.jpg'))));
         $this->assertNotSame($carousel, $carousel->showIndicators(false));
         $this->assertNotSame($carousel, $carousel->theme(''));
+        $this->assertNotSame($carousel, $carousel->touchSwiping(false));
     }
 
     /**
@@ -1222,5 +1177,27 @@ final class CarouselTest extends TestCase
                 ->theme('dark')
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForIdWithEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Carousel::widget()
+            ->id('')
+            ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
+            ->render();
+    }
+
+    public function testThrowExceptionForIdWithFalse(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Carousel::widget()
+            ->id(false)
+            ->items(CarouselItem::to(Img::tag()->alt('First slide')->src('image-1.jpg')))
+            ->render();
     }
 }
