@@ -29,4 +29,17 @@ final class DropdownItemTest extends TestCase
         $this->assertNotSame($dropdownItem, $dropdownItem->type(DropdownItem::TYPE_BUTTON));
         $this->assertNotSame($dropdownItem, $dropdownItem->url(''));
     }
+
+    public function testText(): void
+    {
+        $text = DropdownItem::text('content');
+
+        $this->assertSame('text', $text->getType());
+        $this->assertSame('content', $text->getContent());
+        $this->assertFalse($text->isActive());
+        $this->assertFalse($text->isDisabled());
+        $this->assertSame([], $text->getAttributes());
+        $this->assertSame([], $text->getItemAttributes());
+        $this->assertSame('h6', $text->getHeaderTag());
+    }
 }
