@@ -504,8 +504,8 @@ final class Nav extends Widget
                 "\n",
                 $dropDownItems
                     ->container(false)
-                    ->toggleAsLink()
-                    ->toggleClass('nav-link', 'dropdown-toggle')
+                    ->togglerAsLink()
+                    ->togglerClass('nav-link', 'dropdown-toggle')
                     ->render(),
                 "\n"
             )

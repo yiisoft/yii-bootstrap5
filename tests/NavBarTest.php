@@ -743,7 +743,7 @@ final class NavBarTest extends TestCase
                                 DropdownItem::divider(),
                                 DropdownItem::link('Something else here', '/sub/something-else'),
                             )
-                            ->toggleContent('Dropdown'),
+                            ->togglerContent('Dropdown'),
                         NavLink::to('Disabled', '#', disabled: true),
                     )
                     ->styles(NavStyle::NAVBAR)

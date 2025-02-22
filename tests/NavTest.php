@@ -427,7 +427,7 @@ final class NavTest extends TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
                         )
-                        ->toggleContent('Dropdown'),
+                        ->togglerContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -484,7 +484,7 @@ final class NavTest extends TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
                         )
-                        ->toggleContent('Dropdown'),
+                        ->togglerContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -539,7 +539,7 @@ final class NavTest extends TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '/test/link/separated-link'),
                         )
-                        ->toggleContent('Dropdown'),
+                        ->togglerContent('Dropdown'),
                     NavLink::to('Link', '/test/link'),
                     NavLink::to('Disabled', '/test/disabled', disabled: true),
                 )
@@ -777,7 +777,7 @@ final class NavTest extends TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
                         )
-                        ->toggleContent('Dropdown'),
+                        ->togglerContent('Dropdown'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )
@@ -1036,7 +1036,7 @@ final class NavTest extends TestCase
                             DropdownItem::divider(),
                             DropdownItem::link('Separated link', '#'),
                         )
-                        ->toggleContent('Dropdown'),
+                        ->togglerContent('Dropdown'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
-use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
@@ -49,11 +48,11 @@ final class Dropdown extends Widget
     private const DROPDOWN_ITEM_HEADER_CLASS = 'dropdown-header';
     private const DROPDOWN_ITEM_TEXT_CLASS = 'dropdown-item-text';
     private const DROPDOWN_LIST_CLASS = 'dropdown-menu';
-    private const DROPDOWN_TOGGLE_BUTTON_CLASS = 'btn';
-    private const DROPDOWN_TOGGLE_CLASS = 'dropdown-toggle';
-    private const DROPDOWN_TOGGLE_CONTAINER_CLASS = 'btn-group';
-    private const DROPDOWN_TOGGLE_SPAN_CLASS = 'visually-hidden';
-    private const DROPDOWN_TOGGLE_SPLIT_CLASS = 'dropdown-toggle-split';
+    private const DROPDOWN_TOGGLER_BUTTON_CLASS = 'btn';
+    private const DROPDOWN_TOGGLER_CLASS = 'dropdown-toggle';
+    private const DROPDOWN_TOGGLER_CONTAINER_CLASS = 'btn-group';
+    private const DROPDOWN_TOGGLER_SPAN_CLASS = 'visually-hidden';
+    private const DROPDOWN_TOGGLER_SPLIT_CLASS = 'dropdown-toggle-split';
     private const NAME = 'dropdown';
     private array $alignmentClasses = [];
     private array $attributes = [];
@@ -62,24 +61,29 @@ final class Dropdown extends Widget
     private array $containerClasses = [self::DROPDOWN_CLASS];
     /** @psalm-var DropdownItem[] */
     private array $items = [];
-    private array $toggleAttributes = [];
-    private array $toggleClasses = [];
-    private string|Stringable $toggleButton = '';
-    private string $toggleContent = 'Dropdown button';
-    private bool|string $toggleId = false;
-    private bool $toggleLink = false;
-    private string $toggleUrl = '#';
-    private string|null $toggleSize = null;
-    private bool $toggleSplit = false;
-    private string $toggleSplitContent = 'Action';
-    private DropdownToggleVariant $toggleVariant = DropdownToggleVariant::SECONDARY;
+    private string|Stringable $toggler = '';
+    private array $togglerAttributes = [];
+    private array $togglerClasses = [];
+    private string $togglerContent = 'Dropdown button';
+    private bool|string $togglerId = false;
+    private bool $togglerLink = false;
+    private string $togglerUrl = '#';
+    private string|null $togglerSize = null;
+    private bool $togglerSplit = false;
+    private string $togglerSplitContent = 'Action';
+    private DropdownTogglerVariant $togglerVariant = DropdownTogglerVariant::SECONDARY;
 
     /**
-     * Adds a set of attributes for the dropdown component.
+     * Adds a sets of attributes.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
      * @return self A new instance with the specified attributes added.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addAttributes(['data-id' => '123']);
+     * ```
      */
     public function addAttributes(array $attributes): self
     {
@@ -90,21 +94,21 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the existing classes of the dropdown component.
+     * Adds one or more CSS classes to the existing classes.
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
-     * For example:
-     *
-     * ```php
-     * $dropdown->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
-     * ```
      *
      * @return self A new instance with the specified CSS classes added to existing ones.
      *
      * @link https://html.spec.whatwg.org/#classes
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function addClass(BackedEnum|string|null ...$class): self
     {
@@ -115,16 +119,23 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Adds a CSS style for the dropdown component.
+     * Adds a CSS style.
      *
-     * @param array|string $style The CSS style for the dropdown component.
-     * If a string is used, it's added as is. For example, `color: red`.
-     * If the value is an array, the values are separated by a space,
-     * e.g., `['color' => 'red', 'font-weight' => 'bold']` is rendered as `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
+     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
+     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
      * @return self A new instance with the specified CSS style value added.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addCssStyle('color: red');
+     *
+     * // or
+     * $dropdown->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
+     * ```
      */
     public function addCssStyle(array|string $style, bool $overwrite = true): self
     {
@@ -135,12 +146,17 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Sets the alignment of the dropdown component.
+     * Sets the alignment.
      *
-     * @param DropdownAlignment|null ...$alignment The alignment of the dropdown component. If `null`, the alignment will
+     * @param DropdownAlignment|null ...$alignment The alignment. If `null`, the alignment will
      * not be set.
      *
-     * @return self A new instance with the specified alignment of the dropdown component.
+     * @return self A new instance with the specified alignment.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->alignment(DropdownAlignment::END());
+     * ```
      */
     public function alignment(DropdownAlignment|null ...$alignment): self
     {
@@ -151,28 +167,59 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Adds a set of attributes for the dropdown toggle button.
+     * Adds a set of attributes for the toggler button.
      *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-dropdown']`.
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
-     * @return self A new instance with the specified attributes added.
+     * @return self A new instance with the specified attributes for the toggler button.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addTogglerAttributes(['data-id' => '123']);
+     * ```
      */
-    public function addToggleAttributes(array $attributes): self
+    public function addTogglerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->toggleAttributes = [...$this->toggleAttributes, ...$attributes];
+        $new->togglerAttributes = [...$this->togglerAttributes, ...$attributes];
 
         return $new;
     }
 
     /**
-     * Sets the HTML attributes for the dropdown component.
+     * Adds a sets attribute value.
+     *
+     * @param string $name The attribute name.
+     * @param mixed $value The attribute value.
+     *
+     * @return self A new instance with the specified attribute added.
+     *
+     * Example usage:
+     * ```php
+     * $droddown->attribute('data-id', '123');
+     * ```
+     */
+    public function attribute(string $name, mixed $value): self
+    {
+        $new = clone $this;
+        $new->attributes[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->attributes(['data-id' => '123']);
+     * ```
      */
     public function attributes(array $attributes): self
     {
@@ -183,31 +230,36 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Sets the auto-close setting for the dropdown component.
+     * Sets the auto-close setting.
      *
-     * @param DropdownAutoClose $autoClose The auto-close setting for the dropdown component.
+     * @param DropdownAutoClose $autoClose The auto-close setting.
      *
      * @return self A new instance with the specified auto-close setting.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->autoClose(DropdownAutoClose::OUTSIDE());
+     * ```
      */
     public function autoClose(DropdownAutoClose $autoClose): self
     {
-        return $this->addToggleAttributes(['data-bs-auto-close' => $autoClose->value]);
+        return $this->addTogglerAttributes(['data-bs-auto-close' => $autoClose->value]);
     }
 
     /**
-     * Replaces all existing CSS classes of the dropdown component with the provided ones.
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
-     * For example:
-     *
-     * ```php
-     * $dropdown->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
-     * ```
      *
      * @return self A new instance with the specified CSS classes set.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->class('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
      */
     public function class(BackedEnum|string|null ...$class): self
     {
@@ -218,12 +270,17 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Whether to render the dropdown in a container `<div>` tag.
+     * Whether to render in a container `<div>` tag.
      *
-     * @param bool $enabled Whether to render the dropdown in a container `<div>` tag. By default, it will be rendered in
-     * a container `<div>` tag. If set to `false`, the container will not be rendered.
+     * @param bool $enabled Whether to render in a container `<div>` tag. By default, it will be rendered in a container
+     * `<div>` tag. If set to `false`, the container will not be rendered.
      *
      * @return self A new instance with the specified container setting.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->container(false);
+     * ```
      */
     public function container(bool $enabled): self
     {
@@ -234,11 +291,16 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Sets the CSS classes for the dropdown container.
+     * Sets the CSS classes for the container.
      *
-     * @param BackedEnum|string ...$classes The CSS class for the dropdown container.
+     * @param BackedEnum|string ...$classes The CSS class for the container.
      *
-     * @return self A new instance with the specified CSS class for the dropdown container.
+     * @return self A new instance with the specified CSS class for the container.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->containerClasses(BackGroundColor::PRIMARY(), 'custom-class');
+     * ```
      */
     public function containerClasses(BackedEnum|string ...$classes): self
     {
@@ -249,11 +311,16 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Set the direction of the dropdown component.
+     * Set the direction.
      *
-     * @param DropdownDirection $direction The direction of the dropdown component.
+     * @param DropdownDirection $direction The direction.
      *
-     * @return self A new instance with the specified direction of the dropdown component.
+     * @return self A new instance with the specified direction.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->direction(DropdownDirection::DOWN());
+     * ```
      */
     public function direction(DropdownDirection $direction): self
     {
@@ -274,13 +341,23 @@ final class Dropdown extends Widget
     }
 
     /**
-     * List of links to appear in the dropdown. If this property is empty, the widget will not render anything.
+     * List of links. If this property is empty, the widget will not render anything.
      *
-     * @param array $items The links to appear in the dropdown.
+     * @param array $items The links.
      *
-     * @return self A new instance with the specified dropdown to appear in the dropdown.
+     * @return self A new instance with the specified links.
      *
      * @psalm-param DropdownItem[] $items The links to appear in the dropdown.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->items(
+     *     DropdownItem::link('Action', '#'),
+     *     DropdownItem::link('Another action', '#'),
+     *     DropdownItem::link('Something else here', '#'),
+     *     DropdownItem::divider(),
+     *     DropdownItem::link('Separated link', '#'),
+     * );
      */
     public function items(DropdownItem ...$items): self
     {
@@ -291,11 +368,16 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Sets the theme for the dropdown component.
+     * Sets the theme.
      *
-     * @param string $theme The theme for the dropdown component.
+     * @param string $theme The theme.
      *
      * @return self A new instance with the specified theme.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->theme('dark');
+     * ```
      */
     public function theme(string $theme): self
     {
@@ -303,207 +385,241 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Sets the HTML attributes for the dropdown toggle button.
+     * Sets the toggler custom element.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param string|Stringable $tag The toggler custom element.
      *
-     * @return self A new instance with the specified attributes for the dropdown toggle button.
+     * @return self A new instance with the specified toggler custom element.
      *
-     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     * Example usage:
+     * ```php
+     * $dropdown->toggler(
+     *     Button::tag()
+     *         ->addAttributes(
+     *             [
+     *                 'data-bs-toggle' => 'dropdown',
+     *                 'aria-expanded' => 'false',
+     *             ],
+     *         )
+     *         ->addClass('btn btn-primary dropdown-toggle')
+     *         ->content('Dropdown custom button'),
+     * );
+     * ```
      */
-    public function toggleAttributes(array $attributes): self
+    public function toggler(string|Stringable $tag): self
     {
         $new = clone $this;
-        $new->toggleAttributes = $attributes;
+        $new->toggler = (string) $tag;
 
         return $new;
     }
 
     /**
-     * Replaces all existing CSS classes of the dropdown toggle button with the provided ones.
+     * Whether to render the toggler as a link.
+     *
+     * @param bool $enable Whether to render the toggler as a link. If set to `true`, the toggler will be rendered as a
+     * link. If set to `false`, the toggler will be rendered as a button.
+     *
+     * @return self A new instance with the specified toggler as a link setting.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerAsLink();
+     * ```
+     */
+    public function togglerAsLink(bool $enable = true): self
+    {
+        $new = clone $this;
+        $new->togglerLink = $enable;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the toggler.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the toggler.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerAttributes(['data-id' => '123']);
+     * ```
+     */
+    public function togglerAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->togglerAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Replaces all existing CSS classes with the specified one(s).
      *
      * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
      * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
-     * For example:
      *
+     * @return self A new instance with the specified CSS classes set for the toggler.
+     *
+     * Example usage:
      * ```php
-     * $dropdown->toggleClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY());
+     * $dropdown->togglerClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
      * ```
-     *
-     * @return self A new instance with the specified CSS classes set.
      */
-    public function toggleClass(BackedEnum|string|null ...$class): self
+    public function togglerClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        $new->toggleClasses = $class;
+        $new->togglerClasses = $class;
 
         return $new;
     }
 
     /**
-     * Sets the toggle button custom tag.
+     * Sets the content of the toggler.
      *
-     * @param string|Stringable $tag The toggle button custom tag.
+     * @param string|Stringable $content The content of the toggler.
      *
-     * @return self A new instance with the specified toggle button custom tag.
+     * @return self A new instance with the specified content of the toggler.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerContent('Toggler dropdown');
+     * ```
      */
-    public function toggleTag(string|Stringable $tag): self
+    public function togglerContent(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->toggleButton = (string) $tag;
+        $new->togglerContent = (string) $content;
 
         return $new;
     }
 
     /**
-     * Sets the content of the dropdown toggle button.
+     * Sets the ID for the toggler.
      *
-     * @param string|Stringable $content The content of the dropdown toggle button.
+     * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
      *
-     * @return self A new instance with the specified content of the dropdown toggle button.
+     * @return self A new instance with the specified ID for the toggler.
+     *
+     * Example usage:
+     * ```php
+     * $droddown->togglerId(true);
+     * ```
      */
-    public function toggleContent(string|Stringable $content): self
+    public function togglerId(bool|string $id): self
     {
         $new = clone $this;
-        $new->toggleContent = (string) $content;
+        $new->togglerId = $id;
 
         return $new;
     }
 
     /**
-     * Sets the ID of the toggle button for the dropdown component.
+     * Sets the size for the toggler.
      *
-     * @param bool|string $id The ID of the dropdown component. If `true`, an ID will be generated automatically.
+     * @param ButtonSize|null $size The size. If `null`, the size will not be set.
      *
-     *@throws InvalidArgumentException if the ID is an empty string or `false`.
-     * @return self A new instance with the specified ID of the toggle button for the dropdown component.
+     * @return self A new instance with the specified size for the toggler.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerSize(ButtonSize::SMALL());
+     * ```
      */
-    public function toggleId(bool|string $id): self
+    public function togglerSize(ButtonSize|null $size): self
     {
         $new = clone $this;
-        $new->toggleId = $id;
+        $new->togglerSize = $size?->value;
 
         return $new;
     }
 
     /**
-     * Whether to render the dropdown toggle as a link.
+     * Whether to render the toggler as a split.
      *
-     * @param bool $enable Whether to render the dropdown toggle as a link. If set to `true`, the dropdown toggle will be
-     * rendered as a link. If set to `false`, the dropdown toggle will be rendered as a button.
+     * @param bool $enable Whether to render the toggler as a split. If set to `true`, the toggler will be rendered as a
+     * split. If set to `false`, the toggler will be rendered as a normal.
      *
-     * @return self A new instance with the specified dropdown toggle as a link setting.
+     * @return self A new instance with the specified the toggler split setting.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerSplit();
+     * ```
      */
-    public function toggleAsLink(bool $enable = true): self
+    public function togglerSplit(bool $enable = true): self
     {
         $new = clone $this;
-        $new->toggleLink = $enable;
+        $new->togglerSplit = $enable;
 
         return $new;
     }
 
     /**
-     * Whether to render the dropdown toggle button as a large button.
+     * Sets the content of the toggler split.
      *
-     * @param bool $enable Whether to render the dropdown toggle button as a large button. If set to `true`, the dropdown
-     * toggle button will be rendered as a large button. If set to `false`, the dropdown toggle button will be rendered
-     * as a normal-sized button.
+     * @param string|Stringable $content The content of the toggler split.
      *
-     * @return self A new instance with the specified dropdown toggle button size large setting.
+     * @return self A new instance with the specified content of the toggler split.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerSplitContent('Action');
+     * ```
      */
-    public function toggleSizeLarge(bool $enable = true): self
+    public function togglerSplitContent(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->toggleSize = $enable ? 'btn-lg' : null;
+        $new->togglerSplitContent = (string) $content;
 
         return $new;
     }
 
     /**
-     * Whether to render the dropdown toggle button as a small button.
+     * Sets the URL for the toggler link.
      *
-     * @param bool $enable Whether to render the dropdown toggle button as a small button. If set to `true`, the dropdown
-     * toggle button will be rendered as a small button. If set to `false`, the dropdown toggle button will be rendered
-     * as a normal-sized button.
+     * @param string $url The URL for the toggler link.
      *
-     * @return self A new instance with the specified dropdown toggle button size small setting.
+     * @return self A new instance with the specified URL for the toggler link.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->togglerUrl('https://example.com');
+     * ```
      */
-    public function toggleSizeSmall(bool $enable = true): self
+    public function togglerUrl(string $url): self
     {
         $new = clone $this;
-        $new->toggleSize = $enable ? 'btn-sm' : null;
+        $new->togglerUrl = $url;
 
         return $new;
     }
 
     /**
-     * Whether to render the dropdown toggle button as a split button.
+     * Sets the variant for the toggler.
      *
-     * @param bool $enable Whether to render the dropdown toggle button as a split button. If set to `true`, the dropdown
-     * toggle button will be rendered as a split button. If set to `false`, the dropdown toggle button will be rendered
-     * as a normal button.
+     * @param DropdownTogglerVariant $variant The variant for the toggler.
      *
-     * @return self A new instance with the specified dropdown toggle button split setting.
+     * @return self A new instance with the specified variant for the toggler.
      */
-    public function toggleSplit(bool $enable = true): self
+    public function togglerVariant(DropdownTogglerVariant $variant): self
     {
         $new = clone $this;
-        $new->toggleSplit = $enable;
+        $new->togglerVariant = $variant;
 
         return $new;
     }
 
     /**
-     * Sets the content of the dropdown toggle split button.
+     * Run the widget.
      *
-     * @param string|Stringable $content The content of the dropdown toggle split button.
-     *
-     * @return self A new instance with the specified content of the dropdown toggle split button.
-     */
-    public function toggleSplitContent(string|Stringable $content): self
-    {
-        $new = clone $this;
-        $new->toggleSplitContent = (string) $content;
-
-        return $new;
-    }
-
-    /**
-     * Sets the URL for the dropdown toggle link.
-     *
-     * @param string $url The URL for the dropdown toggle link.
-     *
-     * @return self A new instance with the specified URL for the dropdown toggle link.
-     */
-    public function toggleUrl(string $url): self
-    {
-        $new = clone $this;
-        $new->toggleUrl = $url;
-
-        return $new;
-    }
-
-    /**
-     * Sets the variant for the dropdown toggle button.
-     *
-     * @param DropdownToggleVariant $variant The variant for the dropdown toggle button.
-     *
-     * @return self A new instance with the specified variant for the dropdown toggle button.
-     */
-    public function toggleVariant(DropdownToggleVariant $variant): self
-    {
-        $new = clone $this;
-        $new->toggleVariant = $variant;
-
-        return $new;
-    }
-
-    /**
-     * Renders the dropdown component.
-     *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      */
     public function render(): string
     {
@@ -517,44 +633,56 @@ final class Dropdown extends Widget
             return '';
         }
 
-        /** @psalm-var non-empty-string|null $id */
-        $toggleId = match ($this->toggleId) {
-            true => $attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
-            default => $this->toggleId,
-        };
+        $togglerId = $this->getTogglerId();
 
-        if ($this->toggleSplit) {
-            $containerClasses = [self::DROPDOWN_TOGGLE_CONTAINER_CLASS];
+        if ($this->togglerSplit) {
+            $containerClasses = [self::DROPDOWN_TOGGLER_CONTAINER_CLASS];
         }
 
-        Html::addCssClass($attributes, [...$containerClasses, $classes, ...$this->cssClasses]);
-
-        $renderToggle = match ($this->toggleSplit) {
-            true => $this->renderToggleSplit() . "\n" . $this->renderToggle($toggleId),
-            false => $this->renderToggle($toggleId),
+        $renderToggler = match ($this->togglerSplit) {
+            true => $this->renderTogglerSplit() . "\n" . $this->renderToggler($togglerId),
+            false => $this->renderToggler($togglerId),
         };
 
-        $renderItems = $this->renderItems($toggleId);
+        $renderItems = $this->renderItems($togglerId);
 
         return match ($this->container) {
             true => Div::tag()
                 ->addAttributes($attributes)
+                ->addClass(...$containerClasses)
+                ->addClass($classes)
+                ->addClass(...$this->cssClasses)
                 ->addContent(
                     "\n",
-                    $renderToggle,
+                    $renderToggler,
                     "\n",
                     $renderItems,
                     "\n",
                 )
                 ->encode(false)
                 ->render(),
-            false => $renderToggle . "\n" . $renderItems,
+            false => $renderToggler . "\n" . $renderItems,
         };
     }
 
     /**
-     * Renders the dropdown item.
+     * Generates the ID.
+     *
+     * @return string|null The generated ID.
+     *
+     * @psalm-return non-empty-string|null The generated ID.
+     */
+    private function getTogglerId(): string|null
+    {
+        return match ($this->togglerId) {
+            true => $this->attributes['id'] ?? Html::generateId(self::NAME . '-'),
+            '', false => null,
+            default => $this->togglerId,
+        };
+    }
+
+    /**
+     * Renders the list item.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -573,7 +701,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown button item.
+     * Renders the list item with a button.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -594,7 +722,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown divider item.
+     * Renders the list item with a divider.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -612,7 +740,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown header item.
+     * Renders the list item with a header.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -633,7 +761,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown link item.
+     * Renders the list item with a link.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -664,7 +792,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown custom content item.
+     * Renders the list item with custom content.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -679,7 +807,7 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown text item.
+     * Renders the list item with text.
      *
      * @param DropdownItem $item The dropdown item.
      *
@@ -701,15 +829,15 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown items.
+     * Render the list.
      *
-     * @param string|null $toggleId The ID of the toggle button.
+     * @param string|null $togglerId The ID of the toggler.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string|null $toggleId
+     * @psalm-param non-empty-string|null $togglerId
      */
-    private function renderItems(string|null $toggleId): string
+    private function renderItems(string|null $togglerId): string
     {
         $items = [];
 
@@ -718,7 +846,7 @@ final class Dropdown extends Widget
         }
 
         $ulTag = Ul::tag()
-            ->addAttributes(['aria-labelledby' => $toggleId])
+            ->addAttributes(['aria-labelledby' => $togglerId])
             ->addClass(self::DROPDOWN_LIST_CLASS, ...$this->alignmentClasses)
             ->items(...$items);
 
@@ -726,119 +854,113 @@ final class Dropdown extends Widget
     }
 
     /**
-     * Renders the dropdown toggle button.
+     * Render toggler.
      *
-     * @param string|null $toggleId The ID of the toggle button.
+     * @param string|null $toggleId The ID of the toggler.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      *
-     * @psalm-param non-empty-string|null $toggleId
+     * @psalm-param non-empty-string|null $togglerId
      */
-    private function renderToggle(string|null $toggleId): string
+    private function renderToggler(string|null $togglerId): string
     {
-        if ($this->toggleButton !== '') {
-            return (string) $this->toggleButton;
+        if ($this->toggler !== '') {
+            return (string) $this->toggler;
         }
 
-        $toggleContent = match ($this->toggleSplit) {
+        $togglerContent = match ($this->togglerSplit) {
             true => "\n" .
                 Span::tag()
-                    ->addContent($this->toggleContent)
-                    ->addClass(self::DROPDOWN_TOGGLE_SPAN_CLASS)
+                    ->addContent($this->togglerContent)
+                    ->addClass(self::DROPDOWN_TOGGLER_SPAN_CLASS)
                     ->render() .
                 "\n",
-            default => $this->toggleContent,
+            default => $this->togglerContent,
         };
 
-        $toggleAttributes = $this->toggleAttributes;
-        $toggleClasses = $this->toggleClasses;
-        $classes = $toggleAttributes['class'] ?? null;
+        $togglerAttributes = $this->togglerAttributes;
+        $togglerClasses = $this->togglerClasses;
+        $classes = $togglerAttributes['class'] ?? null;
 
-        unset($toggleAttributes['class']);
+        unset($togglerAttributes['class']);
 
-        match ($toggleClasses) {
+        match ($togglerClasses) {
             [] => Html::addCssClass(
-                $toggleAttributes,
+                $togglerAttributes,
                 [
-                    self::DROPDOWN_TOGGLE_BUTTON_CLASS,
-                    $this->toggleVariant,
-                    $this->toggleSize,
-                    self::DROPDOWN_TOGGLE_CLASS,
-                    $this->toggleSplit ? self::DROPDOWN_TOGGLE_SPLIT_CLASS : null,
+                    self::DROPDOWN_TOGGLER_BUTTON_CLASS,
+                    $this->togglerVariant,
+                    $this->togglerSize,
+                    self::DROPDOWN_TOGGLER_CLASS,
+                    $this->togglerSplit ? self::DROPDOWN_TOGGLER_SPLIT_CLASS : null,
                     $classes,
                 ],
             ),
-            default => Html::addCssClass($toggleAttributes, $toggleClasses),
+            default => Html::addCssClass($togglerAttributes, $togglerClasses),
         };
 
-        if ($this->toggleLink) {
-            return $this->renderToggleLink($toggleAttributes, $toggleContent);
+        if ($this->togglerLink) {
+            return $this->renderTogglerLink($togglerAttributes, $togglerContent);
         }
 
-        $toggleAttributes['data-bs-toggle'] = 'dropdown';
-        $toggleAttributes['aria-expanded'] = 'false';
-
         return Button::button('')
-            ->addAttributes($toggleAttributes)
-            ->addContent($toggleContent)
+            ->addAttributes($togglerAttributes)
+            ->attribute('data-bs-toggle', 'dropdown')
+            ->attribute('aria-expanded', 'false')
+            ->addContent($togglerContent)
             ->encode(false)
-            ->id($toggleId)
+            ->id($togglerId)
             ->render();
     }
 
     /**
-     * Renders the dropdown toggle link.
+     * Render the toggler link.
      *
-     * @param array $toggleAttributes The HTML attributes for the toggle link.
-     * @param string $toggleContent The content of the toggle link.
+     * @param array $togglerAttributes The HTML attributes for the toggler link.
+     * @param string $togglerContent The content of the toggler link.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      */
-    private function renderToggleLink(array $toggleAttributes, string $toggleContent): string
+    private function renderTogglerLink(array $togglerAttributes, string $togglerContent): string
     {
-        $toggleAttributes['role'] = 'button';
-        $toggleAttributes['data-bs-toggle'] = 'dropdown';
-        $toggleAttributes['aria-expanded'] = 'false';
-
         return A::tag()
-            ->addAttributes($toggleAttributes)
-            ->addContent($toggleContent)
+            ->addAttributes($togglerAttributes)
+            ->attribute('role', 'button')
+            ->attribute('data-bs-toggle', 'dropdown')
+            ->attribute('aria-expanded', 'false')
+            ->addContent($togglerContent)
             ->encode(false)
-            ->url($this->toggleUrl)
+            ->url($this->togglerUrl)
             ->render();
     }
 
     /**
-     * Renders the dropdown split button.
+     * Render the toggler split.
      *
-     * @return string The rendering result.
+     * @return string The HTML representation of the element.
      */
-    private function renderToggleSplit(): string
+    private function renderTogglerSplit(): string
     {
-        if ($this->toggleLink) {
+        if ($this->togglerLink) {
             return A::tag()
-                ->addAttributes(
-                    [
-                        'role' => 'button',
-                    ],
-                )
+                ->addAttributes(['role' => 'button'])
                 ->addClass(
-                    self::DROPDOWN_TOGGLE_BUTTON_CLASS,
-                    $this->toggleVariant,
-                    $this->toggleSize,
+                    self::DROPDOWN_TOGGLER_BUTTON_CLASS,
+                    $this->togglerVariant,
+                    $this->togglerSize,
                 )
-                ->addContent($this->toggleSplitContent)
+                ->addContent($this->togglerSplitContent)
                 ->encode(false)
                 ->render();
         }
 
         return Button::button('')
             ->addClass(
-                self::DROPDOWN_TOGGLE_BUTTON_CLASS,
-                $this->toggleVariant,
-                $this->toggleSize,
+                self::DROPDOWN_TOGGLER_BUTTON_CLASS,
+                $this->togglerVariant,
+                $this->togglerSize,
             )
-            ->addContent($this->toggleSplitContent)
+            ->addContent($this->togglerSplitContent)
             ->encode(false)
             ->render();
     }
