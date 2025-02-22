@@ -38,7 +38,6 @@ final class CollapseItem
         bool $encode = true,
         bool $togglerMultiple = false,
         string $ariaControls = '',
-
     ): self {
         $new = new self(
             $content,
