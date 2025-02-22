@@ -1578,6 +1578,14 @@ final class DropdownTest extends TestCase
         Dropdown::widget()->items(DropdownItem::link('label', 'url')->active(true)->disabled(true))->render();
     }
 
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValueAndMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url', disabled: true)->active(true))->render();
+    }
+
     public function testToggler(): void
     {
         Assert::equalsWithoutLE(
