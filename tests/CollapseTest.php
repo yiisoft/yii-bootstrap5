@@ -422,7 +422,7 @@ final class CollapseTest extends TestCase
 
     public function testThrowExceptionForTogglerContainerTagEmptyValue(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Toggler container tag cannot be empty string.');
 
         Collapse::widget()
