@@ -9,7 +9,7 @@ namespace Yiisoft\Yii\Bootstrap5;
  *
  * @see https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button
  */
-enum DropdownToggleVariant: string
+enum DropdownTogglerVariant: string
 {
     /**
      * The primary variant.

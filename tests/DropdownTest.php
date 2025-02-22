@@ -7,12 +7,13 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
+use Yiisoft\Yii\Bootstrap5\ButtonSize;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
 use Yiisoft\Yii\Bootstrap5\DropdownAutoClose;
 use Yiisoft\Yii\Bootstrap5\DropdownDirection;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\DropdownToggleVariant;
+use Yiisoft\Yii\Bootstrap5\DropdownTogglerVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
@@ -218,7 +219,7 @@ final class DropdownTest extends TestCase
                 DropdownItem::link('Menu Item', '#'),
             )
             ->alignment(DropdownAlignment::END)
-            ->toggleContent('Right-aligned menu');
+            ->togglerContent('Right-aligned menu');
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -291,7 +292,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::END)
-                ->toggleContent('Right-aligned menu')
+                ->togglerContent('Right-aligned menu')
                 ->render(),
         );
     }
@@ -325,7 +326,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::SM_END)
-                ->toggleContent('SM Right-aligned menu')
+                ->togglerContent('SM Right-aligned menu')
                 ->render(),
         );
     }
@@ -359,7 +360,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::MD_END)
-                ->toggleContent('MD Right-aligned menu')
+                ->togglerContent('MD Right-aligned menu')
                 ->render(),
         );
     }
@@ -393,7 +394,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::LG_END)
-                ->toggleContent('LG Right-aligned menu')
+                ->togglerContent('LG Right-aligned menu')
                 ->render(),
         );
     }
@@ -427,7 +428,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XL_END)
-                ->toggleContent('XL Right-aligned menu')
+                ->togglerContent('XL Right-aligned menu')
                 ->render(),
         );
     }
@@ -461,7 +462,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XXL_END)
-                ->toggleContent('XXL Right-aligned menu')
+                ->togglerContent('XXL Right-aligned menu')
                 ->render(),
         );
     }
@@ -495,7 +496,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::SM_START)
-                ->toggleContent('SM Left-aligned menu')
+                ->togglerContent('SM Left-aligned menu')
                 ->render(),
         );
     }
@@ -529,7 +530,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::MD_START)
-                ->toggleContent('MD Left-aligned menu')
+                ->togglerContent('MD Left-aligned menu')
                 ->render(),
         );
     }
@@ -563,7 +564,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::LG_START)
-                ->toggleContent('LG Left-aligned menu')
+                ->togglerContent('LG Left-aligned menu')
                 ->render(),
         );
     }
@@ -597,7 +598,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XL_START)
-                ->toggleContent('XL Left-aligned menu')
+                ->togglerContent('XL Left-aligned menu')
                 ->render(),
         );
     }
@@ -631,7 +632,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                 )
                 ->alignment(DropdownAlignment::XXL_START)
-                ->toggleContent('XXL Left-aligned menu')
+                ->togglerContent('XXL Left-aligned menu')
                 ->render(),
         );
     }
@@ -665,7 +666,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Default dropdown')
+                ->togglerContent('Default dropdown')
                 ->render(),
         );
     }
@@ -699,7 +700,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Clickable inside')
+                ->togglerContent('Clickable inside')
                 ->render(),
         );
     }
@@ -733,7 +734,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Manual close')
+                ->togglerContent('Manual close')
                 ->render(),
         );
     }
@@ -767,7 +768,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Menu Item', '#'),
                     DropdownItem::link('Menu Item', '#'),
                 )
-                ->toggleContent('Clickable outside')
+                ->togglerContent('Clickable outside')
                 ->render(),
         );
     }
@@ -1059,6 +1060,7 @@ final class DropdownTest extends TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addClass(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->addCssStyle([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->alignment(DropdownAlignment::END));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->attribute('', ''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->attributes([]));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->autoClose(DropdownAutoClose::TRUE));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->class(''));
@@ -1067,18 +1069,17 @@ final class DropdownTest extends TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->direction(DropdownDirection::DROPSTART));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->items(DropdownItem::link('')));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->theme('light'));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAsLink(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleAttributes([]));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleClass(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleContent(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleId(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeLarge());
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSizeSmall());
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplit(false));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleSplitContent(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleTag(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleUrl(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggleVariant(DropdownToggleVariant::DANGER));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->toggler(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerAsLink(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerAttributes([]));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerClass(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerContent(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerId(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerSize(ButtonSize::SMALL));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerSplit(false));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerSplitContent(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerUrl(''));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerVariant(DropdownTogglerVariant::DANGER));
     }
 
     /**
@@ -1309,9 +1310,9 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleClass('nav-link', 'dropdown-toggle')
-                ->toggleContent('Dropdown')
+                ->togglerAsLink()
+                ->togglerClass('nav-link', 'dropdown-toggle')
+                ->togglerContent('Dropdown')
                 ->render(),
         );
     }
@@ -1381,8 +1382,8 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleContent('Dropdown link')
+                ->togglerAsLink()
+                ->togglerContent('Dropdown link')
                 ->render(),
         );
     }
@@ -1415,9 +1416,9 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleContent('Dropdown link')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->togglerAsLink()
+                ->togglerContent('Dropdown link')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
                 ->render(),
         );
     }
@@ -1451,8 +1452,8 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Something else here', '#'),
                 )
                 ->theme('light')
-                ->toggleContent('Light dropdown')
-                ->toggleId('dropdownLight')
+                ->togglerContent('Light dropdown')
+                ->togglerId('dropdownLight')
                 ->render(),
         );
     }
@@ -1486,8 +1487,48 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Something else here', '#'),
                 )
                 ->theme('dark')
-                ->toggleContent('Dark dropdown')
-                ->toggleId('dropdownDark')
+                ->togglerContent('Dark dropdown')
+                ->togglerId('dropdownDark')
+                ->render(),
+        );
+    }
+
+    public function testToggler(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown custom button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->toggler(
+                    Button::tag()
+                        ->addAttributes(
+                            [
+                                'data-bs-toggle' => 'dropdown',
+                                'aria-expanded' => 'false',
+                            ],
+                        )
+                        ->addClass('btn btn-primary dropdown-toggle')
+                        ->content('Dropdown custom button')
+                )
                 ->render(),
         );
     }
@@ -1495,7 +1536,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
      */
-    public function testToggleAttributesWithDataBSoffset(): void
+    public function testTogglerAttributesWithDataBSoffset(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1520,7 +1561,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->togglerAttributes(['data-bs-offset' => '10,20'])
                 ->render(),
         );
     }
@@ -1528,7 +1569,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
      */
-    public function testToggleAttributesWithLinkAndDataBSoffset(): void
+    public function testTogglerAttributesWithLinkAndDataBSoffset(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1553,13 +1594,13 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleAttributes(['data-bs-offset' => '10,20'])
+                ->togglerAsLink()
+                ->togglerAttributes(['data-bs-offset' => '10,20'])
                 ->render(),
         );
     }
 
-    public function testToggleAttributesWithSplitAndDataBSReference(): void
+    public function testTogglerAttributesWithSplitAndDataBSReference(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1595,15 +1636,15 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleAttributes(['data-bs-reference' => 'parent'])
-                ->toggleContent('Toggle dropdown')
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
+                ->togglerAttributes(['data-bs-reference' => 'parent'])
+                ->togglerContent('Toggle dropdown')
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
                 ->render(),
         );
     }
 
-    public function testToggleId(): void
+    public function testTogglerId(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1628,12 +1669,12 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleId('test-id')
+                ->togglerId('test-id')
                 ->render(),
         );
     }
 
-    public function testToggleSizeLarge(): void
+    public function testTogglerSizeLarge(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1658,13 +1699,13 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleContent('Large button')
-                ->toggleSizeLarge()
+                ->togglerContent('Large button')
+                ->togglerSize(ButtonSize::LARGE)
                 ->render(),
         );
     }
 
-    public function testToggleSizeSmall(): void
+    public function testTogglerSizeSmall(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1689,8 +1730,8 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Another action', '#'),
                     DropdownItem::link('Something else here', '#'),
                 )
-                ->toggleContent('Small button')
-                ->toggleSizeSmall()
+                ->togglerContent('Small button')
+                ->togglerSize(ButtonSize::SMALL)
                 ->render(),
         );
     }
@@ -1698,7 +1739,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#split-button
      */
-    public function testToggleSplit(): void
+    public function testTogglerSplit(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1734,10 +1775,10 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
+                ->togglerContent('Toggle dropdown')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
                 ->render(),
         );
     }
@@ -1745,7 +1786,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#sizing
      */
-    public function testToggleSplitWithSizeLarge(): void
+    public function testTogglerSplitWithSizeLarge(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1781,16 +1822,16 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
-                ->toggleSizeLarge()
+                ->togglerContent('Toggle dropdown')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
+                ->togglerSize(ButtonSize::LARGE)
                 ->render(),
         );
     }
 
-    public function testToggleSplitWithLink(): void
+    public function testTogglerSplitWithLink(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1826,16 +1867,16 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleContent('Toggle dropdown')
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->togglerAsLink()
+                ->togglerContent('Toggle dropdown')
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
                 ->render(),
         );
     }
 
-    public function testToggleSplitWithLinkAndSizeLarge(): void
+    public function testTogglerSplitWithLinkAndSizeLarge(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1871,17 +1912,17 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleContent('Toggle dropdown')
-                ->toggleSizeLarge()
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->togglerAsLink()
+                ->togglerContent('Toggle dropdown')
+                ->togglerSize(ButtonSize::LARGE)
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
                 ->render(),
         );
     }
 
-    public function testToggleSplitWithLinkAndSizeSmall(): void
+    public function testTogglerSplitWithLinkAndSizeSmall(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1917,12 +1958,12 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleAsLink()
-                ->toggleContent('Toggle dropdown')
-                ->toggleSizeSmall()
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
+                ->togglerAsLink()
+                ->togglerContent('Toggle dropdown')
+                ->togglerSize(ButtonSize::SMALL)
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
                 ->render(),
         );
     }
@@ -1930,7 +1971,7 @@ final class DropdownTest extends TestCase
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#sizing
      */
-    public function testToggleSplitWithSizeSmall(): void
+    public function testTogglerSplitWithSizeSmall(): void
     {
         Assert::equalsWithoutLE(
             <<<HTML
@@ -1966,51 +2007,11 @@ final class DropdownTest extends TestCase
                     DropdownItem::divider(),
                     DropdownItem::link('Separated link', '#'),
                 )
-                ->toggleContent('Toggle dropdown')
-                ->toggleVariant(DropdownToggleVariant::DANGER)
-                ->toggleSplit()
-                ->toggleSplitContent('Danger')
-                ->toggleSizeSmall()
-                ->render(),
-        );
-    }
-
-    public function testToggleTag(): void
-    {
-        Assert::equalsWithoutLE(
-            <<<HTML
-            <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown custom button</button>
-            <ul class="dropdown-menu">
-            <li>
-            <a class="dropdown-item" href="#">Action</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Another action</a>
-            </li>
-            <li>
-            <a class="dropdown-item" href="#">Something else here</a>
-            </li>
-            </ul>
-            </div>
-            HTML,
-            Dropdown::widget()
-                ->items(
-                    DropdownItem::link('Action', '#'),
-                    DropdownItem::link('Another action', '#'),
-                    DropdownItem::link('Something else here', '#'),
-                )
-                ->toggleTag(
-                    Button::tag()
-                        ->addAttributes(
-                            [
-                                'data-bs-toggle' => 'dropdown',
-                                'aria-expanded' => 'false',
-                            ],
-                        )
-                        ->addClass('btn btn-primary dropdown-toggle')
-                        ->content('Dropdown custom button')
-                )
+                ->togglerContent('Toggle dropdown')
+                ->togglerSize(ButtonSize::SMALL)
+                ->togglerSplit()
+                ->togglerSplitContent('Danger')
+                ->togglerVariant(DropdownTogglerVariant::DANGER)
                 ->render(),
         );
     }
