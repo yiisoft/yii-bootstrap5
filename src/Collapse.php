@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
-use Stringable;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
@@ -19,9 +18,27 @@ use function implode;
  *
  * ```php
  * echo Collapse::widget()
- *     ->id('myCollapse')
- *     ->content('Collapse content')
- *     ->togglerContent('Toggle collapse')
+ *     ->containerAttributes(['class' => 'row'])
+ *     ->items(
+ *         CollapseItem::to(
+ *             'Some placeholder content for the first collapse component of this multi-collapse example. ' .
+ *             'This panel is hidden by default but revealed when the user activates the relevant trigger.',
+ *             'multiCollapseExample1',
+ *             togglerContent: 'Toggle first element',
+ *             togglerAsLink: true,
+ *         ),
+ *         CollapseItem::to(
+ *             'Some placeholder content for the second collapse component of this multi-collapse example. ' .
+ *             'This panel is hidden by default but revealed when the user activates the relevant trigger.',
+ *             'multiCollapseExample2',
+ *             togglerContent: 'Toggle second element',
+ *         ),
+ *         CollapseItem::to(
+ *             togglerContent: 'Toggle both elements',
+ *             togglerMultiple: true,
+ *             ariaControls: 'multiCollapseExample1 multiCollapseExample2',
+ *       ),
+ *     )
  *     ->render();
  * ```
  *
@@ -35,8 +52,8 @@ final class Collapse extends Widget
     private const COLLAPSE_MULTIPLE = 'multi-collapse';
     private array $attributes = [];
     private array $cardBodyAttributes = [];
-    private bool $collapseContainer = true;
-    private array $collapseContainerAttributes = [];
+    private bool $container = true;
+    private array $containerAttributes = [];
     private array $cssClasses = [];
     /** @var CollapseItem[] */
     private array $items = [];
@@ -206,19 +223,19 @@ final class Collapse extends Widget
     /**
      * Sets the container for the collapse items.
      *
-     * @param bool $collapseContainer Whether to wrap the collapse items in a container.
+     * @param bool $container Whether to wrap the collapse items in a container.
      *
      * @return self A new instance with the specified container.
      *
      * Example usage:
      * ```php
-     * $collapse->collapseContainer(true);
+     * $collapse->container(true);
      * ```
      */
-    public function collapseContainer(bool $collapseContainer): self
+    public function container(bool $container): self
     {
         $new = clone $this;
-        $new->collapseContainer = $collapseContainer;
+        $new->container = $container;
 
         return $new;
     }
@@ -226,7 +243,7 @@ final class Collapse extends Widget
     /**
      * Sets the HTML attributes for the container of the collapse items.
      *
-     * @param array collapseContainerAttributes Attribute values indexed by attribute names.
+     * @param array containerAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the container of the collapse items.
      *
@@ -234,13 +251,13 @@ final class Collapse extends Widget
      *
      * Example usage:
      * ```php
-     * $collapse->collapseContainerAttributes(['data-id' => '123']);
+     * $collapse->containerAttributes(['data-id' => '123']);
      * ```
      */
-    public function collapseContainerAttributes(array $collapseContainerAttributes): self
+    public function containerAttributes(array $containerAttributes): self
     {
         $new = clone $this;
-        $new->collapseContainerAttributes = $collapseContainerAttributes;
+        $new->containerAttributes = $containerAttributes;
 
         return $new;
     }
@@ -290,104 +307,90 @@ final class Collapse extends Widget
         return $new;
     }
 
+    /**
+     * Run the widget.
+     *
+     * @return string The HTML representation of the element.
+     */
     public function render(): string
     {
         if ($this->items === []) {
             return '';
         }
 
-        return Html::tag($this->togglerContainerTag)
-            ->addAttributes($this->togglerContainerAttributes)
-            ->addContent("\n", $this->renderCollapseItems())
-            ->encode(false)
-            ->render() .
-            "\n" . $this->renderCollapse();
+        $collapse = [];
+        $isMultiple = count($this->items) > 1;
+        $toggler = [];
+
+        foreach ($this->items as $item) {
+            if ($item->getContent() !== '') {
+                $collapseDiv = Div::tag()
+                    ->addClass(self::NAME, ...$this->cssClasses)
+                    ->addAttributes($this->attributes)
+                    ->addContent(
+                        "\n",
+                        Div::tag()
+                            ->addAttributes($this->cardBodyAttributes)
+                            ->addClass(self::CARD, self::CARD_BODY)
+                            ->addContent(
+                                "\n",
+                                $item->getContent(),
+                                "\n"
+                            ),
+                        "\n"
+                    )
+                    ->id($item->getId());
+
+                if ($isMultiple) {
+                    $collapseDiv = $collapseDiv->addClass(self::COLLAPSE_MULTIPLE);
+
+                    if ($item->getTogglerMultiple() === false) {
+                        $collapse[] = Div::tag()->addClass('col')->addContent("\n", $collapseDiv, "\n");
+                    }
+                } else {
+                    $collapse[] = $collapseDiv;
+                }
+            }
+
+            $toggler[] = $item->renderToggler();
+        }
+
+        return $this->renderToggler($toggler) . "\n" . $this->renderCollapse($collapse);
     }
 
-    private function renderCollapse(): string
+    /**
+     * Renders the collapse.
+     *
+     * @param array $collapse The collapse.
+     *
+     * @return string The HTML representation of the element.
+     */
+    private function renderCollapse(array $collapse): string
     {
-        $collapseContent = count($this->items) > 1
-            ? implode("\n", $this->renderCollapseContentMultiple())
-            : $this->renderCollapseContent();
+        $collapseContent = implode("\n", $collapse);
 
-        return $this->collapseContainer
+        return $this->container
             ? Div::tag()
-                ->addAttributes($this->collapseContainerAttributes)
-                ->addContent()
+                ->addAttributes($this->containerAttributes)
                 ->addContent("\n", $collapseContent, "\n")
                 ->encode(false)
                 ->render()
             : $collapseContent;
     }
 
-    private function renderCollapseContent(): Stringable
+    /**
+     * Renders the toggler.
+     *
+     * @param array $toggler The toggler.
+     *
+     * @return string The HTML representation of the element.
+     */
+    private function renderToggler(array $toggler): string
     {
-        $content = '';
-
-        foreach ($this->items as $item) {
-            $content = $item->getContent();
-            $id = $item->getId();
-        }
-
-        return Div::tag()
-            ->addAttributes($this->attributes)
-            ->addClass(self::NAME, ...$this->cssClasses)
-            ->addContent(
-                "\n",
-                Div::tag()
-                    ->addAttributes($this->cardBodyAttributes)
-                    ->addClass(self::CARD, self::CARD_BODY)
-                    ->addContent(
-                        "\n",
-                        $content,
-                        "\n",
-                    ),
-                "\n",
-            )
-            ->id($id);
-    }
-
-    private function renderCollapseContentMultiple(): array
-    {
-        $content = [];
-
-        foreach ($this->items as $item) {
-            if ($item->getTogglerMultiple() === false && $item->getContent() !== '') {
-                $content[] = Div::tag()
-                    ->addClass('col')
-                    ->addContent(
-                        "\n",
-                        Div::tag()
-                            ->addClass(self::NAME, self::COLLAPSE_MULTIPLE, ...$this->cssClasses)
-                            ->addContent(
-                                "\n",
-                                Div::tag()
-                                    ->addAttributes($this->cardBodyAttributes)
-                                    ->addClass(self::CARD, self::CARD_BODY)
-                                    ->addContent(
-                                        "\n",
-                                        $item->getContent(),
-                                        "\n",
-                                    ),
-                                "\n",
-                            )
-                            ->id($item->getId()),
-                        "\n",
-                    );
-            }
-        }
-
-        return $content;
-    }
-
-    public function renderCollapseItems(): string
-    {
-        $items = '';
-
-        foreach ($this->items as $item) {
-            $items .= $item->renderToggler();
-        }
-
-        return $items;
+        return Html::tag($this->togglerContainerTag)
+            ->addAttributes($this->togglerContainerAttributes)
+            ->addContent("\n", implode("\n", $toggler), "\n")
+            ->encode(false)
+            ->render();
     }
 }

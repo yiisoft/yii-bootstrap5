@@ -8,6 +8,35 @@ use InvalidArgumentException;
 use Stringable;
 use Yiisoft\Html\Html;
 
+/**
+ * CollapseItem represents a single collapsible item within a Bootstrap Collapse component.
+ *
+ * Each item consists of a toggler (button/link) that controls the visibility of collapsible content.
+ * The toggler can be rendered as either a button or link, and can control single or multiple collapse targets.
+ *
+ * Example usage:
+ * ```php
+ * // Basic usage
+ * CollapseItem::to(
+ *     'Collapsible content here',
+ *     togglerContent: 'Toggle collapse'
+ * );
+ *
+ * // As a link with custom ID
+ * CollapseItem::to(
+ *     'Collapsible content',
+ *     togglerContent: 'Toggle collapse',
+ *     togglerAsLink: true,
+ *     id: 'customId'
+ * );
+ *
+ * // Multiple collapse control
+ * CollapseItem::to()
+ *     ->togglerMultiple(true)
+ *     ->ariaControls('collapse1 collapse2')
+ *     ->togglerContent('Toggle multiple collapses');
+ * ```
+ */
 final class CollapseItem
 {
     /**
@@ -15,11 +44,10 @@ final class CollapseItem
      */
     private function __construct(
         private string $content,
+        private string|bool $id,
         private string $togglerTag,
         private string $togglerContent,
         private bool $togglerAsLink,
-        private string|bool $id,
-        private array $attributes,
         private array $togglerAttributes,
         private bool $encode,
         private bool $togglerMultiple,
@@ -29,11 +57,10 @@ final class CollapseItem
 
     public static function to(
         string $content = '',
+        string|bool $id = true,
         string $togglerTag = 'button',
         string $togglerContent = '',
         bool $togglerAsLink = false,
-        string|bool $id = true,
-        array $attributes = [],
         array $togglerAttributes = [],
         bool $encode = true,
         bool $togglerMultiple = false,
@@ -41,11 +68,10 @@ final class CollapseItem
     ): self {
         $new = new self(
             $content,
+            $id,
             $togglerTag,
             $togglerContent,
             $togglerAsLink,
-            $id,
-            $attributes,
             $togglerAttributes,
             $encode,
             $togglerMultiple,
@@ -53,6 +79,21 @@ final class CollapseItem
         );
 
         return $new->id($new->getId());
+    }
+
+    /**
+     * Sets the `aria-controls` attribute value for the toggler.
+     *
+     * @param string $ariaControls The `aria-controls` attribute value for the toggler.
+     *
+     * @return self A new instance with the specified `aria-controls` attribute value for the toggler.
+     */
+    public function ariaControls(string $ariaControls): self
+    {
+        $new = clone $this;
+        $new->ariaControls = $ariaControls;
+
+        return $new;
     }
 
     /**
@@ -71,6 +112,21 @@ final class CollapseItem
     }
 
     /**
+     * Sets whether to HTML encode the content.
+     *
+     * @param bool $enabled Whether to HTML encode the content.
+     *
+     * @return self A new instance with the specified encoding behavior.
+     */
+    public function encode(bool $encode): self
+    {
+        $new = clone $this;
+        $new->encode = $encode;
+
+        return $new;
+    }
+
+    /**
      * Generates the ID.
      *
      * @throws InvalidArgumentException if the ID is an empty string or `false`.
@@ -82,7 +138,7 @@ final class CollapseItem
     public function getId(): string
     {
         return match ($this->id) {
-            true => $this->attributes['id'] ?? Html::generateId('collapse-'),
+            true => Html::generateId('collapse-'),
             '', false => throw new InvalidArgumentException('The "id" must be specified.'),
             default => $this->id,
         };
@@ -92,6 +148,8 @@ final class CollapseItem
      * Sets the ID.
      *
      * @param bool|string $id The ID of the component. If `true`, an ID will be generated automatically.
+     *
+     * @throws InvalidArgumentException if the ID is an empty string or `false`.
      *
      * @return self A new instance with the specified ID.
      */
@@ -119,10 +177,16 @@ final class CollapseItem
     /**
      * Render the toggler to be displayed in the collapsible item.
      *
+     * @throws InvalidArgumentException if the toggler tag is an empty string.
+     *
      * @return string The HTML representation of the element.
      */
     public function renderToggler(): string
     {
+        if ($this->togglerTag === '') {
+            throw new InvalidArgumentException('Toggler tag cannot be empty string.');
+        }
+
         $tagName = $this->togglerAsLink ? 'a' : $this->togglerTag;
 
         $togglerAttributes = $this->togglerAttributes;
@@ -139,7 +203,41 @@ final class CollapseItem
             ->attribute('aria-controls', $this->togglerMultiple ? $this->ariaControls : $this->id)
             ->addClass($togglerClasses)
             ->addAttributes($togglerAttributes)
-            ->render() . "\n";
+            ->render();
+    }
+
+    /**
+     * Sets whether the toggler should be rendered as a link.
+     *
+     * @param bool $togglerAsLink Whether to render the toggler as a link.
+     * When true, renders as an `<a>` tag with `role="button"`.
+     * When false, renders as the specified `togglerTag` (defaults to `button`).
+     *
+     * @return self A new instance with the specified toggler as link setting.
+     */
+    public function togglerAsLink(bool $togglerAsLink): self
+    {
+        $new = clone $this;
+        $new->togglerAsLink = $togglerAsLink;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes for the toggler.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the toggler.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function togglerAttributes(array $togglerAttributes): self
+    {
+        $new = clone $this;
+        $new->togglerAttributes = $togglerAttributes;
+
+        return $new;
     }
 
     /**
@@ -148,6 +246,11 @@ final class CollapseItem
      * @param string|Stringable $togglerContent The content to be displayed in the toggler.
      *
      * @return self A new instance with the specified content to be displayed in the toggler.
+     *
+     * Example usage:
+     * ```php
+     * CollapseItem::to()->togglerContent('Toggle collapse');
+     * ```
      */
     public function togglerContent(string|Stringable $togglerContent): self
     {
@@ -157,6 +260,20 @@ final class CollapseItem
         return $new;
     }
 
+    /**
+     * Sets whether the toggler should control multiple collapse items.
+     *
+     * @param bool $togglerMultiple Whether the toggler should control multiple collapse items.
+     * When true, the toggler will target all collapse items with class `.multi-collapse`.
+     * When false, the toggler will only target the collapse item with the specified ID.
+     *
+     * @return self A new instance with the specified toggler multiple setting.
+     *
+     * Example usage:
+     * ```php
+     * CollapseItem::to()->togglerMultiple(true)->ariaControls('collapseOne collapseTwo');
+     * ```
+     */
     public function togglerMultiple(bool $togglerMultiple): self
     {
         $new = clone $this;
@@ -170,7 +287,14 @@ final class CollapseItem
      *
      * @param string $togglerTag The tag name to be used to render the toggler.
      *
+     * @throws InvalidArgumentException if the tag name is an empty string.
+     *
      * @return self A new instance with the specified tag name to be used to render the toggler.
+     *
+     * Example usage:
+     * ```php
+     * CollapseItem::to()->togglerTag('a');
+     * ```
      */
     public function togglerTag(string $togglerTag): self
     {
