@@ -420,7 +420,7 @@ final class DropdownItem
     /**
      * Sets the HTML attributes for the item.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param array $itemAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the item.
      *
@@ -477,11 +477,11 @@ final class DropdownItem
     /**
      * Sets the URL.
      *
-     * @param string|null $url The URL.
+     * @param string $url The URL.
      *
      * @return self A new instance with the specified URL.
      */
-    public function url(string|null $url): self
+    public function url(string $url): self
     {
         $new = clone $this;
         $new->url = $url;
