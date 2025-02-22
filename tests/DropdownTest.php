@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
@@ -1491,6 +1492,38 @@ final class DropdownTest extends TestCase
                 ->togglerId('dropdownDark')
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForDropdownItemWithHeaderAndTagEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The header tag cannot be empty.');
+
+        Dropdown::widget()->items(DropdownItem::header('content', headerTag: ''))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithHeaderAndTagEmptyValueMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The header tag cannot be empty.');
+
+        Dropdown::widget()->items(DropdownItem::header('content')->headerTag(''))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url', active: true, disabled: true))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValueMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url')->active(true)->disabled(true))->render();
     }
 
     public function testToggler(): void

@@ -34,12 +34,12 @@ use InvalidArgumentException;
  */
 final class DropdownItem
 {
-    private const TYPE_BUTTON = 'button';
-    private const TYPE_CUSTOM_CONTENT = 'custom-content';
-    private const TYPE_DIVIDER = 'divider';
-    private const TYPE_HEADER = 'header';
-    private const TYPE_LINK = 'link';
-    private const TYPE_TEXT = 'text';
+    public const TYPE_BUTTON = 'button';
+    public const TYPE_CUSTOM_CONTENT = 'custom-content';
+    public const TYPE_DIVIDER = 'divider';
+    public const TYPE_HEADER = 'header';
+    public const TYPE_LINK = 'link';
+    public const TYPE_TEXT = 'text';
 
     /**
      * Use {@see DropdownItem::button()} to create a new button instance.
@@ -51,14 +51,14 @@ final class DropdownItem
      * @psalm-param non-empty-string $headerTag
      */
     private function __construct(
-        private readonly string $type = '',
-        private readonly string|Stringable $content = '',
-        private readonly string $url = '',
-        private readonly bool $active = false,
-        private readonly bool $disabled = false,
-        private readonly array $attributes = [],
-        private readonly array $itemAttributes = [],
-        private readonly string $headerTag = 'h6',
+        private string $type,
+        private string|Stringable $content,
+        private string $url,
+        private bool $active,
+        private bool $disabled,
+        private array $attributes,
+        private array $itemAttributes,
+        private string $headerTag,
     ) {
     }
 
@@ -86,8 +86,12 @@ final class DropdownItem
         return new self(
             self::TYPE_BUTTON,
             $content,
-            attributes: $attributes,
-            itemAttributes: $itemAttributes,
+            '',
+            false,
+            false,
+            $attributes,
+            $itemAttributes,
+            'h6',
         );
     }
 
@@ -106,7 +110,16 @@ final class DropdownItem
      */
     public static function divider(array $attributes = [], array $itemAttributes = []): self
     {
-        return new self(self::TYPE_DIVIDER, attributes: $attributes, itemAttributes: $itemAttributes);
+        return new self(
+            self::TYPE_DIVIDER,
+            '',
+            '',
+            false,
+            false,
+            $attributes,
+            $itemAttributes,
+            'h6',
+        );
     }
 
     /**
@@ -139,9 +152,12 @@ final class DropdownItem
         return new self(
             self::TYPE_HEADER,
             $content,
-            attributes: $attributes,
-            itemAttributes: $itemAttributes,
-            headerTag: $headerTag,
+            '',
+            false,
+            false,
+            $attributes,
+            $itemAttributes,
+            $headerTag,
         );
     }
 
@@ -176,7 +192,16 @@ final class DropdownItem
             throw new InvalidArgumentException('The dropdown item cannot be active and disabled at the same time.');
         }
 
-        return new self(self::TYPE_LINK, $content, $url, $active, $disabled, $attributes, $itemAttributes);
+        return new self(
+            self::TYPE_LINK,
+            $content,
+            $url,
+            $active,
+            $disabled,
+            $attributes,
+            $itemAttributes,
+            'h6',
+        );
     }
 
     /**
@@ -194,7 +219,16 @@ final class DropdownItem
      */
     public static function listContent(string|Stringable $content = '', array $attributes = []): self
     {
-        return new self(self::TYPE_CUSTOM_CONTENT, $content, attributes: $attributes);
+        return new self(
+            self::TYPE_CUSTOM_CONTENT,
+            $content,
+            '',
+            false,
+            false,
+            $attributes,
+            [],
+            'h6',
+        );
     }
 
     /**
@@ -216,7 +250,86 @@ final class DropdownItem
         array $attributes = [],
         array $itemAttributes = [],
     ): self {
-        return new self(self::TYPE_TEXT, $content, attributes: $attributes, itemAttributes: $itemAttributes);
+        return new self(
+            self::TYPE_TEXT,
+            $content,
+            '',
+            false,
+            false,
+            $attributes,
+            $itemAttributes,
+            'h6',
+        );
+    }
+
+    /**
+     * Sets the active state.
+     *
+     * @param bool $enabled Whether is active or not.
+     *
+     * @return self A new instance with the specified active state.
+     */
+    public function active(bool $enabled): self
+    {
+        if ($enabled && $this->disabled) {
+            throw new InvalidArgumentException('The dropdown item cannot be active and disabled at the same time.');
+        }
+
+        $new = clone $this;
+        $new->active = $enabled;
+
+        return $new;
+    }
+
+    /**
+     * Sets the HTML attributes.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function attributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->attributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the disabled state.
+     *
+     * @param bool $enabled Whether is disabled or not.
+     *
+     * @return self A new instance with the specified disabled state.
+     */
+    public function disabled(bool $enabled): self
+    {
+        if ($enabled && $this->active) {
+            throw new InvalidArgumentException('The dropdown item cannot be active and disabled at the same time.');
+        }
+
+        $new = clone $this;
+        $new->disabled = $enabled;
+
+        return $new;
+    }
+
+    /**
+     * Sets the content.
+     *
+     * @param string|Stringable $content The content.
+     *
+     * @return self A new instance with the specified content.
+     */
+    public function content(string|Stringable $content): self
+    {
+        $new = clone $this;
+        $new->content = $content;
+
+        return $new;
     }
 
     /**
@@ -270,6 +383,25 @@ final class DropdownItem
     }
 
     /**
+     * Sets the header tag.
+     *
+     * @param string $headerTag The header tag.
+     *
+     * @return self A new instance with the specified header tag.
+     */
+    public function headerTag(string $headerTag): self
+    {
+        if ($headerTag === '') {
+            throw new InvalidArgumentException('The header tag cannot be empty.');
+        }
+
+        $new = clone $this;
+        $new->headerTag = $headerTag;
+
+        return $new;
+    }
+
+    /**
      * @return bool Whether the item is active.
      */
     public function isActive(): bool
@@ -283,5 +415,77 @@ final class DropdownItem
     public function isDisabled(): bool
     {
         return $this->disabled;
+    }
+
+    /**
+     * Sets the HTML attributes for the item.
+     *
+     * @param array $attributes Attribute values indexed by attribute names.
+     *
+     * @return self A new instance with the specified attributes for the item.
+     *
+     * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
+     */
+    public function itemAttributes(array $itemAttributes): self
+    {
+        $new = clone $this;
+        $new->itemAttributes = $itemAttributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the type.
+     *
+     * @param string $type The type. Valid values are:
+     * - TYPE_BUTTON: For button-style menu items
+     * - TYPE_CUSTOM_CONTENT: For custom content list items
+     * - TYPE_DIVIDER: For horizontal separators
+     * - TYPE_HEADER: For section headers
+     * - TYPE_LINK: For standard clickable menu items
+     * - TYPE_TEXT: For plain text items
+     *
+     * @throws InvalidArgumentException If an invalid type is provided.
+     *
+     * @return self A new instance with the specified type.
+     */
+    public function type(string $type): self
+    {
+        if (
+            in_array(
+                $type,
+                [
+                    self::TYPE_BUTTON,
+                    self::TYPE_CUSTOM_CONTENT,
+                    self::TYPE_DIVIDER,
+                    self::TYPE_HEADER,
+                    self::TYPE_LINK,
+                    self::TYPE_TEXT,
+                ],
+                true
+            ) === false
+        ) {
+            throw new InvalidArgumentException('Invalid type.');
+        }
+
+        $new = clone $this;
+        $new->type = $type;
+
+        return $new;
+    }
+
+    /**
+     * Sets the URL.
+     *
+     * @param string|null $url The URL.
+     *
+     * @return self A new instance with the specified URL.
+     */
+    public function url(string|null $url): self
+    {
+        $new = clone $this;
+        $new->url = $url;
+
+        return $new;
     }
 }
