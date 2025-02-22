@@ -1145,6 +1145,32 @@ final class DropdownTest extends TestCase
                 )
                 ->render(),
         );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item active" href="#" aria-current="true">Active link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Active link', '#')->active(true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
     }
 
     /**
@@ -1173,6 +1199,32 @@ final class DropdownTest extends TestCase
                 ->items(
                     DropdownItem::link('Regular link', '#'),
                     DropdownItem::link('Disabled link', '#', disabled: true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item disabled" href="#" aria-disabled="true">Disabled link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Disabled link', '#')->disabled(true),
                     DropdownItem::link('Another link', '#'),
                 )
                 ->render(),
