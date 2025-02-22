@@ -272,10 +272,7 @@ final class Accordion extends Widget
      */
     public function flush(bool $enabled = true): self
     {
-        $new = clone $this;
-        $new->cssClasses['flush'] = $enabled ? 'accordion-flush' : null;
-
-        return $new;
+        return $this->addClass($enabled ? 'accordion-flush' : null);
     }
 
     /**

@@ -136,10 +136,7 @@ final class Breadcrumbs extends Widget
      */
     public function ariaLabel(string $label): self
     {
-        $new = clone $this;
-        $new->attributes['aria-label'] = $label;
-
-        return $new;
+        return $this->attribute('aria-label', $label);
     }
 
     /**
@@ -228,10 +225,7 @@ final class Breadcrumbs extends Widget
             throw new InvalidArgumentException('The "divider" cannot be empty.');
         }
 
-        $new = clone $this;
-        $new->attributes['style'] = ['--bs-breadcrumb-divider' => sprintf("'%s'", $content)];
-
-        return $new;
+        return $this->attribute('style', ['--bs-breadcrumb-divider' => sprintf("'%s'", $content)]);
     }
 
     /**
