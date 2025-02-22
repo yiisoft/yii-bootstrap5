@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use Yiisoft\Yii\Bootstrap5\Collapse;
 use Yiisoft\Yii\Bootstrap5\CollapseItem;
@@ -413,7 +414,7 @@ final class CollapseTest extends TestCase
 
     public function testThrowExceptionForTogglerTagEmptyValue(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Toggler tag cannot be empty string.');
 
         Collapse::widget()->items(CollapseItem::to()->togglerTag(''))->render();
