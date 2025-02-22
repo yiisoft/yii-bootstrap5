@@ -1533,7 +1533,6 @@ final class DropdownTest extends TestCase
         );
     }
 
-
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#dropdown-options
      */
