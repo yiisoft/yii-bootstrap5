@@ -75,7 +75,7 @@ final class CollapseTest extends TestCase
                 ->items(
                     CollapseItem::to(
                         'This is some placeholder content for a horizontal collapse. ' .
-                        'It\'s hidden by default and shown when triggered.',
+                        "It's hidden by default and shown when triggered.",
                         togglerContent: 'Toggle width collapse',
                         id: 'collapseExample',
                     ),
@@ -139,7 +139,7 @@ final class CollapseTest extends TestCase
         );
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertEmpty(Collapse::widget()->render());
     }
