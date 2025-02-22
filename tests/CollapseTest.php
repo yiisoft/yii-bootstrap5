@@ -411,12 +411,23 @@ final class CollapseTest extends TestCase
         $this->assertEmpty(Collapse::widget()->render());
     }
 
-    public function testThrowExceptionForTogglerTagEmptyValue(): void
+    public function testThrowExceptionForCollapseItemWithTogglerTagEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Toggler tag cannot be empty string.');
 
         Collapse::widget()->items(CollapseItem::to()->togglerTag(''))->render();
+    }
+
+    public function testThrowExceptionForTogglerContainerTagEmptyValue(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Toggler container tag cannot be empty string.');
+
+        Collapse::widget()
+            ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+            ->togglerContainerTag('')
+            ->render();
     }
 
     public function testTogglerContainerAttributes(): void
@@ -437,6 +448,28 @@ final class CollapseTest extends TestCase
             Collapse::widget()
                 ->items(CollapseItem::to('Collapsible', 'collapseExample'))
                 ->togglerContainerAttributes(['class' => 'd-inline-flex gap-1'])
+                ->render(),
+        );
+    }
+
+    public function testTogglerContainerTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></button>
+            </div>
+            <div>
+            <div id="collapseExample" class="collapse">
+            <div class="card card-body">
+            Collapsible
+            </div>
+            </div>
+            </div>
+            HTML,
+            Collapse::widget()
+                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->togglerContainerTag('div')
                 ->render(),
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 use BackedEnum;
+use InvalidArgumentException;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
@@ -178,7 +179,7 @@ final class Collapse extends Widget
     /**
      * Sets the HTML attributes for the card body.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param array $cardBodyAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the card body.
      *
@@ -308,6 +309,26 @@ final class Collapse extends Widget
     }
 
     /**
+     * Sets the tag for the container of the toggler.
+     *
+     * @param string $togglerContainerTag The tag for the container of the toggler.
+     *
+     * @return self A new instance with the specified tag for the container of the toggler.
+     *
+     * Example usage:
+     * ```php
+     * $collapse->togglerTag('div');
+     * ```
+     */
+    public function togglerContainerTag(string $togglerContainerTag): self
+    {
+        $new = clone $this;
+        $new->togglerContainerTag = $togglerContainerTag;
+
+        return $new;
+    }
+
+    /**
      * Run the widget.
      *
      * @return string The HTML representation of the element.
@@ -387,6 +408,10 @@ final class Collapse extends Widget
      */
     private function renderToggler(array $toggler): string
     {
+        if ($this->togglerContainerTag === '') {
+            throw new InvalidArgumentException('Toggler container tag cannot be empty string.');
+        }
+
         return Html::tag($this->togglerContainerTag)
             ->addAttributes($this->togglerContainerAttributes)
             ->addContent("\n", implode("\n", $toggler), "\n")

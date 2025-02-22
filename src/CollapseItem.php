@@ -226,7 +226,7 @@ final class CollapseItem
     /**
      * Sets the HTML attributes for the toggler.
      *
-     * @param array $attributes Attribute values indexed by attribute names.
+     * @param array $togglerAttributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the toggler.
      *
@@ -255,7 +255,7 @@ final class CollapseItem
     public function togglerContent(string|Stringable $togglerContent): self
     {
         $new = clone $this;
-        $new->togglerContent = $togglerContent;
+        $new->togglerContent = (string) $togglerContent;
 
         return $new;
     }
