@@ -368,7 +368,7 @@ final class DropdownItem
     }
 
     /**
-     * @return string The type.
+     * @return DropdownItemType The type.
      */
     public function getType(): DropdownItemType
     {
@@ -430,7 +430,7 @@ final class DropdownItem
     /**
      * Sets the type.
      *
-     * @param string $type The type.
+     * @param DropdownItemType $type The type.
      *
      * @return self A new instance with the specified type.
      */
