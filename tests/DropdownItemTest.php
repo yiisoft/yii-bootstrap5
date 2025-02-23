@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
+use Yiisoft\Yii\Bootstrap5\DropdownItemType;
 
 /**
  * Tests for `DropdownItem`.
@@ -20,7 +21,7 @@ final class DropdownItemTest extends TestCase
     {
         $button = DropdownItem::button('content');
 
-        $this->assertSame('button', $button->getType());
+        $this->assertSame(DropdownItemType::BUTTON, $button->getType());
         $this->assertSame('content', $button->getContent());
         $this->assertFalse($button->isActive());
         $this->assertFalse($button->isDisabled());
@@ -33,7 +34,7 @@ final class DropdownItemTest extends TestCase
     {
         $divider = DropdownItem::divider();
 
-        $this->assertSame('divider', $divider->getType());
+        $this->assertSame(DropdownItemType::DIVIDER, $divider->getType());
         $this->assertSame('', $divider->getContent());
         $this->assertFalse($divider->isActive());
         $this->assertFalse($divider->isDisabled());
@@ -46,7 +47,7 @@ final class DropdownItemTest extends TestCase
     {
         $header = DropdownItem::header('content');
 
-        $this->assertSame('header', $header->getType());
+        $this->assertSame(DropdownItemType::HEADER, $header->getType());
         $this->assertSame('content', $header->getContent());
         $this->assertFalse($header->isActive());
         $this->assertFalse($header->isDisabled());
@@ -65,7 +66,7 @@ final class DropdownItemTest extends TestCase
         $this->assertNotSame($dropdownItem, $dropdownItem->disabled(false));
         $this->assertNotSame($dropdownItem, $dropdownItem->headerTag('h1'));
         $this->assertNotSame($dropdownItem, $dropdownItem->itemAttributes([]));
-        $this->assertNotSame($dropdownItem, $dropdownItem->type(DropdownItem::TYPE_BUTTON));
+        $this->assertNotSame($dropdownItem, $dropdownItem->type(DropdownItemType::BUTTON));
         $this->assertNotSame($dropdownItem, $dropdownItem->url(''));
     }
 
@@ -73,7 +74,7 @@ final class DropdownItemTest extends TestCase
     {
         $link = DropdownItem::link('content');
 
-        $this->assertSame('link', $link->getType());
+        $this->assertSame(DropdownItemType::LINK, $link->getType());
         $this->assertSame('content', $link->getContent());
         $this->assertFalse($link->isActive());
         $this->assertFalse($link->isDisabled());
@@ -86,7 +87,7 @@ final class DropdownItemTest extends TestCase
     {
         $listContent = DropdownItem::listContent('content');
 
-        $this->assertSame('custom-content', $listContent->getType());
+        $this->assertSame(DropdownItemType::CUSTOM_CONTENT, $listContent->getType());
         $this->assertSame('content', $listContent->getContent());
         $this->assertFalse($listContent->isActive());
         $this->assertFalse($listContent->isDisabled());
@@ -99,7 +100,7 @@ final class DropdownItemTest extends TestCase
     {
         $text = DropdownItem::text('content');
 
-        $this->assertSame('text', $text->getType());
+        $this->assertSame(DropdownItemType::TEXT, $text->getType());
         $this->assertSame('content', $text->getContent());
         $this->assertFalse($text->isActive());
         $this->assertFalse($text->isDisabled());

@@ -34,13 +34,6 @@ use InvalidArgumentException;
  */
 final class DropdownItem
 {
-    public const TYPE_BUTTON = 'button';
-    public const TYPE_CUSTOM_CONTENT = 'custom-content';
-    public const TYPE_DIVIDER = 'divider';
-    public const TYPE_HEADER = 'header';
-    public const TYPE_LINK = 'link';
-    public const TYPE_TEXT = 'text';
-
     /**
      * Use {@see DropdownItem::button()} to create a new button instance.
      * Use {@see DropdownItem::divider()} to create a new divider instance.
@@ -51,7 +44,7 @@ final class DropdownItem
      * @psalm-param non-empty-string $headerTag
      */
     private function __construct(
-        private string $type,
+        private DropdownItemType $type,
         private string|Stringable $content,
         private string $url,
         private bool $active,
@@ -84,7 +77,7 @@ final class DropdownItem
         array $itemAttributes = [],
     ): self {
         return new self(
-            self::TYPE_BUTTON,
+            DropdownItemType::BUTTON,
             $content,
             '',
             false,
@@ -111,7 +104,7 @@ final class DropdownItem
     public static function divider(array $attributes = [], array $itemAttributes = []): self
     {
         return new self(
-            self::TYPE_DIVIDER,
+            DropdownItemType::DIVIDER,
             '',
             '',
             false,
@@ -150,7 +143,7 @@ final class DropdownItem
         }
 
         return new self(
-            self::TYPE_HEADER,
+            DropdownItemType::HEADER,
             $content,
             '',
             false,
@@ -193,7 +186,7 @@ final class DropdownItem
         }
 
         return new self(
-            self::TYPE_LINK,
+            DropdownItemType::LINK,
             $content,
             $url,
             $active,
@@ -220,7 +213,7 @@ final class DropdownItem
     public static function listContent(string|Stringable $content = '', array $attributes = []): self
     {
         return new self(
-            self::TYPE_CUSTOM_CONTENT,
+            DropdownItemType::CUSTOM_CONTENT,
             $content,
             '',
             false,
@@ -251,7 +244,7 @@ final class DropdownItem
         array $itemAttributes = [],
     ): self {
         return new self(
-            self::TYPE_TEXT,
+            DropdownItemType::TEXT,
             $content,
             '',
             false,
@@ -341,7 +334,7 @@ final class DropdownItem
     }
 
     /**
-     * @return string|Stringable The content of the dropdown item.
+     * @return string|Stringable The content.
      */
     public function getContent(): string|Stringable
     {
@@ -349,7 +342,7 @@ final class DropdownItem
     }
 
     /**
-     * @return string The header tag for the dropdown item.
+     * @return string The header tag.
      *
      * @psalm-return non-empty-string
      */
@@ -359,7 +352,7 @@ final class DropdownItem
     }
 
     /**
-     * @return array The HTML attributes for the item tag.
+     * @return array The HTML attributes for the item.
      */
     public function getItemAttributes(): array
     {
@@ -367,7 +360,7 @@ final class DropdownItem
     }
 
     /**
-     * @return string The URL for the dropdown item.
+     * @return string The URL.
      */
     public function getUrl(): string
     {
@@ -375,9 +368,9 @@ final class DropdownItem
     }
 
     /**
-     * @return string The type of the dropdown item.
+     * @return string The type.
      */
-    public function getType(): string
+    public function getType(): DropdownItemType
     {
         return $this->type;
     }
@@ -385,18 +378,18 @@ final class DropdownItem
     /**
      * Sets the header tag.
      *
-     * @param string $headerTag The header tag.
+     * @param string $tag The header tag.
      *
      * @return self A new instance with the specified header tag.
      */
-    public function headerTag(string $headerTag): self
+    public function headerTag(string $tag): self
     {
-        if ($headerTag === '') {
+        if ($tag === '') {
             throw new InvalidArgumentException('The header tag cannot be empty.');
         }
 
         $new = clone $this;
-        $new->headerTag = $headerTag;
+        $new->headerTag = $tag;
 
         return $new;
     }
@@ -420,16 +413,16 @@ final class DropdownItem
     /**
      * Sets the HTML attributes for the item.
      *
-     * @param array $itemAttributes Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the item.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function itemAttributes(array $itemAttributes): self
+    public function itemAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->itemAttributes = $itemAttributes;
+        $new->itemAttributes = $attributes;
 
         return $new;
     }
@@ -437,37 +430,12 @@ final class DropdownItem
     /**
      * Sets the type.
      *
-     * @param string $type The type. Valid values are:
-     * - TYPE_BUTTON: For button-style menu items
-     * - TYPE_CUSTOM_CONTENT: For custom content list items
-     * - TYPE_DIVIDER: For horizontal separators
-     * - TYPE_HEADER: For section headers
-     * - TYPE_LINK: For standard clickable menu items
-     * - TYPE_TEXT: For plain text items
-     *
-     * @throws InvalidArgumentException If an invalid type is provided.
+     * @param string $type The type.
      *
      * @return self A new instance with the specified type.
      */
-    public function type(string $type): self
+    public function type(DropdownItemType $type): self
     {
-        if (
-            in_array(
-                $type,
-                [
-                    self::TYPE_BUTTON,
-                    self::TYPE_CUSTOM_CONTENT,
-                    self::TYPE_DIVIDER,
-                    self::TYPE_HEADER,
-                    self::TYPE_LINK,
-                    self::TYPE_TEXT,
-                ],
-                true
-            ) === false
-        ) {
-            throw new InvalidArgumentException('Invalid type.');
-        }
-
         $new = clone $this;
         $new->type = $type;
 

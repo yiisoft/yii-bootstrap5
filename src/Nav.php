@@ -399,7 +399,11 @@ final class Nav extends Widget
         $items = $dropdown->getItems();
 
         foreach ($items as $key => $value) {
-            if ($this->activateItems && $value->getType() === 'link' && $value->getUrl() === $this->currentPath) {
+            if (
+                $this->activateItems &&
+                $value->getType() === DropdownItemType::LINK &&
+                $value->getUrl() === $this->currentPath
+            ) {
                 $items[$key] = DropdownItem::link($value->getContent(), $value->getUrl(), active: true);
             }
         }
