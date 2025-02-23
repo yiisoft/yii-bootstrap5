@@ -6,8 +6,12 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
+use Yiisoft\Definitions\Exception\CircularReferenceException;
+use Yiisoft\Definitions\Exception\InvalidConfigException;
+use Yiisoft\Definitions\Exception\NotInstantiableException;
+use Yiisoft\Factory\NotFoundException;
 use Yiisoft\Yii\Bootstrap5\Collapse;
-use Yiisoft\Yii\Bootstrap5\CollapseItem;
+use Yiisoft\Yii\Bootstrap5\Toggler;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
@@ -31,7 +35,7 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->addAttributes(['data-id' => '123'])
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -40,7 +44,7 @@ final class CollapseTest extends TestCase
     {
         $collapse = Collapse::widget()
             ->addClass('test-class', null, BackgroundColor::PRIMARY)
-            ->items(CollapseItem::to('Collapsible', 'collapseExample'));
+            ->items(Toggler::for('Collapsible', 'collapseExample'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -79,7 +83,7 @@ final class CollapseTest extends TestCase
     {
         $collapse = Collapse::widget()
             ->addCssStyle('color: red;')
-            ->items(CollapseItem::to('Collapsible', 'collapseExample'));
+            ->items(Toggler::for('Collapsible', 'collapseExample'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -118,7 +122,7 @@ final class CollapseTest extends TestCase
     {
         $collapse = Collapse::widget()
             ->addCssStyle('color: red;')
-            ->items(CollapseItem::to('Collapsible', 'collapseExample'));
+            ->items(Toggler::for('Collapsible', 'collapseExample'));
 
         Assert::equalsWithoutLE(
             <<<HTML
@@ -170,7 +174,7 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->attribute('data-id', '123')
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -192,7 +196,7 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->attributes(['class' => 'test-class'])
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -215,7 +219,7 @@ final class CollapseTest extends TestCase
             Collapse::widget()
                 ->addClass('test-class')
                 ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -237,7 +241,7 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->containerAttributes(['style' => 'min-height: 120px;'])
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -257,7 +261,7 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->container(false)
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->render(),
         );
     }
@@ -285,14 +289,14 @@ final class CollapseTest extends TestCase
             HTML,
             Collapse::widget()
                 ->items(
-                    CollapseItem::to(
+                    Toggler::for(
                         'Some placeholder content for the collapse component. ' .
                         'This panel is hidden by default but revealed when the user activates the relevant trigger.',
                         'collapseExample',
                         togglerContent: 'Link with href',
                         togglerAsLink: true,
                     ),
-                    CollapseItem::to(
+                    Toggler::for(
                         id: 'collapseExample',
                         togglerContent: 'Button with data-bs-target',
                     ),
@@ -325,7 +329,7 @@ final class CollapseTest extends TestCase
                 ->cardBodyAttributes(['style' => 'width: 300px;'])
                 ->containerAttributes(['style' => 'min-height: 120px;'])
                 ->items(
-                    CollapseItem::to(
+                    Toggler::for(
                         'This is some placeholder content for a horizontal collapse. ' .
                         "It's hidden by default and shown when triggered.",
                         'collapseExample',
@@ -348,7 +352,7 @@ final class CollapseTest extends TestCase
         $this->assertNotSame($collapse, $collapse->class(''));
         $this->assertNotSame($collapse, $collapse->container(false));
         $this->assertNotSame($collapse, $collapse->containerAttributes([]));
-        $this->assertNotSame($collapse, $collapse->items(CollapseItem::to()));
+        $this->assertNotSame($collapse, $collapse->items(Toggler::for()));
         $this->assertNotSame($collapse, $collapse->togglerContainerAttributes([]));
     }
 
@@ -384,20 +388,20 @@ final class CollapseTest extends TestCase
             Collapse::widget()
                 ->containerAttributes(['class' => 'row'])
                 ->items(
-                    CollapseItem::to(
+                    Toggler::for(
                         'Some placeholder content for the first collapse component of this multi-collapse example. ' .
                         'This panel is hidden by default but revealed when the user activates the relevant trigger.',
                         'multiCollapseExample1',
                         togglerContent: 'Toggle first element',
                         togglerAsLink: true,
                     ),
-                    CollapseItem::to(
+                    Toggler::for(
                         'Some placeholder content for the second collapse component of this multi-collapse example. ' .
                         'This panel is hidden by default but revealed when the user activates the relevant trigger.',
                         'multiCollapseExample2',
                         togglerContent: 'Toggle second element',
                     ),
-                    CollapseItem::to(
+                    Toggler::for(
                         togglerContent: 'Toggle both elements',
                         togglerMultiple: true,
                         ariaControls: 'multiCollapseExample1 multiCollapseExample2',
@@ -417,7 +421,7 @@ final class CollapseTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Toggler tag cannot be empty string.');
 
-        Collapse::widget()->items(CollapseItem::to()->togglerTag(''))->render();
+        Collapse::widget()->items(Toggler::for()->togglerTag(''))->render();
     }
 
     public function testThrowExceptionForTogglerContainerTagEmptyValue(): void
@@ -426,7 +430,7 @@ final class CollapseTest extends TestCase
         $this->expectExceptionMessage('Toggler container tag cannot be empty string.');
 
         Collapse::widget()
-            ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+            ->items(Toggler::for('Collapsible', 'collapseExample'))
             ->togglerContainerTag('')
             ->render();
     }
@@ -447,7 +451,7 @@ final class CollapseTest extends TestCase
             </div>
             HTML,
             Collapse::widget()
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->togglerContainerAttributes(['class' => 'd-inline-flex gap-1'])
                 ->render(),
         );
@@ -469,7 +473,7 @@ final class CollapseTest extends TestCase
             </div>
             HTML,
             Collapse::widget()
-                ->items(CollapseItem::to('Collapsible', 'collapseExample'))
+                ->items(Toggler::for('Collapsible', 'collapseExample'))
                 ->togglerContainerTag('div')
                 ->render(),
         );

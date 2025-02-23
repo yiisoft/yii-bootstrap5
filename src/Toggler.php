@@ -9,7 +9,7 @@ use Stringable;
 use Yiisoft\Html\Html;
 
 /**
- * CollapseItem represents a single collapsible item within a Bootstrap Collapse component.
+ * Toggler represents a single collapsible item within a Bootstrap Collapse component.
  *
  * Each item consists of a toggler (button/link) that controls the visibility of collapsible content.
  * The toggler can be rendered as either a button or link, and can control single or multiple collapse targets.
@@ -17,13 +17,13 @@ use Yiisoft\Html\Html;
  * Example usage:
  * ```php
  * // Basic usage
- * CollapseItem::to(
+ * Toggler::for(
  *     'Collapsible content here',
  *     togglerContent: 'Toggle collapse'
  * );
  *
  * // As a link with custom ID
- * CollapseItem::to(
+ * Toggler::for(
  *     'Collapsible content',
  *     togglerContent: 'Toggle collapse',
  *     togglerAsLink: true,
@@ -31,16 +31,16 @@ use Yiisoft\Html\Html;
  * );
  *
  * // Multiple collapse control
- * CollapseItem::to()
+ * Toggler::for()
  *     ->togglerMultiple(true)
  *     ->ariaControls('collapse1 collapse2')
  *     ->togglerContent('Toggle multiple collapses');
  * ```
  */
-final class CollapseItem
+final class Toggler
 {
     /**
-     * Use {@see CollapseItem::to()} to create an instance.
+     * Use {@see Toggler::for()} to create an instance.
      */
     private function __construct(
         private string $content,
@@ -55,7 +55,7 @@ final class CollapseItem
     ) {
     }
 
-    public static function to(
+    public static function for(
         string $content = '',
         string|bool $id = true,
         string $togglerTag = 'button',
@@ -118,10 +118,10 @@ final class CollapseItem
      *
      * @return self A new instance with the specified encoding behavior.
      */
-    public function encode(bool $encode): self
+    public function encode(bool $enabled): self
     {
         $new = clone $this;
-        $new->encode = $encode;
+        $new->encode = $enabled;
 
         return $new;
     }
@@ -209,16 +209,16 @@ final class CollapseItem
     /**
      * Sets whether the toggler should be rendered as a link.
      *
-     * @param bool $togglerAsLink Whether to render the toggler as a link.
-     * When true, renders as an `<a>` tag with `role="button"`.
+     * @param bool $enabled Whether to render the toggler as a link.
+     * When true, render as an `<a>` tag with `role="button"`.
      * When false, renders as the specified `togglerTag` (defaults to `button`).
      *
      * @return self A new instance with the specified toggler as link setting.
      */
-    public function togglerAsLink(bool $togglerAsLink): self
+    public function togglerAsLink(bool $enabled): self
     {
         $new = clone $this;
-        $new->togglerAsLink = $togglerAsLink;
+        $new->togglerAsLink = $enabled;
 
         return $new;
     }
@@ -226,16 +226,16 @@ final class CollapseItem
     /**
      * Sets the HTML attributes for the toggler.
      *
-     * @param array $togglerAttributes Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the toggler.
      *
      * @see {\Yiisoft\Html\Html::renderTagAttributes()} for details on how attributes are being rendered.
      */
-    public function togglerAttributes(array $togglerAttributes): self
+    public function togglerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->togglerAttributes = $togglerAttributes;
+        $new->togglerAttributes = $attributes;
 
         return $new;
     }
@@ -243,19 +243,19 @@ final class CollapseItem
     /**
      * Sets the content to be displayed in the toggler.
      *
-     * @param string|Stringable $togglerContent The content to be displayed in the toggler.
+     * @param string|Stringable $content The content to be displayed in the toggler.
      *
      * @return self A new instance with the specified content to be displayed in the toggler.
      *
      * Example usage:
      * ```php
-     * CollapseItem::to()->togglerContent('Toggle collapse');
+     * Toggler::to()->togglerContent('Toggle collapse');
      * ```
      */
-    public function togglerContent(string|Stringable $togglerContent): self
+    public function togglerContent(string|Stringable $content): self
     {
         $new = clone $this;
-        $new->togglerContent = (string) $togglerContent;
+        $new->togglerContent = (string) $content;
 
         return $new;
     }
@@ -263,7 +263,7 @@ final class CollapseItem
     /**
      * Sets whether the toggler should control multiple collapse items.
      *
-     * @param bool $togglerMultiple Whether the toggler should control multiple collapse items.
+     * @param bool $enabled Whether the toggler should control multiple collapse items.
      * When true, the toggler will target all collapse items with class `.multi-collapse`.
      * When false, the toggler will only target the collapse item with the specified ID.
      *
@@ -271,13 +271,13 @@ final class CollapseItem
      *
      * Example usage:
      * ```php
-     * CollapseItem::to()->togglerMultiple(true)->ariaControls('collapseOne collapseTwo');
+     * Toggler::to()->togglerMultiple(true)->ariaControls('collapseOne collapseTwo');
      * ```
      */
-    public function togglerMultiple(bool $togglerMultiple): self
+    public function togglerMultiple(bool $enabled): self
     {
         $new = clone $this;
-        $new->togglerMultiple = $togglerMultiple;
+        $new->togglerMultiple = $enabled;
 
         return $new;
     }
@@ -285,7 +285,7 @@ final class CollapseItem
     /**
      * Sets the tag name to be used to render the toggler.
      *
-     * @param string $togglerTag The tag name to be used to render the toggler.
+     * @param string $tag The tag name to be used to render the toggler.
      *
      * @throws InvalidArgumentException if the tag name is an empty string.
      *
@@ -293,13 +293,13 @@ final class CollapseItem
      *
      * Example usage:
      * ```php
-     * CollapseItem::to()->togglerTag('a');
+     * Toggler::to()->togglerTag('a');
      * ```
      */
-    public function togglerTag(string $togglerTag): self
+    public function togglerTag(string $tag): self
     {
         $new = clone $this;
-        $new->togglerTag = $togglerTag;
+        $new->togglerTag = $tag;
 
         return $new;
     }

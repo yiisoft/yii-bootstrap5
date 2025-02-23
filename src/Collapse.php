@@ -21,20 +21,20 @@ use function implode;
  * echo Collapse::widget()
  *     ->containerAttributes(['class' => 'row'])
  *     ->items(
- *         CollapseItem::to(
+ *         Toggler::to(
  *             'Some placeholder content for the first collapse component of this multi-collapse example. ' .
  *             'This panel is hidden by default but revealed when the user activates the relevant trigger.',
  *             'multiCollapseExample1',
  *             togglerContent: 'Toggle first element',
  *             togglerAsLink: true,
  *         ),
- *         CollapseItem::to(
+ *         Toggler::to(
  *             'Some placeholder content for the second collapse component of this multi-collapse example. ' .
  *             'This panel is hidden by default but revealed when the user activates the relevant trigger.',
  *             'multiCollapseExample2',
  *             togglerContent: 'Toggle second element',
  *         ),
- *         CollapseItem::to(
+ *         Toggler::to(
  *             togglerContent: 'Toggle both elements',
  *             togglerMultiple: true,
  *             ariaControls: 'multiCollapseExample1 multiCollapseExample2',
@@ -56,7 +56,7 @@ final class Collapse extends Widget
     private bool $container = true;
     private array $containerAttributes = [];
     private array $cssClasses = [];
-    /** @var CollapseItem[] */
+    /** @var Toggler[] */
     private array $items = [];
     private string $togglerContainerTag = 'p';
     private array $togglerContainerAttributes = [];
@@ -109,9 +109,10 @@ final class Collapse extends Widget
     /**
      * Adds a CSS style.
      *
-     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
-     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
-     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If it is an array, the values will be separated by a space. If it is a
+     * string, it will be added as is. For example, `color: red`. If the value is an array, the values will be separated
+     * by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as
+     * `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
@@ -179,7 +180,7 @@ final class Collapse extends Widget
     /**
      * Sets the HTML attributes for the card body.
      *
-     * @param array $cardBodyAttributes Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the card body.
      *
@@ -190,10 +191,10 @@ final class Collapse extends Widget
      * $collapse->cardBodyAttributes(['data-id' => '123']);
      * ```
      */
-    public function cardBodyAttributes(array $cardBodyAttributes): self
+    public function cardBodyAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->cardBodyAttributes = $cardBodyAttributes;
+        $new->cardBodyAttributes = $attributes;
 
         return $new;
     }
@@ -224,7 +225,7 @@ final class Collapse extends Widget
     /**
      * Sets the container for the collapse items.
      *
-     * @param bool $container Whether to wrap the collapse items in a container.
+     * @param bool $enabled Whether to wrap the collapse items in a container.
      *
      * @return self A new instance with the specified container.
      *
@@ -233,10 +234,10 @@ final class Collapse extends Widget
      * $collapse->container(true);
      * ```
      */
-    public function container(bool $container): self
+    public function container(bool $enabled): self
     {
         $new = clone $this;
-        $new->container = $container;
+        $new->container = $enabled;
 
         return $new;
     }
@@ -244,7 +245,7 @@ final class Collapse extends Widget
     /**
      * Sets the HTML attributes for the container of the collapse items.
      *
-     * @param array containerAttributes Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the container of the collapse items.
      *
@@ -255,10 +256,10 @@ final class Collapse extends Widget
      * $collapse->containerAttributes(['data-id' => '123']);
      * ```
      */
-    public function containerAttributes(array $containerAttributes): self
+    public function containerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->containerAttributes = $containerAttributes;
+        $new->containerAttributes = $attributes;
 
         return $new;
     }
@@ -266,19 +267,19 @@ final class Collapse extends Widget
     /**
      * Sets the items.
      *
-     * @param CollapseItem ...$items The items.
+     * @param Toggler ...$items The items.
      *
      * @return self A new instance with the specified items.
      *
      * Example usage:
      * ```php
      * $collapse->items(
-     *     CollapseItem::widget('Item 1'),
-     *     CollapseItem::widget()->content('Item 2'),
+     *     Toggler::widget('Item 1'),
+     *     Toggler::widget()->content('Item 2'),
      * );
      * ```
      */
-    public function items(CollapseItem ...$items): self
+    public function items(Toggler ...$items): self
     {
         $new = clone $this;
         $new->items = $items;
@@ -289,7 +290,7 @@ final class Collapse extends Widget
     /**
      * Sets the HTML attributes for the container of the toggler.
      *
-     * @param array collapseContainerAttributes Attribute values indexed by attribute names.
+     * @param array $attributes Attribute values indexed by attribute names.
      *
      * @return self A new instance with the specified attributes for the container of the toggler.
      *
@@ -300,10 +301,10 @@ final class Collapse extends Widget
      * $collapse->togglerContainerAttributes(['data-id' => '123']);
      * ```
      */
-    public function togglerContainerAttributes(array $togglerContainerAttributes): self
+    public function togglerContainerAttributes(array $attributes): self
     {
         $new = clone $this;
-        $new->togglerContainerAttributes = $togglerContainerAttributes;
+        $new->togglerContainerAttributes = $attributes;
 
         return $new;
     }
@@ -311,19 +312,19 @@ final class Collapse extends Widget
     /**
      * Sets the tag for the container of the toggler.
      *
-     * @param string $togglerContainerTag The tag for the container of the toggler.
+     * @param string $tag The tag for the container of the toggler.
      *
      * @return self A new instance with the specified tag for the container of the toggler.
      *
      * Example usage:
      * ```php
-     * $collapse->togglerTag('div');
+     * $collapse->togglerContainerTag('div');
      * ```
      */
-    public function togglerContainerTag(string $togglerContainerTag): self
+    public function togglerContainerTag(string $tag): self
     {
         $new = clone $this;
-        $new->togglerContainerTag = $togglerContainerTag;
+        $new->togglerContainerTag = $tag;
 
         return $new;
     }
@@ -376,7 +377,7 @@ final class Collapse extends Widget
             $toggler[] = $item->renderToggler();
         }
 
-        return $this->renderToggler($toggler) . "\n" . $this->renderCollapse($collapse);
+        return $this->renderTogglerContainer($toggler) . "\n" . $this->renderCollapse($collapse);
     }
 
     /**
@@ -400,13 +401,13 @@ final class Collapse extends Widget
     }
 
     /**
-     * Renders the toggler.
+     * Renders the toggler container.
      *
      * @param array $toggler The toggler.
      *
      * @return string The HTML representation of the element.
      */
-    private function renderToggler(array $toggler): string
+    private function renderTogglerContainer(array $toggler): string
     {
         if ($this->togglerContainerTag === '') {
             throw new InvalidArgumentException('Toggler container tag cannot be empty string.');
