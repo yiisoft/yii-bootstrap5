@@ -691,12 +691,12 @@ final class Dropdown extends Widget
     private function renderItem(DropdownItem $item): Li
     {
         return match ($item->getType()) {
-            'button' => $this->renderItemButton($item),
-            'custom-content' => $this->renderListContentItem($item),
-            'divider' => $this->renderItemDivider($item),
-            'header' => $this->renderItemHeader($item),
-            'link' => $this->renderItemLink($item),
-            'text' => $this->renderItemText($item),
+            DropdownItemType::BUTTON => $this->renderItemButton($item),
+            DropdownItemType::CUSTOM_CONTENT => $this->renderListContentItem($item),
+            DropdownItemType::DIVIDER => $this->renderItemDivider($item),
+            DropdownItemType::HEADER => $this->renderItemHeader($item),
+            DropdownItemType::LINK => $this->renderItemLink($item),
+            DropdownItemType::TEXT => $this->renderItemText($item),
         };
     }
 

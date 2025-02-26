@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
@@ -1144,6 +1145,32 @@ final class DropdownTest extends TestCase
                 )
                 ->render(),
         );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item active" href="#" aria-current="true">Active link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Active link', '#')->active(true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
     }
 
     /**
@@ -1172,6 +1199,32 @@ final class DropdownTest extends TestCase
                 ->items(
                     DropdownItem::link('Regular link', '#'),
                     DropdownItem::link('Disabled link', '#', disabled: true),
+                    DropdownItem::link('Another link', '#'),
+                )
+                ->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Regular link</a>
+            </li>
+            <li>
+            <a class="dropdown-item disabled" href="#" aria-disabled="true">Disabled link</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another link</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Regular link', '#'),
+                    DropdownItem::link('Disabled link', '#')->disabled(true),
                     DropdownItem::link('Another link', '#'),
                 )
                 ->render(),
@@ -1491,6 +1544,46 @@ final class DropdownTest extends TestCase
                 ->togglerId('dropdownDark')
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForDropdownItemWithHeaderAndTagEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The header tag cannot be empty.');
+
+        Dropdown::widget()->items(DropdownItem::header('content', headerTag: ''))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithHeaderAndTagEmptyValueMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The header tag cannot be empty.');
+
+        Dropdown::widget()->items(DropdownItem::header('content')->headerTag(''))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url', active: true, disabled: true))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValueMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url')->active(true)->disabled(true))->render();
+    }
+
+    public function testThrowExceptionForDropdownItemWithLinkAndActiveAndDisabledValueAndMethod(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The dropdown item cannot be active and disabled at the same time.');
+
+        Dropdown::widget()->items(DropdownItem::link('label', 'url', disabled: true)->active(true))->render();
     }
 
     public function testToggler(): void
