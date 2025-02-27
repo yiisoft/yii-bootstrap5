@@ -446,7 +446,7 @@ final class Modal extends Widget
      */
     public function triggerButton(string|Stringable $content, bool $staticBackDrop = false, array $attributes = []): self
     {
-        $new = $this->id($this->getId());
+        $new = $this->id($this->getId() ?? '');
 
         if (is_string($content)) {
             $classes = $attributes['class'] ?? 'btn btn-primary';
