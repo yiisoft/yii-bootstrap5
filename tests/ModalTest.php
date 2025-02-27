@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
@@ -563,6 +564,14 @@ final class ModalTest extends TestCase
                 ->title('Modal title')
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForTitleTagWithEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The tag for the title cannot be an empty string.');
+
+        Modal::widget()->title('Title content', '')->id(false)->render();
     }
 
     public function testTitle(): void

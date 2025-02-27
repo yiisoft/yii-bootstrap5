@@ -402,6 +402,10 @@ final class Modal extends Widget
      */
     public function title(string|Stringable $content, string $tag = 'H5', array $attributes = []): self
     {
+        if ($tag === '') {
+            throw new InvalidArgumentException('The tag for the title cannot be an empty string.');
+        }
+
         if (is_string($content)) {
             $content = Html::tag($tag)
                 ->addAttributes($attributes)
