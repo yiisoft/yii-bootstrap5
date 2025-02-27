@@ -498,7 +498,6 @@ final class Modal extends Widget
             ->addClass(
                 self::MODAL_CONTENT,
                 $contentClasses,
-
             )
             ->content(
                 "\n",
