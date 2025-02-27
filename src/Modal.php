@@ -31,6 +31,7 @@ final class Modal extends Widget
     private array $contentAttributes = [];
     private array $cssClasses = [];
     private array $dialogAttributes = [];
+    private array $dialogClasses = [];
     private string $footer = '';
     private array $footerAttributes = [];
     private array $headerAttributes = [];
@@ -405,6 +406,19 @@ final class Modal extends Widget
     }
 
     /**
+     * Sets the scrollable dialog.
+     *
+     * @return self A new instance with the scrollable dialog.
+     */
+    public function scrollable(): self
+    {
+        $new = clone $this;
+        $new->dialogClasses[] = 'modal-dialog-scrollable';
+
+        return $new;
+    }
+
+    /**
      * Sets the title.
      *
      * @param string|Stringable $content The title.
@@ -492,6 +506,14 @@ final class Modal extends Widget
             ->addClass('fade')
             ->attribute('aria-labelledby', $new->id . 'Label')
             ->attribute('aria-hidden', 'true');
+    }
+
+    public function verticalCentered(): self
+    {
+        $new = clone $this;
+        $new->dialogClasses[] = 'modal-dialog-centered';
+
+        return $new;
     }
 
     /**
@@ -601,12 +623,15 @@ final class Modal extends Widget
         $dialogAttributes = $this->dialogAttributes;
         $dialogClasses = $dialogAttributes['class'] ?? null;
 
+        unset($dialogAttributes['class']);
+
         return Div::tag()
             ->addAttributes($dialogAttributes)
             ->addClass(
                 self::MODAL_DIALOG,
                 $this->responsive !== '' ? self::NAME . '-' . $this->responsive : null,
                 $dialogClasses,
+                ...$this->dialogClasses,
             )
             ->content(
                 "\n",

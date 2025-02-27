@@ -688,6 +688,51 @@ final class ModalTest extends TestCase
         );
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testScrollable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->scrollable()
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
     public function testThrowExceptionForIdWithEmptyValue(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -868,6 +913,97 @@ final class ModalTest extends TestCase
                 ->id('staticBackdrop')
                 ->title('Modal title', 'H1', ['class' => 'fs-5'])
                 ->triggerButton('Launch demo modal', true)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testVerticalCentered(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->verticalCentered()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testVerticalCenteredAndScrollable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->scrollable()
+                ->title('Modal title')
+                ->triggerButton()
+                ->verticalCentered()
                 ->render(),
         );
     }
