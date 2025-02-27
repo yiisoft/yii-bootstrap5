@@ -35,6 +35,7 @@ final class Modal extends Widget
     private array $headerAttributes = [];
     private bool|string $id = true;
     private string|Stringable $title = '';
+    private string|Stringable $triggerButton = '';
 
     /**
      * Adds a sets of attributes.
@@ -407,10 +408,19 @@ final class Modal extends Widget
         }
 
         if (is_string($content)) {
+            $id = $this->getId();
+            $classes = $attributes['class'] ?? null;
+
+            unset($attributes['class']);
+
             $content = Html::tag($tag)
                 ->addAttributes($attributes)
-                ->addClass(self::MODAL_TITLE)
+                ->addClass(
+                    self::MODAL_TITLE,
+                    $classes,
+                )
                 ->content($content)
+                ->id($id !== null ? $id . 'Label' : null)
                 ->render();
         }
 
@@ -418,6 +428,50 @@ final class Modal extends Widget
         $new->title = $content;
 
         return $new;
+    }
+
+    /**
+     * Sets the trigger button.
+     *
+     * @param string|Stringable $content The content of the trigger button.
+     * @param bool $staticBackDrop Whether to use a static backdrop or not.
+     * @param array $attributes The HTML attributes for the trigger button.
+     *
+     * @return self A new instance with the specified trigger button.
+     *
+     * Example usage:
+     * ```php
+     * $modal->triggerButton('Launch Modal');
+     * ```
+     */
+    public function triggerButton(string|Stringable $content, bool $staticBackDrop = false, array $attributes = []): self
+    {
+        $new = $this->id($this->getId());
+
+        if (is_string($content)) {
+            $classes = $attributes['class'] ?? 'btn btn-primary';
+
+            unset($attributes['class']);
+
+            $content = Button::button($content)
+                ->addAttributes($attributes)
+                ->addClass($classes)
+                ->attribute('data-bs-toggle', 'modal')
+                ->attribute('data-bs-target', '#' . $new->id)
+                ->render() . "\n";
+        }
+
+        $new = clone $this;
+        $new->triggerButton = $content;
+
+        if ($staticBackDrop) {
+            $new = $new->attribute('data-bs-backdrop', 'static')->attribute('data-bs-keyboard', 'false');
+        }
+
+        return $new
+            ->addClass('fade')
+            ->attribute('aria-labelledby', $new->id . 'Label')
+            ->attribute('aria-hidden', 'true');
     }
 
     /**
@@ -432,23 +486,25 @@ final class Modal extends Widget
 
         unset($attributes['class']);
 
-        return
-            Div::tag()
-                ->addAttributes($attributes)
-                ->addClass(
-                    self::NAME,
-                    ...$this->cssClasses,
-                )
-                ->addClass($classes)
-                ->attribute('tabindex', '-1')
-                ->content(
-                    "\n",
-                    $this->renderDialog(),
-                    "\n",
-                )
-                ->encode(false)
-                ->id($this->getId())
-                ->render();
+        $modal = Div::tag()
+            ->addAttributes($attributes)
+            ->addClass(
+                self::NAME,
+                ...$this->cssClasses,
+            )
+            ->addClass($classes)
+            ->attribute('tabindex', '-1')
+            ->content(
+                "\n",
+                $this->renderDialog(),
+                "\n",
+            )
+            ->encode(false)
+            ->id($this->getId())
+            ->render();
+
+
+        return $this->triggerButton . $modal;
     }
 
     /**
@@ -589,18 +645,16 @@ final class Modal extends Widget
      */
     private function renderToggler(): string
     {
-        $buttonTag = Button::tag();
+        $buttonTag = Button::button($this->closeButtonLabel);
 
         $closeButtonAttributes = $this->closeButtonAttributes;
-        $closeButtonAttributes['type'] = 'button';
         $classesButton = $closeButtonAttributes['class'] ?? null;
 
         unset($closeButtonAttributes['class']);
 
         $buttonTag = $buttonTag
             ->addClass(self::CLASS_CLOSE_BUTTON, $classesButton)
-            ->addAttributes($closeButtonAttributes)
-            ->addContent($this->closeButtonLabel);
+            ->addAttributes($closeButtonAttributes);
 
         if (array_key_exists('data-bs-dismiss', $closeButtonAttributes) === false) {
             $buttonTag = $buttonTag->attribute('data-bs-dismiss', 'modal');

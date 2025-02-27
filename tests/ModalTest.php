@@ -527,6 +527,9 @@ final class ModalTest extends TestCase
         $this->assertNotSame($modal, $modal->title(''));
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#modal-components
+     */
     public function testRender(): void
     {
         Assert::equalsWithoutLE(
@@ -535,7 +538,7 @@ final class ModalTest extends TestCase
             <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-            <H5 class="modal-title">Modal title</H5>
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -571,7 +574,7 @@ final class ModalTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The tag for the title cannot be an empty string.');
 
-        Modal::widget()->title('Title content', '')->id(false)->render();
+        Modal::widget()->id(false)->title('Title content', '')->render();
     }
 
     public function testTitle(): void
@@ -593,7 +596,7 @@ final class ModalTest extends TestCase
             </div>
             </div>
             HTML,
-            Modal::widget()->title('Title content')->id(false)->render(),
+            Modal::widget()->id(false)->title('Title content')->render(),
         );
     }
 
@@ -616,7 +619,7 @@ final class ModalTest extends TestCase
             </div>
             </div>
             HTML,
-            Modal::widget()->title('Title content', 'H1', ['data-id' => '123'])->id(false)->render(),
+            Modal::widget()->id(false)->title('Title content', 'H1', ['data-id' => '123'])->render(),
         );
     }
 
@@ -639,7 +642,95 @@ final class ModalTest extends TestCase
             </div>
             </div>
             HTML,
-            Modal::widget()->title(P::tag()->content('Title content'))->id(false)->render(),
+            Modal::widget()->id(false)->title(P::tag()->content('Title content'))->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#live-demo
+     */
+    public function testTriggerButton(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
+            <div id="exampleModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H1 id="exampleModalLabel" class="modal-title fs-5">Modal title</H1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('exampleModal')
+                ->title('Modal title', 'H1', ['class' => 'fs-5'])
+                ->triggerButton('Launch demo modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#static-backdrop
+     */
+    public function testTriggerButtonWithStaticBackdrop(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Launch demo modal</button>
+            <div id="staticBackdrop" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H1 id="staticBackdropLabel" class="modal-title fs-5">Modal title</H1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('staticBackdrop')
+                ->title('Modal title', 'H1', ['class' => 'fs-5'])
+                ->triggerButton('Launch demo modal', true)
+                ->render(),
         );
     }
 }
