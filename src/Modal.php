@@ -11,6 +11,7 @@ use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
+use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
 final class Modal extends Widget
 {
@@ -34,6 +35,7 @@ final class Modal extends Widget
     private array $footerAttributes = [];
     private array $headerAttributes = [];
     private bool|string $id = true;
+    private string $responsive = '';
     private string|Stringable $title = '';
     private string|Stringable $triggerButton = '';
 
@@ -388,6 +390,21 @@ final class Modal extends Widget
     }
 
     /**
+     * Sets the responsive size.
+     *
+     * @param Responsive $size The responsive size.
+     *
+     * @return self A new instance with the specified responsive size setting.
+     */
+    public function responsive(Responsive $size): self
+    {
+        $new = clone $this;
+        $new->responsive = $size->value;
+
+        return $new;
+    }
+
+    /**
      * Sets the title.
      *
      * @param string|Stringable $content The title.
@@ -444,8 +461,11 @@ final class Modal extends Widget
      * $modal->triggerButton('Launch Modal');
      * ```
      */
-    public function triggerButton(string|Stringable $content, bool $staticBackDrop = false, array $attributes = []): self
-    {
+    public function triggerButton(
+        string|Stringable $content = 'Launch modal',
+        bool $staticBackDrop = false,
+        array $attributes = [],
+    ): self {
         $new = $this->id($this->getId() ?? '');
 
         if (is_string($content)) {
@@ -486,6 +506,10 @@ final class Modal extends Widget
 
         unset($attributes['class']);
 
+        if ($this->triggerButton === '') {
+            throw new InvalidArgumentException('Set the trigger button before rendering the modal.');
+        }
+
         $modal = Div::tag()
             ->addAttributes($attributes)
             ->addClass(
@@ -518,7 +542,7 @@ final class Modal extends Widget
     {
         return match ($this->id) {
             true => $this->attributes['id'] ?? Html::generateId(self::NAME . '-'),
-            '', false => null,
+            '', false => throw new InvalidArgumentException('The "id" must be specified.'),
             default => $this->id,
         };
     }
@@ -581,6 +605,7 @@ final class Modal extends Widget
             ->addAttributes($dialogAttributes)
             ->addClass(
                 self::MODAL_DIALOG,
+                $this->responsive !== '' ? self::NAME . '-' . $this->responsive : null,
                 $dialogClasses,
             )
             ->content(
