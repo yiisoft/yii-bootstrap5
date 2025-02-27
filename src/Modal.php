@@ -13,6 +13,32 @@ use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
 use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
+/**
+ * Modal renders a modal window that can be toggled by clicking on a trigger element.
+ *
+ * For example,
+ *
+ * ```php
+ * echo Modal::widget()
+ *     ->body(P::tag()->content('Modal body text goes here.'))
+ *     ->footer(
+ *         Button::tag()
+ *             ->addClass('btn btn-secondary')
+ *             ->attribute('data-bs-dismiss', 'modal')
+ *             ->content('Close'),
+ *         Button::tag()
+ *             ->addClass('btn btn-primary')
+ *             ->content('Save changes'),
+ *     )
+ *     ->fullScreen(ModalDialogFullScreen::FULL_SCREEN)
+ *     ->id('modal')
+ *     ->scrollable()
+ *     ->title('Modal title')
+ *     ->triggerButton()
+ *     ->verticalCentered()
+ *    ->render();
+ * ```
+ */
 final class Modal extends Widget
 {
     private const CLASS_CLOSE_BUTTON = 'btn-close';
@@ -344,6 +370,21 @@ final class Modal extends Widget
     {
         $new = clone $this;
         $new->footerAttributes = $attributes;
+
+        return $new;
+    }
+
+    /**
+     * Sets the fullscreen dialog.
+     *
+     * @param ModalDialogFullScreen $fullscreen The fullscreen dialog.
+     *
+     * @return self A new instance with the specified fullscreen dialog.
+     */
+    public function fullscreen(ModalDialogFullScreen $fullscreen): self
+    {
+        $new = clone $this;
+        $new->dialogClasses[] = $fullscreen->value;
 
         return $new;
     }

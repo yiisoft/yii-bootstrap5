@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Modal;
+use Yiisoft\Yii\Bootstrap5\ModalDialogFullScreen;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
@@ -440,6 +441,276 @@ final class ModalTest extends TestCase
         );
     }
 
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreen(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithSMDOWN(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-sm-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_SM_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithMDDOWN(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-md-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_MD_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithLGDOWN(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_LG_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithXLDOWN(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-xl-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_XL_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithXXLDOWN(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-xxl-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_XXL_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
     public function testHeaderAttributes(): void
     {
         Assert::equalsWithoutLE(
@@ -506,7 +777,11 @@ final class ModalTest extends TestCase
         $this->assertNotSame($modal, $modal->id(''));
         $this->assertNotSame($modal, $modal->footer(''));
         $this->assertNotSame($modal, $modal->footerAttributes([]));
+        $this->assertNotSame($modal, $modal->responsive(Responsive::SM));
+        $this->assertNotSame($modal, $modal->scrollable());
         $this->assertNotSame($modal, $modal->title(''));
+        $this->assertNotsame($modal, $modal->triggerButton());
+        $this->assertNotsame($modal, $modal->verticalCentered());
     }
 
     /**
