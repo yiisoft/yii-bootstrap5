@@ -67,7 +67,7 @@ final class Modal extends Widget
     private string|Stringable $triggerButton = '';
 
     /**
-     * Adds a sets of attributes.
+     * Adds a set of attributes.
      *
      * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
      *
@@ -88,9 +88,6 @@ final class Modal extends Widget
 
     /**
      * Adds one or more CSS classes to the existing classes.
-     *
-     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
-     * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
      *
@@ -225,9 +222,6 @@ final class Modal extends Widget
 
     /**
      * Replaces all existing CSS classes with the specified one(s).
-     *
-     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
-     * automatically.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to set. Pass `null` to skip setting a class.
      *
@@ -377,14 +371,14 @@ final class Modal extends Widget
     /**
      * Sets the fullscreen dialog.
      *
-     * @param ModalDialogFullScreen $fullscreen The fullscreen dialog.
+     * @param ModalDialogFullScreenSize $size The fullscreen dialog.
      *
      * @return self A new instance with the specified fullscreen dialog.
      */
-    public function fullscreen(ModalDialogFullScreen $fullscreen): self
+    public function fullscreen(ModalDialogFullScreenSize $size): self
     {
         $new = clone $this;
-        $new->dialogClasses[] = $fullscreen->value;
+        $new->dialogClasses[] = $size->value;
 
         return $new;
     }
@@ -518,7 +512,7 @@ final class Modal extends Widget
      */
     public function triggerButton(
         string|Stringable $content = 'Launch modal',
-        bool $staticBackDrop = false,
+        bool $staticBackdrop = false,
         array $attributes = [],
     ): self {
         $new = $this->id($this->getId() ?? '');
@@ -539,7 +533,7 @@ final class Modal extends Widget
         $new = clone $this;
         $new->triggerButton = $content;
 
-        if ($staticBackDrop) {
+        if ($staticBackdrop) {
             $new = $new->attribute('data-bs-backdrop', 'static')->attribute('data-bs-keyboard', 'false');
         }
 

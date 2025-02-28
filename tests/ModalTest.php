@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Modal;
-use Yiisoft\Yii\Bootstrap5\ModalDialogFullScreen;
+use Yiisoft\Yii\Bootstrap5\ModalDialogFullScreenSize;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
@@ -478,7 +478,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()
@@ -523,7 +523,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_SM_DOWN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_SM_DOWN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()
@@ -568,7 +568,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_MD_DOWN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_MD_DOWN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()
@@ -613,7 +613,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_LG_DOWN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_LG_DOWN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()
@@ -658,7 +658,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_XL_DOWN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_XL_DOWN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()
@@ -703,7 +703,7 @@ final class ModalTest extends TestCase
                         ->addClass('btn btn-primary')
                         ->content('Save changes'),
                 )
-                ->fullscreen(ModalDialogFullScreen::FULL_SCREEN_XXL_DOWN)
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_XXL_DOWN)
                 ->id('modal')
                 ->title('Modal title')
                 ->triggerButton()

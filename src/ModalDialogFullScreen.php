@@ -5,34 +5,34 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5;
 
 /**
- * Modal dialog full screen.
+ * Modal dialog fullscreen.
  *
  * @see https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
  */
-enum ModalDialogFullScreen: string
+enum ModalDialogFullscreenSize: string
 {
     /**
      * The full screen variant.
      */
-    case FULL_SCREEN = 'modal-fullscreen';
+    case FULLSCREEN = 'modal-fullscreen';
     /**
      * The full screen sm down variant.
      */
-    case FULL_SCREEN_SM_DOWN = 'modal-fullscreen-sm-down';
+    case FULLSCREEN_SM_DOWN = 'modal-fullscreen-sm-down';
     /**
      * The full screen md down variant.
      */
-    case FULL_SCREEN_MD_DOWN = 'modal-fullscreen-md-down';
+    case FULLSCREEN_MD_DOWN = 'modal-fullscreen-md-down';
     /**
      * The full screen lg down variant.
      */
-    case FULL_SCREEN_LG_DOWN = 'modal-fullscreen-lg-down';
+    case FULLSCREEN_LG_DOWN = 'modal-fullscreen-lg-down';
     /**
      * The full screen xl down variant.
      */
-    case FULL_SCREEN_XL_DOWN = 'modal-fullscreen-xl-down';
+    case FULLSCREEN_XL_DOWN = 'modal-fullscreen-xl-down';
     /**
      * The full screen xxl down variant.
      */
-    case FULL_SCREEN_XXL_DOWN = 'modal-fullscreen-xxl-down';
+    case FULLSCREEN_XXL_DOWN = 'modal-fullscreen-xxl-down';
 }
