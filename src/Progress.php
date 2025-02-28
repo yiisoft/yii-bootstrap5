@@ -434,7 +434,7 @@ final class Progress extends Widget
 
         unset($attributes['class']);
 
-        if ($this->stacked === true) {
+        if ($this->stacked) {
             $attributes['style'] = 'width: ' . $this->percent . '%';
         }
 
