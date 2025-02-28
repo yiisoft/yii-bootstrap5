@@ -4,787 +4,1282 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
-use Yiisoft\Html\Html;
+use PHPUnit\Framework\TestCase;
+use Yiisoft\Html\Tag\Button;
+use Yiisoft\Html\Tag\P;
 use Yiisoft\Yii\Bootstrap5\Modal;
+use Yiisoft\Yii\Bootstrap5\ModalDialogFullScreenSize;
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
-/**
- * Tests for `Modal` widget.
- */
 #[Group('modal')]
 final class ModalTest extends TestCase
 {
-    public function testBodyOptions(): void
+    public function testAddAttributes(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->bodyOptions(['class' => 'modal-body test', 'style' => 'text-align:center;'])
-            ->withToggleLabel('Show')
-            ->begin();
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-<button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body test" style="text-align:center;">
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" data-id="123" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->addAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
+    }
 
-</div>
+    public function testAddClass(): void
+    {
+        $modal = Modal::widget()->addClass('test-class', null, BackgroundColor::PRIMARY)->id('modal')->triggerButton();
 
-</div>
-</div>
-</div>
-HTML;
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal test-class bg-primary fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal test-class bg-primary fade test-class-1 test-class-2" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->addClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
+    public function testAddCssStyle(): void
+    {
+        $modal = Modal::widget()->addCssStyle('color: red;')->id('modal')->triggerButton();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" style="color: red;" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" style="color: red; font-weight: bold;" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $modal = Modal::widget()->addCssStyle('color: red;')->id('modal')->triggerButton();
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" style="color: red;" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" style="color: red;" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            $modal->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" data-id="123" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->attribute('data-id', '123')->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade test-class" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->attributes(['class' => 'test-class'])->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testBody(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Body content
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->body('Body content')->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testBodyAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" data-id="123">
+            Body content
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body('Body content')
+                ->bodyAttributes(['data-id' => '123'])
+                ->id('modal')
+                ->triggerButton()->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal custom-class another-class bg-primary fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->addClass('test-class')
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
+                ->id('modal')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    public function testCloseButtonAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-id="123" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->closeButtonAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testCloseButtonLabel(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">Close label</button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->closeButtonLabel('Close label')->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testContentAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content" data-id="123">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->contentAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    public function testDialogAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog" data-id="123">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->dialogAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
     }
 
     public function testFooter(): void
     {
-        $widget = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show');
-        $modal = $widget->footer(
-            $widget->withCloseButtonOptions([
-                'class' => [
-                    'widget' => 'btn',
-                    'btn-secondary',
-                ],
-            ])
-            ->withCloseButtonLabel('Close')
-            ->renderCloseButton(true) . "\n" .
-            Html::button(
-                'Save changes',
-                [
-                    'type' => 'button',
-                    'class' => ['btn', 'btn-primary'],
-                ]
-            )
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            Footer content
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->footer('Footer content')->id('modal')->triggerButton()->render(),
         );
-
-        $html = $modal->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-<button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-<button type="button" class="btn btn-primary">Save changes</button></div>
-</div>
-</div>
-</div>
-HTML;
-        $this->assertEqualsHTML($expected, $html);
     }
 
-    public function testToggleButton(): void
+    public function testFooterAttributes(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleOptions([
-                'class' => ['btn', 'btn-primary'],
-            ])
-            ->withToggleLabel('Launch demo modal')
-            ->footer(
-                Html::button(
-                    'Close',
-                    [
-                        'type' => 'button',
-                        'class' => ['btn', 'btn-secondary'],
-                        'data' => [
-                            'bs-dismiss' => 'modal',
-                        ],
-                    ]
-                ) . "\n" .
-                Html::button(
-                    'Save changes',
-                    [
-                        'type' => 'button',
-                        'class' => ['btn', 'btn-primary'],
-                    ]
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" data-id="123">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->footerAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreen(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
                 )
-            )
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Launch demo modal</button>
-<div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-<div class="modal-body">
-<p>Woohoo, you're reading this text in a modal!</p>
-</div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-<button type="button" class="btn btn-primary">Save changes</button></div>
-</div>
-</div>
-</div>
-HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithCloseButton(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withCloseButtonOptions(['class' => 'btn-lg'])
-            ->withToggleLabel('Show')
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-lg btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithoutCloseButton(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withoutCloseButton()
-            ->withToggleLabel('Show')
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithFooterOptions(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->footerOptions(['class' => 'text-dark'])
-            ->withToggleLabel('Show')
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithHeaderOptions(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->headerOptions(['class' => 'text-danger'])
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="text-danger modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithOptions(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->options(['class' => 'testMe'])
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="testMe modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithTitle(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->title('My first modal.')
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header"><h5 id="test-label" class="modal-title">My first modal.</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithEmptyTitle(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->title('')
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header"><h5 id="test-label" class="modal-title"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithTitleOptions(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->title('My first modal.')
-            ->titleOptions(['class' => 'text-center'])
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header"><h5 id="test-label" class="text-center modal-title">My first modal.</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithoutToggleButton(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggle(false)
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        HTML;
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public static function sizeDataProvider(): array
-    {
-        return [
-            [
-                Modal::SIZE_LARGE,
-                <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                <p>Woohoo, you're reading this text in a modal!</p>
-                </div>
-
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::SIZE_SMALL,
-                <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                <p>Woohoo, you're reading this text in a modal!</p>
-                </div>
-
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::SIZE_EXTRA_LARGE,
-                <<<'HTML'
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                <p>Woohoo, you're reading this text in a modal!</p>
-                </div>
-
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-        ];
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
     /**
-     * @dataProvider sizeDataProvider
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
      */
-    public function testWithSize(string $size, string $expected): void
+    public function testFullscreenWithSMDOWN(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->size($size)
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public function testWithoutAnimation(): void
-    {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->fade(false)
-            ->begin();
-        $html .= "<p>Woohoo, you're reading this text in a modal!</p>";
-        $html .= Modal::end();
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        <p>Woohoo, you're reading this text in a modal!</p>
-        </div>
-        </div>
-        </div>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
-    }
-
-    public static function screenSizeDataProvider(): array
-    {
-        return [
-            [
-                Modal::FULLSCREEN_ALWAYS,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::FULLSCREEN_BELOW_SM,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-sm-down">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::FULLSCREEN_BELOW_MD,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-md-down">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::FULLSCREEN_BELOW_LG,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-lg-down">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::FULLSCREEN_BELOW_XL,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-xl-down">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-
-            [
-                Modal::FULLSCREEN_BELOW_XXL,
-                <<<HTML
-                <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-                <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-xxl-down">
-                <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
-                </div>
-                </div>
-                </div>
-                </div>
-                HTML,
-            ],
-        ];
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-sm-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_SM_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
     /**
-     * @dataProvider screenSizeDataProvider
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
      */
-    public function testFullscreen(string $size, string $expected): void
+    public function testFullscreenWithMDDOWN(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->fullscreen($size)
-            ->begin();
-        $html .= Modal::end();
-
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-md-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_MD_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
-    public function testCustomTag(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithLGDOWN(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->withToggleLabel('Show')
-            ->contentOptions([
-                'tag' => 'form',
-                'action' => '/',
-            ])
-            ->bodyOptions([
-                'tag' => 'fieldset',
-            ])
-            ->headerOptions([
-                'tag' => 'header',
-            ])
-            ->titleOptions([
-                'tag' => 'h4',
-            ])
-            ->footerOptions([
-                'tag' => 'footer',
-            ])
-            ->title('Title')
-            ->footer('<button type="submit">Save</button>')
-            ->begin();
-        $html .= '<input type="text">';
-        $html .= Modal::end();
-
-        $expected = <<<'HTML'
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="test-label">
-        <div class="modal-dialog">
-        <form class="modal-content" action="/">
-        <header class="modal-header">
-        <h4 id="test-label" class="modal-title">Title</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </header>
-        <fieldset class="modal-body">
-        <input type="text">
-        </fieldset>
-        <footer class="modal-footer"><button type="submit">Save</button></footer>
-        </form>
-        </div>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_LG_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
-    public function testStaticBackdrop(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithXLDOWN(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->staticBackdrop()
-            ->begin();
-        $html .= Modal::end();
-
-        $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        </div>
-        </div>
-        </div>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-xl-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_XL_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
-    public function testScrollingLongContent(): void
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
+     */
+    public function testFullscreenWithXXLDOWN(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->scrollable()
-            ->begin();
-        $html .= Modal::end();
-
-        $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        </div>
-        </div>
-        </div>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen-xxl-down">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->fullscreen(ModalDialogFullScreenSize::FULLSCREEN_XXL_DOWN)
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
     }
 
-    public function testVerticallyCentered(): void
+    public function testHeaderAttributes(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->centered()
-            ->begin();
-        $html .= Modal::end();
-
-        $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        </div>
-        </div>
-        </div>
-        </div>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header" data-id="123">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->headerAttributes(['data-id' => '123'])->id('modal')->triggerButton()->render(),
+        );
     }
 
-    public function testManyTogglers(): void
+    public function testId(): void
     {
-        $widget = Modal::widget()->id('test');
-
-        $html = $widget->renderToggle();
-        $html .= $widget->withToggleLabel('New Label')
-            ->renderToggle();
-        $html .= $widget->withToggleLabel('New Label 2')
-            ->withToggleOptions([
-                'class' => 'btn btn-primary',
-            ])
-            ->renderToggle();
-        $html .= $widget->withToggleOptions([
-            'tag' => 'a',
-        ])
-        ->renderToggle();
-        $html .= $widget->withToggleOptions([
-            'tag' => 'a',
-            'href' => '/',
-        ])
-        ->renderToggle();
-
-        $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">New Label 2</button>
-        <a href="#test" data-bs-toggle="modal" aria-controls="test" role="button">Show</a>
-        <a href="/" data-bs-toggle="modal" aria-controls="test" role="button" data-bs-target="#test">Show</a>
-        HTML;
-
-        $this->assertEqualsHTML($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#test-id">Launch modal</button>
+            <div id="test-id" class="modal fade" aria-labelledby="test-idLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->id('test-id')->triggerButton()->render(),
+        );
     }
 
-    public function testDialogOptions(): void
+    public function testImmutability(): void
     {
-        $html = Modal::widget()
-            ->id('test')
-            ->centered()
-            ->dialogOptions([
-                'class' => 'bg-white',
-            ])
-            ->begin();
-        $html .= Modal::end();
+        $modal = Modal::widget();
 
-        $expected = <<<HTML
-        <button type="button" data-bs-toggle="modal" aria-controls="test" data-bs-target="#test">Show</button>
-        <div id="test" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="bg-white modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body">
-        </div>
-        </div>
-        </div>
-        </div>
-        HTML;
+        $this->assertNotSame($modal, $modal->addAttributes([]));
+        $this->assertNotSame($modal, $modal->addClass(''));
+        $this->assertNotSame($modal, $modal->addCssStyle(''));
+        $this->assertNotSame($modal, $modal->attribute('', ''));
+        $this->assertNotSame($modal, $modal->attributes([]));
+        $this->assertNotSame($modal, $modal->body());
+        $this->assertNotSame($modal, $modal->bodyAttributes([]));
+        $this->assertNotSame($modal, $modal->class(''));
+        $this->assertNotSame($modal, $modal->closeButtonAttributes([]));
+        $this->assertNotSame($modal, $modal->closeButtonLabel(''));
+        $this->assertNotSame($modal, $modal->contentAttributes([]));
+        $this->assertNotSame($modal, $modal->dialogAttributes([]));
+        $this->assertNotSame($modal, $modal->headerAttributes([]));
+        $this->assertNotSame($modal, $modal->id(''));
+        $this->assertNotSame($modal, $modal->footer(''));
+        $this->assertNotSame($modal, $modal->footerAttributes([]));
+        $this->assertNotSame($modal, $modal->responsive(Responsive::SM));
+        $this->assertNotSame($modal, $modal->scrollable());
+        $this->assertNotSame($modal, $modal->title(''));
+        $this->assertNotsame($modal, $modal->triggerButton());
+        $this->assertNotsame($modal, $modal->verticalCentered());
+    }
 
-        $this->assertEqualsHTML($expected, $html);
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#modal-components
+     */
+    public function testRender(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch demo modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton('Launch demo modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#accessibility
+     */
+    public function testResponsiveWithSM(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#smallModal">Small modal</button>
+            <div id="smallModal" class="modal fade" aria-labelledby="smallModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="smallModalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('smallModal')
+                ->responsive(Responsive::SM)
+                ->title('Modal title')
+                ->triggerButton('Small modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#accessibility
+     */
+    public function testResponsiveWithLG(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">Large modal</button>
+            <div id="largeModal" class="modal fade" aria-labelledby="largeModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="largeModalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('largeModal')
+                ->responsive(Responsive::LG)
+                ->title('Modal title')
+                ->triggerButton('Large modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#accessibility
+     */
+    public function testResponsiveWithXL(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal">Extra large modal</button>
+            <div id="extraLargeModal" class="modal fade" aria-labelledby="extraLargeModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="extraLargeModalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('extraLargeModal')
+                ->responsive(Responsive::XL)
+                ->title('Modal title')
+                ->triggerButton('Extra large modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testScrollable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->scrollable()
+                ->title('Modal title')
+                ->triggerButton()
+                ->render(),
+        );
+    }
+
+    public function testThrowExceptionForIdWithEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Modal::widget()->id('')->triggerButton()->render();
+    }
+
+    public function testThrowExceptionForIdWithFalseValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "id" must be specified.');
+
+        Modal::widget()->id(false)->triggerButton()->render();
+    }
+
+    public function testThrowExceptionForTitleTagWithEmptyValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The tag for the title cannot be an empty string.');
+
+        Modal::widget()->id(false)->title('Title content', '')->render();
+    }
+
+    public function testTitle(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#model">Launch modal</button>
+            <div id="model" class="modal fade" aria-labelledby="modelLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modelLabel" class="modal-title">Title content</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->id('model')->title('Title content')->triggerButton()->render(),
+        );
+    }
+
+    public function testTitleWithCustomTag(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H1 id="modalLabel" class="modal-title" data-id="123">Title content</H1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->id('modal')->title('Title content', 'H1', ['data-id' => '123'])->triggerButton()->render(),
+        );
+    }
+
+    public function testTitleWithStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <p>Title content</p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()->id('modal')->title(P::tag()->content('Title content'))->triggerButton()->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#live-demo
+     */
+    public function testTriggerButton(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
+            <div id="exampleModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H1 id="exampleModalLabel" class="modal-title fs-5">Modal title</H1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('exampleModal')
+                ->title('Modal title', 'H1', ['class' => 'fs-5'])
+                ->triggerButton('Launch demo modal')
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#static-backdrop
+     */
+    public function testTriggerButtonWithStaticBackdrop(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Launch demo modal</button>
+            <div id="staticBackdrop" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H1 id="staticBackdropLabel" class="modal-title fs-5">Modal title</H1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('staticBackdrop')
+                ->title('Modal title', 'H1', ['class' => 'fs-5'])
+                ->triggerButton('Launch demo modal', true)
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testVerticalCentered(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->title('Modal title')
+                ->triggerButton()
+                ->verticalCentered()
+                ->render(),
+        );
+    }
+
+    /**
+     * @link https://getbootstrap.com/docs/5.3/components/modal/#scrolling-long-content
+     */
+    public function testVerticalCenteredAndScrollable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">Launch modal</button>
+            <div id="modal" class="modal fade" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+            <H5 id="modalLabel" class="modal-title">Modal title</H5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            HTML,
+            Modal::widget()
+                ->body(P::tag()->content('Modal body text goes here.'))
+                ->footer(
+                    Button::tag()
+                        ->addClass('btn btn-secondary')
+                        ->attribute('data-bs-dismiss', 'modal')
+                        ->content('Close'),
+                    Button::tag()
+                        ->addClass('btn btn-primary')
+                        ->content('Save changes'),
+                )
+                ->id('modal')
+                ->scrollable()
+                ->title('Modal title')
+                ->triggerButton()
+                ->verticalCentered()
+                ->render(),
+        );
     }
 }
