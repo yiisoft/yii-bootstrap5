@@ -302,7 +302,7 @@ final class Progress extends Widget
     /**
      * Sets the maximum value.
      *
-     * @param int|float $max The maximum value. This value is used to calculate the progress percentage.
+     * @param float|int $max The maximum value. This value is used to calculate the progress percentage.
      *
      * @return self A new instance with the specified maximum value.
      *
@@ -322,7 +322,7 @@ final class Progress extends Widget
     /**
      * Sets the minimum value.
      *
-     * @param int|float $min The minimum value. This value is used to calculate the progress percentage.
+     * @param float|int $min The minimum value. This value is used to calculate the progress percentage.
      *
      * @return self A new instance with the specified minimum value.
      *
@@ -342,7 +342,7 @@ final class Progress extends Widget
     /**
      * Sets the percentage value for the bar.
      *
-     * @param int|float $percent The percentage value. Must be greater than or equal to 0.
+     * @param float|int $percent The percentage value. Must be greater than or equal to 0.
      *
      * @throws LogicException When percentage value is less than 0.
      *

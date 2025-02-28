@@ -248,7 +248,6 @@ final class ProgressStackTest extends TestCase
         $this->assertNotSame($progressStack, $progressStack->bars());
         $this->assertNotSame($progressStack, $progressStack->class());
         $this->assertNotSame($progressStack, $progressStack->id(false));
-
     }
 
     /**

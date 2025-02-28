@@ -257,7 +257,6 @@ final class ProgressStack extends Widget
             ->render();
     }
 
-
     /**
      * Generates the ID.
      *
