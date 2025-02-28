@@ -121,7 +121,7 @@ final class Modal extends Widget
      *
      * Example usage:
      * ```php
-     * $dropdown->addCssStyle('color: red');
+     * $modal->addCssStyle('color: red');
      *
      * // or
      * $modal->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
