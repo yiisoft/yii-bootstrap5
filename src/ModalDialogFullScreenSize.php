@@ -9,7 +9,7 @@ namespace Yiisoft\Yii\Bootstrap5;
  *
  * @see https://getbootstrap.com/docs/5.3/components/modal/#fullscreen-modal
  */
-enum ModalDialogFullScreen: string
+enum ModalDialogFullScreenSize: string
 {
     /**
      * The full screen variant.
