@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use LogicException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Progress;
@@ -610,5 +611,13 @@ final class ProgressTest extends TestCase
                 ->variant(ProgressVariant::STRIPED)
                 ->render(),
         );
+    }
+
+    public function testThrowExceptionForPercentLessThanZero(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('"$percent" must be positive. -1 given');
+
+        Progress::widget()->percent(-1);
     }
 }
