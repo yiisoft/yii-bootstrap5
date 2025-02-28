@@ -38,6 +38,8 @@ use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
  *     ->verticalCentered()
  *    ->render();
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.3/components/modal/
  */
 final class Modal extends Widget
 {
