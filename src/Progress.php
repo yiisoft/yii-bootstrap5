@@ -23,7 +23,7 @@ use Yiisoft\Yii\Bootstrap5\Utility\Sizing;
  * //
  *
  * echo Progress::widget()
- *     ->backGroundColor(BackgroundColor::SUCCESS)
+ *     ->backgroundColor(BackgroundColor::SUCCESS)
  *     ->percent(60)
  *     ->variant(ProgressVariant::ANIMATED_STRIPED)
  *     ->render();
@@ -68,7 +68,7 @@ final class Progress extends Widget
     }
 
     /**
-     * Adds one or more CSS classes to the bar.
+     * Adds one or more CSS classes for the bar.
      *
      * @param BackedEnum|string|null ...$class One or more CSS class names to add to the bar. Pass `null` to skip adding a class.
      *
@@ -112,9 +112,9 @@ final class Progress extends Widget
     /**
      * Adds a CSS style.
      *
-     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
-     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
-     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If a string, it will be added as is. For example, `color: red`. If the
+     * value is an array, the values will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']`
+     * will be rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
@@ -156,12 +156,12 @@ final class Progress extends Widget
     }
 
     /**
-     * Adds a sets attribute value.
+     * Sets attribute value.
      *
      * @param string $name The attribute name.
      * @param mixed $value The attribute value.
      *
-     * @return self A new instance with the specified attribute added.
+     * @return self A new instance with the specified attribute set.
      *
      * Example usage:
      * ```php
@@ -209,10 +209,10 @@ final class Progress extends Widget
      *
      * Example usage:
      * ```php
-     * $progress->backGroundColor(BackgroundColor::SUCCESS);
+     * $progress->backgroundColor(BackgroundColor::SUCCESS);
      * ```
      */
-    public function backGroundColor(BackgroundColor $color): self
+    public function backgroundColor(BackgroundColor $color): self
     {
         return $this->addBarClass($color);
     }
@@ -357,7 +357,7 @@ final class Progress extends Widget
     {
         if ($percent < 0) {
             throw new LogicException(
-                sprintf('"$percent" must be greater or equals 0. %d given', $percent)
+                sprintf('"$percent" must be positive. %d given', $percent)
             );
         }
 

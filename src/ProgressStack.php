@@ -90,9 +90,9 @@ final class ProgressStack extends Widget
     /**
      * Adds a CSS style.
      *
-     * @param array|string $style The CSS style. If an array, the values will be separated by a space. If a string, it
-     * will be added as is. For example, `color: red`. If the value is an array, the values will be separated by a
-     * space. e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If a string, it will be added as is. For example, `color: red`. If the
+     * value is an array, the values will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']`
+     * will be rendered as `color: red; font-weight: bold;`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
@@ -115,12 +115,12 @@ final class ProgressStack extends Widget
     }
 
     /**
-     * Adds a sets attribute value.
+     * Sets attribute value.
      *
      * @param string $name The attribute name.
      * @param mixed $value The attribute value.
      *
-     * @return self A new instance with the specified attribute added.
+     * @return self A new instance with the specified attribute set.
      *
      * Example usage:
      * ```php

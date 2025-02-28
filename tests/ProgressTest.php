@@ -559,7 +559,7 @@ final class ProgressTest extends TestCase
             HTML,
             Progress::widget()
                 ->ariaLabel('Success striped example')
-                ->backGroundColor(BackgroundColor::SUCCESS)
+                ->backgroundColor(BackgroundColor::SUCCESS)
                 ->id('progress')
                 ->percent(25)
                 ->variant(ProgressVariant::STRIPED)
@@ -574,7 +574,7 @@ final class ProgressTest extends TestCase
             HTML,
             Progress::widget()
                 ->ariaLabel('Info striped example')
-                ->backGroundColor(BackgroundColor::INFO)
+                ->backgroundColor(BackgroundColor::INFO)
                 ->id('progress')
                 ->percent(50)
                 ->variant(ProgressVariant::STRIPED)
@@ -589,7 +589,7 @@ final class ProgressTest extends TestCase
             HTML,
             Progress::widget()
                 ->ariaLabel('Warning striped example')
-                ->backGroundColor(BackgroundColor::WARNING)
+                ->backgroundColor(BackgroundColor::WARNING)
                 ->id('progress')
                 ->percent(75)
                 ->variant(ProgressVariant::STRIPED)
@@ -604,7 +604,7 @@ final class ProgressTest extends TestCase
             HTML,
             Progress::widget()
                 ->ariaLabel('Danger striped example')
-                ->backGroundColor(BackgroundColor::DANGER)
+                ->backgroundColor(BackgroundColor::DANGER)
                 ->id('progress')
                 ->percent(100)
                 ->variant(ProgressVariant::STRIPED)
