@@ -38,6 +38,8 @@ use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
  *     ->verticalCentered()
  *    ->render();
  * ```
+ *
+ * @link https://getbootstrap.com/docs/5.3/components/modal/
  */
 final class Modal extends Widget
 {
@@ -121,7 +123,7 @@ final class Modal extends Widget
      *
      * Example usage:
      * ```php
-     * $dropdown->addCssStyle('color: red');
+     * $modal->addCssStyle('color: red');
      *
      * // or
      * $modal->addCssStyle(['color' => 'red', 'font-weight' => 'bold']);
