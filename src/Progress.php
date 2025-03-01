@@ -112,9 +112,9 @@ final class Progress extends Widget
     /**
      * Adds a CSS style.
      *
-     * @param array|string $style The CSS style. If a string, it will be added as is. For example, `color: red`. If the
-     * value is an array, the values will be separated by a space. e.g., `['color' => 'red', 'font-weight' => 'bold']`
-     * will be rendered as `color: red; font-weight: bold;`.
+     * @param array|string $style The CSS style. If the value is an array, the values will be separated by a space.
+     * e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
+     * If a string, it will be added as is. For example, `color: red`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
