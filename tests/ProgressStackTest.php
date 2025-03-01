@@ -4,92 +4,290 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Bootstrap5\Tests;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Progress;
 use Yiisoft\Yii\Bootstrap5\ProgressStack;
+use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `ProgressStack` widget.
  */
+#[Group('progress')]
 final class ProgressStackTest extends TestCase
 {
-    public function testBarsMultiple(): void
+    public function testAddAttributes(): void
     {
-        $bars = [
-            Progress::widget()
-                ->id('bar-1')
-                ->percent(15),
-            Progress::widget()
-                ->id('bar-2')
-                ->percent(30)
-                ->barOptions([
-                    'class' => 'bg-success',
-                ]),
-            Progress::widget()
-                ->id('bar-3')
-                ->percent(20)
-                ->barOptions([
-                    'class' => 'bg-info',
-                ]),
-        ];
-
-        $html = ProgressStack::widget()
-            ->id('test')
-            ->bars(...$bars)
-            ->render();
-        $expected = <<<'HTML'
-        <div id="test" class="progress-stacked"><div id="bar-1" class="progress" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;"><div class="progress-bar"></div></div><div id="bar-2" class="progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"><div class="bg-success progress-bar"></div></div><div id="bar-3" class="progress" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><div class="bg-info progress-bar"></div></div></div>
-        HTML;
-        $this->assertSame($expected, $html);
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" data-id="123">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()
+                ->addAttributes(['data-id' => '123'])
+                ->bars(Progress::widget()->id(false))
+                ->id(false)
+                ->render(),
+        );
     }
 
-    public function testEmptyBarsMultiple(): void
+    public function testAddClass(): void
     {
-        $this->assertEmpty(ProgressStack::widget()->render());
+        $progressStack = ProgressStack::widget()
+            ->addClass('test-class', null, BackgroundColor::PRIMARY)
+            ->bars(Progress::widget()->id(false))
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked test-class bg-primary">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked test-class bg-primary test-class-1 test-class-2">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->addClass('test-class-1', 'test-class-2')->render(),
+        );
     }
 
-    public static function stackOptionsProvider(): array
+    public function testAddCssStyle(): void
     {
-        return [
-            [
-                ['class' => 'w-75'],
-                'class="w-75 progress-stacked"',
-            ],
-            [
-                ['style' => ['width' => '50%']],
-                'class="progress-stacked" style="width: 50%;"',
-            ],
-        ];
+        $progressStack = ProgressStack::widget()
+            ->addCssStyle('color: red;')
+            ->bars(Progress::widget()->id(false))
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" style="color: red;">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" style="color: red; font-weight: bold;">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->addCssStyle('font-weight: bold;')->render(),
+        );
+    }
+
+    public function testAddCssStyleWithOverwriteFalse(): void
+    {
+        $progressStack = ProgressStack::widget()
+            ->addCssStyle('color: red;')
+            ->bars(Progress::widget()->id(false))
+            ->id(false);
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" style="color: red;">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" style="color: red;">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            $progressStack->addCssStyle('color: blue;', false)->render(),
+        );
+    }
+
+    public function testAttribute(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked" data-id="123">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()
+                ->attribute('data-id', '123')
+                ->bars(Progress::widget()->id(false))
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked test-class">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()
+                ->attributes(['class' => 'test-class'])
+                ->bars(Progress::widget()->id(false))
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testClass(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked custom-class another-class bg-primary">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()
+                ->addClass('test-class')
+                ->bars(Progress::widget()->id(false))
+                ->class('custom-class', 'another-class', BackgroundColor::PRIMARY)
+                ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testId(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="progress-stacked">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()->bars(Progress::widget()->id(false))->id('test-id')->render(),
+        );
+    }
+
+    public function testIdWithEmpty(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()->bars(Progress::widget()->id(false))->id('')->render(),
+        );
+    }
+
+    public function testIdWithFalse(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()->bars(Progress::widget()->id(false))->id(false)->render(),
+        );
+    }
+
+    public function testIdWithSetAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div id="test-id" class="progress-stacked">
+            <div class="progress" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()->attributes(['id' => 'test-id'])->bars(Progress::widget()->id(false))->render(),
+        );
+    }
+
+    public function testImmutability(): void
+    {
+        $progressStack = ProgressStack::widget();
+
+        $this->assertNotSame($progressStack, $progressStack->addAttributes([]));
+        $this->assertNotSame($progressStack, $progressStack->addClass());
+        $this->assertNotSame($progressStack, $progressStack->addCssStyle(''));
+        $this->assertNotSame($progressStack, $progressStack->attribute('', ''));
+        $this->assertNotSame($progressStack, $progressStack->attributes([]));
+        $this->assertNotSame($progressStack, $progressStack->bars());
+        $this->assertNotSame($progressStack, $progressStack->class());
+        $this->assertNotSame($progressStack, $progressStack->id(false));
     }
 
     /**
-     * @dataProvider stackOptionsProvider
-     * @param array $options
-     * @param string $expected
+     * @link https://getbootstrap.com/docs/5.3/components/progress/#multiple-bars
      */
-    public function testBarsMultipleOptions(array $options, string $expected): void
+    public function testMultiple(): void
     {
-        $bars = [
-            Progress::widget()
-                ->id('bar-1')
-                ->percent(15),
-            Progress::widget()
-                ->id('bar-2')
-                ->percent(30)
-                ->barOptions([
-                    'class' => 'bg-success',
-                ]),
-            Progress::widget()
-                ->id('bar-3')
-                ->percent(20)
-                ->barOptions([
-                    'class' => 'bg-info',
-                ]),
-        ];
-
-        $widget = ProgressStack::widget()
-            ->bars(...$bars)
-            ->options($options);
-
-        $this->assertStringContainsString($expected, $widget->render());
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="progress-stacked">
+            <div id="segment-one" class="progress" aria-label="Segment one" style="width: 15%" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"></div>
+            </div>
+            <div id="segment-two" class="progress" aria-label="Segment two" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-success"></div>
+            </div>
+            <div id="segment-three" class="progress" aria-label="Segment three" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-info"></div>
+            </div>
+            </div>
+            HTML,
+            ProgressStack::widget()
+                ->bars(
+                    Progress::widget()
+                        ->ariaLabel('Segment one')
+                        ->id('segment-one')
+                        ->percent(15),
+                    Progress::widget()
+                        ->ariaLabel('Segment two')
+                        ->backGroundColor(BackgroundColor::SUCCESS)
+                        ->id('segment-two')
+                        ->percent(30),
+                    Progress::widget()
+                        ->ariaLabel('Segment three')
+                        ->backGroundColor(BackgroundColor::INFO)
+                        ->id('segment-three')
+                        ->percent(20),
+                )
+                ->id(false)
+                ->render(),
+        );
     }
 }
