@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Bootstrap5\Collapse;
 use Yiisoft\Yii\Bootstrap5\Toggler;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
