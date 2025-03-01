@@ -487,11 +487,11 @@ final class Toast extends Widget
 
             unset($attributes['class']);
 
-            $content = Button::button($content)->addAttributes($attributes)->addClass($classes)->render() . "\n";
+            $content = Button::button($content)->addAttributes($attributes)->addClass($classes)->render();
         }
 
         $new = clone $this;
-        $new->triggerButton = $content;
+        $new->triggerButton = $content !== '' ? $content . "\n" : '';
 
         return $new->container(true);
     }

@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
+use Yiisoft\Html\Tag\Img;
+use Yiisoft\Html\Tag\Small;
+use Yiisoft\Html\Tag\Strong;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Toast;
 use Yiisoft\Yii\Bootstrap5\Utility\AlignItems;
@@ -251,6 +254,94 @@ final class ToastTest extends TestCase
         );
     }
 
+    public function testCloseButtonWithContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">Close</button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->closeButton('Close')
+                ->render(),
+        );
+    }
+
+    public function testCloseButtonWithContentStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">Close</button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->closeButton(
+                    Button::button('Close')
+                        ->addClass('btn-close')
+                        ->attribute('data-bs-dismiss', 'toast')
+                        ->attribute('aria-label', 'Close'),
+                )
+                ->render(),
+        );
+    }
+
+    public function testContainer(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->container(true)
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/toasts/#custom-content
      */
@@ -280,6 +371,33 @@ final class ToastTest extends TestCase
                     HTML,
                 )
                 ->id(false)
+                ->render(),
+        );
+    }
+
+    public function testHeaderAttributes(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header test-class">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->headerAttributes(['class' => 'test-class'])
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
                 ->render(),
         );
     }
@@ -337,6 +455,32 @@ final class ToastTest extends TestCase
             </div>
             HTML,
             Toast::widget()->attributes(['id' => 'test-id'])->body('Hello, world! This is a toast message.')->render(),
+        );
+    }
+
+    public function testImageWithContentStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image(Img::tag()->src('https://example.com/150')->alt('Bootstrap5')->addClass('rounded me-2'))
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->render(),
         );
     }
 
@@ -400,6 +544,110 @@ final class ToastTest extends TestCase
         $this->assertEmpty(Toast::widget()->render());
     }
 
+    public function testTimeWithContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small class="text-muted bg-primary">11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago', ['class' => 'text-muted'], BackgroundColor::PRIMARY)
+                ->title('Bootstrap')
+                ->render(),
+        );
+    }
+
+    public function testTimeWithContentStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small class="text-muted">11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time(Small::tag()->addClass('text-muted')->content('11 mins ago'))
+                ->title('Bootstrap')
+                ->render(),
+        );
+    }
+
+    public function testTitleWithContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto bg-primary">Tailwind</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Tailwind', ['class' => 'me-auto'], BackgroundColor::PRIMARY)
+                ->render(),
+        );
+    }
+
+    public function testTitleWithContentStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Tailwind</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id(false)
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title(Strong::tag()->addClass('me-auto')->content('Tailwind'))
+                ->render(),
+        );
+    }
+
     /**
      * https://getbootstrap.com/docs/5.3/components/toasts/#translucent
      */
@@ -425,6 +673,66 @@ final class ToastTest extends TestCase
                 ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
                 ->time('11 mins ago', class: TextColor::BODY_SECONDARY)
                 ->title('Bootstrap')
+                ->render(),
+        );
+    }
+
+    public function testTriggerButtonWithContent(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" id="liveToastBtn" class="btn btn-primary">Show notification</button>
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id('liveToast')
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->triggerButton('Show notification', attributes: ['id' => 'liveToastBtn'])
+                ->render(),
+        );
+    }
+
+    public function testTriggerButtonWithContentStringable(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" id="liveToastBtn" class="btn btn-danger">Show notification</button>
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+            <img class="rounded me-2" src="https://example.com/150" alt="Bootstrap5">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+            Hello, world! This is a toast message.
+            </div>
+            </div>
+            </div>
+            HTML,
+            Toast::widget()
+                ->body('Hello, world! This is a toast message.')
+                ->id('liveToast')
+                ->image('https://example.com/150', 'Bootstrap5', ['class' => 'rounded me-2'])
+                ->time('11 mins ago')
+                ->title('Bootstrap')
+                ->triggerButton(Button::button('Show notification')->addClass('btn btn-danger')->id('liveToastBtn'))
                 ->render(),
         );
     }
