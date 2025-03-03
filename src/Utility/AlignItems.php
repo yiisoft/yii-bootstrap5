@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Bootstrap5\Utility;
 
 /**
- * Align items utilities.
+ * Item alignment utilities.
  *
  * @see https://getbootstrap.com/docs/5.3/utilities/flex/#align-items
  */

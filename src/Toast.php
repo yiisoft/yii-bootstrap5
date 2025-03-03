@@ -100,7 +100,7 @@ final class Toast extends Widget
      *
      * @param array|string $style The CSS style. If the value is an array, the values will be separated by a space.
      * e.g., `['color' => 'red', 'font-weight' => 'bold']` will be rendered as `color: red; font-weight: bold;`.
-     * If a string, it will be added as is. For example, `color: red`.
+     * If it is a string, it will be added as is. For example, `color: red`.
      * @param bool $overwrite Whether to overwrite existing styles with the same name. If `false`, the new value will be
      * appended to the existing one.
      *
@@ -265,10 +265,10 @@ final class Toast extends Widget
     }
 
     /**
-     * Whether to render in a container `<div>` tag.
+     * Whether to render container `<div>` tag.
      *
-     * @param bool $enabled Whether to render in a container `<div>` tag. By default, it will be rendered in a container
-     * `<div>` tag. If set to `false`, the container will not be rendered.
+     * @param bool $enabled Whether to render container `<div>` tag. By default, the widget will be rendered in a
+     * container `<div>` tag. If set to `false`, the container will not be rendered.
      *
      * @return self A new instance with the specified container setting.
      *
