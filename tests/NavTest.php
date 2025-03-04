@@ -953,6 +953,36 @@ final class NavTest extends TestCase
     }
 
     /**
+     * @link https://github.com/yiisoft/yii-bootstrap5/issues/244
+     */
+    public function testTabPaneWithEncodeContentFalseValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+            <button type="button" id="test1" class="nav-link active" data-bs-toggle="tab" data-bs-target="#test1-pane" role="tab" aria-controls="test1-pane" aria-selected="true">title1</button>
+            </li>
+            <li class="nav-item" role="presentation">
+            <button type="button" id="test2" class="nav-link" data-bs-toggle="tab" data-bs-target="#test2-pane" role="tab" aria-controls="test2-pane" aria-selected="false">title2</button>
+            </li>
+            </ul>
+            <div class="tab-content">
+            <div id="test1-pane" class="tab-pane fade show active" role="tabpanel" aria-labelledby="test1" tabindex="0"><p>Some HTML</p></div>
+            <div id="test2-pane" class="tab-pane fade" role="tabpanel" aria-labelledby="test2" tabindex="0"><p>Some HTML</p></div>
+            </div>
+            HTML,
+            Nav::widget()
+                ->items(
+                    NavLink::tab('title1', '<p>Some HTML</p>', true, encodeContent: false, paneId: 'test1'),
+                    NavLink::tab('title2', '<p>Some HTML</p>', encodeContent: false, paneId: 'test2'),
+                )
+                ->styles(NavStyle::TABS)
+            ->render(),
+        );
+    }
+
+    /**
      * @link https://getbootstrap.com/docs/5.3/components/navs-tabs/#tabs
      */
     public function testTabs(): void

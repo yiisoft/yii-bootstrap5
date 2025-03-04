@@ -41,6 +41,7 @@ final class NavLink
         private bool $active = false,
         private array $attributes = [],
         private bool $encodeLabel = true,
+        private bool $encodeContent = true,
         private bool $disabled = false,
         private string|Stringable $label = '',
         private string|null $url = '',
@@ -82,7 +83,16 @@ final class NavLink
             throw new InvalidArgumentException('A nav link cannot be both active and disabled.');
         }
 
-        return new self($active, $attributes, $encodeLabel, $disabled, $label, $url, $urlAttributes, $visible);
+        return new self(
+            active: $active,
+            attributes: $attributes,
+            encodeLabel: $encodeLabel,
+            disabled: $disabled,
+            label: $label,
+            url: $url,
+            urlAttributes: $urlAttributes,
+            visible: $visible,
+        );
     }
 
     /**
@@ -92,6 +102,7 @@ final class NavLink
      * @param string|Stringable $content The content of the tab pane.
      * @param bool $active Whether the tab is active.
      * @param bool $encodeLabel Whether the label should be encoded.
+     * @param bool $encodeContent Whether the content should be encoded.
      * @param array $attributes The HTML attributes for the nav item.
      * @param array $urlAttributes The HTML attributes for the nav item link.
      * @param array $paneAttributes The HTML attributes for the tab pane.
@@ -106,6 +117,7 @@ final class NavLink
         string|Stringable $content,
         bool $active = false,
         bool $encodeLabel = true,
+        bool $encodeContent = true,
         array $attributes = [],
         array $urlAttributes = [],
         bool|string $paneId = true,
@@ -116,14 +128,14 @@ final class NavLink
             active: $active,
             attributes: $attributes,
             encodeLabel: $encodeLabel,
-            disabled: false,
+            encodeContent: $encodeContent,
             label: $label,
             url: '#',
             urlAttributes: $urlAttributes,
             visible: $visible,
             content: $content,
             paneId: $paneId,
-            paneAttributes: $paneAttributes
+            paneAttributes: $paneAttributes,
         );
     }
 
@@ -185,6 +197,21 @@ final class NavLink
     {
         $new = clone $this;
         $new->disabled = $disabled;
+
+        return $new;
+    }
+
+    /**
+     * Sets weather to HTML-encode the content.
+     *
+     * @param bool $enabled Whether to encode the content.
+     *
+     * @return self New instance with the specified encoded setting.
+     */
+    public function encodeContent(bool $enabled): self
+    {
+        $new = clone $this;
+        $new->encodeContent = $enabled;
 
         return $new;
     }
@@ -386,6 +413,14 @@ final class NavLink
     public function isVisible(): bool
     {
         return $this->visible;
+    }
+
+    /**
+     * @return bool Whether the content should be encoded.
+     */
+    public function shouldEncodeContent(): bool
+    {
+        return $this->encodeContent;
     }
 
     /**

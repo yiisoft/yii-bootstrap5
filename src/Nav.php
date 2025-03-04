@@ -605,6 +605,7 @@ final class Nav extends Widget
                 ]
             )
             ->content($item->getContent())
+            ->encode($item->shouldEncodeContent())
             ->id($item->getId() . '-pane')
             ->render();
     }
