@@ -974,8 +974,8 @@ final class NavTest extends TestCase
             HTML,
             Nav::widget()
                 ->items(
-                    NavLink::tab('title1', "<p>Some HTML</p>", true, encodeContent: false, paneId: "test1"),
-                    NavLink::tab('title2', "<p>Some HTML</p>", encodeContent: false, paneId: "test2"),
+                    NavLink::tab('title1', '<p>Some HTML</p>', true, encodeContent: false, paneId: 'test1'),
+                    NavLink::tab('title2', '<p>Some HTML</p>', encodeContent: false, paneId: 'test2'),
                 )
                 ->styles(NavStyle::TABS)
             ->render(),
