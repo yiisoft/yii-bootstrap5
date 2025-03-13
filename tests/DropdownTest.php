@@ -1477,6 +1477,40 @@ final class DropdownTest extends TestCase
     }
 
     /**
+     * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button
+     */
+    public function testSingleButtonWithVariantOutlineDanger(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown link</a>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::widget()
+                ->items(
+                    DropdownItem::link('Action', '#'),
+                    DropdownItem::link('Another action', '#'),
+                    DropdownItem::link('Something else here', '#'),
+                )
+                ->togglerAsLink()
+                ->togglerContent('Dropdown link')
+                ->togglerVariant(ButtonVariant::OUTLINE_DANGER)
+                ->render(),
+        );
+    }
+
+    /**
      * @link https://getbootstrap.com/docs/5.3/customize/color-modes/
      */
     public function testThemeLight(): void
