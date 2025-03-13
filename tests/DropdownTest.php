@@ -9,12 +9,12 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Yii\Bootstrap5\ButtonSize;
+use Yiisoft\Yii\Bootstrap5\ButtonVariant;
 use Yiisoft\Yii\Bootstrap5\Dropdown;
 use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
 use Yiisoft\Yii\Bootstrap5\DropdownAutoClose;
 use Yiisoft\Yii\Bootstrap5\DropdownDirection;
 use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\DropdownTogglerVariant;
 use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
 use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
@@ -1080,7 +1080,7 @@ final class DropdownTest extends TestCase
         $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerSplit(false));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerSplitContent(''));
         $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerUrl(''));
-        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerVariant(DropdownTogglerVariant::DANGER));
+        $this->assertNotSame($dropdownWidget, $dropdownWidget->togglerVariant(ButtonVariant::DANGER));
     }
 
     /**
@@ -1471,7 +1471,7 @@ final class DropdownTest extends TestCase
                 )
                 ->togglerAsLink()
                 ->togglerContent('Dropdown link')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->render(),
         );
     }
@@ -1869,7 +1869,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Separated link', '#'),
                 )
                 ->togglerContent('Toggle dropdown')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
                 ->render(),
@@ -1916,7 +1916,7 @@ final class DropdownTest extends TestCase
                     DropdownItem::link('Separated link', '#'),
                 )
                 ->togglerContent('Toggle dropdown')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
                 ->togglerSize(ButtonSize::LARGE)
@@ -1964,7 +1964,7 @@ final class DropdownTest extends TestCase
                 ->togglerContent('Toggle dropdown')
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->render(),
         );
     }
@@ -2010,7 +2010,7 @@ final class DropdownTest extends TestCase
                 ->togglerSize(ButtonSize::LARGE)
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->render(),
         );
     }
@@ -2056,7 +2056,7 @@ final class DropdownTest extends TestCase
                 ->togglerSize(ButtonSize::SMALL)
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->render(),
         );
     }
@@ -2104,7 +2104,7 @@ final class DropdownTest extends TestCase
                 ->togglerSize(ButtonSize::SMALL)
                 ->togglerSplit()
                 ->togglerSplitContent('Danger')
-                ->togglerVariant(DropdownTogglerVariant::DANGER)
+                ->togglerVariant(ButtonVariant::DANGER)
                 ->render(),
         );
     }
