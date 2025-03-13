@@ -1483,6 +1483,7 @@ final class DropdownTest extends TestCase
     {
         Assert::equalsWithoutLE(
             <<<HTML
+            <div class="dropdown">
             <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown link</a>
             <ul class="dropdown-menu">
             <li>
