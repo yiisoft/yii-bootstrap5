@@ -31,7 +31,7 @@ use Yiisoft\Widget\Widget;
  *         DropdownItem::link('Separated link', '#'),
  *     )
  *     ->toggleContent('Toggle dropdown')
- *     ->toggleVariant(DropdownToggleVariant::DANGER)
+ *     ->toggleVariant(ButtonVariant::DANGER)
  *     ->toggleSplit()
  *     ->toggleSplitContent('Danger')
  *     ->toggleSizeLarge()
@@ -71,7 +71,7 @@ final class Dropdown extends Widget
     private string|null $togglerSize = null;
     private bool $togglerSplit = false;
     private string $togglerSplitContent = 'Action';
-    private DropdownTogglerVariant $togglerVariant = DropdownTogglerVariant::SECONDARY;
+    private ButtonVariant $togglerVariant = ButtonVariant::SECONDARY;
 
     /**
      * Adds a sets of attributes.
@@ -604,11 +604,11 @@ final class Dropdown extends Widget
     /**
      * Sets the variant for the toggler.
      *
-     * @param DropdownTogglerVariant $variant The variant for the toggler.
+     * @param ButtonVariant $variant The variant for the toggler.
      *
      * @return self A new instance with the specified variant for the toggler.
      */
-    public function togglerVariant(DropdownTogglerVariant $variant): self
+    public function togglerVariant(ButtonVariant $variant): self
     {
         $new = clone $this;
         $new->togglerVariant = $variant;
