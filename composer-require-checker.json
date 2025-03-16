@@ -1,0 +1,6 @@
+{
+    "symbol-whitelist": [
+        "Yiisoft\\Assets\\AssetBundle",
+        "Yiisoft\\Files\\PathMatcher\\PathMatcher"
+    ]
+}
