@@ -80,7 +80,7 @@ There are several ways to install the assets, they are:
     npm i bootstrap@5.3.1
     ```
 
-3. Using the [yiisoft/assets](https://github.com/yiisoft/assets) package.
+## Using the [yiisoft/assets](https://github.com/yiisoft/assets) package
 
     To use the asset classes in the `src/Assets` directory (such as `BootstrapAsset` and `BootstrapCdnAsset`), you need
     to install additional packages:
