@@ -82,12 +82,12 @@ There are several ways to install the assets, they are:
 
 ## Using the [yiisoft/assets](https://github.com/yiisoft/assets) package
 
-    To use the asset classes in the `src/Assets` directory (such as `BootstrapAsset` and `BootstrapCdnAsset`), you need
-    to install additional packages:
+To use the asset classes in the `src/Assets` directory (such as `BootstrapAsset` and `BootstrapCdnAsset`), you need to
+install additional packages:
     
-    ```shell
-    composer require yiisoft/assets yiisoft/files
-    ```
+```shell
+composer require yiisoft/assets yiisoft/files
+```
 
 ## General usage
 
