@@ -35,7 +35,7 @@
     },
     "suggest": {
         "yiisoft/assets": "Register assets with Yiisoft\\Assets\\AssetManager",
-        "yiisoft/files": "Use PathMatcher for filter assets"
+        "yiisoft/files": "Use PathMatcher to filter assets"
     },
     "autoload": {
         "psr-4": {
