@@ -628,11 +628,11 @@ final class Carousel extends Widget
                 ->addClass(self::CLASS_CAROUSEL_CAPTION)
                 ->addContent(
                     "\n",
-                    html::tag($this->captionTagName)
+                    Html::tag($this->captionTagName)
                         ->addAttributes($carouselItem->getCaptionAttributes())
                         ->addContent($caption),
                     "\n",
-                    html::tag($this->captionPlaceholderTagName)
+                    Html::tag($this->captionPlaceholderTagName)
                         ->addAttributes($carouselItem->getCaptionPlaceholderAttributes())
                         ->addContent($carouselItem->getcaptionPlaceholder() ?? ''),
                     "\n"
