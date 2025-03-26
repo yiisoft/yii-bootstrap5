@@ -930,7 +930,6 @@ final class Dropdown extends Widget
 
         return Button::button('')
             ->addAttributes($togglerAttributes)
-            ->addClass(...$this->togglerClasses)
             ->attribute('data-bs-toggle', 'dropdown')
             ->attribute('aria-expanded', 'false')
             ->addContent($togglerContent)
@@ -974,7 +973,6 @@ final class Dropdown extends Widget
                     self::DROPDOWN_TOGGLER_BUTTON_CLASS,
                     $this->togglerVariant,
                     $this->togglerSize,
-                    ...$this->togglerClasses,
                 )
                 ->addContent($this->togglerSplitContent)
                 ->encode(false)
@@ -986,7 +984,6 @@ final class Dropdown extends Widget
                 self::DROPDOWN_TOGGLER_BUTTON_CLASS,
                 $this->togglerVariant,
                 $this->togglerSize,
-                ...$this->togglerClasses,
             )
             ->addContent($this->togglerSplitContent)
             ->encode(false)
