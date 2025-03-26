@@ -185,7 +185,10 @@ final class Dropdown extends Widget
     public function addTogglerClass(BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
-        Html::addCssClass($new->togglerAttributes, $class);
+
+        foreach ($class as $item) {
+            Html::addCssClass($new->togglerAttributes, $item);
+        }
 
         return $new;
     }
@@ -905,7 +908,8 @@ final class Dropdown extends Widget
 
         $togglerAttributes = $this->togglerAttributes;
         $togglerClasses = $this->togglerClasses;
-        $classes = $togglerAttributes['class'] ?? [];
+
+        $classes = $togglerAttributes['class'] ?? null;
 
         unset($togglerAttributes['class']);
 
@@ -918,7 +922,7 @@ final class Dropdown extends Widget
                     $this->togglerSize,
                     self::DROPDOWN_TOGGLER_CLASS,
                     $this->togglerSplit ? self::DROPDOWN_TOGGLER_SPLIT_CLASS : null,
-                    ...$classes,
+                    $classes,
                 ],
             ),
             default => Html::addCssClass($togglerAttributes, $togglerClasses),
