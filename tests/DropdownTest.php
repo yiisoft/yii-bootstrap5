@@ -207,6 +207,57 @@ final class DropdownTest extends TestCase
         );
     }
 
+    public function testAddTogglerClass(): void
+    {
+        $dropdownWidget = Dropdown::widget()
+            ->addTogglerClass('test-class', null, BackgroundColor::PRIMARY)
+            ->items(
+                DropdownItem::link('Action', '#'),
+                DropdownItem::link('Another action', '#'),
+                DropdownItem::link('Something else here', '#'),
+            );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle test-class bg-primary" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->render(),
+        );
+
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <div class="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle test-class bg-primary test-class-1 test-class-2" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">Action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            $dropdownWidget->addTogglerClass('test-class-1', 'test-class-2')->render(),
+        );
+    }
+
     /**
      * @link https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options
      */
