@@ -811,7 +811,7 @@ final class NavTest extends TestCase
             Nav::widget()
                 ->items(
                     NavLink::to('Active', '#', active: true),
-                    Navlink::to('Much longer nav link', url: '#'),
+                    NavLink::to('Much longer nav link', url: '#'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )
@@ -845,7 +845,7 @@ final class NavTest extends TestCase
             Nav::widget()
                 ->items(
                     NavLink::to('Active', '#', active: true),
-                    Navlink::to('Much longer nav link', url: '#'),
+                    NavLink::to('Much longer nav link', url: '#'),
                     NavLink::to('Link', url: '#'),
                     NavLink::to('Disabled', '#', disabled: true),
                 )
