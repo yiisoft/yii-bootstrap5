@@ -9,13 +9,13 @@
     <br>
 </p>
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii-bootstrap5/v)](https://packagist.org/packages/yiisoft/yii-bootstrap5)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii-bootstrap5/downloads)](https://packagist.org/packages/yiisoft/yii-bootstrap5)
-[![Build status](https://github.com/yiisoft/yii-bootstrap5/workflows/build/badge.svg)](https://github.com/yiisoft/yii-bootstrap5/actions?query=workflow%3Abuild)
-[![Code coverage](https://codecov.io/gh/yiisoft/yii-bootstrap5/graph/badge.svg?token=S8ISXCPS2A)](https://codecov.io/gh/yiisoft/yii-bootstrap5)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fyii-bootstrap5%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/yii-bootstrap5/master)
-[![static analysis](https://github.com/yiisoft/yii-bootstrap5/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/yii-bootstrap5/actions?query=workflow%3A%22static+analysis%22)
-[![type-coverage](https://shepherd.dev/github/yiisoft/yii-bootstrap5/coverage.svg)](https://shepherd.dev/github/yiisoft/yii-bootstrap5)
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/bootstrap5/v)](https://packagist.org/packages/yiisoft/bootstrap5)
+[![Total Downloads](https://poser.pugx.org/yiisoft/bootstrap5/downloads)](https://packagist.org/packages/yiisoft/bootstrap5)
+[![Build status](https://github.com/yiisoft/bootstrap5/workflows/build/badge.svg)](https://github.com/yiisoft/bootstrap5/actions?query=workflow%3Abuild)
+[![Code coverage](https://codecov.io/gh/yiisoft/bootstrap5/graph/badge.svg?token=S8ISXCPS2A)](https://codecov.io/gh/yiisoft/bootstrap5)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fbootstrap5%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/bootstrap5/master)
+[![static analysis](https://github.com/yiisoft/bootstrap5/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/bootstrap5/actions?query=workflow%3A%22static+analysis%22)
+[![type-coverage](https://shepherd.dev/github/yiisoft/bootstrap5/coverage.svg)](https://shepherd.dev/github/yiisoft/bootstrap5)
 
 This [Yii Framework] extension encapsulates [Twitter Bootstrap 5] components
 and plugins in terms of Yii widgets, and thus makes using Bootstrap components/plugins
@@ -30,7 +30,7 @@ in Yii applications extremely easy.
 The package could be installed with [Composer](https://getcomposer.org):
 
 ```shell
-composer require yiisoft/yii-bootstrap5
+composer require yiisoft/bootstrap5
 ```
 
 ## Install assets

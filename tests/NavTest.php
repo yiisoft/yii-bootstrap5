@@ -953,7 +953,7 @@ final class NavTest extends TestCase
     }
 
     /**
-     * @link https://github.com/yiisoft/yii-bootstrap5/issues/244
+     * @link https://github.com/yiisoft/bootstrap5/issues/244
      */
     public function testTabPaneWithEncodeContentFalseValue(): void
     {
