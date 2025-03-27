@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Utility;
+namespace Yiisoft\Bootstrap5\Utility;
 
 /**
  * Text colors.

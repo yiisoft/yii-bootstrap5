@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Bootstrap5\NavLink;
+use Yiisoft\Bootstrap5\NavLink;
 
 /**
  * Tests for `NavLink`.

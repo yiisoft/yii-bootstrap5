@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace Yiisoft\Bootstrap5;
 
 use BackedEnum;
 use LogicException;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Utility\Sizing;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
-use Yiisoft\Yii\Bootstrap5\Utility\Sizing;
 
 /**
  * Progress renders a bootstrap progress bar component.

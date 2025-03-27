@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace Yiisoft\Bootstrap5;
 
 /**
  * The placement of a Bootstrap5 offcanvas.

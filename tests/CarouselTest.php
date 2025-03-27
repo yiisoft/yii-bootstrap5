@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\Carousel;
+use Yiisoft\Bootstrap5\CarouselItem;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\H2;
 use Yiisoft\Html\Tag\Img;
 use Yiisoft\Html\Tag\P;
-use Yiisoft\Yii\Bootstrap5\Carousel;
-use Yiisoft\Yii\Bootstrap5\CarouselItem;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Carousel` widget.

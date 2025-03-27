@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Assets;
+namespace Yiisoft\Bootstrap5\Assets;
 
 use Yiisoft\Assets\AssetManager;
 use Yiisoft\Assets\AssetBundle;

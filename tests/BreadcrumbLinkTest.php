@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
+use Yiisoft\Bootstrap5\BreadcrumbLink;
 
 /**
  * Tests for `Link`.

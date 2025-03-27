@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\Button;
+use Yiisoft\Bootstrap5\ButtonGroup;
+use Yiisoft\Bootstrap5\ButtonToolbar;
+use Yiisoft\Bootstrap5\ButtonVariant;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Input;
-use Yiisoft\Yii\Bootstrap5\Button;
-use Yiisoft\Yii\Bootstrap5\ButtonGroup;
-use Yiisoft\Yii\Bootstrap5\ButtonToolbar;
-use Yiisoft\Yii\Bootstrap5\ButtonVariant;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `ButtonToolbar` widget.

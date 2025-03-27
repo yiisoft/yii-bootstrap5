@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\Modal;
+use Yiisoft\Bootstrap5\ModalDialogFullScreenSize;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Utility\Responsive;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\P;
-use Yiisoft\Yii\Bootstrap5\Modal;
-use Yiisoft\Yii\Bootstrap5\ModalDialogFullScreenSize;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
-use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
 #[Group('modal')]
 final class ModalTest extends TestCase
