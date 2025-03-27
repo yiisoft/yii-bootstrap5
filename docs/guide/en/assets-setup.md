@@ -1,11 +1,10 @@
-Assets Setup
-============
+#  Assets Setup
 
 ## Using CDN
 
 You may use Bootstrap assets from [official CDN](https://www.bootstrapcdn.com).
 
-In the `composer.json` of your project, add the following lines in order to prevent redundant Bootstrap asset installation:
+In the `composer.json` of your project, add the following lines to prevent redundant Bootstrap asset installation:
 
 ```json
 "replace": {
@@ -48,12 +47,12 @@ return [
 
 If you want to customize the Bootstrap CSS source directly, you may want to compile it from source *.sass files.
 
-In such case installing Bootstrap assets from Composer or Bower/NPM makes no sense, since you can not modify files
-inside 'vendor' directory.
+In such a case, installing Bootstrap assets from Composer or Bower/NPM makes no sense, since you cannot modify files
+inside `vendor` directory.
 You'll have to download Bootstrap assets manually and place them somewhere inside your project source code,
-for example in the 'assets/source/bootstrap' folder.
+for example, in the `assets/source/bootstrap` folder.
 
-In the `composer.json` of your project, add the following lines in order to prevent redundant Bootstrap asset installation:
+In the `composer.json` of your project, add the following lines to prevent redundant Bootstrap asset installation:
 
 ```json
 "replace": {
@@ -89,4 +88,6 @@ return [
 ];
 ```
 
-After you make changes to Bootstrap's source files, make sure to [compile them](https://getbootstrap.com/docs/4.1/getting-started/build-tools/), eg. using `npm run dist`.
+After you make changes to Bootstrap's source files,
+make sure to [compile them](https://getbootstrap.com/docs/4.1/getting-started/build-tools/),
+e.g., using `npm run dist`.

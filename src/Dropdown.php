@@ -572,7 +572,7 @@ final class Dropdown extends Widget
      * Whether to render the toggler as a split.
      *
      * @param bool $enable Whether to render the toggler as a split. If set to `true`, the toggler will be rendered as a
-     * split. If set to `false`, the toggler will be rendered as a normal.
+     * split. If set to `false`, the toggler will be rendered as normal.
      *
      * @return self A new instance with the specified the toggler split setting.
      *
@@ -884,7 +884,7 @@ final class Dropdown extends Widget
     /**
      * Render toggler.
      *
-     * @param string|null $toggleId The ID of the toggler.
+     * @param string|null $togglerId The ID of the toggler.
      *
      * @return string The HTML representation of the element.
      *

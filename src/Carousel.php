@@ -176,7 +176,7 @@ final class Carousel extends Widget
     }
 
     /**
-     * Sets whether should automatically cycle through slides.
+     * Sets whether it should automatically cycle through slides.
      *
      * Bootstrap supports three modes of autoplaying for carousels:
      * - `carousel': Starts cycling when the page loads (recommended).

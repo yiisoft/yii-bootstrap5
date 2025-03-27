@@ -7,7 +7,7 @@ Entwicklungsprozess vehement zu verkürzen vermag.
 
 Die Basis von Bootstrap ist unterteilt in folgende 2 Bereiche:
  - CSS Basics: Grid Layout System, Typography, Helper-Klassen, Responsive Funktionen.
- - "Ready to use"-Komponenten: Formulare, Menus, Paginationen, Modals, Tabs etc.
+ - "Ready to use"-Komponenten: Formulare, Menus, Paginationen, Modals, Tabs, etc.
 
 Loslegen
 --------

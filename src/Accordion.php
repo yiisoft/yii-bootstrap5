@@ -168,9 +168,9 @@ final class Accordion extends Widget
     }
 
     /**
-     * Sets whether should always allow multiple items to be open simultaneously.
+     * Sets whether it should always allow multiple items to be open simultaneously.
      *
-     * @param bool $enabled Whether should always be open.
+     * @param bool $enabled Whether it should always be open.
      *
      * @return self A new instance with the updated alwaysOpen property.
      *
