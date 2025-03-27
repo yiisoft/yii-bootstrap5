@@ -15,9 +15,6 @@
         "irc": "ircs://irc.libera.chat:6697/yii",
         "chat": "https://t.me/yii3en"
     },
-    "provide": {
-        "yiisoft/yii-bootstrap": "1.0"
-    },
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
         "yiisoft/html": "^3.0",
