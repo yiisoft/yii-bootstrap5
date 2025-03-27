@@ -173,7 +173,7 @@ final class Toast extends Widget
      * @param BackedEnum|string|null ...$class CSS class names to add to the `<div>` tag. Pass `null` to skip adding a
      * class.
      *
-     * @return self A new instance with the specified the body content.
+     * @return self A new instance with the specified body content.
      *
      * Example usage:
      * ```php
@@ -192,7 +192,7 @@ final class Toast extends Widget
      *
      * @see https://getbootstrap.com/docs/5.3/components/toasts/#basic
      */
-    public function body(string|Stringable $content, $attributes = [], BackedEnum|string|null ...$class): self
+    public function body(string|Stringable $content, array $attributes = [], BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
         $new->body = is_string($content)
@@ -415,7 +415,7 @@ final class Toast extends Widget
      * $toast->time($customTimeHtml);
      * ```
      */
-    public function time(string|Stringable $content, $attributes = [], BackedEnum|string|null ...$class): self
+    public function time(string|Stringable $content, array $attributes = [], BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
         $new->time = is_string($content)
@@ -450,7 +450,7 @@ final class Toast extends Widget
      * $toast->title($customTitleHtml);
      * ```
      */
-    public function title(string|Stringable $content, $attributes = [], BackedEnum|string|null ...$class): self
+    public function title(string|Stringable $content, array $attributes = [], BackedEnum|string|null ...$class): self
     {
         $new = clone $this;
         $new->title = is_string($content)

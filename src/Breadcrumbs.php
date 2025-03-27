@@ -429,7 +429,7 @@ final class Breadcrumbs extends Widget
     /**
      * Renders the list of items.
      *
-     * @return string The HTML representation of the element..
+     * @return string The HTML representation of the element.
      */
     private function renderList(): string
     {

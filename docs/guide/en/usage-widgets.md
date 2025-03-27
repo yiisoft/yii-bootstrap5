@@ -1,5 +1,4 @@
-Yii widgets
-===========
+# Yii widgets
 
 Most complex bootstrap components are wrapped into Yii widgets to allow more robust syntax and integrate with
 framework features. All widgets belong to `\Yiisoft\Yii\Bootstrap5` namespace:
@@ -40,10 +39,11 @@ echo Button::widget([
 ```
 
 However, sometimes you may need to replace the default classes with the alternative ones.
-For example, the widget [[Yiisoft\Yii\Bootstrap5\ButtonGroup]] uses 'btn-group' class for the container div by default,
-but you may need to use 'btn-group-vertical' instead to align the buttons vertically.
-Using a plain 'class' option simply adds 'btn-group-vertical' to 'btn-group', which will produce an incorrect result.
-In order to override the default classes of a widget, you need to specify the 'class' option as an array that contains the customized class definition under the 'widget' key:
+For example, the widget [[Yiisoft\Yii\Bootstrap5\ButtonGroup]] uses `btn-group` class for the container div by default,
+but you may need to use `btn-group-vertical` instead to align the buttons vertically.
+Using a plain 'class' option simply adds `btn-group-vertical` to `btn-group`, which will produce an incorrect result.
+To override the default classes of a widget, you need to specify the `class` option as an array that contains 
+the customized class definition under the `widget` key:
 
 ```php
 echo ButtonGroup::widget([
@@ -62,7 +62,7 @@ echo ButtonGroup::widget([
 The navbar widget has its peculiarities. You should define at which breakpoint the navbar collapses and the generic
 style of navbar (color scheme).
 
-You can change the color scheme and the collapse breakpoint with css classes. If not defined, the scheme defaults to 
+You can change the color scheme and the collapse breakpoint with CSS classes. If not defined, the scheme defaults to 
 `navbar-light bg-light` and the breakpoint to `navbar-expand-lg`. For more information, see [Bootstrap documentation](https://getbootstrap.com/docs/4.2/components/navbar/):
 ```php
 Navbar::begin([

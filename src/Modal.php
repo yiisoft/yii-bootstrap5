@@ -502,7 +502,7 @@ final class Modal extends Widget
      * Sets the trigger button.
      *
      * @param string|Stringable $content The content of the trigger button.
-     * @param bool $staticBackDrop Whether to use a static backdrop or not.
+     * @param bool $staticBackdrop Whether to use a static backdrop or not.
      * @param array $attributes The HTML attributes for the trigger button.
      *
      * @return self A new instance with the specified trigger button.

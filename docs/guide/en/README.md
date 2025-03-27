@@ -7,7 +7,7 @@ client-side of your development process.
 The core of Bootstrap is represented by two parts:
 
 - CSS basics, such as a grid layout system, typography, helper classes, and responsive utilities.
-- Ready to use components, such as forms, menus, pagination, modal boxes, tabs etc.
+- Ready to use components, such as forms, menus, pagination, modal boxes, tabs, etc.
 
 Getting Started
 ---------------
@@ -27,4 +27,3 @@ Additional topics
 -----------------
 
 * [Using the .sass files of Bootstrap directly](topics-sass.md)
-* [Migrating from yii2-bootstrap](migrating-yii2-bootstrap.md)

@@ -1,5 +1,4 @@
-Html helper
-===========
+# Html helper
 
 Bootstrap introduces many consistent HTML constructions and skeletons, which allow creating different visual effects.
 Only the most complex of them are covered by the widgets provided with this extension. The rest should be composed manually

@@ -16,7 +16,7 @@ use Yiisoft\Widget\Widget;
 /**
  * Offcanvas renders a Bootstrap offcanvas component.
  *
- * For example:
+ * For example,
  * ```php
  * echo Offcanvas::widget()
  *     ->placement(OffcanvasPlacement::END)
@@ -269,7 +269,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether is scrollable.
+     * Sets whether it is scrollable.
      *
      * @return self A new instance with the specified scrollable setting.
      *
@@ -284,9 +284,7 @@ final class Offcanvas extends Widget
     }
 
     /**
-     * Sets whether is visible.
-     *
-     * @param bool $show Whether is visible.
+     * Sets whether it is visible.
      *
      * @return self A new instance with the specified visibility setting.
      */
