@@ -8,13 +8,13 @@ La mejor manera para instalar esta extensión es a través de [composer](https:/
 Ejecuta
 
 ```
-composer require yiisoft/yii-bootstrap5
+composer require yiisoft/bootstrap5
 ```
 
 o añade
 
 ```
-"yiisoft/yii-bootstrap": "~1.0.0"
+"yiisoft/bootstrap": "~1.0.0"
 ```
 
 en la sección require de tu fichero `composer.json`.

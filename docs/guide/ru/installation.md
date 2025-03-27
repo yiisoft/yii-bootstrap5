@@ -8,13 +8,13 @@
 Для этого запустите команду
 
 ```
-composer require yiisoft/yii-bootstrap5
+composer require yiisoft/bootstrap5
 ```
 
 или добавьте
 
 ```
-"yiisoft/yii-bootstrap": "~1.0.0"
+"yiisoft/bootstrap": "~1.0.0"
 ```
 
 в секцию **require** вашего `composer.json`.
