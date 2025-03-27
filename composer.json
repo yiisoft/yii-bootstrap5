@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/yii-bootstrap5",
+    "name": "yiisoft/bootstrap5",
     "type": "library",
     "description": "Yii Framework Twitter Bootstrap 5 Extension",
     "keywords": [
@@ -8,8 +8,8 @@
     ],
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii-bootstrap5/issues?state=open",
-        "source": "https://github.com/yiisoft/yii-bootstrap5",
+        "issues": "https://github.com/yiisoft/bootstrap5/issues?state=open",
+        "source": "https://github.com/yiisoft/bootstrap5",
         "forum": "https://www.yiiframework.com/forum/",
         "wiki": "https://www.yiiframework.com/wiki/",
         "irc": "ircs://irc.libera.chat:6697/yii",
