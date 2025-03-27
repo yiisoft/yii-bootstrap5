@@ -146,6 +146,54 @@ final class Dropdown extends Widget
     }
 
     /**
+     * Adds a set of attributes for the toggler button.
+     *
+     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
+     *
+     * @return self A new instance with the specified attributes for the toggler button.
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addTogglerAttributes(['data-id' => '123']);
+     * ```
+     */
+    public function addTogglerAttributes(array $attributes): self
+    {
+        $new = clone $this;
+        $new->togglerAttributes = [...$this->togglerAttributes, ...$attributes];
+
+        return $new;
+    }
+
+    /**
+     * Adds one or more CSS classes to the existing classes.
+     *
+     * Multiple classes can be added by passing them as separate arguments. `null` values are filtered out
+     * automatically.
+     *
+     * @param BackedEnum|string|null ...$class One or more CSS class names to add. Pass `null` to skip adding a class.
+     *
+     * @return self A new instance with the specified CSS classes added to existing ones.
+     *
+     * @link https://html.spec.whatwg.org/#classes
+     *
+     * Example usage:
+     * ```php
+     * $dropdown->addTogglerClass('custom-class', null, 'another-class', BackGroundColor::PRIMARY);
+     * ```
+     */
+    public function addTogglerClass(BackedEnum|string|null ...$class): self
+    {
+        $new = clone $this;
+
+        foreach ($class as $item) {
+            Html::addCssClass($new->togglerAttributes, $item);
+        }
+
+        return $new;
+    }
+
+    /**
      * Sets the alignment.
      *
      * @param DropdownAlignment|null ...$alignment The alignment. If `null`, the alignment will
@@ -162,26 +210,6 @@ final class Dropdown extends Widget
     {
         $new = clone $this;
         $new->alignmentClasses = $alignment;
-
-        return $new;
-    }
-
-    /**
-     * Adds a set of attributes for the toggler button.
-     *
-     * @param array $attributes Attribute values indexed by attribute names. e.g. `['id' => 'my-id']`.
-     *
-     * @return self A new instance with the specified attributes for the toggler button.
-     *
-     * Example usage:
-     * ```php
-     * $dropdown->addTogglerAttributes(['data-id' => '123']);
-     * ```
-     */
-    public function addTogglerAttributes(array $attributes): self
-    {
-        $new = clone $this;
-        $new->togglerAttributes = [...$this->togglerAttributes, ...$attributes];
 
         return $new;
     }
@@ -880,6 +908,7 @@ final class Dropdown extends Widget
 
         $togglerAttributes = $this->togglerAttributes;
         $togglerClasses = $this->togglerClasses;
+
         $classes = $togglerAttributes['class'] ?? null;
 
         unset($togglerAttributes['class']);
