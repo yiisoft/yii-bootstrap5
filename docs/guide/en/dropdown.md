@@ -1,6 +1,6 @@
 # Dropdown
 
-The **Dropdown** widget renders a Bootstrap 5 dropdown menu component within the **Yiisoft Bootstrap 5** framework.
+The **Dropdown** widget renders a Bootstrap 5 dropdown menu component within the **Yii framework**.
 
 You can use it to create interactive dropdown menus with various item types such as links, buttons, headers, dividers,
 or plain text. This component is highly customizable, supporting directions, alignments, themes, and toggle variations.
@@ -31,15 +31,6 @@ echo Dropdown::widget()
 ```
 
 This generates a simple dropdown menu with a toggle button and three clickable items separated by a divider.
-
-## Installation
-The **Dropdown** widget is part of the **yiisoft/bootstrap5** package. Install it via Composer:
-
-```bash
-composer require yiisoft/bootstrap5
-```
-
-Ensure you have PHP 8.1 or higher, as the package leverages modern PHP features.
 
 ## Basic Usage
 

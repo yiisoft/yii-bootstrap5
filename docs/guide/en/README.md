@@ -22,8 +22,6 @@ Once you’re set up, explore the widget-specific guides below to start building
 - [Dropdown](dropdown.md): Learn how to create and customize interactive dropdown menus with various item types, toggle
   options, and Bootstrap 5 features.
 
-More widget guides will be added as the package evolves. Stay tuned!
-
 ## How to Use This Guide
 
 Each section is designed to be standalone, so you can jump to the widget you need. You will find:
