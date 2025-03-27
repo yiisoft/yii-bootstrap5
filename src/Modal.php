@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace Yiisoft\Bootstrap5;
 
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
+use Yiisoft\Bootstrap5\Utility\Responsive;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\Button;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Widget\Widget;
-use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
 /**
  * Modal renders a modal window that can be toggled by clicking on a trigger element.

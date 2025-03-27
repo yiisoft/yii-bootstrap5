@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests\Support;
+namespace Yiisoft\Bootstrap5\Tests\Support;
 
 use function str_replace;
 

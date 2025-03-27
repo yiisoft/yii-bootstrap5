@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\Dropdown;
+use Yiisoft\Bootstrap5\DropdownItem;
+use Yiisoft\Bootstrap5\Offcanvas;
+use Yiisoft\Bootstrap5\OffcanvasPlacement;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Utility\Responsive;
 use Yiisoft\Html\Tag\Div;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\Offcanvas;
-use Yiisoft\Yii\Bootstrap5\OffcanvasPlacement;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
-use Yiisoft\Yii\Bootstrap5\Utility\Responsive;
 
 #[Group('offcanvas')]
 final class OffcanvasTest extends TestCase

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\ButtonSize;
+use Yiisoft\Bootstrap5\ButtonVariant;
+use Yiisoft\Bootstrap5\Dropdown;
+use Yiisoft\Bootstrap5\DropdownAlignment;
+use Yiisoft\Bootstrap5\DropdownAutoClose;
+use Yiisoft\Bootstrap5\DropdownDirection;
+use Yiisoft\Bootstrap5\DropdownItem;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 use Yiisoft\Html\Tag\Button;
-use Yiisoft\Yii\Bootstrap5\ButtonSize;
-use Yiisoft\Yii\Bootstrap5\ButtonVariant;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\DropdownAlignment;
-use Yiisoft\Yii\Bootstrap5\DropdownAutoClose;
-use Yiisoft\Yii\Bootstrap5\DropdownDirection;
-use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Dropdown` widget.

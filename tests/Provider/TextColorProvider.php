@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests\Provider;
+namespace Yiisoft\Bootstrap5\Tests\Provider;
 
-use Yiisoft\Yii\Bootstrap5\Utility\TextColor;
+use Yiisoft\Bootstrap5\Utility\TextColor;
 
 final class TextColorProvider
 {

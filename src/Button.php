@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5;
+namespace Yiisoft\Bootstrap5;
 
 use BackedEnum;
 use Stringable;
+use Yiisoft\Bootstrap5\Utility\TogglerType;
 use Yiisoft\Html\Html;
 use Yiisoft\Html\Tag\A;
 use Yiisoft\Html\Tag\Button as ButtonTag;
 use Yiisoft\Html\Tag\Input;
 use Yiisoft\Widget\Widget;
-use Yiisoft\Yii\Bootstrap5\Utility\TogglerType;
 
 /**
  * Button renders a bootstrap button.

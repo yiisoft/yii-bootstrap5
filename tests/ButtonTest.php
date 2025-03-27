@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Bootstrap5\Button;
+use Yiisoft\Bootstrap5\ButtonSize;
+use Yiisoft\Bootstrap5\ButtonType;
+use Yiisoft\Bootstrap5\ButtonVariant;
+use Yiisoft\Bootstrap5\Tests\Provider\ButtonProvider;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Utility\TogglerType;
 use Yiisoft\Html\Tag\Div;
 use Yiisoft\Html\Tag\Span;
-use Yiisoft\Yii\Bootstrap5\Button;
-use Yiisoft\Yii\Bootstrap5\ButtonSize;
-use Yiisoft\Yii\Bootstrap5\ButtonType;
-use Yiisoft\Yii\Bootstrap5\ButtonVariant;
-use Yiisoft\Yii\Bootstrap5\Tests\Provider\ButtonProvider;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
-use Yiisoft\Yii\Bootstrap5\Utility\TogglerType;
 
 /**
  * Tests for `Button` widget

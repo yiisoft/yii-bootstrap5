@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\Dropdown;
-use Yiisoft\Yii\Bootstrap5\DropdownItem;
-use Yiisoft\Yii\Bootstrap5\Nav;
-use Yiisoft\Yii\Bootstrap5\NavLink;
-use Yiisoft\Yii\Bootstrap5\NavStyle;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Dropdown;
+use Yiisoft\Bootstrap5\DropdownItem;
+use Yiisoft\Bootstrap5\Nav;
+use Yiisoft\Bootstrap5\NavLink;
+use Yiisoft\Bootstrap5\NavStyle;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Nav` widget.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Stringable;
+use Yiisoft\Bootstrap5\CarouselItem;
 use Yiisoft\Html\Tag\Img;
-use Yiisoft\Yii\Bootstrap5\CarouselItem;
 
 /**
  * Tests for `CarouselItem`.

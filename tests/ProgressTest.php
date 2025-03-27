@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use LogicException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Bootstrap5\Progress;
-use Yiisoft\Yii\Bootstrap5\ProgressVariant;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
-use Yiisoft\Yii\Bootstrap5\Utility\Sizing;
+use Yiisoft\Bootstrap5\Progress;
+use Yiisoft\Bootstrap5\ProgressVariant;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Utility\Sizing;
 
 /**
  * Tests for `Progress` widget.

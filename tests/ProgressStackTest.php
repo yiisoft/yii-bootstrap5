@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Bootstrap5\Progress;
-use Yiisoft\Yii\Bootstrap5\ProgressStack;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\Progress;
+use Yiisoft\Bootstrap5\ProgressStack;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `ProgressStack` widget.

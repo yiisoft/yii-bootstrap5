@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Bootstrap5\Tests;
+namespace Yiisoft\Bootstrap5\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Yiisoft\Yii\Bootstrap5\BreadcrumbLink;
-use Yiisoft\Yii\Bootstrap5\Breadcrumbs;
-use Yiisoft\Yii\Bootstrap5\Tests\Support\Assert;
-use Yiisoft\Yii\Bootstrap5\Utility\BackgroundColor;
+use Yiisoft\Bootstrap5\BreadcrumbLink;
+use Yiisoft\Bootstrap5\Breadcrumbs;
+use Yiisoft\Bootstrap5\Tests\Support\Assert;
+use Yiisoft\Bootstrap5\Utility\BackgroundColor;
 
 /**
  * Tests for `Breadcrumbs` widget

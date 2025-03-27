@@ -94,7 +94,7 @@ composer require yiisoft/assets yiisoft/files
 For example, the following single line of code in a view file would render a Bootstrap Progress plugin:
 
 ```php
-<?= Yiisoft\Yii\Bootstrap5\Progress::widget()
+<?= Yiisoft\Bootstrap5\Progress::widget()
     ->percent('60')
     ->label('test') ?>
 ```
