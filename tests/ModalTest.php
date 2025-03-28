@@ -1192,7 +1192,6 @@ final class ModalTest extends TestCase
         );
     }
 
-
     /**
      * @link https://getbootstrap.com/docs/5.3/components/modal/#static-backdrop
      */
