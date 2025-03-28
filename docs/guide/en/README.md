@@ -1,6 +1,6 @@
 # User Guide (English)
 
-Welcome to the English user guide for the Yii Framework Twitter Bootstrap 5 Extension!.
+Welcome to the user guide for the Yii Framework Twitter Bootstrap 5 package.
 
 This guide helps you get started with the package, understand its components, and use them in your Yii applications.
 
