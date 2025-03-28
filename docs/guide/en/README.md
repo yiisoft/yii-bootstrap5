@@ -1,4 +1,4 @@
-# User Guide (English)
+# User Guide
 
 Welcome to the user guide for the Yii Framework Twitter Bootstrap 5 package.
 
