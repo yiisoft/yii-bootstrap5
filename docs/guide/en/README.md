@@ -19,6 +19,8 @@ Once you’re set up, explore the widget-specific guides below to start building
 
 ## Available Guides
 
+- [Accordion](accordion.md): Learn how to create and customize an accordion component with various item types, 
+  toggle options, and Bootstrap 5 features.
 - [Dropdown](dropdown.md): Learn how to create and customize interactive dropdown menus with various item types, toggle
   options, and Bootstrap 5 features.
 
