@@ -511,11 +511,29 @@ final class Modal extends Widget
      * ```php
      * $modal->triggerButton('Launch Modal');
      * ```
+     *
+     * Note: Setting `aria-hidden="true"` may cause accessibility errors in some modern browsers (for example,
+     * Chrome Beta/Canary) when the modal is closed, due to focus management issues during the fade transition.
+     * If this occurs, set `$ariaHidden` to `false` and manage the attribute via JavaScript, for example, by updating
+     * it after the `hidden.bs.modal` event.
+     *
+     * @link https://github.com/twbs/bootstrap/issues/41005 for details.
+     *
+     * ```php
+     * <script>
+     * <!-- Script to remove aria-hidden -->
+     * document.addEventListener('hide.bs.modal', (event) => {
+     *     const modal = event.target;
+     *     modal.removeAttribute('aria-hidden');
+     * });
+     * </script>
+     * ```
      */
     public function triggerButton(
         string|Stringable $content = 'Launch modal',
         bool $staticBackdrop = false,
         array $attributes = [],
+        bool $ariaHidden = true,
     ): self {
         $new = $this->id($this->getId() ?? '');
 
@@ -539,10 +557,13 @@ final class Modal extends Widget
             $new = $new->attribute('data-bs-backdrop', 'static')->attribute('data-bs-keyboard', 'false');
         }
 
-        return $new
-            ->addClass('fade')
-            ->attribute('aria-labelledby', $new->id . 'Label')
-            ->attribute('aria-hidden', 'true');
+        $new = $new->addClass('fade')->attribute('aria-labelledby', $new->id . 'Label');
+
+        if ($ariaHidden) {
+            $new = $new->attribute('aria-hidden', 'true');
+        }
+
+        return $new;
     }
 
     public function verticalCentered(): self
