@@ -16,18 +16,23 @@ or plain text. This component is highly customizable, supporting directions, ali
 To get started, instantiate the **Dropdown** widget and add items to it. Here is a basic example:
 
 ```php
+<?php
+
+declare(strict_types=1);
+
 use Yiisoft\Bootstrap5\Dropdown;
 use Yiisoft\Bootstrap5\DropdownItem;
+?>
 
-echo Dropdown::widget()
+<?= Dropdown::widget()
     ->togglerContent('Toggle Dropdown')
     ->items(
         DropdownItem::link('Action', '#'),
         DropdownItem::link('Another action', '#'),
         DropdownItem::divider(),
-        DropdownItem::link('Separated link', '#')
+        DropdownItem::link('Separated link', '#'),
     )
-    ->render();
+?>
 ```
 
 This generates a simple dropdown menu with a toggle button and three clickable items separated by a divider.
